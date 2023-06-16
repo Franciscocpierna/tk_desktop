@@ -1,0 +1,8 @@
+Contas a pagar são todas as obrigações financeiras assumidas por uma empresa, ou seja, qualquer tipo de pagamento, seja de seus colaboradores, contas de consumo, como água, luz, aluguel, internet e telefone ou compra de matéria-prima.
+
+fornecedores
+conta de agua 
+conta de luz
+telefone
+internet
+outros
