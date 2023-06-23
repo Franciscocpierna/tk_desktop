@@ -1,0 +1,15 @@
+from tkinter import *
+
+janela = Tk()
+janela.configure(height= 1500)
+janela.configure(width= 1500)         
+janela1 = Toplevel()
+janela1.title("janela de trabalho")
+janela1.configure(height= 400)
+janela1.configure(width= 200)              
+janela1.resizable(False, False)              
+janela1.transient(janela)
+janela1.focus_force()
+janela1.grab_set()
+janela1.mainloop()
+janela.mainloop()
