@@ -19,6 +19,8 @@ posy=0
 #mainloop()
 
 
+def incluir_click():
+  print('incusão') 
 
 class tela(Frame):
     def __init__(self,janela,texto):
@@ -59,16 +61,20 @@ janela1.grab_set()
 #adicionando menu
 menujan = Menu(janela1)
 
-filemenu= Menu(menujan)
-filemenu.add_command(label = "novo")
-filemenu.add_command(label = "inclusao")
+filemenu= Menu(menujan, tearoff=0)
+filemenu.add_command(label = "inclusão",command=incluir_click)
 filemenu.add_command(label = "consulta")
-menujan.add_cascade(label = "File", menu = filemenu)
+filemenu.add_command(label = "alteração")
+filemenu.add_command(label = "excluir")
+filemenu.add_separator()
+filemenu.add_command(label='Sair', command=quit)
 
-editmenu = Menu(menujan)
-editmenu.add_command(label = "mudar um campo")
-editmenu.add_command(label = "Alteração")
-editmenu.add_command(label = "local")
+menujan.add_cascade(label = "Manutenção", menu = filemenu)
+
+editmenu = Menu(menujan, tearoff=0)
+editmenu.add_command(label = "copy")
+editmenu.add_command(label = "colar")
+editmenu.add_command(label = "deletar")
 menujan.add_cascade(label = "Edit", menu = editmenu)
 janela1.config(menu=menujan) #linha necessaria para aprecer o menu na janela de trabalho
 

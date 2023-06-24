@@ -1,6 +1,6 @@
 from tkinter import *
 #o meu widgets
-class framenome(Frame):
+'''class framenome(Frame):
     def __init__(self, janela,texto):
       super().__init__()
       self['height'] =150
@@ -23,4 +23,13 @@ frame_nome_4=framenome(janela,"texto4").grid()
 
 
 
-mainloop()
+mainloop() '''
+
+#from tkinter import *
+window = Tk()
+window.geometry("400x400")
+l1 = Label(window, text="Hello, world!")
+#l1.place(x=15, y=20)
+l1.grid(row = 0, column = 2, 
+        padx = 150, pady = 30) 
+window.mainloop()
