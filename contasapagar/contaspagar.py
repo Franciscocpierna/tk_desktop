@@ -1,25 +1,29 @@
 from tkinter import *
-#import centralizatela
+from modulos.centralizatela import centralizacao
+
 
 #import awesometkinter as atk
 largura=0
 altura=0
 posx=0
 posy=0
-#def centraliza(janelac, largura, altura):
- # janela = Tk()
- #janela.title("titulo")
-                        #CENTRLIZAR TELAS EM TKINTER
- #DIMENSÕES DA JANELA
- 
- #definir a geometry
 
 
  
-#mainloop()
 def incluir_click():
-  print('incusão') 
-
+  janinclusao = Toplevel() # janela de nível superior
+  janinclusao.title("Inclusão")
+  #janela1.configure(height= 400)
+  #janela1.configure(width= 400) 
+           
+  janinclusao.resizable(False, False) # tamanho fixo             
+  janinclusao.transient(janela1) # de onde vem a janela1
+  janinclusao.focus_force() #forçar foco
+  janinclusao.grab_set()    # impede que click na janela principal sem fechar janela atiual
+  #janela1.configure(background='red')
+  #janela1.overrideredirect(True)  
+  centralizacao(janinclusao,800,400)
+  janinclusao.geometry("%dx%d+%d+%d" % (800, 400, posx, posy))
 janela= Tk()
 janela.title("janela principal")
 janela.configure(background='Gray')
@@ -37,13 +41,14 @@ janela1.resizable(False, False) # tamanho fixo
 janela1.transient(janela) # de onde vem a janela
 janela1.focus_force() #forçar foco
 janela1.grab_set()    # impede que click na janela principal sem fechar janela atiual
+#janela1.configure(background='red')
 #janela1.overrideredirect(True)  
 
 #adicionando menu
 menujan = Menu(janela1)
 
 filemenu= Menu(menujan, tearoff=0)
-filemenu.add_command(label = "inclusão",command=incluir_click)
+filemenu.add_command(label = "inclusão", command=incluir_click)
 filemenu.add_command(label = "consulta")
 filemenu.add_command(label = "alteração")
 filemenu.add_command(label = "excluir")
@@ -68,7 +73,8 @@ largura_screen = janela1.winfo_screenwidth()
 altura_screen = janela1.winfo_screenheight()
 # print(largura_screen, altura_screen)
 posx=largura_screen/2 - largura/2
-posy= altura_screen/2 - altura/2 
+posy= altura_screen/2 - altura/2
+print(f'a janela1 posy = {posy} e a posx = {posx}') 
 janela1.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
 janela1.mainloop()
 janela.mainloop()
