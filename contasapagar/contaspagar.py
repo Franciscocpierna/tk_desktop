@@ -7,23 +7,54 @@ largura=0
 altura=0
 posx=0
 posy=0
+X=0
+opcao=0
+def montatela(opcao):
+   manutencao = Toplevel() # janela de nível superior
+   if opcao==1:
+      manutencao.title("Inclusão")
+   elif opcao == 2:
+      manutencao.title("Consulta")
+   elif opcao == 3:
+      manutencao.title("Ateração")     
+   else:
+       manutencao.title("Exclusão")
 
-
- 
-def incluir_click():
-  janinclusao = Toplevel() # janela de nível superior
-  janinclusao.title("Inclusão")
-  #janela1.configure(height= 400)
-  #janela1.configure(width= 400) 
+   #janela1.configure(height= 400)
+   #janela1.configure(width= 400) 
            
-  janinclusao.resizable(False, False) # tamanho fixo             
-  janinclusao.transient(janela1) # de onde vem a janela1
-  janinclusao.focus_force() #forçar foco
-  janinclusao.grab_set()    # impede que click na janela principal sem fechar janela atiual
-  #janela1.configure(background='red')
-  #janela1.overrideredirect(True)  
-  centralizacao(janinclusao,800,400)
-  janinclusao.geometry("%dx%d+%d+%d" % (800, 400, posx, posy))
+   manutencao.resizable(False, False) # tamanho fixo             
+   manutencao.transient(janela1) # de onde vem a janela1
+   manutencao.focus_force() #forçar foco
+   manutencao.grab_set()    # impede que click na janela principal sem fechar janela atual
+   #janela1.configure(background='red')
+   #janela1.overrideredirect(True)  
+   centralizacao(manutencao,800,500)
+   manutencao.geometry("%dx%d+%d+%d" % (800, 500, posx-200, posy-50))#posx-200 ajuste de tela
+   # itens da tetla
+    
+
+
+   return opcao
+
+
+def incluir_click():
+     opcao=1
+     montatela(opcao)
+     print(f'a opcao inclusao aqui é {opcao}')
+def cosulta_click():
+     opcao=2
+     montatela(opcao)
+     print(f'a opcao consulta aqui é {opcao}')
+def alteracao_clik():
+     opcao=3
+     montatela(opcao)
+     print(f'a opcao alteraçao aqui é {opcao}')
+def excluir_click(): 
+     opcao=4
+     montatela(opcao)
+     print(f'a opcao Exclusao aqui é {opcao}')
+
 janela= Tk()
 janela.title("janela principal")
 janela.configure(background='Gray')
@@ -46,17 +77,16 @@ janela1.grab_set()    # impede que click na janela principal sem fechar janela a
 
 #adicionando menu
 menujan = Menu(janela1)
-
-filemenu= Menu(menujan, tearoff=0)
-filemenu.add_command(label = "inclusão", command=incluir_click)
-filemenu.add_command(label = "consulta")
-filemenu.add_command(label = "alteração")
-filemenu.add_command(label = "excluir")
+filemenu= Menu(menujan, tearoff=0,)
+filemenu.add_command(label = "inclusão",command=incluir_click)
+filemenu.add_command(label = "consulta",command=cosulta_click)
+filemenu.add_command(label = "alteração",command=alteracao_clik)
+filemenu.add_command(label = "excluir", command=excluir_click )
 filemenu.add_separator()
 filemenu.add_command(label='Sair', command=quit)
 
 menujan.add_cascade(label = "Manutenção", menu = filemenu)
-
+print(f'file menu primeira opcao {filemenu.__getattribute__}')
 editmenu = Menu(menujan, tearoff=0)
 editmenu.add_command(label = "copy")
 editmenu.add_command(label = "colar")
