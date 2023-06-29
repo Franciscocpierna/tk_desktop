@@ -13,13 +13,17 @@ def montatela(opcao):
    manutencao = Toplevel() # janela de nível superior
    if opcao==1:
       manutencao.title("Inclusão")
+      Label(manutencao, text= 'Manutenção - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
+      
    elif opcao == 2:
       manutencao.title("Consulta")
+      Label(manutencao, text= 'Manutenção - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
    elif opcao == 3:
-      manutencao.title("Ateração")     
+      manutencao.title("Ateração")    
+      Label(manutencao, text= 'Manutenção - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30) 
    else:
        manutencao.title("Exclusão")
-
+       Label(manutencao, text= 'Manutenção - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
    #janela1.configure(height= 400)
    #janela1.configure(width= 400) 
            
@@ -29,8 +33,8 @@ def montatela(opcao):
    manutencao.grab_set()    # impede que click na janela principal sem fechar janela atual
    #janela1.configure(background='red')
    #janela1.overrideredirect(True)  
-   centralizacao(manutencao,800,500)
-   manutencao.geometry("%dx%d+%d+%d" % (800, 500, posx-200, posy-50))#posx-200 ajuste de tela
+   centralizacao(manutencao,1200,650)
+   manutencao.geometry("%dx%d+%d+%d" % (1200, 650, posx-400, posy-150))#posx-200 ajuste de tela
    # itens da tetla
     
 
@@ -86,12 +90,12 @@ filemenu.add_separator()
 filemenu.add_command(label='Sair', command=quit)
 
 menujan.add_cascade(label = "Manutenção", menu = filemenu)
-print(f'file menu primeira opcao {filemenu.__getattribute__}')
 editmenu = Menu(menujan, tearoff=0)
-editmenu.add_command(label = "copy")
-editmenu.add_command(label = "colar")
-editmenu.add_command(label = "deletar")
-menujan.add_cascade(label = "Edit", menu = editmenu)
+editmenu.add_command(label = "contas a pagar")
+editmenu.add_command(label = "contas a pagar por fornecedor")
+editmenu.add_command(label = "Contas a pagar por nome")
+editmenu.add_command(label = "Contas a pagar por CNPJ Ou CPF")
+menujan.add_cascade(label = "Relatórios", menu = editmenu)
 janela1.config(menu=menujan) #linha necessaria para aprecer o menu na janela de trabalho
 
 
