@@ -1,5 +1,6 @@
 from tkinter import *
-from modulos.centralizatela import centralizacao
+from modulos import *
+#from modulos.centralizatela import centralizacao
 
 
 #import awesometkinter as atk
@@ -9,7 +10,7 @@ posx=0
 posy=0
 X=0
 opcao=0
-def montatela(opcao):
+'''def montatela(opcao):
    manutencao = Toplevel() # janela de nível superior
    if opcao==1:
       manutencao.title("Inclusão")
@@ -36,27 +37,37 @@ def montatela(opcao):
    centralizacao(manutencao,1200,650)
    manutencao.geometry("%dx%d+%d+%d" % (1200, 650, posx-400, posy-150))#posx-200 ajuste de tela
    # itens da tetla
-    
+   Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
+   Label(manutencao, text='Senha:').grid(row=1, sticky=W)
+   text_usuario= Entry(manutencao).grid(row=0, column=1)
+   text_senha = Entry(manutencao).grid(row=1,column=1)
+   login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
+   print(f'a opcao inclusao aqui é {opcao}')
 
 
-   return opcao
-
+   return manutencao
+'''
 
 def incluir_click():
      opcao=1
-     montatela(opcao)
-     print(f'a opcao inclusao aqui é {opcao}')
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
+     Label(manutencao, text='Senha:').grid(row=1, sticky=W)
+     text_usuario= Entry(manutencao).grid(row=0, column=1)
+     text_senha = Entry(manutencao).grid(row=1,column=1)
+     login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
+     '''
 def cosulta_click():
      opcao=2
-     montatela(opcao)
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
      print(f'a opcao consulta aqui é {opcao}')
 def alteracao_clik():
      opcao=3
-     montatela(opcao)
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
      print(f'a opcao alteraçao aqui é {opcao}')
 def excluir_click(): 
      opcao=4
-     montatela(opcao)
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
      print(f'a opcao Exclusao aqui é {opcao}')
 
 janela= Tk()

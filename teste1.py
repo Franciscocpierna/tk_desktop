@@ -1,15 +1,17 @@
 from tkinter import *
 
 janela = Tk()
-janela.configure(height= 1500)
-janela.configure(width= 1500)         
-janela1 = Toplevel()
-janela1.title("janela de trabalho")
-janela1.configure(height= 400)
-janela1.configure(width= 200)              
-janela1.resizable(False, False)              
-janela1.transient(janela)
-janela1.focus_force()
-janela1.grab_set()
-janela1.mainloop()
-janela.mainloop()
+janela.title("App")
+
+Label(janela, text='Usuario:').grid(row=0, sticky=W)
+Label(janela, text='Senha:').grid(row=1, sticky=W)
+text_usuario= Entry(janela).grid(row=0, column=1)
+text_senha = Entry(janela).grid(row=1,column=1)
+login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
+
+
+
+
+
+
+mainloop()
