@@ -63,7 +63,7 @@ def cosulta_click():
      opcao=2
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
-     print(f'a opcao consulta aqui é {opcao}')
+     print(f'a opcao consulta aqui é tela.opcao = {tela.opcao}')
 def alteracao_clik():
      opcao=3
      manutencao = Toplevel() # janela de nível superior

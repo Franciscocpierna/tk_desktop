@@ -4,16 +4,18 @@ from tkinter import *
 class montatela():
       def __init__(self, manutencao,janela1, opcao,posx,posy):
          super().__init__() 
+         self.opcao = opcao
+         self.posx = posx
+         self.posy = posy
          
-         
-         if opcao==1:
+         if self.opcao==1:
               manutencao.title("Inclusão")
               Label(manutencao, text= 'Manutenção - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
               
-         elif opcao == 2:
-              manutencao.title("Consulta")
-              Label(manutencao, text= 'Manutenção - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
-         elif opcao == 3:
+         elif self.opcao == 2:
+             manutencao.title("Consulta")
+             Label(manutencao, text= 'Manutenção - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
+         elif self.opcao == 3:
               manutencao.title("Ateração")    
               Label(manutencao, text= 'Manutenção - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30) 
          else:
@@ -28,8 +30,8 @@ class montatela():
          manutencao.grab_set()    # impede que click na janela principal sem fechar janela atual
          #janela1.configure(background='red')
          #janela1.overrideredirect(True)  
-         centralizatela = centralizacao(manutencao,1200,650,posx,posy)
-         manutencao.geometry("%dx%d+%d+%d" % (1200, 650, posx-400, posy-150))#posx-200 ajuste de tela
+         centralizatela = centralizacao(manutencao,1200,650,self.posx,self.posy)
+         manutencao.geometry("%dx%d+%d+%d" % (1200, 650, self.posx-400, self.posy-150))#posx-200 ajuste de tela
          # itens da tetla
          '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
           Label(manutencao, text='Senha:').grid(row=1, sticky=W)
