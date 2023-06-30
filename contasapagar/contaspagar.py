@@ -1,5 +1,5 @@
 from tkinter import *
-from modulos import *
+from modulos.classes import * #montatela
 #from modulos.centralizatela import centralizacao
 
 
@@ -10,6 +10,7 @@ posx=0
 posy=0
 X=0
 opcao=0
+
 '''def montatela(opcao):
    manutencao = Toplevel() # janela de nível superior
    if opcao==1:
@@ -50,6 +51,7 @@ opcao=0
 
 def incluir_click():
      opcao=1
+     manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
      '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
      Label(manutencao, text='Senha:').grid(row=1, sticky=W)
@@ -59,14 +61,17 @@ def incluir_click():
      '''
 def cosulta_click():
      opcao=2
+     manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
      print(f'a opcao consulta aqui é {opcao}')
 def alteracao_clik():
      opcao=3
+     manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
      print(f'a opcao alteraçao aqui é {opcao}')
 def excluir_click(): 
      opcao=4
+     manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
      print(f'a opcao Exclusao aqui é {opcao}')
 

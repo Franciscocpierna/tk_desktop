@@ -1,11 +1,10 @@
 from tkinter import *
-from modulos import *
+
 
 class montatela():
       def __init__(self, manutencao,janela1, opcao,posx,posy):
          super().__init__() 
-         self.posx=0
-         self.posy=0
+         
          
          if opcao==1:
               manutencao.title("Inclusão")
@@ -29,7 +28,7 @@ class montatela():
          manutencao.grab_set()    # impede que click na janela principal sem fechar janela atual
          #janela1.configure(background='red')
          #janela1.overrideredirect(True)  
-         centralizatela = centralizacao(manutencao,1200,650)
+         centralizatela = centralizacao(manutencao,1200,650,posx,posy)
          manutencao.geometry("%dx%d+%d+%d" % (1200, 650, posx-400, posy-150))#posx-200 ajuste de tela
          # itens da tetla
          '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
@@ -39,14 +38,14 @@ class montatela():
           login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
           print(f'a opcao inclusao aqui é {opcao}')
          '''
-   
-  class  centralizacao(janinclusao,largura1, altura1):
-   #RESOLUÇÃO DO NOSSO SISTEMA
-   largura_screen = janinclusao.winfo_screenwidth()
-   altura_screen = janinclusao.winfo_screenheight()
-   # print(largura_screen, altura_screen)
-   posx=largura_screen/2 - largura1/2
-   posy= altura_screen/2 - altura1/2 
-   #janela1.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
-   print(f'a posy = {posy} e a posx = {posx}')
+class  centralizacao():
+   def __init__(self,manutencao,largura1, altura1,posx,posy):
+      #RESOLUÇÃO DO NOSSO SISTEMA
+      largura_screen = manutencao.winfo_screenwidth()
+      altura_screen = manutencao.winfo_screenheight()
+       # print(largura_screen, altura_screen)
+      posx=largura_screen/2 - largura1/2
+      posy= altura_screen/2 - altura1/2 
+      #janela1.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
+      print(f'a posy = {posy} e a posx = {posx}')
     
