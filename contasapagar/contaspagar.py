@@ -11,48 +11,12 @@ posy=0
 X=0
 opcao=0
 
-'''def montatela(opcao):
-   manutencao = Toplevel() # janela de nível superior
-   if opcao==1:
-      manutencao.title("Inclusão")
-      Label(manutencao, text= 'Manutenção - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
-      
-   elif opcao == 2:
-      manutencao.title("Consulta")
-      Label(manutencao, text= 'Manutenção - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
-   elif opcao == 3:
-      manutencao.title("Ateração")    
-      Label(manutencao, text= 'Manutenção - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30) 
-   else:
-       manutencao.title("Exclusão")
-       Label(manutencao, text= 'Manutenção - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
-   #janela1.configure(height= 400)
-   #janela1.configure(width= 400) 
-           
-   manutencao.resizable(False, False) # tamanho fixo             
-   manutencao.transient(janela1) # de onde vem a janela1
-   manutencao.focus_force() #forçar foco
-   manutencao.grab_set()    # impede que click na janela principal sem fechar janela atual
-   #janela1.configure(background='red')
-   #janela1.overrideredirect(True)  
-   centralizacao(manutencao,1200,650)
-   manutencao.geometry("%dx%d+%d+%d" % (1200, 650, posx-400, posy-150))#posx-200 ajuste de tela
-   # itens da tetla
-   Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
-   Label(manutencao, text='Senha:').grid(row=1, sticky=W)
-   text_usuario= Entry(manutencao).grid(row=0, column=1)
-   text_senha = Entry(manutencao).grid(row=1,column=1)
-   login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
-   print(f'a opcao inclusao aqui é {opcao}')
-
-
-   return manutencao
-'''
 
 def incluir_click():
      opcao=1
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
+     print(f'a opcao consulta aqui é tela.posx = {tela.posx}')
      '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
      Label(manutencao, text='Senha:').grid(row=1, sticky=W)
      text_usuario= Entry(manutencao).grid(row=0, column=1)
@@ -63,6 +27,7 @@ def cosulta_click():
      opcao=2
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
+   
      print(f'a opcao consulta aqui é tela.opcao = {tela.opcao}')
 def alteracao_clik():
      opcao=3
@@ -113,8 +78,10 @@ editmenu.add_command(label = "Contas a pagar por nome")
 editmenu.add_command(label = "Contas a pagar por CNPJ Ou CPF")
 menujan.add_cascade(label = "Relatórios", menu = editmenu)
 janela1.config(menu=menujan) #linha necessaria para aprecer o menu na janela de trabalho
-
-
+largura= 400
+altura = 400
+centro=centralizacao(janela1,largura, altura, posx, posy)
+'''
 #centraliza(janela1,400,400)
 largura= 400
 altura = 400
@@ -125,7 +92,8 @@ altura_screen = janela1.winfo_screenheight()
 posx=largura_screen/2 - largura/2
 posy= altura_screen/2 - altura/2
 print(f'a janela1 posy = {posy} e a posx = {posx}') 
-janela1.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
+janela1.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))'''
+janela1.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
 janela1.mainloop()
 janela.mainloop()
 
