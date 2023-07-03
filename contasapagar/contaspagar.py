@@ -11,11 +11,11 @@ posy=0
 X=0
 opcao=0
 
-
+labelcria = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
 def incluir_click():
      opcao=1
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
      print(f'a opcao consulta aqui é tela.posx = {tela.posx}')
      '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
      Label(manutencao, text='Senha:').grid(row=1, sticky=W)
@@ -26,18 +26,18 @@ def incluir_click():
 def cosulta_click():
      opcao=2
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
    
      print(f'a opcao consulta aqui é tela.opcao = {tela.opcao}')
 def alteracao_clik():
      opcao=3
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
      print(f'a opcao alteraçao aqui é {opcao}')
 def excluir_click(): 
      opcao=4
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
      print(f'a opcao Exclusao aqui é {opcao}')
 
 janela= Tk()
@@ -81,18 +81,7 @@ janela1.config(menu=menujan) #linha necessaria para aprecer o menu na janela de 
 largura= 400
 altura = 400
 centro=centralizacao(janela1,largura, altura, posx, posy)
-'''
-#centraliza(janela1,400,400)
-largura= 400
-altura = 400
-#RESOLUÇÃO DO NOSSO SISTEMA
-largura_screen = janela1.winfo_screenwidth()
-altura_screen = janela1.winfo_screenheight()
-# print(largura_screen, altura_screen)
-posx=largura_screen/2 - largura/2
-posy= altura_screen/2 - altura/2
-print(f'a janela1 posy = {posy} e a posx = {posx}') 
-janela1.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))'''
+
 janela1.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
 janela1.mainloop()
 janela.mainloop()

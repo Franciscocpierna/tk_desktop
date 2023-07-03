@@ -2,8 +2,9 @@ from tkinter import *
 
 
 class montatela():
-      def __init__(self, manutencao1,janela1, opcao,posx,posy):
+      def __init__(self, manutencao1,janela1, opcao,posx,posy,labelcria):
          super().__init__() 
+         self.labelcria=labelcria
          self.opcao = opcao
          self.posx = posx
          self.posy = posy
@@ -33,7 +34,12 @@ class montatela():
          centralizatela = centralizacao(manutencao1,1200,650,self.posx,self.posy)
          manutencao1.geometry("%dx%d+%d+%d" % (1200, 650, centralizatela.posx, centralizatela.posy-20))
          #posx-200 ajuste de tela
-         
+         for key, value in labelcria.items():
+             Label(manutencao1, text=value+":").grid(row=(key+1), column=0)
+            # text_usuario + str(key)= Entry(manutencao1).grid(row=(key+1), column=1)
+             Entry(manutencao1).grid(row=(key+1), column=1)
+
+
          # itens da tetla
          '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
           Label(manutencao, text='Senha:').grid(row=1, sticky=W)
