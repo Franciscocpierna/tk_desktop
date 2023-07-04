@@ -2,26 +2,28 @@ from tkinter import *
 
 
 class montatela():
-      def __init__(self, manutencao1,janela1, opcao,posx,posy,labelcria):
+      def __init__(self, manutencao1,janela1, opcao,posx,posy,labelcria,entrar):
          super().__init__() 
          self.labelcria=labelcria
          self.opcao = opcao
          self.posx = posx
          self.posy = posy
+         for key, value in entrar.items():
+             self.%key = value
          
          if self.opcao==1:
               manutencao1.title("Inclusão")
-              Label(manutencao1, text= 'Manutenção - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
+              Label(manutencao1, text= 'Manutenção - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 220, pady=30)
               
          elif self.opcao == 2:
              manutencao1.title("Consulta")
-             Label(manutencao1, text= 'Manutenção - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
+             Label(manutencao1, text= 'Manutenção - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 220, pady=30)
          elif self.opcao == 3:
               manutencao1.title("Ateração")    
-              Label(manutencao1, text= 'Manutenção - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30) 
+              Label(manutencao1, text= 'Manutenção - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 220, pady=30) 
          else:
               manutencao1.title("Exclusão")
-              Label(manutencao1, text= 'Manutenção - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 410, pady=30)
+              Label(manutencao1, text= 'Manutenção - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 220, pady=30)
           #janela1.configure(height= 400)
           #janela1.configure(width= 400) 
                   
@@ -36,8 +38,8 @@ class montatela():
          #posx-200 ajuste de tela
          for key, value in labelcria.items():
              Label(manutencao1, text=value+":").grid(row=(key+1), column=0)
-            # text_usuario + str(key)= Entry(manutencao1).grid(row=(key+1), column=1)
-             Entry(manutencao1).grid(row=(key+1), column=1)
+             Entry(manutencao1, textvariable=value).grid(row=(key+1), column=1)
+             
 
 
          # itens da tetla

@@ -10,12 +10,26 @@ posx=0
 posy=0
 X=0
 opcao=0
-
+codigo="inicio"
+nome=""
+endereco=""
+telefone=""
+tipo=""
+cpf=""
+cnpj=""
+entrar={"codigo": "","nome": "", "endereco":"","telefone" :"", "tipo": "","cpf":"","cnpj":""}
 labelcria = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
+
+
+
+#labelcria = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
+def verconteudo():
+     print(f' conteudo de codigo = {codigo}')
+
 def incluir_click():
      opcao=1
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
      print(f'a opcao consulta aqui é tela.posx = {tela.posx}')
      '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
      Label(manutencao, text='Senha:').grid(row=1, sticky=W)
@@ -23,21 +37,23 @@ def incluir_click():
      text_senha = Entry(manutencao).grid(row=1,column=1)
      login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
      '''
+     Button(manutencao, text='contem', onclick = verconteudo()).grid(row=2, column=1,sticky=E)
+     
 def cosulta_click():
      opcao=2
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
    
      print(f'a opcao consulta aqui é tela.opcao = {tela.opcao}')
 def alteracao_clik():
      opcao=3
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
      print(f'a opcao alteraçao aqui é {opcao}')
 def excluir_click(): 
      opcao=4
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
      print(f'a opcao Exclusao aqui é {opcao}')
 
 janela= Tk()
@@ -83,7 +99,7 @@ altura = 400
 centro=centralizacao(janela1,largura, altura, posx, posy)
 
 janela1.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-janela1.mainloop()
+#janela1.mainloop()
 janela.mainloop()
 
 
