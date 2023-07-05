@@ -2,15 +2,21 @@ from tkinter import *
 
 
 class montatela():
-      def __init__(self, manutencao1,janela1, opcao,posx,posy,labelcria,entrar):
+      def __init__(self, manutencao1,janela1, opcao,posx,posy,labelcria):
          super().__init__() 
          self.labelcria=labelcria
          self.opcao = opcao
          self.posx = posx
          self.posy = posy
-         for key, value in entrar.items():
-             self.%key = value
-         
+         for key, value in self.labelcria.items():
+              # globals()['strg%s' % n] = 'Hello'
+              globals()[value] = 'Hello'
+              print(f'{value} é igual = {codigo}')
+              #exec("%s = " % (value,""))
+              self.codigo="helo"
+              
+             
+              #exec("%s = %d" % (name,100))
          if self.opcao==1:
               manutencao1.title("Inclusão")
               Label(manutencao1, text= 'Manutenção - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 220, pady=30)

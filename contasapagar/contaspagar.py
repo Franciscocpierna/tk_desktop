@@ -17,9 +17,9 @@ telefone=""
 tipo=""
 cpf=""
 cnpj=""
-entrar={"codigo": "","nome": "", "endereco":"","telefone" :"", "tipo": "","cpf":"","cnpj":""}
-labelcria = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
 
+labelcria = {1: 'codigo', 2: 'nome',3: 'endereco', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
+#entrar = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
 
 
 #labelcria = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
@@ -29,7 +29,7 @@ def verconteudo():
 def incluir_click():
      opcao=1
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
      print(f'a opcao consulta aqui é tela.posx = {tela.posx}')
      '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
      Label(manutencao, text='Senha:').grid(row=1, sticky=W)
@@ -42,18 +42,18 @@ def incluir_click():
 def cosulta_click():
      opcao=2
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
    
      print(f'a opcao consulta aqui é tela.opcao = {tela.opcao}')
 def alteracao_clik():
      opcao=3
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
      print(f'a opcao alteraçao aqui é {opcao}')
 def excluir_click(): 
      opcao=4
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria,entrar)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
      print(f'a opcao Exclusao aqui é {opcao}')
 
 janela= Tk()
