@@ -2,21 +2,13 @@ from tkinter import *
 
 
 class montatela():
-      def __init__(self, manutencao1,janela1, opcao,posx,posy,labelcria):
+      def __init__(self, manutencao1,janela1, opcao,posx,posy):
          super().__init__() 
-         self.labelcria=labelcria
          self.opcao = opcao
          self.posx = posx
          self.posy = posy
-         for key, value in self.labelcria.items():
-              # globals()['strg%s' % n] = 'Hello'
-              globals()[value] = 'Hello'
-              print(f'{value} é igual = {codigo}')
-              #exec("%s = " % (value,""))
-              self.codigo="helo"
+         
               
-             
-              #exec("%s = %d" % (name,100))
          if self.opcao==1:
               manutencao1.title("Inclusão")
               Label(manutencao1, text= 'Manutenção - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 220, pady=30)
@@ -36,26 +28,12 @@ class montatela():
          manutencao1.resizable(False, False) # tamanho fixo             
          manutencao1.transient(janela1) # de onde vem a janela1
          manutencao1.focus_force() #forçar foco
-         manutencao1.grab_set()    # impede que click na janela principal sem fechar janela atual
-         #janela1.configure(background='red')
-         #janela1.overrideredirect(True)  
+         manutencao1.grab_set()    # impede que click na janela principal sem fechar 
          centralizatela = centralizacao(manutencao1,1200,650,self.posx,self.posy)
          manutencao1.geometry("%dx%d+%d+%d" % (1200, 650, centralizatela.posx, centralizatela.posy-20))
          #posx-200 ajuste de tela
-         for key, value in labelcria.items():
-             Label(manutencao1, text=value+":").grid(row=(key+1), column=0)
-             Entry(manutencao1, textvariable=value).grid(row=(key+1), column=1)
-             
+         
 
-
-         # itens da tetla
-         '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
-          Label(manutencao, text='Senha:').grid(row=1, sticky=W)
-          text_usuario= Entry(manutencao).grid(row=0, column=1)
-          text_senha = Entry(manutencao).grid(row=1,column=1)
-          login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
-          print(f'a opcao inclusao aqui é {opcao}')
-         '''
 class  centralizacao():
    def __init__(self,manutencao,largura1, altura1,posx,posy):
       #super().__init__() 
@@ -72,3 +50,13 @@ class  centralizacao():
       #janela1.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
       print(f'a posy = {posy} e a posx = {posx}')
     
+
+
+      '''  for key, value in self.labelcria.items():
+              # globals()['strg%s' % n] = 'Hello'
+              globals()[value] = 'Hello'
+              print(f'{value} é igual = {codigo}')
+              #exec("%s = " % (value,""))
+              self.codigo="helo"
+        '''       
+   #exec("%s = %d" % (name,100))

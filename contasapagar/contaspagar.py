@@ -18,42 +18,49 @@ tipo=""
 cpf=""
 cnpj=""
 
-labelcria = {1: 'codigo', 2: 'nome',3: 'endereco', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
-#entrar = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
-
-
-#labelcria = {1: 'codigo', 2: 'nome',3: 'endereço', 4: 'telefone',5: 'tipo', 6: 'Cpf', 7: 'Cnpj'}
+def tela1(manutencao):
+    Label(manutencao, text="Codigo:").grid(row=1, column=0)
+    codigo = Entry(manutencao).grid(row=1, column=1)
+    Label(manutencao, text="Nome:").grid(row=2, column=0)
+    nome = Entry(manutencao).grid(row=2, column=1)
+    Label(manutencao, text="Endereço:").grid(row=3, column=0)
+    endereco= Entry(manutencao).grid(row=3, column=1)
+    Label(manutencao, text="Telefone:").grid(row=4, column=0)
+    telefone= Entry(manutencao).grid(row=4, column=1)
+    Label(manutencao, text="Tipo:").grid(row=5, column=0)
+    tipo = Entry(manutencao).grid(row=5, column=1)
+    Label(manutencao, text="Cpf:").grid(row=6, column=0)
+    cpf = Entry(manutencao).grid(row=6, column=1)
+    Label(manutencao, text="Cnpj:").grid(row=7, column=0)
+    cnpj = Entry(manutencao).grid(row=7, column=1)
+          
 def verconteudo():
-     print(f' conteudo de codigo = {codigo}')
-
+     #print(f' conteudo de codigo = {manutencao.get(0)}')
+     pass
 def incluir_click():
      opcao=1
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
-     print(f'a opcao consulta aqui é tela.posx = {tela.posx}')
-     '''Label(manutencao, text='Usuario:').grid(row=0, sticky=W)
-     Label(manutencao, text='Senha:').grid(row=1, sticky=W)
-     text_usuario= Entry(manutencao).grid(row=0, column=1)
-     text_senha = Entry(manutencao).grid(row=1,column=1)
-     login = Button(janela, text='login').grid(row=2, column=1,sticky=E)
-     '''
-     Button(manutencao, text='contem', onclick = verconteudo()).grid(row=2, column=1,sticky=E)
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela1(manutencao) 
+     Button(manutencao, text='contem', onclick = verconteudo()).grid(row=20, column=1,sticky=E)
      
 def cosulta_click():
      opcao=2
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
-   
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela1(manutencao) 
      print(f'a opcao consulta aqui é tela.opcao = {tela.opcao}')
 def alteracao_clik():
      opcao=3
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela1(manutencao) 
      print(f'a opcao alteraçao aqui é {opcao}')
 def excluir_click(): 
      opcao=4
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,labelcria)
+     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela1(manutencao) 
      print(f'a opcao Exclusao aqui é {opcao}')
 
 janela= Tk()
