@@ -11,8 +11,32 @@ print(variable15)
 '''
 
 
-name = 'Elon'
+'''name = 'Elon'
 exec("%s = %s" % (name,"100"))
 Elon = "maria"
 print(type(name))
-print(Elon)
+print(Elon)'''
+from tkinter import *
+
+janela3 = Tk()
+janela3.title("FAHRENHEIT PARA CELSIUS")
+final = StringVar()
+
+def calcular():
+    F=float(textbox1.get())
+    C = (F-32)*5/6
+    final.set(str(round(C,2)) + ' Graus celsius')
+
+#widgets
+label1=Label(janela3,text="Graus Fahrenheit:")
+textbox1=Entry(janela3)
+button1=Button(janela3,text="Calcular",command=calcular).grid()
+label_resultado=Label(janela3,textvariable=final).grid()
+
+# layout
+#label1.grid()
+textbox1.grid()
+#button1.grid()
+#label_resultado.grid()
+
+mainloop()

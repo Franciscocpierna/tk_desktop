@@ -9,58 +9,66 @@ altura=0
 posx=0
 posy=0
 X=0
+ler=""
 opcao=0
-codigo="inicio"
+tela=""
+'''codigo="inicio"
 nome=""
 endereco=""
 telefone=""
 tipo=""
 cpf=""
 cnpj=""
-
-def tela1(manutencao):
+'''
+'''def tela1(manutencao):
     Label(manutencao, text="Codigo:").grid(row=1, column=0)
-    codigo = Entry(manutencao).grid(row=1, column=1)
+    codigo = Entry(manutencao,width=40).grid(row=1, column=1)
     Label(manutencao, text="Nome:").grid(row=2, column=0)
-    nome = Entry(manutencao).grid(row=2, column=1)
+    nome = Entry(manutencao,width=40).grid(row=2, column=1)
     Label(manutencao, text="Endereço:").grid(row=3, column=0)
-    endereco= Entry(manutencao).grid(row=3, column=1)
+    endereco= Entry(manutencao,width=40).grid(row=3, column=1)
     Label(manutencao, text="Telefone:").grid(row=4, column=0)
-    telefone= Entry(manutencao).grid(row=4, column=1)
+    telefone= Entry(manutencao,width=40).grid(row=4, column=1)
     Label(manutencao, text="Tipo:").grid(row=5, column=0)
-    tipo = Entry(manutencao).grid(row=5, column=1)
+    tipo = Entry(manutencao,width=40).grid(row=5, column=1)
     Label(manutencao, text="Cpf:").grid(row=6, column=0)
-    cpf = Entry(manutencao).grid(row=6, column=1)
+    cpf = Entry(manutencao,width=40).grid(row=6, column=1)
     Label(manutencao, text="Cnpj:").grid(row=7, column=0)
-    cnpj = Entry(manutencao).grid(row=7, column=1)
-          
+    cnpj = Entry(manutencao,width=40).grid(row=7, column=1)
+    ler=codigo.get()
+    return '''     
 def verconteudo():
-     #print(f' conteudo de codigo = {manutencao.get(0)}')
-     pass
+     print (f'self.codigo.get = {tela.codigo.get()}') #{tela.codigo.get()}')
+     
 def incluir_click():
      opcao=1
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
-     tela1(manutencao) 
-     Button(manutencao, text='contem', onclick = verconteudo()).grid(row=20, column=1,sticky=E)
+     print (f'tela.codigo.get = {tela.codigo.get()}')
+
+     #tela1(manutencao) 
+     
+     botao=Button(manutencao, text='contem', command = verconteudo)
+     botao.grid(row=20, column=1,sticky=N)
      
 def cosulta_click():
      opcao=2
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
-     tela1(manutencao) 
+     #tela1(manutencao) 
+      
      print(f'a opcao consulta aqui é tela.opcao = {tela.opcao}')
 def alteracao_clik():
      opcao=3
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
-     tela1(manutencao) 
+     #tela1(manutencao) 
      print(f'a opcao alteraçao aqui é {opcao}')
 def excluir_click(): 
      opcao=4
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy)
-     tela1(manutencao) 
+     #tela1(manutencao) 
      print(f'a opcao Exclusao aqui é {opcao}')
 
 janela= Tk()
@@ -106,7 +114,7 @@ altura = 400
 centro=centralizacao(janela1,largura, altura, posx, posy)
 
 janela1.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-#janela1.mainloop()
+janela1.mainloop()
 janela.mainloop()
 
 
