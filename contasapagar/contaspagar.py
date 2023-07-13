@@ -19,27 +19,31 @@ opcao=0
      
 def incluirfor_click():
      opcao=1
+     opcao1=1
      global tela  
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      
      
 def cosultafor_click():
      opcao=2
+     opcao1=1
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 def alteracaofor_clik():
      opcao=3
+     opcao1=1
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      
 def excluirfor_click(): 
      opcao=4
+     opcao1=1
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     # botao=Button(manutencao, text='contem', command = verconteudo)
     # botao.grid(row=20, column=1,sticky=N)
  
@@ -48,53 +52,61 @@ def excluirfor_click():
 
 def incluicontas_click():
      opcao=1
+     opcao1=2
      global tela  
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      
 def consultacontas_click():
+     opcao1=2
      opcao=2
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
  
 def alteracaocontas_clik():
+     opcao1=2
      opcao=3
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 
 def exclusaocontas_click(): 
      opcao=4
+     opcao1=2
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 
  
 def incluirtipo_click():
      opcao=1
+     opcao1=3
      global tela  
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 
      
 def consultatipo_click():
+     opcao1=3
      opcao=2
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 
 def alteracaotipo_clik():
+     opcao1=3
      opcao=3
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 
 def excluirtipo_click(): 
+     opcao1=3
      opcao=4
      global tela
      manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy)
+     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 
 janela= Tk()
 janela.title("janela principal")
@@ -157,5 +169,7 @@ altura = 400
 centro=centralizacao(janela1,largura, altura, posx, posy)
 
 janela1.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+largura=1200
+altura=650
 janela1.mainloop()
 janela.mainloop()
