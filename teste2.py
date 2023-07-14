@@ -16,7 +16,7 @@ exec("%s = %s" % (name,"100"))
 Elon = "maria"
 print(type(name))
 print(Elon)'''
-from tkinter import *
+'''from tkinter import *
 
 janela3 = Tk()
 janela3.title("FAHRENHEIT PARA CELSIUS")
@@ -40,3 +40,4 @@ textbox1.grid()
 #label_resultado.grid()
 
 mainloop()
+'''

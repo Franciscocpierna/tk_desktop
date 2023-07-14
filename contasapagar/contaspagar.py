@@ -1,7 +1,17 @@
 from tkinter import *
 from modulos.classes import * #montatela
+import sqlite3
 
-
+banco = sqlite3.connect('contaspagar.db')
+cursor = banco.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text  )''')
+cursor.execute('''INSERT INTO fornecedor VALUES('1','Francisco','Rua tal nr 97',
+                                                'F','504.543.417.20','teste','teste1')''')
+banco.commit()
+cursor.execute("SELECT * FROM fornecedor")
+print(cursor.fetchall())
 
 #import awesometkinter as atk
 
@@ -18,6 +28,12 @@ opcao=0
 #     print (f'self.codigo.get = {tela.codigo.get()}') #{tela.codigo.get()}')
      
 def incluirfor_click():
+     banco = sqlite3.connect('contaspagar.db')
+     cursor = banco.cursor()
+     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text  )''')
+#
      opcao=1
      opcao1=1
      global tela  
@@ -109,7 +125,7 @@ def excluirtipo_click():
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
 
 janela= Tk()
-janela.title("janela principal")
+janela.title("Sistema de Contas a Pagar")
 janela.configure(background='Gray')
 janela.geometry('1500x1500')
 
@@ -117,7 +133,7 @@ janela.geometry('1500x1500')
 #tela 2
 
 janela1 = Toplevel() # janela de nível superior
-janela1.title("janela de trabalho")
+janela1.title("Menu Manutenção - Relatórios")
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            
