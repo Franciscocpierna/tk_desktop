@@ -18,6 +18,15 @@ flag=False
 
 #def verconteudo():
 #     print (f'self.codigo.get = {tela.codigo.get()}') #{tela.codigo.get()}')
+'''
+CREATE TABLE Cargos(
+CargoId int NOT NULL,
+CargoNm varchar(80),
+Min_Sal Numeric(10,2),
+Max_Sal Numeric(10,2),
+PRIMARY KEY (CargoId)
+);
+'''
      
 def incluirfor_click():
     opcao=1
@@ -28,9 +37,10 @@ def incluirfor_click():
     if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
-      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
-                                               endereco text, telefone text,
-                                               tipo text,cpf text,cnpj text,cep text)''')
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) NOT NULL, nome varchar(50) NOT NULL,
+                                               endereco varchar(50), telefone varchar(11),
+                                               tipo varchar(1),cpf varchar(11),cnpj varchar(14)  ,cep varchar(8), 
+                                               PRYMARY KEY (codigo) )''')
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
 
@@ -47,9 +57,10 @@ def cosultafor_click():
      if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
-      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
-                                               endereco text, telefone text,
-                                               tipo text,cpf text,cnpj text,cep text)''')
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) NOT NULL, nome varchar(50) NOT NULL,
+                                               endereco varchar(50), telefone varchar(11),
+                                               tipo varchar(1),cpf varchar(11),cnpj varchar(14)  ,cep varchar(8), 
+                                               PRYMARY KEY (codigo) )''')
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
 
@@ -66,9 +77,10 @@ def alteracaofor_clik():
      if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
-      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
-                                               endereco text, telefone text,
-                                               tipo text,cpf text,cnpj text,cep text)''')
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) NOT NULL, nome varchar(50) NOT NULL,
+                                               endereco varchar(50), telefone varchar(11),
+                                               tipo varchar(1),cpf varchar(11),cnpj varchar(14)  ,cep varchar(8), 
+                                               PRYMARY KEY (codigo) )''')
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
 
@@ -88,9 +100,10 @@ def excluirfor_click():
      if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
-      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
-                                               endereco text, telefone text,
-                                               tipo text,cpf text,cnpj text,cep text)''')
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) NOT NULL, nome varchar(50) NOT NULL,
+                                               endereco varchar(50), telefone varchar(11),
+                                               tipo varchar(1),cpf varchar(11),cnpj varchar(14)  ,cep varchar(8), 
+                                               PRYMARY KEY (codigo) )''')
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
 
@@ -110,11 +123,13 @@ def incluicontas_click():
      if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
-      cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo text, pagamento text,
-                                               compra text, descricao text,
-                                               descricao text,desconto text,valpagar text,
-                                               juros text,documento text,tparcela text,situacao text,
-                                               cs text)''')
+      cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5), pagamento text,
+                                               compra text, descricao varchar(50),
+                                               descricao varchar(50),desconto numeric(10,2),valpagar numeric(10,2),
+                                               juros numeric(10,2),documento varchar(50),tparcela varchar(1),
+                                               situacao varchar(1),
+                                               cs varchar(1),
+                                               PRYMARY KEY codigo+documento)''')
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
     
