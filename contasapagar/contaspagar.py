@@ -2,18 +2,10 @@ from tkinter import *
 from modulos.classes import * #montatela
 import sqlite3
 
-banco = sqlite3.connect('contaspagar.db')
-cursor = banco.cursor()
-cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
-                                               endereco text, telefone text,
-                                               tipo text,cpf text,cnpj text  )''')
-cursor.execute('''INSERT INTO fornecedor VALUES('1','Francisco','Rua tal nr 97',
-                                                'F','504.543.417.20','teste','teste1')''')
-banco.commit()
-cursor.execute("SELECT * FROM fornecedor")
-print(cursor.fetchall())
+   
 
 #import awesometkinter as atk
+#
 
 largura=0
 altura=0
@@ -22,24 +14,29 @@ posy=0
 X=0
 ler=""
 opcao=0
-
+flag=False
 
 #def verconteudo():
 #     print (f'self.codigo.get = {tela.codigo.get()}') #{tela.codigo.get()}')
      
 def incluirfor_click():
-     banco = sqlite3.connect('contaspagar.db')
-     cursor = banco.cursor()
-     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+    opcao=1
+    opcao1=1
+    global tela  
+    manutencao = Toplevel() # janela de nível superior
+    tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+    if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
                                                endereco text, telefone text,
-                                               tipo text,cpf text,cnpj text  )''')
-#
-     opcao=1
-     opcao1=1
-     global tela  
-     manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     
+                                               tipo text,cpf text,cnpj text,cep text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())
      
 def cosultafor_click():
      opcao=2
@@ -47,12 +44,38 @@ def cosultafor_click():
      global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text,cep text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())
+     
 def alteracaofor_clik():
      opcao=3
      opcao1=1
      global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text,cep text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())
+     
      
 def excluirfor_click(): 
      opcao=4
@@ -62,7 +85,19 @@ def excluirfor_click():
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     # botao=Button(manutencao, text='contem', command = verconteudo)
     # botao.grid(row=20, column=1,sticky=N)
- 
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text,cep text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())
+     
 
  
 
@@ -72,36 +107,102 @@ def incluicontas_click():
      global tela  
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo text, pagamento text,
+                                               compra text, descricao text,
+                                               descricao text,desconto text,valpagar text,
+                                               juros text,documento text,tparcela text,situacao text,
+                                               cs text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+    
+     #
+      banco.commit()
+      cursor.execute("SELECT * FROM contas")
+      print(cursor.fetchall())
 def consultacontas_click():
      opcao1=2
      opcao=2
      global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
- 
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo text, pagamento text,
+                                               compra text, descricao text,
+                                               descricao text,desconto text,valpagar text,
+                                               juros text,documento text,tparcela text,situacao text,
+                                               cs text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+    
+     #
+      banco.commit()
+      cursor.execute("SELECT * FROM contas")
+      print(cursor.fetchall())
 def alteracaocontas_clik():
      opcao1=2
      opcao=3
      global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-
-def exclusaocontas_click(): 
-     opcao=4
-     opcao1=2
-     global tela
-     manutencao = Toplevel() # janela de nível superior
-     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-
- 
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo text, pagamento text,
+                                               compra text, descricao text,
+                                               descricao text,desconto text,valpagar text,
+                                               juros text,documento text,tparcela text,situacao text,
+                                               cs text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+    
+     #
+      banco.commit()
+      cursor.execute("SELECT * FROM contas")
+      print(cursor.fetchall())
+def exclircontas_click():
+   opcao1=2
+   opcao=4
+   global tela
+   manutencao = Toplevel() # janela de nível superior
+   tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+   if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo text, pagamento text,
+                                               compra text, descricao text,
+                                               descricao text,desconto text,valpagar text,
+                                               juros text,documento text,tparcela text,situacao text,
+                                               cs text)''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
+    
+     #
+      banco.commit()
+      cursor.execute("SELECT * FROM contas")
+      print(cursor.fetchall())
 def incluirtipo_click():
      opcao=1
      opcao1=3
      global tela  
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text  )''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
 
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())
      
 def consultatipo_click():
      opcao1=3
@@ -109,21 +210,54 @@ def consultatipo_click():
      global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text  )''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
 
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())  
 def alteracaotipo_clik():
      opcao1=3
      opcao=3
      global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text  )''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
 
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())
 def excluirtipo_click(): 
      opcao1=3
      opcao=4
      global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+     if flag==True: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
+                                               endereco text, telefone text,
+                                               tipo text,cpf text,cnpj text  )''')
+     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
+     #                                            'F','504.543.417.20','teste','teste1')''')
 
+      banco.commit()
+      cursor.execute("SELECT * FROM fornecedor")
+      print(cursor.fetchall())
 janela= Tk()
 janela.title("Sistema de Contas a Pagar")
 janela.configure(background='Gray')
@@ -160,7 +294,7 @@ cadmenu = Menu(menujan, tearoff=0)
 cadmenu.add_command(label = " Inclusão",command=incluicontas_click)
 cadmenu.add_command(label = " Consulta", command=consultacontas_click)
 cadmenu.add_command(label = " Alteração",command=alteracaocontas_clik)
-cadmenu.add_command(label = " Exclusão",command=exclusaocontas_click)
+cadmenu.add_command(label = " Exclusão",command=exclircontas_click)
 menujan.add_cascade(label = "Contas a pagar", menu = cadmenu)
 
 cadtipo = Menu(menujan, tearoff=0)
