@@ -23,29 +23,29 @@ flag=False
 def incluirfor():
    flag == False
    if len(tela.codigo.get())==0:
-       tela.informacao = "Informação: digite o Codigo esta vazio"
+       tela.informacao["text"] = "Informação: digite o Codigo esta vazio"
        sleep(5)
-       tela.informacao ="Informação:"
+       tela.informacao["text"] ="Informação:"
        tela.codigo.focus()
    elif len(tela.nome.get())==0:
-       tela.informacao = "Informação: digite o Nome esta vazio"
+       tela.informacao["text"] = "Informação: digite o Nome esta vazio"
        sleep(5)
-       tela.informacao ="Informação:"
+       tela.informacao["text"] ="Informação:"
        tela.nome.setfocus()
    elif len(tela.endereco.get())==0:
-       tela.informacao = "Informação: digite o Endereço esta vazio"
+       tela.informacao["text"] = "Informação: digite o Endereço esta vazio"
        sleep(5)
-       tela.informacao ="Informação:"
+       tela.informacao["text"] ="Informação:"
        tela.nome.setfocus()
    elif len(tela.telefone.get())==0:
-       tela.informacao = "Informação: digite o Telefone esta vazio"
+       tela.informacao["text"] = "Informação: digite o Telefone esta vazio"
        sleep(5)
-       tela.informacao ="Informação:"
+       tela.informacao["text"] ="Informação:"
        tela.telefone.setfocus()    
    elif len(tela.tipo.get())==0 or tela.tipo.get() not in ("F","J") or len(tela.tipo.get())> 1:
-       tela.informacao = "Informação: digite o Tipo F ou J ou esta vazio"
+       tela.informacao["text"] = "Informação: digite o Tipo F ou J ou esta vazio"
        sleep(5)
-       tela.informacao ="Informação:"
+       tela.informacao["text"] ="Informação:"
        tela.telefone.setfocus()        
    else:
        flag = True
