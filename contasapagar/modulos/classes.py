@@ -105,6 +105,8 @@ class montatela():
                Label(manutencao1, text="Cep:",font=('Arial', 15)).grid(row=7, column=0,sticky=W)
                self.cep = Entry(manutencao1,width=17)
                self.cep.grid(row=7, column=1,sticky=W)
+               self.informacao = Label(manutencao1, text="Informação:",font=('Arial', 15))
+               self.informacao.grid(sticky=W,padx=0,pady=300)
          if self.opcao1 == 2:
                Label(manutencao1, text="Fornecedor:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
                self.codigo = Entry(manutencao1,width=7)
