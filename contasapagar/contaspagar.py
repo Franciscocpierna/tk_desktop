@@ -1,6 +1,7 @@
 from tkinter import *
 from modulos.classes import * #montatela
 import sqlite3
+from sqlite3 import Error
 from time import sleep
    
 
@@ -18,10 +19,37 @@ flag=False
 
 #def verconteudo():
 #     print (f'self.codigo.get = {tela.codigo.get()}') #{tela.codigo.get()}')
+def limpacamposfor():
+  tela.codigo.delete(0,END)
+  tela.nome.delete(0,END) 
+  tela.endereco.delete(0,END) 
+  tela.telefone.delete(0,END)
+  tela.tipo.delete(0,END) 
+  tela.cpf.delete(0,END)
+  tela.cnpj.delete(0,END)
+  tela.cep.delete(0,END)
+  tela.e_mail.delete(0,END)
+  return
+
 
 
 def incluirfor():
+   sqlres=""
    flag == False
+   try:
+     banco = sqlite3.connect('contaspagar.db')
+     cursor = banco.cursor()
+     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) NOT NULL, nome varchar(50) NOT NULL,
+                                               endereco varchar(50) NOT NULL, telefone varchar(11),
+                                               tipo varchar(1)NOT NULL,cpf varchar(11),cnpj varchar(14),cep varchar(8),
+                                               e_mail varchar(17), 
+                                               PRYMARY KEY (codigo) )''')
+     cursor.close() 
+   except Error as ex:
+     tela.informacao["text"] = "Informação:" + ex
+     sleep(5)
+     tela.informacao["text"] = "Informação:"
+  
    if len(tela.codigo.get())==0:
        tela.informacao["text"] = "Informação: digite o Codigo esta vazio"
        sleep(5)
@@ -36,7 +64,7 @@ def incluirfor():
        tela.informacao["text"] = "Informação: digite o Endereço esta vazio"
        sleep(5)
        tela.informacao["text"] ="Informação:"
-       tela.nome.setfocus()
+       tela.endereco.setfocus()
    elif len(tela.telefone.get())==0:
        tela.informacao["text"] = "Informação: digite o Telefone esta vazio"
        sleep(5)
@@ -46,27 +74,40 @@ def incluirfor():
        tela.informacao["text"] = "Informação: digite o Tipo F ou J ou esta vazio"
        sleep(5)
        tela.informacao["text"] ="Informação:"
-       tela.telefone.setfocus()        
+       tela.tipo.setfocus()        
    else:
-       flag = True
-       
+       # pesquisa no  banco de dados se nao existir flag=true
+       sqlres=cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       if sqlres != "":
+          flag = True
+       else:
+          tela.informacao["text"]= "Informação: Registro já existe não pode ser inserido" 
+          limpacamposfor()
 
    if flag==True: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) NOT NULL, nome varchar(50) NOT NULL,
-                                               endereco varchar(50) NOT NULL, telefone varchar(11),
-                                               tipo varchar(1)NOT NULL,cpf varchar(11),cnpj varchar(14),cep varchar(8), 
-                                               PRYMARY KEY (codigo) )''')
+      try:
+       banco = sqlite3.connect('contaspagar.db')
+       cursor = banco.cursor()
+       cursor.execute('''INSERT INTO fornecedor VALUES(tela.codigo.get(),tela.nome.get(),tela.endereco.get(),
+                                                  tela.telefone.get(),tela.telefone.get(),tela.cpf.get(),tela.cnpj.get(),
+                                                  tela.cep.get(), tela.e_mail.get())''')
+       banco.commit()
+       cursor.close()
+      except Error as ex:
+       tela.informacao["text"] = "Informação:" + ex
+       sleep(5)
+       tela.informacao["text"] = "Informação:"
+         
+        
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
       
-       
-      banco.commit()
+      
+      '''banco.commit()
       cursor.execute("SELECT * FROM fornecedor")
-      print(cursor.fetchall())
-      flag= False  
-
+      print(cursor.fetchall())'''
+    
+      return
 def incluirfor_click():
     opcao=1
     opcao1=1
@@ -74,7 +115,8 @@ def incluirfor_click():
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     tela.codigo.focus()
-    
+    #botao=Button(manutencao, text='Salvar',command = incluirfor).grid(padx=150,pady=0,sticky=W)
+        
     
     
     

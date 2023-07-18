@@ -1,6 +1,5 @@
 from tkinter import *
 
-
 class montatela():
       def __init__(self, manutencao1,janela1, opcao,posx,posy,largura, altura,opcao1):
          super().__init__() 
@@ -105,8 +104,13 @@ class montatela():
                Label(manutencao1, text="Cep:",font=('Arial', 15)).grid(row=7, column=0,sticky=W)
                self.cep = Entry(manutencao1,width=17)
                self.cep.grid(row=7, column=1,sticky=W)
+               Label(manutencao1, text="E-mail:",font=('Arial', 15)).grid(row=8, column=0,sticky=W)
+               self.e_mail = Entry(manutencao1,width=17)
+               self.e_mail.grid(row=8, column=1,sticky=W)
+               self.botao=Button(manutencao1, text='Salvar').grid(row=15, column=0,sticky=W)
                self.informacao = Label(manutencao1, text="Informação:",font=('Arial', 15))
-               self.informacao.grid(sticky=W,padx=0,pady=300)
+               self.informacao.grid(sticky=W,padx=0,pady=180)
+               
          if self.opcao1 == 2:
                Label(manutencao1, text="Fornecedor:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
                self.codigo = Entry(manutencao1,width=7)
@@ -153,7 +157,7 @@ class montatela():
                Label(manutencao1, text="Nome:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.nome = Entry(manutencao1,width=50)
                self.nome.grid(row=2, column=1,sticky=W)
-          
+         
          manutencao1.geometry("%dx%d+%d+%d" % (self.largura, self.altura, centralizatela.posx,centralizatela.posy-20))
      
              
