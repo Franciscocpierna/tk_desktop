@@ -1,12 +1,11 @@
 from tkinter import *
-from modulos.classes import * #montatela
+from modulos.classes import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
    
 
-#import awesometkinter as atk
-#
+
 
 largura=0
 altura=0
@@ -17,8 +16,7 @@ ler=""
 opcao=0
 flag=False
 
-#def verconteudo():
-#     print (f'self.codigo.get = {tela.codigo.get()}') #{tela.codigo.get()}')
+
 def limpacamposfor():
   tela.codigo.delete(0,END)
   tela.nome.delete(0,END) 
@@ -35,7 +33,7 @@ def limpacamposfor():
 
 def incluirfor():
    sqlres=""
-   flag == False
+   flag == True
    try:
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
@@ -46,67 +44,61 @@ def incluirfor():
                                                PRYMARY KEY (codigo) )''')
      cursor.close() 
    except Error as ex:
-     tela.informacao["text"] = "Informação:" + ex
+     tela.informacao["text"] = "Informação:" + str(ex)
      sleep(5)
      tela.informacao["text"] = "Informação:"
-  
-   if len(tela.codigo.get())==0:
-       tela.informacao["text"] = "Informação: digite o Codigo esta vazio"
-       sleep(5)
-       tela.informacao["text"] ="Informação:"
-       tela.codigo.focus()
-   elif len(tela.nome.get())==0:
-       tela.informacao["text"] = "Informação: digite o Nome esta vazio"
-       sleep(5)
-       tela.informacao["text"] ="Informação:"
-       tela.nome.setfocus()
-   elif len(tela.endereco.get())==0:
-       tela.informacao["text"] = "Informação: digite o Endereço esta vazio"
-       sleep(5)
-       tela.informacao["text"] ="Informação:"
-       tela.endereco.setfocus()
-   elif len(tela.telefone.get())==0:
-       tela.informacao["text"] = "Informação: digite o Telefone esta vazio"
-       sleep(5)
-       tela.informacao["text"] ="Informação:"
-       tela.telefone.setfocus()    
-   elif len(tela.tipo.get())==0 or tela.tipo.get() not in ("F","J") or len(tela.tipo.get())> 1:
-       tela.informacao["text"] = "Informação: digite o Tipo F ou J ou esta vazio"
-       sleep(5)
-       tela.informacao["text"] ="Informação:"
-       tela.tipo.setfocus()        
+    
+   if len(tela.codigo.get())!=5:
+        tela.informacao["text"] = "Informação: digite o Codigo com tamanho 5 "
+        sleep(5)
+        tela.informacao["text"] ="Informação:"
+        tela.codigo.focus()
+        return    
+   elif len(tela.nome.get())==0 or len(tela.nome.get())>50:
+        tela.informacao["text"] = "Informação: digite o Nome esta vazio"
+        sleep(5)
+        tela.informacao["text"] ="Informação:"
+        tela.nome.setfocus()
+        return
+   elif len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
+        tela.informacao["text"] = "Informação: digite o Endereço esta vazio"
+        sleep(5)
+        tela.informacao["text"] ="Informação:"
+        tela.endereco.setfocus()
+        return
+   elif len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
+        tela.informacao["text"] = "Informação: digite o Telefone esta vazio"
+        sleep(5)
+        tela.informacao["text"] ="Informação:"
+        tela.telefone.setfocus()
+        return    
+   elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J"):
+        tela.informacao["text"] = "Informação: digite o Tipo F ou J ou esta vazio"
+        sleep(5)
+        tela.informacao["text"] ="Informação:"
+        tela.tipo.setfocus()
+        return        
    else:
-       # pesquisa no  banco de dados se nao existir flag=true
-       sqlres=cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
-       if sqlres != "":
-          flag = True
-       else:
-          tela.informacao["text"]= "Informação: Registro já existe não pode ser inserido" 
-          limpacamposfor()
-
-   if flag==True: 
       try:
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
-       cursor.execute('''INSERT INTO fornecedor VALUES(tela.codigo.get(),tela.nome.get(),tela.endereco.get(),
+       sqlres=cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       if sqlres != "":
+          cursor.execute('''INSERT INTO fornecedor VALUES(tela.codigo.get(),tela.nome.get(),tela.endereco.get(),
                                                   tela.telefone.get(),tela.telefone.get(),tela.cpf.get(),tela.cnpj.get(),
                                                   tela.cep.get(), tela.e_mail.get())''')
-       banco.commit()
-       cursor.close()
+          banco.commit()
+          cursor.close()     
+       else:
+            tela.informacao["text"]= "Informação: Registro já existe não pode ser inserido" 
+            sleep(5)
+            limpacamposfor()
+       
       except Error as ex:
-       tela.informacao["text"] = "Informação:" + ex
+       tela.informacao["text"] = "Informação:" + str(ex)
        sleep(5)
        tela.informacao["text"] = "Informação:"
-         
-        
-     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
-     #                                            'F','504.543.417.20','teste','teste1')''')
-      
-      
-      '''banco.commit()
-      cursor.execute("SELECT * FROM fornecedor")
-      print(cursor.fetchall())'''
-    
+      limpacamposfor()   
       return
 def incluirfor_click():
     opcao=1
@@ -114,8 +106,10 @@ def incluirfor_click():
     global tela  
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
+    botao=Button(manutencao, text='Salvar',command=incluirfor)
+    botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
     tela.codigo.focus()
-    #botao=Button(manutencao, text='Salvar',command = incluirfor).grid(padx=150,pady=0,sticky=W)
+    
         
     
     

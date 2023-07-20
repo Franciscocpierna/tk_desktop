@@ -1,5 +1,8 @@
 from tkinter import *
 
+#from contasapagar.contaspagar import incluirfor
+#from modulos.contaspagar import incluirfor
+
 class montatela():
       def __init__(self, manutencao1,janela1, opcao,posx,posy,largura, altura,opcao1):
          super().__init__() 
@@ -107,9 +110,10 @@ class montatela():
                Label(manutencao1, text="E-mail:",font=('Arial', 15)).grid(row=8, column=0,sticky=W)
                self.e_mail = Entry(manutencao1,width=17)
                self.e_mail.grid(row=8, column=1,sticky=W)
-               self.botao=Button(manutencao1, text='Salvar').grid(row=15, column=0,sticky=W)
+               #self.botao=Button(manutencao1, text='Salvar',command=incluirfor)
+               #self.botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
                self.informacao = Label(manutencao1, text="Informação:",font=('Arial', 15))
-               self.informacao.grid(sticky=W,padx=0,pady=180)
+               self.informacao.grid(row=10,column=0,padx=0,pady=130,sticky=W)
                
          if self.opcao1 == 2:
                Label(manutencao1, text="Fornecedor:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
