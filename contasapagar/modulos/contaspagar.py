@@ -1,11 +1,13 @@
 from tkinter import *
-from modulos.classes import *
+from tkinter import messagebox
+import rotinas
 import sqlite3
 from sqlite3 import Error
 from time import sleep
+from classes import montatela,centralizacao
    
 
-
+#from modulos.classes import *
 
 largura=0
 altura=0
@@ -15,7 +17,8 @@ X=0
 ler=""
 opcao=0
 flag=False
-
+msg =""
+ 
 
 def limpacamposfor():
   tela.codigo.delete(0,END)
@@ -44,38 +47,29 @@ def incluirfor():
                                                PRYMARY KEY (codigo) )''')
      cursor.close() 
    except Error as ex:
-     tela.informacao["text"] = "Informação:" + str(ex)
-     sleep(5)
-     tela.informacao["text"] = "Informação:"
-    
+     messagebox.showinfo(title="",message=ex)
+     #tela.informacao["text"] = "Informação:" + str(ex)
+     # tela.informacao["text"] = "Informação:"
+     print(ex)
    if len(tela.codigo.get())!=5:
-        tela.informacao["text"] = "Informação: digite o Codigo com tamanho 5 "
-        sleep(5)
-        tela.informacao["text"] ="Informação:"
+        messagebox.showinfo(title="digite codigo",message="codigo tamanho 5")
         tela.codigo.focus()
         return    
    elif len(tela.nome.get())==0 or len(tela.nome.get())>50:
-        tela.informacao["text"] = "Informação: digite o Nome esta vazio"
-        sleep(5)
-        tela.informacao["text"] ="Informação:"
-        tela.nome.setfocus()
+        msg = "Informação: digite o Nome esta vazio"
+        messagebox.showinfo(title="digite nome",message="tamanho 50 máximo")
+        tela.nome.focus()
         return
    elif len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
-        tela.informacao["text"] = "Informação: digite o Endereço esta vazio"
-        sleep(5)
-        tela.informacao["text"] ="Informação:"
+        messagebox.showinfo(title="digite endereço",message="tamanho 50 máximo")
         tela.endereco.setfocus()
         return
    elif len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
-        tela.informacao["text"] = "Informação: digite o Telefone esta vazio"
-        sleep(5)
-        tela.informacao["text"] ="Informação:"
+        messagebox.showinfo(title="digite Telefone",message="tamanho 11 máximo")
         tela.telefone.setfocus()
         return    
    elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J"):
-        tela.informacao["text"] = "Informação: digite o Tipo F ou J ou esta vazio"
-        sleep(5)
-        tela.informacao["text"] ="Informação:"
+        messagebox.showinfo(title="digite Tipo",message="tamanho 1 e (F)isica ou (J)")
         tela.tipo.setfocus()
         return        
    else:
@@ -90,16 +84,15 @@ def incluirfor():
           banco.commit()
           cursor.close()     
        else:
-            tela.informacao["text"]= "Informação: Registro já existe não pode ser inserido" 
+            msg= "Informação: Registro já existe não pode ser inserido" 
             sleep(5)
             limpacamposfor()
        
       except Error as ex:
-       tela.informacao["text"] = "Informação:" + str(ex)
-       sleep(5)
-       tela.informacao["text"] = "Informação:"
-      limpacamposfor()   
+       messagebox.showinfo(title="erro",message=ex)
+       limpacamposfor()   
       return
+   
 def incluirfor_click():
     opcao=1
     opcao1=1
@@ -108,9 +101,14 @@ def incluirfor_click():
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirfor)
     botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
-    tela.codigo.focus()
     
-        
+    #tela.informacao.configure(text="Informação: digite o Codigo com tamanho 5 ")
+    #tela.informacao["text"] ="Informação:"
+
+    tela.codigo.focus() 
+    
+    messagebox.showinfo(title="digite codigo",message="codigo tamanho 5")
+          
     
     
     
