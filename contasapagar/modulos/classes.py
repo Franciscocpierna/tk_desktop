@@ -1,4 +1,5 @@
 from tkinter import *
+
 #from contaspagar import incluirfor 
 #from contasapagar.contaspagar import incluirfor
 #from modulos.contaspagar import incluirfor
@@ -15,7 +16,8 @@ class montatela():
          #manutenção Inclusão  
          if self.opcao==1 and self.opcao1 == 1: 
               manutencao1.title("Inclusão-Fornecedor")
-              Label(manutencao1, text= 'Fornecedor - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)
+              Label(manutencao1, text= 'Fornecedor - Inclusão',font=('Arial', 20) ,fg="black").grid(row=0,column=2,padx=90,pady=30,sticky=W)
+              #.grid(column=2,row=0,padx= 90, pady=30,sticky=W)
          elif self.opcao==1 and self.opcao1 == 2: 
              manutencao1.title("Inclusão-Contas")
              Label(manutencao1, text= 'Contas - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 15, pady=15)
@@ -30,7 +32,7 @@ class montatela():
           #manutenção Consulta
          elif self.opcao == 2 and self.opcao1 == 1: 
              manutencao1.title("Consulta-Fornecedor")
-             Label(manutencao1, text= 'Fornecedor - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)
+             Label(manutencao1, text= 'Fornecedor - Consulta',font=('Arial', 20) ,fg="black").grid(column=2,row=0,padx= 90, pady=30,sticky=W)
          elif self.opcao == 2 and self.opcao1 == 2: 
              manutencao1.title("Consulta-Contas")
              Label(manutencao1, text= 'Contas - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 15, pady=30)
@@ -83,8 +85,8 @@ class montatela():
 
          if self.opcao1 == 1: 
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
-               self.codigo = Entry(manutencao1,width=7)
-               self.codigo.grid(row=1, column=1, sticky=W)
+               codigo = Entry(manutencao1,width=7,justify='left')
+               codigo.grid(row=1, column=1, sticky=W)
                Label(manutencao1, text="Nome:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.nome = Entry(manutencao1,width=50)
                self.nome.grid(row=2, column=1,sticky=W)
@@ -112,8 +114,9 @@ class montatela():
                self.e_mail.grid(row=8, column=1,sticky=W)
                self.botao=Button(manutencao1, text='Salvar')
                self.botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
-              
-   
+                              
+
+               
                
          if self.opcao1 == 2:
                Label(manutencao1, text="Fornecedor:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)

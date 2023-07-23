@@ -5,9 +5,6 @@ import sqlite3
 from sqlite3 import Error
 from time import sleep
 from classes import montatela,centralizacao
-   
-
-#from modulos.classes import *
 
 largura=0
 altura=0
@@ -17,7 +14,31 @@ X=0
 ler=""
 opcao=0
 flag=False
-msg =""
+#msg =""
+
+def messagebox(msg):
+    toplevel = Toplevel()
+ 
+    toplevel.title("QUIT")
+    x_position = 300
+    y_position = 200
+    #toplevel.geometry(f"300x100+{x_position}+{y_position}")
+    toplevel.geometry(f"550x100+{x_position}+{y_position}")
+    toplevel.resizable(False, False) # tamanho fixo             
+    toplevel.transient(manutencao) # de onde vem a janela
+    toplevel.focus_force() #forçar foco
+    toplevel.grab_set()    # impede que click na janela principal sem fechar janela atiual
+    l1=Label(toplevel, image="::tk::icons::question")
+    l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+    l2=Label(toplevel,text="cvbnm,m")
+    l2.grid(row=0, column=1, columnspan=3, pady=(7, 10), sticky="w")
+    l2["text"] = msg
+    b1=Button(toplevel, text="OK", command=toplevel.destroy, width=10)
+    b1.grid(row=1, column=1, padx=(2, 35), sticky="e")
+    
+ 
+ 
+
  
 
 def limpacamposfor():
@@ -40,36 +61,41 @@ def incluirfor():
    try:
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
-     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) NOT NULL, nome varchar(50) NOT NULL,
-                                               endereco varchar(50) NOT NULL, telefone varchar(11),
-                                               tipo varchar(1)NOT NULL,cpf varchar(11),cnpj varchar(14),cep varchar(8),
+     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5), 
+                                               nome varchar(50) NOT NULL,
+                                               endereco varchar(50) NOT NULL, 
+                                               telefone varchar(11),
+                                               tipo varchar(1)  NULL,
+                                               cpf varchar(11),
+                                               cnpj varchar(14),
+                                               cep varchar(8),
                                                e_mail varchar(17), 
                                                PRYMARY KEY (codigo) )''')
      cursor.close() 
    except Error as ex:
-     messagebox.showinfo(title="",message=ex)
-     #tela.informacao["text"] = "Informação:" + str(ex)
-     # tela.informacao["text"] = "Informação:"
-     print(ex)
+     messagebox(str(ex)+ " linha 76")
+     return
+     
    if len(tela.codigo.get())!=5:
-        messagebox.showinfo(title="digite codigo",message="codigo tamanho 5")
+        
+        messagebox("codigo tamanho 5")
         tela.codigo.focus()
         return    
    elif len(tela.nome.get())==0 or len(tela.nome.get())>50:
-        msg = "Informação: digite o Nome esta vazio"
-        messagebox.showinfo(title="digite nome",message="tamanho 50 máximo")
+     
+        messagebox("Informação: digite o Nome esta vazio ou é maior que 50")
         tela.nome.focus()
         return
    elif len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
-        messagebox.showinfo(title="digite endereço",message="tamanho 50 máximo")
+        messagebox("Informação: Endereço esta vazio ou é maior que 50")
         tela.endereco.setfocus()
         return
    elif len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
-        messagebox.showinfo(title="digite Telefone",message="tamanho 11 máximo")
+        messagebox("Informação: digite o Nome esta vazio ou é maior que 11")
         tela.telefone.setfocus()
         return    
    elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J"):
-        messagebox.showinfo(title="digite Tipo",message="tamanho 1 e (F)isica ou (J)")
+        messagebox("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica")
         tela.tipo.setfocus()
         return        
    else:
@@ -84,31 +110,28 @@ def incluirfor():
           banco.commit()
           cursor.close()     
        else:
-            msg= "Informação: Registro já existe não pode ser inserido" 
-            sleep(5)
+            
+            messagebox("Informação: Registro já existe não pode ser inserido" )
             limpacamposfor()
        
       except Error as ex:
-       messagebox.showinfo(title="erro",message=ex)
+       messagebox(str(ex))
        limpacamposfor()   
       return
    
 def incluirfor_click():
     opcao=1
     opcao1=1
-    global tela  
+    global tela
+    global manutencao  
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirfor)
     botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
-    
     #tela.informacao.configure(text="Informação: digite o Codigo com tamanho 5 ")
     #tela.informacao["text"] ="Informação:"
-
     tela.codigo.focus() 
-    
-    messagebox.showinfo(title="digite codigo",message="codigo tamanho 5")
-          
+              
     
     
     
