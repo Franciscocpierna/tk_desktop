@@ -5,6 +5,7 @@ import sqlite3
 from sqlite3 import Error
 from time import sleep
 from classes import montatela,centralizacao
+import keyboard
 
 largura=0
 altura=0
@@ -15,11 +16,13 @@ ler=""
 opcao=0
 flag=False
 #msg =""
-
+def destruir(toplevel):
+   toplevel.destroy()   
+   
 def messagebox(msg):
     toplevel = Toplevel()
  
-    toplevel.title("QUIT")
+    toplevel.title("click em OK ou Tecla <enter> para Fechar")
     x_position = 300
     y_position = 200
     #toplevel.geometry(f"300x100+{x_position}+{y_position}")
@@ -35,6 +38,7 @@ def messagebox(msg):
     l2["text"] = msg
     b1=Button(toplevel, text="OK", command=toplevel.destroy, width=10)
     b1.grid(row=1, column=1, padx=(2, 35), sticky="e")
+    keyboard.on_press_key("enter", lambda _: toplevel.destroy())
     
  
  
@@ -88,15 +92,15 @@ def incluirfor():
         return
    elif len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
         messagebox("Informação: Endereço esta vazio ou é maior que 50")
-        tela.endereco.setfocus()
+        tela.endereco.focus()
         return
    elif len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
         messagebox("Informação: digite o Nome esta vazio ou é maior que 11")
-        tela.telefone.setfocus()
+        tela.telefone.focus()
         return    
    elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J"):
         messagebox("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica")
-        tela.tipo.setfocus()
+        tela.tipo.focus()
         return        
    else:
       try:
@@ -209,7 +213,7 @@ def incluicontas_click():
                                                juros numeric(10,2),documento varchar(50),tparcela varchar(1),
                                                situacao varchar(1),
                                                cs varchar(1),
-                                               PRYMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
+                                               PRIMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
 
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
@@ -235,7 +239,7 @@ def consultacontas_click():
                                                juros numeric(10,2),documento varchar(50),tparcela varchar(1),
                                                situacao varchar(1),
                                                cs varchar(1),
-                                               PRYMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
+                                               PRIMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
 
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
@@ -259,7 +263,7 @@ def alteracaocontas_clik():
                                                juros numeric(10,2),documento varchar(50),tparcela varchar(1),
                                                situacao varchar(1),
                                                cs varchar(1),
-                                               PRYMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
+                                               PRIMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
 
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
@@ -283,7 +287,7 @@ def exclircontas_click():
                                                juros numeric(10,2),documento varchar(50),tparcela varchar(1),
                                                situacao varchar(1),
                                                cs varchar(1),
-                                               PRYMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
+                                               PRIMARY KEY codigo+documento,FOREIGN KEY (codigo) REFERENCES fornecedor(codigo),FOREIGN KEY (tparcela) REFERENCES tipo(codigo))''')
 
      # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
      #                                            'F','504.543.417.20','teste','teste1')''')
