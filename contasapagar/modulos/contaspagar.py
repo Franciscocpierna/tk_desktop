@@ -61,16 +61,16 @@ def incluirfor():
    try:
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
-     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5), 
+     
+     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) PRIMARY KEY NOT NULL, 
                                                nome varchar(50) NOT NULL,
                                                endereco varchar(50) NOT NULL, 
                                                telefone varchar(11),
-                                               tipo varchar(1)  NULL,
+                                               tipo varchar(1)  NOT NULL,
                                                cpf varchar(11),
                                                cnpj varchar(14),
                                                cep varchar(8),
-                                               e_mail varchar(17), 
-                                               PRYMARY KEY (codigo) )''')
+                                               e_mail varchar(30))''')
      cursor.close() 
    except Error as ex:
      messagebox(str(ex)+ " linha 76")
