@@ -28,7 +28,8 @@ def consultafor():
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-       sqlres=cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       sqlres=cursor.fetchall()
        if sqlres=="":
             messagebox("Registro não existe linha 27")
             tela.codigo.delete(0,END)   
@@ -142,8 +143,8 @@ def incluirfor():
       try:
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
-       sqlres =("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
-       cursor.execute(sqlres)
+       cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       sqlres=cursor.fetchall()
        if sqlres != "":
           cursor.execute('''INSERT INTO fornecedor VALUES(tela.codigo.get(),tela.nome.get(),
                                                   tela.endereco,tela.telefone.get(),
