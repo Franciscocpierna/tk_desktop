@@ -15,9 +15,45 @@ X=0
 ler=""
 opcao=0
 flag=False
-#msg =""
-def destruir(toplevel):
-   toplevel.destroy()   
+sqlres=""
+  
+
+def consultafor():
+   if len(tela.codigo.get())!=5:
+        messagebox("Tamanho do codigo sao 5 caracteres")
+        tela.codigo.delete(0,END)
+        tela.codigo.focus()
+        return
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+       sqlres=cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       if sqlres=="":
+            messagebox("Registro não existe linha 27")
+            tela.codigo.delete(0,END)   
+            tela.codigo.focus()
+            
+       else:
+            #tela.codigo=codigo
+            #textBox.insert(0, "This is the default text") 
+            tela.codigo.insert(0, fornecedor.codigo) 
+            tela.nome.insert(0, fornecedor.nome)
+            tela.endereco.insert(0, fornecedor.endereco)
+            tela.telefone.insert(0, fornecedor.telefone)
+            tela.tipo.insert(0, fornecedor.tipo) 
+            tela.cpf.insert(0, fornecedor.cpf)
+            tela.cnpj.insert(0, fornecedor.cnpj)
+            tela.cep.insert(0, fornecedor.cep)
+            tela.e_mail.insert(0,fornecedore_mail)
+       
+      except Error as ex: 
+         messagebox("Erro ao tentar ler o registro linha 51 "+str(ex))
+         
+   except Error as ex:
+      messagebox("Erro ao tentar ao conectar com contaspagar linha 54 "+str(ex))
+   cursor.close()  
+   return                    
    
 def messagebox(msg):
     toplevel = Toplevel()
@@ -98,7 +134,7 @@ def incluirfor():
         messagebox("Informação: digite o Nome esta vazio ou é maior que 11")
         tela.telefone.focus()
         return    
-   elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J"):
+   elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J", "f", "j"):
         messagebox("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica")
         tela.tipo.focus()
         return        
@@ -106,20 +142,24 @@ def incluirfor():
       try:
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
-       sqlres=cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       sqlres =("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       cursor.execute(sqlres)
        if sqlres != "":
-          cursor.execute('''INSERT INTO fornecedor VALUES(tela.codigo.get(),tela.nome.get(),tela.endereco.get(),
-                                                  tela.telefone.get(),tela.telefone.get(),tela.cpf.get(),tela.cnpj.get(),
-                                                  tela.cep.get(), tela.e_mail.get())''')
+          cursor.execute('''INSERT INTO fornecedor VALUES(tela.codigo.get(),tela.nome.get(),
+                                                  tela.endereco,tela.telefone.get(),
+                                                  tela.tipo.upper(),tela.cpf.get(),
+                                                  tela.cnpj.get(),tela.cep.get(),
+                                                  tela.e_mail.get())''')
+                                                
           banco.commit()
           cursor.close()     
        else:
             
-            messagebox("Informação: Registro já existe não pode ser inserido" )
+            messagebox("Informação: Registro já existe não pode ser inserido linha 154" )
             limpacamposfor()
        
       except Error as ex:
-       messagebox(str(ex))
+       messagebox("erro ao conectar ou ler tabela linha 161"+ str(ex))
        limpacamposfor()   
       return
    
@@ -132,10 +172,8 @@ def incluirfor_click():
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirfor)
     botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
-    #tela.informacao.configure(text="Informação: digite o Codigo com tamanho 5 ")
-    #tela.informacao["text"] ="Informação:"
     tela.codigo.focus() 
-              
+                   
     
     
     
@@ -145,23 +183,19 @@ def cosultafor_click():
      opcao=2
      opcao1=1
      global tela
+     global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     if flag==True: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
+     botao=Button(manutencao, text='Consultar',command=consultafor)
+     botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
+     tela.codigo.focus()
+
       
-     # cursor.execute('''INSERT INTO fornecedor VALUES('1','João','Rua tal nr 97',
-     #                                            'F','504.543.417.20','teste','teste1')''')
-      
-      banco.commit()
-      cursor.execute("SELECT * FROM fornecedor")
-      print(cursor.fetchall())
-     
+
 def alteracaofor_clik():
      opcao=3
      opcao1=1
-     global tela
+  #   global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
@@ -179,7 +213,7 @@ def alteracaofor_clik():
 def excluirfor_click(): 
      opcao=4
      opcao1=1
-     global tela
+   #  global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     # botao=Button(manutencao, text='contem', command = verconteudo)
@@ -201,7 +235,7 @@ def excluirfor_click():
 def incluicontas_click():
      opcao=1
      opcao1=2
-     global tela  
+  #   global tela  
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
@@ -226,6 +260,7 @@ def consultacontas_click():
      opcao1=2
      opcao=2
      global tela
+     global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
@@ -251,7 +286,7 @@ def consultacontas_click():
 def alteracaocontas_clik():
      opcao1=2
      opcao=3
-     global tela
+    # global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
@@ -275,7 +310,7 @@ def alteracaocontas_clik():
 def exclircontas_click():
    opcao1=2
    opcao=4
-   global tela
+  # global tela
    manutencao = Toplevel() # janela de nível superior
    tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
    if flag==True: 
@@ -299,7 +334,7 @@ def exclircontas_click():
 def incluirtipo_click():
      opcao=1
      opcao1=3
-     global tela  
+   #  global tela  
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
@@ -318,7 +353,7 @@ def incluirtipo_click():
 def consultatipo_click():
      opcao1=3
      opcao=2
-     global tela
+    # global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
@@ -336,7 +371,7 @@ def consultatipo_click():
 def alteracaotipo_clik():
      opcao1=3
      opcao=3
-     global tela
+     #global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
@@ -354,7 +389,7 @@ def alteracaotipo_clik():
 def excluirtipo_click(): 
      opcao1=3
      opcao=4
-     global tela
+     #global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      if flag==True: 
