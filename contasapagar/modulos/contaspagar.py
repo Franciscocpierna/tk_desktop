@@ -14,9 +14,36 @@ posy=0
 X=0
 ler=""
 opcao=0
-flag=False
-sqlres=""
-  
+
+verdadeiro=False
+
+def verificacodigo():
+   codigomem=tela.codigo.get()
+   try:
+       banco = sqlite3.connect('contaspagar.db')
+       cursor = banco.cursor()
+   except Error as ex:
+       messagebox("Erro na conexão com Banco de dados linha 26 "+str(ex))
+       limpacamposfor()
+       return
+   
+   try:
+       cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+       sqlres=cursor.fetchall()
+       cursor.close() 
+       if len(sqlres) == 0:  
+        verdadeiro=False
+        return verdadeiro,sqlres
+       else:
+        verdadeiro=True
+        messagebox("Informação: Registro já existe não pode ser inserido linha 154" )
+        limpacamposfor()
+        tela.codigo.focus()
+        return verdadeiro,sqlres 
+   except Error as ex:
+       messagebox("Erro na leitura da tabela Fornecedor linha 43 "+str(ex))
+       limpacamposfor()
+       return
 
 def consultafor():
    tela.nome.delete(0,END) 
@@ -58,10 +85,10 @@ def consultafor():
             tela.e_mail.insert(0, sqlres[0][8])
        
       except Error as ex: 
-         messagebox("Erro ao tentar ler o registro linha 52 "+str(ex))
+         messagebox("Erro ao tentar ler o registro linha 88 "+str(ex))
          
    except Error as ex:
-      messagebox("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 55 "+str(ex))
+      messagebox("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 91 "+str(ex))
    cursor.close()  
    return                    
    
@@ -106,8 +133,9 @@ def limpacamposfor():
 
 
 def incluirfor():
-   sqlres=""
-   flag == True
+      
+   sqlres="" 
+   verdadeiro=False
    try:
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
@@ -123,16 +151,22 @@ def incluirfor():
                                                e_mail varchar(30))''')
      cursor.close() 
    except Error as ex:
-     messagebox(str(ex)+ " linha 76")
+     messagebox(str(ex)+ " linha 153")
      return
-     
+   
    if len(tela.codigo.get())!=5:
         
         messagebox("codigo tamanho 5")
         tela.codigo.focus()
-        return    
+        return
+   else:
+        verdadeiro, sqlres =  verificacodigo()
+        if verdadeiro == True:
+          print(sqlres)
+          tela.codigo.focus
+          return          
    
-   elif len(tela.nome.get())==0 or len(tela.nome.get())>50:
+   if len(tela.nome.get())==0 or len(tela.nome.get())>50:
      
         messagebox("Informação: digite o Nome esta vazio ou é maior que 50")
         tela.nome.focus()
@@ -151,40 +185,34 @@ def incluirfor():
         return        
    else:
       try:
-       banco = sqlite3.connect('contaspagar.db')
-       cursor = banco.cursor()
-       try:
-          codigomem=tela.codigo.get()
-          cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
-          sqlres=cursor.fetchall()
-          #sqlres.fetchone() is None
-          if len(sqlres) == 0:
-               codigomem=tela.codigo.get()
-               nomemem=tela.nome.get()
-               enderecomem=tela.endereco.get()
-               telefonemem=tela.telefone.get()
-               tipomem=tela.tipo.get().upper()
-               cpfmem=tela.cpf.get()
-               cnpjmem=tela.cnpj.get()
-               cepmem=tela.cep.get()
-               e_mailmem = tela.e_mail.get()
-               cursor.execute(f'''INSERT INTO fornecedor VALUES('{codigomem}','{nomemem}','{enderecomem}',
+        banco = sqlite3.connect('contaspagar.db')
+        cursor = banco.cursor()
+        codigomem=tela.codigo.get()
+        nomemem=tela.nome.get()
+        enderecomem=tela.endereco.get()
+        telefonemem=tela.telefone.get()
+        tipomem=tela.tipo.get().upper()
+        cpfmem=tela.cpf.get()
+        cnpjmem=tela.cnpj.get()
+        cepmem=tela.cep.get()
+        e_mailmem = tela.e_mail.get()
+        try:
+           cursor.execute(f'''INSERT INTO fornecedor VALUES('{codigomem}','{nomemem}','{enderecomem}',
                                                             '{telefonemem}','{tipomem}','{cpfmem}',
                                                                  '{cnpjmem}','{cepmem}','{e_mailmem}')''')
                
 
                                          
-               banco.commit()
-               cursor.close()     
-          else: 
-               messagebox("Informação: Registro já existe não pode ser inserido linha 154" )
-               limpacamposfor()
-       except Error as ex:
-            messagebox("erro ao ler tabela Fornecedor linha 163"+ str(ex))       
+           banco.commit()
+           cursor.close()     
+          
+        except Error as ex:
+            messagebox("erro ao gravar tabela Fornecedor linha 208"+ str(ex))       
             limpacamposfor() 
       except Error as ex:
-       messagebox("erro ao conectar com banco de dados linha 166"+ str(ex))
+       messagebox("erro ao conectar com banco de dados linha 211"+ str(ex))
        limpacamposfor()   
+       tela.codigo.focus()
       return
    
 def incluirfor_click():
@@ -222,7 +250,7 @@ def alteracaofor_clik():
   #   global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     if flag==True: 
+    # if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
      
@@ -242,7 +270,7 @@ def excluirfor_click():
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     # botao=Button(manutencao, text='contem', command = verconteudo)
     # botao.grid(row=20, column=1,sticky=N)
-     if flag==True: 
+     #if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
      
@@ -262,7 +290,7 @@ def incluicontas_click():
   #   global tela  
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     if flag==True: 
+     #if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5) NOT NULL, pagamento varchar(10),
@@ -287,7 +315,7 @@ def consultacontas_click():
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     if flag==True: 
+     #if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
 
@@ -313,7 +341,7 @@ def alteracaocontas_clik():
     # global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     if flag==True: 
+    # if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5) NOT NULL, pagamento varchar(10),
@@ -337,7 +365,7 @@ def exclircontas_click():
   # global tela
    manutencao = Toplevel() # janela de nível superior
    tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-   if flag==True: 
+  # if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5) NOT NULL, pagamento varchar(10),
@@ -361,7 +389,7 @@ def incluirtipo_click():
    #  global tela  
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     if flag==True: 
+   #  if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
@@ -380,7 +408,7 @@ def consultatipo_click():
     # global tela
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     if flag==True: 
+    # if flag==True: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo text, nome text,
