@@ -19,6 +19,14 @@ sqlres=""
   
 
 def consultafor():
+   tela.nome.delete(0,END) 
+   tela.endereco.delete(0,END) 
+   tela.telefone.delete(0,END)
+   tela.tipo.delete(0,END) 
+   tela.cpf.delete(0,END)
+   tela.cnpj.delete(0,END)
+   tela.cep.delete(0,END)
+   tela.e_mail.delete(0,END)
    if len(tela.codigo.get())!=5:
         messagebox("Tamanho do codigo sao 5 caracteres")
         tela.codigo.delete(0,END)
@@ -28,31 +36,32 @@ def consultafor():
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-       cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
+       codigomem=tela.codigo.get()
+       cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
-       if sqlres=="":
-            messagebox("Registro não existe linha 27")
+       print(sqlres)
+       print(sqlres[0][1])
+
+       if len(sqlres) == 0:
+            messagebox("Registro não existe linha 36")
             tela.codigo.delete(0,END)   
             tela.codigo.focus()
-            
+            return
        else:
-            #tela.codigo=codigo
-            #textBox.insert(0, "This is the default text") 
-            tela.codigo.insert(0, fornecedor.codigo) 
-            tela.nome.insert(0, fornecedor.nome)
-            tela.endereco.insert(0, fornecedor.endereco)
-            tela.telefone.insert(0, fornecedor.telefone)
-            tela.tipo.insert(0, fornecedor.tipo) 
-            tela.cpf.insert(0, fornecedor.cpf)
-            tela.cnpj.insert(0, fornecedor.cnpj)
-            tela.cep.insert(0, fornecedor.cep)
-            tela.e_mail.insert(0,fornecedore_mail)
+            tela.nome.insert(0, sqlres[0][1])
+            tela.endereco.insert(0,sqlres[0][2])
+            tela.telefone.insert(0, sqlres[0][3])
+            tela.tipo.insert(0, sqlres[0][4]) 
+            tela.cpf.insert(0, sqlres[0][5])
+            tela.cnpj.insert(0, sqlres[0][6])
+            tela.cep.insert(0, sqlres[0][7])
+            tela.e_mail.insert(0, sqlres[0][8])
        
       except Error as ex: 
-         messagebox("Erro ao tentar ler o registro linha 51 "+str(ex))
+         messagebox("Erro ao tentar ler o registro linha 52 "+str(ex))
          
    except Error as ex:
-      messagebox("Erro ao tentar ao conectar com contaspagar linha 54 "+str(ex))
+      messagebox("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 55 "+str(ex))
    cursor.close()  
    return                    
    
@@ -122,6 +131,7 @@ def incluirfor():
         messagebox("codigo tamanho 5")
         tela.codigo.focus()
         return    
+   
    elif len(tela.nome.get())==0 or len(tela.nome.get())>50:
      
         messagebox("Informação: digite o Nome esta vazio ou é maior que 50")
@@ -143,24 +153,37 @@ def incluirfor():
       try:
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
-       cursor.execute("SELECT * FROM fornecedor WHERE codigo = tela.codigo.get()")
-       sqlres=cursor.fetchall()
-       if sqlres != "":
-          cursor.execute('''INSERT INTO fornecedor VALUES(tela.codigo.get(),tela.nome.get(),
-                                                  tela.endereco,tela.telefone.get(),
-                                                  tela.tipo.upper(),tela.cpf.get(),
-                                                  tela.cnpj.get(),tela.cep.get(),
-                                                  tela.e_mail.get())''')
-                                                
-          banco.commit()
-          cursor.close()     
-       else:
-            
-            messagebox("Informação: Registro já existe não pode ser inserido linha 154" )
-            limpacamposfor()
-       
+       try:
+          codigomem=tela.codigo.get()
+          cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+          sqlres=cursor.fetchall()
+          #sqlres.fetchone() is None
+          if len(sqlres) == 0:
+               codigomem=tela.codigo.get()
+               nomemem=tela.nome.get()
+               enderecomem=tela.endereco.get()
+               telefonemem=tela.telefone.get()
+               tipomem=tela.tipo.get().upper()
+               cpfmem=tela.cpf.get()
+               cnpjmem=tela.cnpj.get()
+               cepmem=tela.cep.get()
+               e_mailmem = tela.e_mail.get()
+               cursor.execute(f'''INSERT INTO fornecedor VALUES('{codigomem}','{nomemem}','{enderecomem}',
+                                                            '{telefonemem}','{tipomem}','{cpfmem}',
+                                                                 '{cnpjmem}','{cepmem}','{e_mailmem}')''')
+               
+
+                                         
+               banco.commit()
+               cursor.close()     
+          else: 
+               messagebox("Informação: Registro já existe não pode ser inserido linha 154" )
+               limpacamposfor()
+       except Error as ex:
+            messagebox("erro ao ler tabela Fornecedor linha 163"+ str(ex))       
+            limpacamposfor() 
       except Error as ex:
-       messagebox("erro ao conectar ou ler tabela linha 161"+ str(ex))
+       messagebox("erro ao conectar com banco de dados linha 166"+ str(ex))
        limpacamposfor()   
       return
    
