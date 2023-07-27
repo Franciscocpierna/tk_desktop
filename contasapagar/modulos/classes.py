@@ -106,14 +106,13 @@ class montatela():
                Label(manutencao1, text="Cnpj:",font=('Arial', 15)).grid(row=7, column=0,sticky=W)
                self.cnpj = Entry(manutencao1,width=17)
                self.cnpj.grid(row=7, column=1,sticky=W)
-               Label(manutencao1, text="Cep:",font=('Arial', 15)).grid(row=7, column=0,sticky=W)
+               Label(manutencao1, text="Cep:",font=('Arial', 15)).grid(row=8, column=0,sticky=W)
                self.cep = Entry(manutencao1,width=17)
-               self.cep.grid(row=7, column=1,sticky=W)
-               Label(manutencao1, text="E-mail:",font=('Arial', 15)).grid(row=8, column=0,sticky=W)
+               self.cep.grid(row=8, column=1,sticky=W)
+               Label(manutencao1, text="E-mail:",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
                self.e_mail = Entry(manutencao1,width=17)
-               self.e_mail.grid(row=8, column=1,sticky=W)
-               self.botao=Button(manutencao1, text='Salvar')
-               self.botao.grid(row=9, column=0,padx=0,pady=50,sticky=W)
+               self.e_mail.grid(row=9, column=1,sticky=W)
+               
                               
 
                
