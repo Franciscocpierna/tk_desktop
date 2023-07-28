@@ -85,7 +85,7 @@ class montatela():
 
          if self.opcao1 == 1: 
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
-               codigo = Entry(manutencao1,width=7,justify='left')
+               codigo = Entry(manutencao1,width=7)
                codigo.grid(row=1, column=1, sticky=W)
                Label(manutencao1, text="Nome:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.nome = Entry(manutencao1,width=50)
@@ -95,7 +95,6 @@ class montatela():
                self.endereco.grid(row=3, column=1,sticky=W)
                Label(manutencao1, text="Telefone:",font=('Arial', 15)).grid(row=4, column=0,sticky=W)
                self.telefone= Entry(manutencao1,width=15)
-               # self.telefone.grid(row=4, column=1,sticky=W+E+N+S)
                self.telefone.grid(row=4, column=1,sticky=W)
                Label(manutencao1, text="Tipo:",font=('Arial', 15)).grid(row=5, column=0,sticky=W)
                self.tipo = Entry(manutencao1,width=3)
@@ -112,8 +111,7 @@ class montatela():
                Label(manutencao1, text="E-mail:",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
                self.e_mail = Entry(manutencao1,width=17)
                self.e_mail.grid(row=9, column=1,sticky=W)
-               
-                              
+                                            
 
                
                

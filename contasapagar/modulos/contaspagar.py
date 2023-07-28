@@ -73,6 +73,7 @@ def verificacodigo():
 
 def consultafor():
    vererro=""
+   
    tela.nome.delete(0,END) 
    tela.endereco.delete(0,END) 
    tela.telefone.delete(0,END)
@@ -85,7 +86,7 @@ def consultafor():
         messagebox("Tamanho do codigo sao 5 caracteres")
         tela.codigo.delete(0,END)
         tela.codigo.focus()
-        return
+        return 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -93,15 +94,15 @@ def consultafor():
        codigomem=tela.codigo.get()
        cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
-       print(sqlres)
+       
        
 
        if len(sqlres) == 0:
-            messagebox("Registro não existe linha 100")
+            messagebox("Registro não existe linha 101")
 
             tela.codigo.delete(0,END)   
             tela.codigo.focus()
-            return
+            return vererro,sqlres 
        else:
             tela.nome.insert(0, sqlres[0][1])
             tela.endereco.insert(0,sqlres[0][2])
@@ -116,8 +117,9 @@ def consultafor():
          messagebox("Erro ao tentar ler o registro linha 88 "+str(ex))
          limpacamposfor()
          vererro=str(ex)
+         
    except Error as ex:
-      messagebox("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 91 "+str(ex))
+      messagebox("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 125 "+str(ex))
       limpacamposfor()
       vererro=(str(ex))
    cursor.close()  
@@ -147,7 +149,11 @@ def messagebox(msg):
  
  
 
- 
+def tab_order(botao):
+  tela.codigo.focus
+  widgets = [tela.codigo,tela.nome,tela.endereco,tela.telefone,tela.tipo,tela.cpf,tela.cnpj,tela.cep,tela.e_mail,botao]
+  for w in widgets:
+     w.lift()
 
 def limpacamposfor():
   tela.codigo.delete(0,END)
@@ -222,14 +228,15 @@ def incluirfor():
 
                                       
            banco.commit()
-           cursor.close()     
+           cursor.close()
+           messagebox("registro Incluido com sucesso")     
            limpacamposfor()   
            tela.codigo.focus()
         except Error as ex:
-            messagebox("erro ao gravar tabela Fornecedor linha 228"+ str(ex))       
+            messagebox("erro ao gravar tabela Fornecedor linha 229"+ str(ex))       
             limpacamposfor() 
       except Error as ex:
-       messagebox("erro ao conectar com banco de dados linha 231 "+ str(ex))
+       messagebox("erro ao conectar com banco de dados linha 232 "+ str(ex))
        limpacamposfor()   
        tela.codigo.focus()
       return
@@ -243,8 +250,10 @@ def incluirfor_click():
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirfor)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
-    tela.codigo.focus() 
-                   
+    tab_order(botao)
+    tela.codigo.focus()
+     
+             
     
     
     
@@ -263,26 +272,35 @@ def cosultafor_click():
 
       
 def alteracaofor():
+    codigomem=tela.codigo.get()
+    nomemem=tela.nome.get()
+    enderecomem=tela.endereco.get()
+    telefonemem=tela.telefone.get()
+    tipomem=tela.tipo.get().upper()
+    cpfmem=tela.cpf.get()
+    cnpjmem=tela.cnpj.get()
+    cepmem=tela.cep.get()
+    e_mailmem = tela.e_mail.get()
     ver, sqlres= consultafor()
     if len(ver) != 0 or len(sqlres)==0:
       limpacamposfor()
       tela.codigo.focus()
       return
+ 
     try:
-        banco = sqlite3.connect('contaspagar.db')
-        cursor = banco.cursor()
-        codigomem=tela.codigo.get()
-        nomemem=tela.nome.get()
-        enderecomem=tela.endereco.get()
-        telefonemem=tela.telefone.get()
-        tipomem=tela.tipo.get().upper()
-        cpfmem=tela.cpf.get()
-        cnpjmem=tela.cnpj.get()
-        cepmem=tela.cep.get()
-        e_mailmem = tela.e_mail.get()
-       
-        try:
-           cursor.execute(f'''UPDATE fornecedor SET nome ='{nomemem}',
+          banco = sqlite3.connect('contaspagar.db')
+          cursor = banco.cursor()
+          
+    except Error as ex:
+       messagebox("erro ao conectar com banco de dados linha 305 "+ str(ex))
+       limpacamposfor()   
+       tela.codigo.focus()
+       return
+          
+
+    try:
+           cursor.execute(f'''UPDATE fornecedor SET codigo = '{codigomem}',
+                                                    nome ='{nomemem}',
                                                     endereco ='{enderecomem}',
                                                     telefone ='{telefonemem}',
                                                     tipo = '{tipomem}',
@@ -290,21 +308,18 @@ def alteracaofor():
                                                     cnpj = '{cnpjmem}',
                                                     cep = '{cepmem}',
                                                     e_mail ='{e_mailmem}'
-                                                    WHERE codigo = '{codigomem}''')
+                                                    WHERE codigo = '{codigomem}' ''')
                
 
                                       
            banco.commit()
            cursor.close()     
+           messagebox("registro Alterado com sucesso")
            limpacamposfor()   
            tela.codigo.focus()
-        except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 302"+ str(ex))       
-            limpacamposfor() 
     except Error as ex:
-       messagebox("erro ao conectar com banco de dados linha 305 "+ str(ex))
-       limpacamposfor()   
-       tela.codigo.focus()
+            messagebox("erro ao regravar tabela Fornecedor linha 320"+ str(ex))       
+            limpacamposfor() 
     return
     
 def alteracaofor_clik():
@@ -314,13 +329,21 @@ def alteracaofor_clik():
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Alterar',command=alteracaofor)
+     botao=Button(manutencao, text='Consutar',command=consultafor)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+     botao1=Button(manutencao, text='Alterar',command=alteracaofor)
+     botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+     tab_order(botao)
+     tela.codigo.focus()
+
      
+      
+ 
      
       
      
 def exclusaofor():
+    codigomem=tela.codigo.get()
     ver, sqlres= consultafor()
     if len(ver) != 0 or len(sqlres)==0:
       limpacamposfor()
@@ -329,11 +352,12 @@ def exclusaofor():
     try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
-        codigomem=tela.codigo.get()
+        
         try:
            cursor.execute(f"DELETE  FROM fornecedor WHERE codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
+           messagebox("Registro Excluido com sucesso")
            limpacamposfor()   
            tela.codigo.focus()
         except Error as ex:
@@ -353,9 +377,10 @@ def excluirfor_click():
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Excluir',command=exclusaofor)
+     botao=Button(manutencao, text='Consultar',command=consultafor)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
-     
+     botao1=Button(manutencao, text='Excluir',command=exclusaofor)
+     botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
 
  
 
