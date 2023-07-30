@@ -16,6 +16,14 @@ X=0
 ler=""
 opcao=0
 
+def consulta_contasnome(janela2):
+    pass
+def cosulta_vencimento(janela2):
+    pass
+def consulta_ematraso(janela2):
+    pass
+def consulta_outras(janela2):
+    pass
 
 def incluicontas_click(janela1):
      opcao=1
@@ -123,44 +131,44 @@ def contas_menu(janela1):
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            
-janela2.resizable(False, False) # tamanho fixo             
-janela2.transient(janela1) # de onde vem a janela
-janela2.focus_force() #forçar foco
-janela2.grab_set()    # impede que click na janela principal sem fechar janela atiual
+ janela2.resizable(False, False) # tamanho fixo             
+ janela2.transient(janela1) # de onde vem a janela
+ janela2.focus_force() #forçar foco
+ janela2.grab_set()    # impede que click na janela principal sem fechar janela atiual
 #janela1.configure(background='red')
 #janela1.overrideredirect(True)  
 
 #adicionando menu
 
-menujan1 = Menu(janela2),
-cadmenu = Menu(menujan2, tearoff=0)
-cadmenu.add_command(label = " Inclusão",command=lambda: incluicontas_click(janela2))
-cadmenu.add_command(label = " Consulta", command=lambda: consultacontas_click(janela2))
-cadmenu.add_command(label = " Alteração",command=lambda: alteracaocontas_clik(janela2))
-cadmenu.add_command(label = " Exclusão",command=lambda: excluircontas_click(janela2)
-menujan.add_cascade(label = "Contas a pagar", menu = cadmenu)
+ menujan1 = Menu(janela2)
+ cadmenu = Menu(menujan1, tearoff=0)
+ cadmenu.add_command(label = " Inclusão",command=lambda: incluicontas_click(janela2))
+ cadmenu.add_command(label = " Consulta", command=lambda: consultacontas_click(janela2))
+ cadmenu.add_command(label = " Alteração",command=lambda: alteracaocontas_clik(janela2))
+ cadmenu.add_command(label = " Exclusão",command=lambda: excluircontas_click(janela2))
+ menujan1.add_cascade(label = "Contas a pagar", menu = cadmenu)
 
-consultamenu= Menu(menujan2, tearoff=0,)
-consultamenu.add_command(label = " Inclusão",command= lambda: incluirfor_click(janela2))
-consultamenu.add_command(label = " Consulta",command= lambda: cosultafor_click(janela2))
-consultamenu.add_command(label = " Alteração",command=lambda: alteracaofor_clik(janela2))
-consultamenu.add_command(label = " Excluir", command=lambda:  excluirfor_click(janela2))
-menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
+ consultamenu= Menu(menujan1, tearoff=0,)
+ consultamenu.add_command(label = " Nome",command= lambda: consulta_contasnome(janela2))
+ consultamenu.add_command(label = " Data vencimento",command= lambda: cosulta_vencimento(janela2))
+ consultamenu.add_command(label = " Em atraso",command=lambda: consulta_ematraso(janela2))
+ consultamenu.add_command(label = " outras", command=lambda:  consulta_outras(janela2))
+ menujan1.add_cascade(label = "Consutas diversas", menu = consultamenu)
 
 
-editmenu = Menu(menujan1, tearoff=0)
-editmenu.add_command(label = "contas a pagar")
-editmenu.add_command(label = "contas a pagar por fornecedor")
-editmenu.add_command(label = "Contas a pagar por nome")
-editmenu.add_command(label = "Contas a pagar por CNPJ Ou CPF")
-menujan1.add_cascade(label = "Relatórios", menu = editmenu)
-menusair = Menu(menujan1, tearoff=0)
-menusair.add_command(label= "Sair click aqui", command=quit) 
-menujan1.add_cascade(label='para Sair',menu = menusair)
-janela2.config(menu=menujan) #linha necessaria para aprecer o menu na janela de trabalho
-largura= 550
-altura = 450
-centro=centralizacao(janela1,largura, altura, posx, posy)
+ editmenu = Menu(menujan1, tearoff=0)
+ editmenu.add_command(label = "contas a pagar")
+ editmenu.add_command(label = "contas a pagar por fornecedor")
+ editmenu.add_command(label = "Contas a pagar por nome")
+ editmenu.add_command(label = "Contas a pagar por CNPJ Ou CPF")
+ menujan1.add_cascade(label = "Relatórios", menu = editmenu)
+ menusair = Menu(menujan1, tearoff=0)
+ menusair.add_command(label= "Sair click aqui", command=quit) 
+ menujan1.add_cascade(label='para Sair',menu = menusair)
+ janela2.config(menu=menujan1) #linha necessaria para aprecer o menu na janela de trabalho
+ largura= 550
+ altura = 450
+ centro=centralizacao(janela1,largura, altura, posx, posy)
 
-janela2.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-janela2.mainloop()
+ janela2.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+ janela2.mainloop()

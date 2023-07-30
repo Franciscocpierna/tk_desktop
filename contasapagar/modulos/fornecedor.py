@@ -408,27 +408,27 @@ def fornecedor_menu(janela1):
  filemenu.add_command(label = " Consulta",command= lambda: cosultafor_click(janela3))
  filemenu.add_command(label = " Alteração",command=lambda: alteracaofor_clik(janela3))
  filemenu.add_command(label = " Excluir", command=lambda:  excluirfor_click(janela3))
- menujan2.add_cascade(label = "Consutas diversas", menu = filemenu)
+ menujan2.add_cascade(label = "Manutenção", menu = filemenu)
 
 
  consultamenu= Menu(menujan2, tearoff=0,)
- consultamenu.add_command(label = " Inclusão",command= lambda: incluirfor_click(janela3))
- consultamenu.add_command(label = " Consulta",command= lambda: cosultafor_click(janela3))
- consultamenu.add_command(label = " Alteração",command=lambda: alteracaofor_clik(janela3))
- consultamenu.add_command(label = " Excluir", command=lambda:  excluirfor_click(janela3))
+ consultamenu.add_command(label = " Consulta por nome",command= lambda: incluirfor_click(janela3))
+ consultamenu.add_command(label = " Consulta por Cnpj/Cpf",command= lambda: cosultafor_click(janela3))
+ consultamenu.add_command(label = " Outras Consultas",command=lambda: alteracaofor_clik(janela3))
+ consultamenu.add_command(label = " Contruir uma consulta", command=lambda:  excluirfor_click(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
 
 
 
  editmenu2 = Menu(menujan2, tearoff=0)
- editmenu2.add_command(label = "contas a pagar")
- editmenu2.add_command(label = "contas a pagar por fornecedor")
- editmenu2.add_command(label = "Contas a pagar por nome")
- editmenu2.add_command(label = "Contas a pagar por CNPJ Ou CPF")
+ editmenu2.add_command(label = "nome ")
+ editmenu2.add_command(label = "Cnpj/Cpf")
+ editmenu2.add_command(label = "pedaço do nome")
+ editmenu2.add_command(label = "outros")
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
  menusair = Menu(menujan2, tearoff=0)
- menusair.add_command(label= "Sair click aqui", command=quit) 
+ menusair.add_command(label= "Sair click aqui", command=janela3.destroy) 
  menujan2.add_cascade(label='para Sair',menu = menusair)
 
  janela3.config(menu=menujan2) #linha necessaria para aprecer o menu na janela de trabalho

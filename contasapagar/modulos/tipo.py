@@ -90,7 +90,8 @@ def excluirtipo_click(janela1):
      cursor.execute("SELECT * FROM fornecedor")
      print(cursor.fetchall())
 
-
+def tipo_menu(janela1):
+   pass
 #cadtipo = Menu(menujan, tearoff=0)
 #cadtipo.add_command(label = " Inclusão",command=lambda: incluirtipo_click(janela1))
 #cadtipo.add_command(label = " Consulta", command=lambda: consultatipo_click(janela1))

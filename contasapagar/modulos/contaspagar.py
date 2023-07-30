@@ -47,6 +47,8 @@ filemenu= Menu(menujan, tearoff=0,)
 filemenu.add_command(label = " Fornecedor",command= lambda: fornecedor_menu(janela1))
 filemenu.add_command(label = " Consulta",command= lambda: contas_menu(janela1))
 filemenu.add_command(label = " Alteração",command=lambda: tipo_menu(janela1))
+menujan.add_cascade(label='Manutenção Geral',menu = filemenu)
+
 menusair = Menu(menujan, tearoff=0)
 menusair.add_command(label= "Sair click aqui", command=quit) 
 menujan.add_cascade(label='para Sair',menu = menusair)
