@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-import rotinas
+from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
@@ -34,7 +34,7 @@ def criartabela():
                                                e_mail varchar(30))''')
      cursor.close() 
    except Error as ex:
-     messagebox(str(ex)+ " linha 35")
+     messagebox1(str(ex)+ " linha 35",manutencao)
      limpacamposfor()
      vererro=str(ex)
      return vererro
@@ -48,7 +48,7 @@ def verificacodigo():
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
    except Error as ex:
-       messagebox("Erro na conexão com Banco de dados linha 26 "+str(ex))
+       messagebox1("Erro na conexão com Banco de dados linha 26 "+str(ex),manutencao)
        limpacamposfor()
        vererro=str(ex)
        return vererro
@@ -62,12 +62,12 @@ def verificacodigo():
         return verdadeiro,sqlres
        else:
         verdadeiro=True
-        messagebox("Informação: Registro já existe não pode ser inserido linha 62" )
+        messagebox1("Informação: Registro já existe não pode ser inserido linha 62",manutencao)
         limpacamposfor()
         tela.codigo.focus()
         return verdadeiro,sqlres 
    except Error as ex:
-       messagebox("Erro na leitura da tabela Fornecedor linha 67 "+str(ex))
+       messagebox1("Erro na leitura da tabela Fornecedor linha 67 "+str(ex),manutencao)
        limpacamposfor()
        vererro=str(ex)
        return vererro
@@ -84,7 +84,7 @@ def consultafor():
    tela.cep.delete(0,END)
    tela.e_mail.delete(0,END)
    if len(tela.codigo.get())!=5:
-        messagebox("Tamanho do codigo sao 5 caracteres")
+        messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
         tela.codigo.delete(0,END)
         tela.codigo.focus()
         return 
@@ -99,7 +99,7 @@ def consultafor():
        
 
        if len(sqlres) == 0:
-            messagebox("Registro não existe linha 101")
+            messagebox1("Registro não existe linha 101",manutencao)
 
             tela.codigo.delete(0,END)   
             tela.codigo.focus()
@@ -115,37 +115,17 @@ def consultafor():
             tela.e_mail.insert(0, sqlres[0][8])
             print(sqlres[0][1])
       except Error as ex: 
-         messagebox("Erro ao tentar ler o registro linha 88 "+str(ex))
+         messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
          limpacamposfor()
          vererro=str(ex)
          
    except Error as ex:
-      messagebox("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 125 "+str(ex))
+      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 125 "+str(ex),manutencao)
       limpacamposfor()
       vererro=(str(ex))
    cursor.close()  
    return vererro,sqlres                    
    
-def messagebox(msg):
-    toplevel = Toplevel()
- 
-    toplevel.title("click em OK ou Tecla <enter> para Fechar")
-    x_position = 300
-    y_position = 200
-    #toplevel.geometry(f"300x100+{x_position}+{y_position}")
-    toplevel.geometry(f"550x100+{x_position}+{y_position}")
-    toplevel.resizable(False, False) # tamanho fixo             
-    toplevel.transient(manutencao) # de onde vem a janela
-    toplevel.focus_force() #forçar foco
-    toplevel.grab_set()    # impede que click na janela principal sem fechar janela atiual
-    l1=Label(toplevel, image="::tk::icons::question")
-    l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
-    l2=Label(toplevel,text="cvbnm,m")
-    l2.grid(row=0, column=1, columnspan=3, pady=(7, 10), sticky="w")
-    l2["text"] = msg
-    b1=Button(toplevel, text="OK", command=toplevel.destroy, width=10)
-    b1.grid(row=1, column=1, padx=(2, 35), sticky="e")
-    keyboard.on_press_key("enter", lambda _: toplevel.destroy())
     
  
  
@@ -153,7 +133,6 @@ def messagebox(msg):
 def tab_order():
   tela.codigo.focus
   widgets = [tela.codigo,tela.nome,tela.endereco,tela.telefone,tela.tipo,tela.cpf,tela.cnpj,tela.cep,tela.e_mail]
-  tela.codigo.focus()
   for w in widgets:
      w.lift()
 
@@ -182,7 +161,7 @@ def incluirfor():
       return
       
    if len(tela.codigo.get())!=5:
-        messagebox("codigo tamanho 5")
+        messagebox1("codigo tamanho 5",manutencao)
         tela.codigo.focus()
         return
    else:
@@ -194,19 +173,19 @@ def incluirfor():
    
    if len(tela.nome.get())==0 or len(tela.nome.get())>50:
      
-        messagebox("Informação: digite o Nome esta vazio ou é maior que 50")
+        messagebox1("Informação: digite o Nome esta vazio ou é maior que 50",manutencao)
         tela.nome.focus()
         return
    elif len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
-        messagebox("Informação: Endereço esta vazio ou é maior que 50")
+        messagebox1("Informação: Endereço esta vazio ou é maior que 50",manutencao)
         tela.endereco.focus()
         return
    elif len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
-        messagebox("Informação: digite o Nome esta vazio ou é maior que 11")
+        messagebox1("Informação: digite o Nome esta vazio ou é maior que 11",manutencao)
         tela.telefone.focus()
         return    
    elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J", "f", "j"):
-        messagebox("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica")
+        messagebox1("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica",manutencao)
         tela.tipo.focus()
         return        
    else:
@@ -222,7 +201,9 @@ def incluirfor():
         cnpjmem=tela.cnpj.get()
         cepmem=tela.cep.get()
         e_mailmem = tela.e_mail.get()
-        try:
+        res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
+        if res == 'yes':
+          try:
            cursor.execute(f'''INSERT INTO fornecedor VALUES('{codigomem}','{nomemem}','{enderecomem}',
                                                             '{telefonemem}','{tipomem}','{cpfmem}',
                                                                  '{cnpjmem}','{cepmem}','{e_mailmem}')''')
@@ -231,14 +212,17 @@ def incluirfor():
                                       
            banco.commit()
            cursor.close()
-           messagebox("registro Incluido com sucesso")     
+           messagebox1("registro Incluido com sucesso",manutencao)     
            limpacamposfor()   
            tela.codigo.focus()
-        except Error as ex:
-            messagebox("erro ao gravar tabela Fornecedor linha 229"+ str(ex))       
-            limpacamposfor() 
+          except Error as ex:
+            messagebox1("erro ao gravar tabela Fornecedor linha 219"+ str(ex),manutencao)       
+            limpacamposfor()
+        else:
+           messagebox1("Registro não foi gravado",manutencao)
+
       except Error as ex:
-       messagebox("erro ao conectar com banco de dados linha 232 "+ str(ex))
+       messagebox1("erro ao conectar com banco de dados linha 232 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
       return
@@ -284,6 +268,29 @@ def alteracaofor():
     cnpjmem=tela.cnpj.get()
     cepmem=tela.cep.get()
     e_mailmem = tela.e_mail.get()
+    if len(codigomem)!=5:
+        messagebox1("codigo tamanho 5",manutencao)
+        tela.codigo.focus()
+        return
+          
+   
+    if len(nomemem)==0 or len(nomemem) >50:
+        messagebox1("Informação: digite o Nome esta vazio ou é maior que 50",manutencao)
+        tela.nome.focus()
+        return
+    elif len(enderecomem)==0 or len(enderecomem)>50: 
+        messagebox1("Informação: Endereço esta vazio ou é maior que 50",manutencao)
+        tela.endereco.focus()
+        return
+    elif len(telefonemem)==0 or len(telefonemem)>11:
+        messagebox1("Informação: digite o Nome esta vazio ou é maior que 11",manutencao)
+        tela.telefone.focus()
+        return    
+    elif len(tipomem)!=1 or tipomem not in ("F","J", "f", "j"):
+        messagebox1("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica",manutencao)
+        tela.tipo.focus()
+        return    
+
     ver, sqlres= consultafor()
     if len(ver) != 0 or len(sqlres)==0:
       limpacamposfor()
@@ -295,7 +302,7 @@ def alteracaofor():
           cursor = banco.cursor()
           
     except Error as ex:
-       messagebox("erro ao conectar com banco de dados linha 305 "+ str(ex))
+       messagebox1("erro ao conectar com banco de dados linha 305 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
        return
@@ -317,11 +324,11 @@ def alteracaofor():
                                       
            banco.commit()
            cursor.close()     
-           messagebox("registro Alterado com sucesso")
+           messagebox1("registro Alterado com sucesso",manutencao)
            limpacamposfor()   
            tela.codigo.focus()
     except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 320"+ str(ex))       
+            messagebox("erro ao regravar tabela Fornecedor linha 320"+ str(ex),manutencao)       
             limpacamposfor() 
     return
     
@@ -360,14 +367,14 @@ def exclusaofor():
            cursor.execute(f"DELETE  FROM fornecedor WHERE codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
-           messagebox("Registro Excluido com sucesso")
+           messagebox("Registro Excluido com sucesso",manutencao)
            limpacamposfor()   
            tela.codigo.focus()
         except Error as ex:
-            messagebox("erro ao Excluir tabela Fornecedor linha 340"+ str(ex))       
+            messagebox1("erro ao Excluir tabela Fornecedor linha 366"+ str(ex),manutencao)       
             limpacamposfor() 
     except Error as ex:
-       messagebox("erro ao conectar com banco de dados linha 343 "+ str(ex))
+       messagebox1("erro ao conectar com banco de dados linha 343 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
     return

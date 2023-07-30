@@ -8,8 +8,8 @@ from classes import montatela,centralizacao
 import keyboard
 from contaspagar import *
 
-largura=0
-altura=0
+largura=1200
+altura=650
 posx=0
 posy=0
 X=0

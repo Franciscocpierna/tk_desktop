@@ -1,3 +1,30 @@
+from tkinter import *
+import keyboard
+
+def messagebox1(msg,manutencao):
+    toplevel = Toplevel()
+ 
+    toplevel.title("click em OK ou Tecla <enter> para Fechar")
+    x_position = 300
+    y_position = 200
+    #toplevel.geometry(f"300x100+{x_position}+{y_position}")
+    toplevel.geometry(f"550x100+{x_position}+{y_position}")
+    toplevel.resizable(False, False) # tamanho fixo             
+    toplevel.transient(manutencao) # de onde vem a janela
+    toplevel.focus_force() #forçar foco
+    toplevel.grab_set()    # impede que click na janela principal sem fechar janela atiual
+    l1=Label(toplevel, image="::tk::icons::question")
+    l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+    l2=Label(toplevel,text="cvbnm,m")
+    l2.grid(row=0, column=1, columnspan=3, pady=(7, 10), sticky="w")
+    l2["text"] = msg
+    b1=Button(toplevel, text="OK", command=toplevel.destroy, width=10)
+    b1.grid(row=1, column=1, padx=(2, 35), sticky="e")
+    keyboard.on_press_key("enter", lambda _: toplevel.destroy())
+
+
+
+
 from time import sleep
 def leiaInt1(msg):
   while True:

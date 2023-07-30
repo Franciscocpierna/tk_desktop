@@ -45,8 +45,8 @@ janela1.grab_set()    # impede que click na janela principal sem fechar janela a
 menujan = Menu(janela1)
 filemenu= Menu(menujan, tearoff=0,)
 filemenu.add_command(label = " Fornecedor",command= lambda: fornecedor_menu(janela1))
-filemenu.add_command(label = " Consulta",command= lambda: contas_menu(janela1))
-filemenu.add_command(label = " Alteração",command=lambda: tipo_menu(janela1))
+filemenu.add_command(label = " Contas",command= lambda: contas_menu(janela1))
+filemenu.add_command(label = " Tipo",command=lambda: tipo_menu(janela1))
 menujan.add_cascade(label='Manutenção Geral',menu = filemenu)
 
 menusair = Menu(menujan, tearoff=0)
