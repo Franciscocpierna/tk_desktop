@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 from rotinas import *
 import sqlite3
 from sqlite3 import Error
@@ -222,7 +223,7 @@ def incluirfor():
            messagebox1("Registro não foi gravado",manutencao)
 
       except Error as ex:
-       messagebox1("erro ao conectar com banco de dados linha 232 "+ str(ex),manutencao)
+       messagebox1("erro ao conectar com banco de dados linha 225 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
       return
@@ -296,19 +297,21 @@ def alteracaofor():
       limpacamposfor()
       tela.codigo.focus()
       return
- 
-    try:
+    res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
+    if res == 'yes':
+    
+      try:
           banco = sqlite3.connect('contaspagar.db')
           cursor = banco.cursor()
           
-    except Error as ex:
-       messagebox1("erro ao conectar com banco de dados linha 305 "+ str(ex),manutencao)
+      except Error as ex:
+       messagebox1("erro ao conectar com banco de dados linha 307 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
        return
           
 
-    try:
+      try:
            cursor.execute(f'''UPDATE fornecedor SET codigo = '{codigomem}',
                                                     nome ='{nomemem}',
                                                     endereco ='{enderecomem}',
@@ -327,10 +330,13 @@ def alteracaofor():
            messagebox1("registro Alterado com sucesso",manutencao)
            limpacamposfor()   
            tela.codigo.focus()
-    except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 320"+ str(ex),manutencao)       
+      except Error as ex:
+            messagebox("erro ao regravar tabela Fornecedor linha 333"+ str(ex),manutencao)       
             limpacamposfor() 
-    return
+            return
+    else:
+           messagebox1("Registro não foi Alterado",manutencao)
+           return
     
 def alteracaofor_clik(janela1):
      opcao=3
@@ -359,7 +365,10 @@ def exclusaofor():
       limpacamposfor()
       tela.codigo.focus()
       return
-    try:
+    
+    res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
+    if res == 'yes':
+       try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
         
@@ -373,13 +382,14 @@ def exclusaofor():
         except Error as ex:
             messagebox1("erro ao Excluir tabela Fornecedor linha 366"+ str(ex),manutencao)       
             limpacamposfor() 
-    except Error as ex:
-       messagebox1("erro ao conectar com banco de dados linha 343 "+ str(ex),manutencao)
-       limpacamposfor()   
-       tela.codigo.focus()
-    return
-        
-     
+       except Error as ex:
+           messagebox1("erro ao conectar com banco de dados linha 343 "+ str(ex),manutencao)
+           limpacamposfor()   
+           tela.codigo.focus()
+           return
+    else:
+           messagebox1("Registro não foi Excluido",manutencao)      
+    return 
 def excluirfor_click(janela1): 
      opcao=4
      opcao1=1
@@ -391,6 +401,104 @@ def excluirfor_click(janela1):
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaofor)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+# consultas
+
+def consulta_nome(janela3):
+   janela4 = Toplevel()
+   janela4.title("Consultas por Nomes")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem 
+
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ))
+   tv.column('Codigo', minwidth=5, width=15)
+   tv.column('Nome', minwidth=0, width=70)
+   tv.column('Endereço', minwidth=0, width=70)
+   tv.column('Telefone', minwidth=9, width=30)
+   tv.column('Tipo', minwidth=1, width=1)
+   tv.column('Cpf', minwidth=0, width=11)
+   tv.column('Cnpj', minwidth=0, width=14)
+   tv.column('Cep', minwidth=0, width=15)
+   tv.column('E_mail', minwidth=0, width=60)
+   tv.heading('Codigo', Text='CODIGO')
+   tv.heading('Nome', Text='NOME')
+   tv.heading('Endereço', Text='ENDEREÇO')
+   tv.heading('Telefone', Text='TELEFONE')
+   tv.heading('Tipo', Text='TIPO')
+   tv.heading('Cpf', Text='CPF')
+   tv.heading('Cnpj', Text='CNPJ')
+   tv.heading('Cep', Text='CEP')
+   tv.heading('E_mail', Text='E_MAIL')
+   tv.pack() 
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome")
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            cursor.close()
+            return
+        else:
+            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               #tela.nome.insert(0, sqlres[0][1])
+               #tela.endereco.insert(0,sqlres[0][2])
+               #tela.telefone.insert(0, sqlres[0][3])
+               #tela.tipo.insert(0, sqlres[0][4]) 
+               #tela.cpf.insert(0, sqlres[0][5])
+               #tela.cnpj.insert(0, sqlres[0][6])
+               #tela.cep.insert(0, sqlres[0][7])
+               #tela.e_mail.insert(0, sqlres[0][8])
+               #print(sqlres[0][1])
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           cursor.close
+           return
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        cursor.close 
+        return
+ 
+   
+  
+   '''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) PRIMARY KEY NOT NULL, 
+                                               nome varchar(50) NOT NULL,
+                                               endereco varchar(50) NOT NULL, 
+                                               telefone varchar(11),
+                                               tipo varchar(1)  NOT NULL,
+                                               cpf varchar(11),
+                                               cnpj varchar(14),
+                                               cep varchar(8),
+                                               e_mail varchar(30))'''
+  
+   
+   '''  codigomem=tela.codigo.get()
+          nomemem=tela.nome.get()
+          enderecomem=tela.endereco.get()
+          telefonemem=tela.telefone.get()
+          tipomem=tela.tipo.get().upper()
+          cpfmem=tela.cpf.get()
+          cnpjmem=tela.cnpj.get()
+          cepmem=tela.cep.get()
+          e_mailmem = tela.e_mail.get()
+     '''
+
+def cosulta_cnpj(janela3):
+  pass
+def consulta_codigo(janela3):
+  pass
+def consulta_porcao(janela3):
+  pass
+
+# relatorios
+  
+
 
 def fornecedor_menu(janela1):
  janela3 = Toplevel() # janela de nível superior
@@ -419,10 +527,10 @@ def fornecedor_menu(janela1):
 
 
  consultamenu= Menu(menujan2, tearoff=0,)
- consultamenu.add_command(label = " Consulta por nome",command= lambda: incluirfor_click(janela3))
- consultamenu.add_command(label = " Consulta por Cnpj/Cpf",command= lambda: cosultafor_click(janela3))
- consultamenu.add_command(label = " Outras Consultas",command=lambda: alteracaofor_clik(janela3))
- consultamenu.add_command(label = " Contruir uma consulta", command=lambda:  excluirfor_click(janela3))
+ consultamenu.add_command(label = " Consulta por nome",command= lambda: consulta_nome(janela3))
+ consultamenu.add_command(label = " Consulta por Cnpj/Cpf",command= lambda: cosulta_cnpj(janela3))
+ consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo(janela3))
+ consultamenu.add_command(label = " consulta por pedaço do nome", command=lambda:  consulta_porcao(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
 
 

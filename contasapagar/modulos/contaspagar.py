@@ -1,11 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-#import rotinas
-#import sqlite3
-#from sqlite3 import Error
-#from time import sleep
-#from classes import montatela,centralizacao
-#import keyboard
 from fornecedor import *
 from contas import *
 from tipo import *
