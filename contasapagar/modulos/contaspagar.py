@@ -23,7 +23,7 @@ janela.geometry('1500x1500')
 #tela 2
 
 janela1 = Toplevel() # janela de nível superior
-janela1.title("Menu Manutenção - Relatórios")
+janela1.title("Menu Manutenção PARA SAIR PELO TECLADO F2 DUAS VEZES")
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            
@@ -55,5 +55,6 @@ centro=centralizacao(janela1,largura, altura, posx, posy)
 janela1.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
 largura=1200
 altura=650
-janela1.mainloop()
+keyboard.on_press_key("f2" , lambda _: janela1.quit())
+#janela1.mainloop()
 janela.mainloop()

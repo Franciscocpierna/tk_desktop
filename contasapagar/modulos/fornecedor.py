@@ -404,32 +404,41 @@ def excluirfor_click(janela1):
 # consultas
 
 def consulta_nome(janela3):
+#   largura2=1000
+#   altura2= 600
+   
+   
    janela4 = Toplevel()
-   janela4.title("Consultas por Nomes")
+   janela4.title("Consultas por Nomes ESC para SAIR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
-   janela4.grab_set()    # impede que click na janela principal sem 
-
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ))
-   tv.column('Codigo', minwidth=5, width=15)
-   tv.column('Nome', minwidth=0, width=70)
-   tv.column('Endereço', minwidth=0, width=70)
-   tv.column('Telefone', minwidth=9, width=30)
-   tv.column('Tipo', minwidth=1, width=1)
-   tv.column('Cpf', minwidth=0, width=11)
-   tv.column('Cnpj', minwidth=0, width=14)
-   tv.column('Cep', minwidth=0, width=15)
-   tv.column('E_mail', minwidth=0, width=60)
-   tv.heading('Codigo', Text='CODIGO')
-   tv.heading('Nome', Text='NOME')
-   tv.heading('Endereço', Text='ENDEREÇO')
-   tv.heading('Telefone', Text='TELEFONE')
-   tv.heading('Tipo', Text='TIPO')
-   tv.heading('Cpf', Text='CPF')
-   tv.heading('Cnpj', Text='CNPJ')
-   tv.heading('Cep', Text='CEP')
-   tv.heading('E_mail', Text='E_MAIL')
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+   tv.column('Codigo', minwidth=5, width=50)
+   tv.column('Nome', minwidth=0, width=250)
+   tv.column('Endereço', minwidth=0, width=250)
+   tv.column('Telefone', minwidth=9, width=100)
+   tv.column('Tipo', minwidth=1, width=30)
+   tv.column('Cpf', minwidth=0, width=100)
+   tv.column('Cnpj', minwidth=0, width=150)
+   tv.column('Cep', minwidth=0, width=100)
+   tv.column('E_mail', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Endereço', text='ENDEREÇO')
+   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Cpf', text='CPF')
+   tv.heading('Cnpj', text='CNPJ')
+   tv.heading('Cep', text='CEP')
+   tv.heading('E_mail', text='E_MAIL')
+   
    tv.pack() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -502,7 +511,7 @@ def consulta_porcao(janela3):
 
 def fornecedor_menu(janela1):
  janela3 = Toplevel() # janela de nível superior
- janela3.title("Menu Manutenção - Relatórios")
+ janela3.title("Menu Manutenção - Consultas Relatorios  F1 - PARA SAIR")
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            
@@ -552,5 +561,6 @@ def fornecedor_menu(janela1):
  centro=centralizacao(janela3,largura, altura, posx, posy)
 
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
- janela3.mainloop()
+ keyboard.on_press_key("f1", lambda _: janela3.destroy())
+ #janela3.mainloop()
 
