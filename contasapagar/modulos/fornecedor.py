@@ -404,10 +404,6 @@ def excluirfor_click(janela1):
 # consultas
 
 def consulta_nome(janela3):
-#   largura2=1000
-#   altura2= 600
-   
-   
    janela4 = Toplevel()
    janela4.title("Consultas por Nomes ESC para SAIR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -419,6 +415,7 @@ def consulta_nome(janela3):
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+    
    tv.column('Codigo', minwidth=5, width=50)
    tv.column('Nome', minwidth=0, width=250)
    tv.column('Endereço', minwidth=0, width=250)
@@ -438,8 +435,18 @@ def consulta_nome(janela3):
    tv.heading('Cnpj', text='CNPJ')
    tv.heading('Cep', text='CEP')
    tv.heading('E_mail', text='E_MAIL')
+  
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
    
-   tv.pack() 
+   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -456,15 +463,7 @@ def consulta_nome(janela3):
         else:
             for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               #tela.nome.insert(0, sqlres[0][1])
-               #tela.endereco.insert(0,sqlres[0][2])
-               #tela.telefone.insert(0, sqlres[0][3])
-               #tela.tipo.insert(0, sqlres[0][4]) 
-               #tela.cpf.insert(0, sqlres[0][5])
-               #tela.cnpj.insert(0, sqlres[0][6])
-               #tela.cep.insert(0, sqlres[0][7])
-               #tela.e_mail.insert(0, sqlres[0][8])
-               #print(sqlres[0][1])
+               
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
            cursor.close
@@ -474,29 +473,6 @@ def consulta_nome(janela3):
         cursor.close 
         return
  
-   
-  
-   '''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) PRIMARY KEY NOT NULL, 
-                                               nome varchar(50) NOT NULL,
-                                               endereco varchar(50) NOT NULL, 
-                                               telefone varchar(11),
-                                               tipo varchar(1)  NOT NULL,
-                                               cpf varchar(11),
-                                               cnpj varchar(14),
-                                               cep varchar(8),
-                                               e_mail varchar(30))'''
-  
-   
-   '''  codigomem=tela.codigo.get()
-          nomemem=tela.nome.get()
-          enderecomem=tela.endereco.get()
-          telefonemem=tela.telefone.get()
-          tipomem=tela.tipo.get().upper()
-          cpfmem=tela.cpf.get()
-          cnpjmem=tela.cnpj.get()
-          cepmem=tela.cep.get()
-          e_mailmem = tela.e_mail.get()
-     '''
 
 def cosulta_cnpj(janela3):
   pass
