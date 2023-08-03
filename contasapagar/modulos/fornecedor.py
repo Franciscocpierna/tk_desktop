@@ -753,14 +753,46 @@ def consulta_codigo(janela3):
         cursor.close() 
         
    
-def tecla_obtida(teclado):
-    teclado=True
-    return teclado  
+def tecla_obtida(tv,nomemem,janela4):
+    try: 
+         banco = sqlite3.connect('contaspagar.db')
+         cursor = banco.cursor()
+         
+         #cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+         #sqlres=cursor.fetchall()
+         nomemem=nomemem+"%"
+         try:
+               cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem}'  ORDER BY nome ASC")
+               sqlres=cursor.fetchall()
+               
+          
+               
+               if len(sqlres) == 0:
+                    messagebox1("Não tem dados a mostrar na consulta",janela4)
+                    cursor.close()
+                    return
+               else:
+                    for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+                         tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+                    
+                    cursor.close()
+                    return
+         except Error as ex: 
+               messagebox1("Erro ao tentar ler o registro linha 782 "+str(ex),janela4)
+               cursor.close()
+               return
+               
+    except Error as ex:
+          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+          cursor.close()
+          return 
+     
+     
 
 def consulta_porcao(janela3):
    
    janela4 = Toplevel()
-   janela4.title("Consultas por pedaços de Nomes ESC para SAIR")
+   janela4.title("Consultas por pedaços de Nomes ESC para SAIR  -  F3 PARA CONSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -800,41 +832,12 @@ def consulta_porcao(janela3):
    tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
    verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
    verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   teclado=False
    Label(janela4, text="Entre com parte do nome:", font=('Arial', 15)).grid(row=1, column=3,sticky=W)   
    nomemem = Entry(janela4,width=50)
    nomemem.grid(row=1, column=4,sticky=W)
    nomemem.focus()
-   keyboard.on_press_key("f3", lambda _: tecla_obtida(teclado))
+   keyboard.on_press_key("f3", lambda _: tecla_obtida(tv,nomemem.get(),janela4))
       
-   if teclado:   
-     try: 
-         banco = sqlite3.connect('contaspagar.db')
-         cursor = banco.cursor()
-         try:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome WHERE nome LIKE '{nomemem}'% ")
-          sqlres=cursor.fetchall()
-          
-     
-          
-          if len(sqlres) == 0:
-               messagebox1("Não tem dados a mostrar na consulta",manutencao)
-               cursor.close()
-               
-          else:
-               for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-                    tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               cursor.close()
-                   
-         except Error as ex: 
-               messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
-               cursor.close()
-               
-     except Error as ex:
-          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
-          cursor.close() 
-     
-     teclado=False 
      
 
 # relatorios
