@@ -240,7 +240,7 @@ def incluirfor_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
-     
+    keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
     
@@ -257,7 +257,7 @@ def cosultafor_click(janela1):
      botao=Button(manutencao, text='Consultar',command=consultafor)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
-
+     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaofor():
     codigomem=tela.codigo.get()
@@ -351,7 +351,7 @@ def alteracaofor_clik(janela1):
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order()
      tela.codigo.focus()
-
+     keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
  
@@ -401,6 +401,7 @@ def excluirfor_click(janela1):
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaofor)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+     keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
 def consulta_nome(janela3):
@@ -459,6 +460,76 @@ def consulta_nome(janela3):
         if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta",manutencao)
             cursor.close()
+            
+        else:
+            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        cursor.close() 
+        
+ 
+def cosulta_cpf(janela3):
+   janela4 = Toplevel()
+   janela4.title("Consultas por Cpf ESC para SAIR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+    
+   tv.column('Codigo', minwidth=5, width=50)
+   tv.column('Nome', minwidth=0, width=250)
+   tv.column('Endereço', minwidth=0, width=250)
+   tv.column('Telefone', minwidth=9, width=100)
+   tv.column('Tipo', minwidth=1, width=30)
+   tv.column('Cpf', minwidth=0, width=100)
+   tv.column('Cnpj', minwidth=0, width=150)
+   tv.column('Cep', minwidth=0, width=100)
+   tv.column('E_mail', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Endereço', text='ENDEREÇO')
+   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Cpf', text='CPF')
+   tv.heading('Cnpj', text='CNPJ')
+   tv.heading('Cep', text='CEP')
+   tv.heading('E_mail', text='E_MAIL')
+  
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   
+   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cpf")
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            cursor.close()
             return
         else:
             for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
@@ -466,20 +537,305 @@ def consulta_nome(janela3):
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
-           cursor.close
+           cursor.close()
            return
    except Error as ex:
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
-        cursor.close 
+        cursor.close() 
         return
- 
+def consulta_codigo(janela3):
+   janela4 = Toplevel()
+   janela4.title("Consultas por Codigo ESC para SAIR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+    
+   tv.column('Codigo', minwidth=5, width=50)
+   tv.column('Nome', minwidth=0, width=250)
+   tv.column('Endereço', minwidth=0, width=250)
+   tv.column('Telefone', minwidth=9, width=100)
+   tv.column('Tipo', minwidth=1, width=30)
+   tv.column('Cpf', minwidth=0, width=100)
+   tv.column('Cnpj', minwidth=0, width=150)
+   tv.column('Cep', minwidth=0, width=100)
+   tv.column('E_mail', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Endereço', text='ENDEREÇO')
+   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Cpf', text='CPF')
+   tv.heading('Cnpj', text='CNPJ')
+   tv.heading('Cep', text='CEP')
+   tv.heading('E_mail', text='E_MAIL')
+  
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   
+   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo")
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            cursor.close()
+            
+        else:
+            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        cursor.close() 
+        
 
 def cosulta_cnpj(janela3):
-  pass
+   janela4 = Toplevel()
+   janela4.title("Consultas por Cnpj ESC para SAIR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+    
+   tv.column('Codigo', minwidth=5, width=50)
+   tv.column('Nome', minwidth=0, width=250)
+   tv.column('Endereço', minwidth=0, width=250)
+   tv.column('Telefone', minwidth=9, width=100)
+   tv.column('Tipo', minwidth=1, width=30)
+   tv.column('Cpf', minwidth=0, width=100)
+   tv.column('Cnpj', minwidth=0, width=150)
+   tv.column('Cep', minwidth=0, width=100)
+   tv.column('E_mail', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Endereço', text='ENDEREÇO')
+   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Cpf', text='CPF')
+   tv.heading('Cnpj', text='CNPJ')
+   tv.heading('Cep', text='CEP')
+   tv.heading('E_mail', text='E_MAIL')
+  
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   
+   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj")
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            cursor.close()
+            
+        else:
+            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        cursor.close() 
+        
+
 def consulta_codigo(janela3):
-  pass
+   janela4 = Toplevel()
+   janela4.title("Consultas por Codigo ESC para SAIR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+    
+   tv.column('Codigo', minwidth=5, width=50)
+   tv.column('Nome', minwidth=0, width=250)
+   tv.column('Endereço', minwidth=0, width=250)
+   tv.column('Telefone', minwidth=9, width=100)
+   tv.column('Tipo', minwidth=1, width=30)
+   tv.column('Cpf', minwidth=0, width=100)
+   tv.column('Cnpj', minwidth=0, width=150)
+   tv.column('Cep', minwidth=0, width=100)
+   tv.column('E_mail', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Endereço', text='ENDEREÇO')
+   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Cpf', text='CPF')
+   tv.heading('Cnpj', text='CNPJ')
+   tv.heading('Cep', text='CEP')
+   tv.heading('E_mail', text='E_MAIL')
+  
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   
+   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo")
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            cursor.close()
+            
+        else:
+            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        cursor.close() 
+        
+   
+def tecla_obtida(teclado):
+    teclado=True
+    return teclado  
+
 def consulta_porcao(janela3):
-  pass
+   
+   janela4 = Toplevel()
+   janela4.title("Consultas por pedaços de Nomes ESC para SAIR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+    
+   tv.column('Codigo', minwidth=5, width=50)
+   tv.column('Nome', minwidth=0, width=250)
+   tv.column('Endereço', minwidth=0, width=250)
+   tv.column('Telefone', minwidth=9, width=100)
+   tv.column('Tipo', minwidth=1, width=30)
+   tv.column('Cpf', minwidth=0, width=100)
+   tv.column('Cnpj', minwidth=0, width=150)
+   tv.column('Cep', minwidth=0, width=100)
+   tv.column('E_mail', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Endereço', text='ENDEREÇO')
+   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Cpf', text='CPF')
+   tv.heading('Cnpj', text='CNPJ')
+   tv.heading('Cep', text='CEP')
+   tv.heading('E_mail', text='E_MAIL')
+  
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   teclado=False
+   Label(janela4, text="Entre com parte do nome:", font=('Arial', 15)).grid(row=1, column=3,sticky=W)   
+   nomemem = Entry(janela4,width=50)
+   nomemem.grid(row=1, column=4,sticky=W)
+   nomemem.focus()
+   keyboard.on_press_key("f3", lambda _: tecla_obtida(teclado))
+      
+   if teclado:   
+     try: 
+         banco = sqlite3.connect('contaspagar.db')
+         cursor = banco.cursor()
+         try:
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome WHERE nome LIKE '{nomemem}'% ")
+          sqlres=cursor.fetchall()
+          
+     
+          
+          if len(sqlres) == 0:
+               messagebox1("Não tem dados a mostrar na consulta",manutencao)
+               cursor.close()
+               
+          else:
+               for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+                    tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               cursor.close()
+                   
+         except Error as ex: 
+               messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+               cursor.close()
+               
+     except Error as ex:
+          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+          cursor.close() 
+     
+     teclado=False 
+     
 
 # relatorios
   
@@ -513,7 +869,8 @@ def fornecedor_menu(janela1):
 
  consultamenu= Menu(menujan2, tearoff=0,)
  consultamenu.add_command(label = " Consulta por nome",command= lambda: consulta_nome(janela3))
- consultamenu.add_command(label = " Consulta por Cnpj/Cpf",command= lambda: cosulta_cnpj(janela3))
+ consultamenu.add_command(label = " Consulta por Cnpj",command= lambda: cosulta_cnpj(janela3))
+ consultamenu.add_command(label = " Consulta por Cnpj",command= lambda: cosulta_cpf(janela3))
  consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo(janela3))
  consultamenu.add_command(label = " consulta por pedaço do nome", command=lambda:  consulta_porcao(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
