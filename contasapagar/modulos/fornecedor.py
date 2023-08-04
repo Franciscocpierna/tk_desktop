@@ -188,7 +188,24 @@ def incluirfor():
    elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J", "f", "j"):
         messagebox1("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica",manutencao)
         tela.tipo.focus()
-        return        
+        return
+   elif len(tela.cep.get()) != 8:
+        messagebox1("Informação: digite o Cep tamanho 8",manutencao)
+        return
+   elif  tela.tipo.get() in ("F","f") and  len(tela.cpf.get())!=11:
+          messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
+          tela.cpf.focus()
+          if len(tela.cnpj.get()) !=0:
+              messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
+              tela.cnpj.delete(0,END)
+          return     
+   elif len(tela.cnpj.get())!=14:
+          messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
+          tela.cpf.focus()
+          if len(tela.cpf.get()) !=0:
+              messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
+              tela.cpf.delete(0,END)
+          return 
    else:
       try:
         banco = sqlite3.connect('contaspagar.db')
@@ -290,7 +307,25 @@ def alteracaofor():
     elif len(tipomem)!=1 or tipomem not in ("F","J", "f", "j"):
         messagebox1("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica",manutencao)
         tela.tipo.focus()
-        return    
+        return
+    elif len(cepmem) != 8:
+        messagebox1("Informação: digite o Cep tamanho 8",manutencao)
+        tela.cep.focus()
+        return
+    elif  tela.tipo.get() in ("F","f") and  len(cpfmem)!=11:
+          messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
+          tela.cpf.focus()
+          if len(cnpjmem) !=0:
+              messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
+              tela.cnpj.delete(0,END)
+          return     
+    elif len(cnpjmem)!=14:
+          messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
+          tela.cpf.focus()
+          if len(cpfmem) !=0:
+              messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
+              tela.cpf.delete(0,END)
+          return   
 
     ver, sqlres= consultafor()
     if len(ver) != 0 or len(sqlres)==0:
@@ -753,16 +788,18 @@ def consulta_codigo(janela3):
         cursor.close() 
         
    
-def tecla_obtida(tv,nomemem,janela4):
+def tecla_obtida():
+    tv.delete(*tv.get_children())
+    nomemem1= nomemem.get()
     try: 
          banco = sqlite3.connect('contaspagar.db')
          cursor = banco.cursor()
          
          #cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
          #sqlres=cursor.fetchall()
-         nomemem=nomemem+"%"
+         nomemem1=nomemem1+"%"
          try:
-               cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem}'  ORDER BY nome ASC")
+               cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
                sqlres=cursor.fetchall()
                
           
@@ -790,9 +827,12 @@ def tecla_obtida(tv,nomemem,janela4):
      
 
 def consulta_porcao(janela3):
-   
+        
+   global janela4 
+   global tv 
+   global nomemem 
    janela4 = Toplevel()
-   janela4.title("Consultas por pedaços de Nomes ESC para SAIR  -  F3 PARA CONSULTAR")
+   janela4.title("Consultas por pedaços de Nomes - ESC  para SAIR  -  F3  PARA CONSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -802,7 +842,7 @@ def consulta_porcao(janela3):
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
-    
+   
    tv.column('Codigo', minwidth=5, width=50)
    tv.column('Nome', minwidth=0, width=250)
    tv.column('Endereço', minwidth=0, width=250)
@@ -822,21 +862,19 @@ def consulta_porcao(janela3):
    tv.heading('Cnpj', text='CNPJ')
    tv.heading('Cep', text='CEP')
    tv.heading('E_mail', text='E_MAIL')
-  
-   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
-
-   tv.configure(yscroll=verscrlbar)
-  # tv.configure(xscroll=verscrlbar1.set)
-   tv.configure(xscroll=verscrlbar1)
    tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
    verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
-   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.97,relheight=0.05)
+   tv.config(yscrollcommand=verscrlbar.set)
+   tv.config(xscrollcommand=verscrlbar1.set)
    Label(janela4, text="Entre com parte do nome:", font=('Arial', 15)).grid(row=1, column=3,sticky=W)   
    nomemem = Entry(janela4,width=50)
    nomemem.grid(row=1, column=4,sticky=W)
    nomemem.focus()
-   keyboard.on_press_key("f3", lambda _: tecla_obtida(tv,nomemem.get(),janela4))
+   print(nomemem.get())
+   keyboard.on_press_key("f3", lambda _: tecla_obtida())
       
      
 
