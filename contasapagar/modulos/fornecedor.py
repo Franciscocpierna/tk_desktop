@@ -191,17 +191,20 @@ def incluirfor():
         return
    elif len(tela.cep.get()) != 8:
         messagebox1("Informação: digite o Cep tamanho 8",manutencao)
+        tela.cep.focus()
         return
-   elif  tela.tipo.get() in ("F","f") and  len(tela.cpf.get())!=11:
+   elif  tela.tipo.get() in ("F","f"): 
+         if len(tela.cpf.get())!=11:
           messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
           tela.cpf.focus()
           if len(tela.cnpj.get()) !=0:
               messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
               tela.cnpj.delete(0,END)
           return     
-   elif len(tela.cnpj.get())!=14:
+   elif tela.tipo.get() in ("J","j"):
+       if len(tela.cnpj.get())!=14:
           messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
-          tela.cpf.focus()
+          tela.cnpj.focus()
           if len(tela.cpf.get()) !=0:
               messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
               tela.cpf.delete(0,END)
@@ -312,21 +315,22 @@ def alteracaofor():
         messagebox1("Informação: digite o Cep tamanho 8",manutencao)
         tela.cep.focus()
         return
-    elif  tela.tipo.get() in ("F","f") and  len(cpfmem)!=11:
+    elif  tipomem in ("F","f"): 
+         if len(cpfmem)!=11:
           messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
           tela.cpf.focus()
           if len(cnpjmem) !=0:
               messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
               tela.cnpj.delete(0,END)
           return     
-    elif len(cnpjmem)!=14:
+    elif tipomem in ("J","j"):
+       if len(cnpjmem)!=14:
           messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
-          tela.cpf.focus()
+          tela.cnpj.focus()
           if len(cpfmem) !=0:
               messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
               tela.cpf.delete(0,END)
-          return   
-
+          return 
     ver, sqlres= consultafor()
     if len(ver) != 0 or len(sqlres)==0:
       limpacamposfor()
