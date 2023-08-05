@@ -193,24 +193,36 @@ def incluirfor():
         messagebox1("Informação: digite o Cep tamanho 8",manutencao)
         tela.cep.focus()
         return
-   elif  tela.tipo.get() in ("F","f"): 
-         if len(tela.cpf.get())!=11:
-          messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
-          tela.cpf.focus()
-          if len(tela.cnpj.get()) !=0:
+          
+   elif  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) !=11:
+         messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
+         tela.cpf.focus()
+         
+         if  len(tela.cnpj.get()) !=0:
               messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
               tela.cnpj.delete(0,END)
-          return     
-   elif tela.tipo.get() in ("J","j"):
-       if len(tela.cnpj.get())!=14:
-          messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
-          tela.cnpj.focus()
-          if len(tela.cpf.get()) !=0:
-              messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
-              tela.cpf.delete(0,END)
-          return 
-   else:
-      try:
+              return
+         else:
+              return
+
+   elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) !=14:
+               messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
+               tela.cnpj.focus()
+         
+               if  len(tela.cpf.get()) !=0:
+                 messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
+                 tela.cpf.delete(0,END)
+                 return
+               else:
+                 return      
+   elif  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) == 11:
+           if  len(tela.cnpj.get()) !=0:
+               tela.cnpj.delete(0,END) 
+   elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) == 14:
+           if  len(tela.cpf.get()) !=0:
+               tela.cpf.delete(0,END)         
+   
+   try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
         codigomem=tela.codigo.get()
@@ -237,16 +249,16 @@ def incluirfor():
            limpacamposfor()   
            tela.codigo.focus()
           except Error as ex:
-            messagebox1("erro ao gravar tabela Fornecedor linha 219"+ str(ex),manutencao)       
+            messagebox1("erro ao gravar tabela Fornecedor linha 252 "+ str(ex),manutencao)       
             limpacamposfor()
         else:
            messagebox1("Registro não foi gravado",manutencao)
 
-      except Error as ex:
+   except Error as ex:
        messagebox1("erro ao conectar com banco de dados linha 225 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
-      return
+       return
    
 def incluirfor_click(janela1):
     opcao=1
@@ -280,6 +292,11 @@ def cosultafor_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaofor():
+    ver, sqlres= consultafor()
+    if len(ver) != 0 or len(sqlres)==0:
+      limpacamposfor()
+      tela.codigo.focus()
+      return
     codigomem=tela.codigo.get()
     nomemem=tela.nome.get()
     enderecomem=tela.endereco.get()
@@ -315,27 +332,33 @@ def alteracaofor():
         messagebox1("Informação: digite o Cep tamanho 8",manutencao)
         tela.cep.focus()
         return
-    elif  tipomem in ("F","f"): 
-         if len(cpfmem)!=11:
-          messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
-          tela.cpf.focus()
-          if len(cnpjmem) !=0:
+    elif  tipomem in ("F","f") and len(cpfmem) !=11:
+         messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
+         tela.cpf.focus()
+         
+         if  len(cnpjmem) !=0:
               messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
               tela.cnpj.delete(0,END)
-          return     
-    elif tipomem in ("J","j"):
-       if len(cnpjmem)!=14:
-          messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
-          tela.cnpj.focus()
-          if len(cpfmem) !=0:
-              messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
-              tela.cpf.delete(0,END)
-          return 
-    ver, sqlres= consultafor()
-    if len(ver) != 0 or len(sqlres)==0:
-      limpacamposfor()
-      tela.codigo.focus()
-      return
+              return
+         else:
+              return
+
+    elif tipomem in ("J","j") and len(cnpjmem) !=14:
+               messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
+               tela.cnpj.focus()
+               if  len(cpfmem) !=0:
+                 messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
+                 tela.cpf.delete(0,END)
+                 return
+               else:
+                 return      
+    elif  tipomem in ("F","f") and len(cpfmem) == 11:
+           if  len(cnpjmem) !=0:
+               tela.cnpj.delete(0,END) 
+    elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) == 14:
+           if  len(cpfmem) !=0:
+               tela.cpf.delete(0,END)         
+    
     res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
     if res == 'yes':
     

@@ -57,4 +57,5 @@ largura=1200
 altura=650
 keyboard.on_press_key("f2" , lambda _: janela1.quit())
 #janela1.mainloop()
+
 janela.mainloop()
