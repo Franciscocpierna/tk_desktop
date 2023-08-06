@@ -292,12 +292,12 @@ def cosultafor_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaofor():
-    ver, sqlres= consultafor()
-    if len(ver) != 0 or len(sqlres)==0:
-      limpacamposfor()
-      tela.codigo.focus()
-      return
-    codigomem=tela.codigo.get()
+    
+    if len(tela.codigo.get())!=5:
+        messagebox1("codigo tamanho 5",manutencao)
+        tela.codigo.focus()
+        return
+    codigomem=tela.codigo.get() 
     nomemem=tela.nome.get()
     enderecomem=tela.endereco.get()
     telefonemem=tela.telefone.get()
@@ -306,11 +306,62 @@ def alteracaofor():
     cnpjmem=tela.cnpj.get()
     cepmem=tela.cep.get()
     e_mailmem = tela.e_mail.get()
-    if len(codigomem)!=5:
-        messagebox1("codigo tamanho 5",manutencao)
-        tela.codigo.focus()
-        return
-          
+    ver, sqlres= consultafor()
+    if len(ver) != 0 or len(sqlres)==0:
+      limpacamposfor()
+      tela.codigo.focus()
+      return
+    if nomemem == "":
+       nomemem = tela.nome.get()
+    else:
+       tela.nome.delete(0, END)
+       tela.nome.insert(0, nomemem)
+
+    if enderecomem == "":
+       enderecomem = tela.endereco.get()
+    else:
+        tela.endereco.delete(0, END)
+        tela.endereco.insert(0, enderecomem)
+
+    if telefonemem=="":
+        telefonemem = tela.telefone.get()
+    else:
+        tela.telefone.delete(0, END)
+        tela.telefone.insert(0, telefonemem)    
+    
+    if tipomem =="":
+        tipomem = tela.tipo.get()
+    else:
+        tela.tipo.delete(0, END)
+        tela.tipo.insert(0, tipomem)
+
+
+    if tipomem in ("F","f"):
+       if cpfmem == "":
+         cpfmem=tela.cpf.get()
+       else:
+         tela.cpf.delete(0, END)
+         tela.cpf.insert(0,cpfmem)
+
+    if tipomem in ("J","j"):  
+       if cnpjmem=="":
+         cnpjmem=tela.cnpj.get()
+       else:
+         tela.cnpj.delete(0, END)     
+         tela.cnpj.insert(0,cnpjmem)    
+    
+    if cepmem=="":
+        cepmem=tela.cep.get()
+    else:
+        tela.cep.delete(0, END)    
+        tela.cep.insert(0, cepmem)
+
+    if e_mailmem =="":
+        e_mailmem = tela.e_mail.get()
+    else:
+        tela.e_mail.delete(0, END)
+        tela.e_mail.insert(0, e_mailmem)   
+                  
    
     if len(nomemem)==0 or len(nomemem) >50:
         messagebox1("Informação: digite o Nome esta vazio ou é maior que 50",manutencao)
@@ -745,9 +796,46 @@ def cosulta_cnpj(janela3):
         cursor.close() 
         
 
+def consultacodigoopcao():
+   tv.delete(*tv.get_children())
+   escolhido=escolha.get()   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        if escolhido == "A":
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+        else:
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            cursor.close()
+            
+        else:
+            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        cursor.close() 
+        
+
 def consulta_codigo(janela3):
+   global janela4 
+   global tv 
+   global escolhido
+   global escolha
    janela4 = Toplevel()
-   janela4.title("Consultas por Codigo ESC para SAIR")
+   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -787,33 +875,14 @@ def consulta_codigo(janela3):
    tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
    verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
    verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   
-   
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo")
-        sqlres=cursor.fetchall()
-     
-    
-         
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
-            cursor.close()
-            
-        else:
-            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
-           cursor.close()
-           
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
-        cursor.close() 
-        
+   escolha=StringVar(value="A")
+   optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
+   optado.grid(row=1, column=3)
+   optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
+   optado1.grid(row=1, column=4)
+   escolhido=escolha.get()
+   keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+
    
 def tecla_obtida():
     tv.delete(*tv.get_children())
