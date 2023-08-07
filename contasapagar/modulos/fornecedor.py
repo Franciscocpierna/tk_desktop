@@ -7,6 +7,9 @@ from sqlite3 import Error
 from time import sleep
 from classes import montatela,centralizacao
 import keyboard
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+
 #from contasapagar import *
 largura=1200
 altura=650
@@ -16,7 +19,14 @@ posy=0
 X=0
 ler=""
 opcao=0
-
+def rel_nome(janela3):
+   pass
+def rel_cpfcnpj(janela3):
+ pass
+def rel_nomep(janela3):
+    pass
+def rel_codigo(janela3):
+    pass
 
 def criartabela():
    vererro=""
@@ -1007,7 +1017,7 @@ def fornecedor_menu(janela1):
  consultamenu= Menu(menujan2, tearoff=0,)
  consultamenu.add_command(label = " Consulta por nome",command= lambda: consulta_nome(janela3))
  consultamenu.add_command(label = " Consulta por Cnpj",command= lambda: cosulta_cnpj(janela3))
- consultamenu.add_command(label = " Consulta por Cnpj",command= lambda: cosulta_cpf(janela3))
+ consultamenu.add_command(label = " Consulta por Cpf",command= lambda: cosulta_cpf(janela3))
  consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo(janela3))
  consultamenu.add_command(label = " consulta por pedaço do nome", command=lambda:  consulta_porcao(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
@@ -1015,10 +1025,10 @@ def fornecedor_menu(janela1):
 
 
  editmenu2 = Menu(menujan2, tearoff=0)
- editmenu2.add_command(label = "nome ")
- editmenu2.add_command(label = "Cnpj/Cpf")
- editmenu2.add_command(label = "pedaço do nome")
- editmenu2.add_command(label = "outros")
+ editmenu2.add_command(label = "Nome", command= lambda: rel_nome(janela3))
+ editmenu2.add_command(label = "Cnpj/Cpf", command=lambda: rel_cpfcnpj(janela3))
+ editmenu2.add_command(label = "Pedaço do nome",command= rel_nomep(janela3))
+ editmenu2.add_command(label = "Codigo", command= lambda: rel_codigo(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
  menusair = Menu(menujan2, tearoff=0)
