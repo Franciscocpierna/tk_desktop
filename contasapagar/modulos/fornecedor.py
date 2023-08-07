@@ -19,14 +19,23 @@ posy=0
 X=0
 ler=""
 opcao=0
+
+# Relatórios
+
 def rel_nome(janela3):
-   pass
+   cnv = canvas.Canvas("rel_nome.pdf", pagesize=A4) 
+   cnv.save()
 def rel_cpfcnpj(janela3):
- pass
+    cnv= canvas.Canvas("relcpfcnpj.pdf")
+    cnv.save()
 def rel_nomep(janela3):
-    pass
+    cnv = canvas.Canvas("rel_nome.pdf")
+    cnv.save() 
 def rel_codigo(janela3):
-    pass
+    cnv = canvas.Canvas("rel_codigo")
+    cnv.save()
+
+
 
 def criartabela():
    vererro=""
