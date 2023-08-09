@@ -9,6 +9,9 @@ from classes import montatela,centralizacao
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
+#import win32print
+#import win32api
+import os
 
 #from contasapagar import *
 largura=1200
@@ -22,9 +25,117 @@ opcao=0
 
 # Relatórios
 
+def gerapdf():
+   
+   escolhido=escolha.get()   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome ASC")
+
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta", janela4)
+            cursor.close()
+            
+        else:
+          print("gravar")  
+           # for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+           #    tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        cursor.close()
+
+   if escolhido == "A":
+      # escolher qual impressora a gente vai querer usar
+      lista_impressoras = win32print.EnumPrinters(2)
+      impressora = lista_impressoras[4]
+      for impressora in lista_impressoras:
+	          print(impressora)
+
+      win32print.SetDefaultPrinter(impressora[2])
+      # mandar imprimir todos os arquivos de uma pasta
+      caminho = r"C:\Users\Python\Desktop\Imprimir Automaticamente com Python\Imprimir"
+      lista_arquivos = os.listdir(caminho)
+
+      # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
+      for arquivo in lista_arquivos:
+        win32api.ShellExecute(0, "print", arquivo, None, caminho, 0)
+            
+
+        '''
+        cnv = canvas.Canvas("rel_nome.pdf", pagesize=A4)
+        cnv.setFont('Helvetica', 9)  
+        #cnv.drawString(10,830, "teste") # canto superior A4
+        cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior
+        #cnv.drawString(10,810, "codigo  nome                endereço           telefone      CPF             Cnpj           cep        E-mail ") #proxima linha
+        eixo = 20
+        y= 810
+        z=7
+        for x in range(40): # para pagina(pesquisar continuar proxima pagina)
+            y -= 20
+            
+        
+            cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+            y-= 20
+            cnv.drawString(10,y, "codigo: 12345 Nome:2345678901234567890123456789012345678901234567890 ")
+            y -= 20
+            cnv.drawString(10,y, "Endereço: 12345678901234567890123456789012345678901234567890 ")
+            y -= 20               
+            cnv.drawString(10,y, "Telefone: 12345678901 Cpf:12345678901 Cnpj: 12345678901234 ")               
+            y -= 20
+            cnv.drawString(10,y, "Cep: 07011-040 E_mail: Chico@hotmail.com12345678901234")
+            if x == z:
+            
+            z += 8 
+            y=810
+            
+            if z <= 39:
+            cnv.showPage()
+            cnv.setFont('Helvetica', 9)
+            cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior    
+            else:
+            if x== 39: 
+                cnv.save()
+
+        '''
+
+
 def rel_nome(janela3):
-   cnv = canvas.Canvas("rel_nome.pdf", pagesize=A4) 
-   cnv.save()
+   global janela4 
+   global tv 
+   global escolhido
+   global escolha
+   escolha=StringVar(value="D")
+   janela4 = Toplevel()
+   janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)  
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   escolhido=escolha.get()
+   keyboard.on_press_key("f3", lambda _: gerapdf())
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+
+
 def rel_cpfcnpj(janela3):
     cnv= canvas.Canvas("relcpfcnpj.pdf")
     cnv.save()

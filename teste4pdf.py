@@ -1,6 +1,6 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4  
-
+'''
 cnv = canvas.Canvas("rel_nome.pdf", pagesize=A4)
 cnv.setFont('Helvetica', 9)  
 #cnv.drawString(10,830, "teste") # canto superior A4
@@ -34,3 +34,5 @@ for x in range(40): # para pagina(pesquisar continuar proxima pagina)
       else:
        if x== 39: 
         cnv.save()
+
+      '''
