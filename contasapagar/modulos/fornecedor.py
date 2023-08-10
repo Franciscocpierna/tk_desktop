@@ -26,6 +26,7 @@ opcao=0
 # Relatórios
 
 def abrirpdf():
+ try:
   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
   lista_arquivos = os.listdir(caminho)
 
@@ -35,9 +36,13 @@ def abrirpdf():
   win32api.ShellExecute(0, "open", lista_arquivos[0],None, caminho, 0) 
   #input("Pressione <enter> para encerrar!") 
   messagebox1("Pressione <enter> para encerrar!",janela4)
-
+  return
+ except Error as ex:
+  messagebox1("Erro ao tentar imprimir linha 40 "+str(ex),janela4)
+  return
 
 def imprimepdf():
+  try: 
    lista_impressoras = win32print.EnumPrinters(2)
    impressora = lista_impressoras[2]
       #for impressora in lista_impressoras: 
@@ -52,22 +57,30 @@ def imprimepdf():
    for arquivo in lista_arquivos:
          win32api.ShellExecute(0, "print", arquivo, None, caminho, 0)       
    return
-    
+  except  Error as ex:
+    messagebox1("Erro ao tentar imprimir linha 57 "+str(ex),janela4)
+    return
+
+
 def pdfgerado(sqlres): 
  
     #  tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema))
+   try: 
     cnv = canvas.Canvas(r"C:\python_projetos\3.11.2\tk_desktop\arquivo\rel_nome.pdf", pagesize=A4)
-    cnv.setFont('Helvetica', 9)  
-    #cnv.drawString(10,830, "teste") # canto superior A4
-    cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior
-    #cnv.drawString(10,810, "codigo  nome                endereço           telefone      CPF             Cnpj           cep        E-mail ") #proxima linha
-    eixo = 20
-    y= 810
-    z=7
-    #for x in range(40): # para pagina(pesquisar continuar proxima pagina)
-    #for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-    x=0
-    for (c,n,e,t,ti,cp,cn,ce,ema) in range(len(sqlres)):
+   except Error as ex:
+    messagebox1(str(ex)+ " linha 62",janela4)
+    return
+   cnv.setFont('Helvetica', 9)  
+   #cnv.drawString(10,830, "teste") # canto superior A4
+   cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior
+   #cnv.drawString(10,810, "codigo  nome                endereço           telefone      CPF             Cnpj           cep        E-mail ") #proxima linha
+   eixo = 20
+   y= 810
+   z=7
+   #for x in range(40): # para pagina(pesquisar continuar proxima pagina)
+   #for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+   x=0
+   for (c,n,e,t,ti,cp,cn,ce,ema) in range(len(sqlres)):
             
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -91,7 +104,7 @@ def pdfgerado(sqlres):
               cnv.save()
         x+=1
    
-
+   return
 
 def gerapdf():
    escolhido=escolha.get()   
