@@ -25,8 +25,75 @@ opcao=0
 
 # Relatórios
 
-def gerapdf():
+def abrirpdf():
+  caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
+  lista_arquivos = os.listdir(caminho)
+
+  print(lista_arquivos[0])
+ # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
+ 
+  win32api.ShellExecute(0, "open", lista_arquivos[0],None, caminho, 0) 
+  #input("Pressione <enter> para encerrar!") 
+  messagebox1("Pressione <enter> para encerrar!",janela4)
+
+
+def imprimepdf():
+   lista_impressoras = win32print.EnumPrinters(2)
+   impressora = lista_impressoras[2]
+      #for impressora in lista_impressoras: 
+      # print(impressora)
+      #
+   win32print.SetDefaultPrinter(impressora[2])
+   # mandar imprimir todos os arquivos de uma pasta
+   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
+   lista_arquivos = os.listdir(caminho)
+   #print(lista_arquivos)
+   # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
+   for arquivo in lista_arquivos:
+         win32api.ShellExecute(0, "print", arquivo, None, caminho, 0)       
+   return
+    
+def pdfgerado(sqlres): 
+ 
+    #  tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema))
+    cnv = canvas.Canvas(r"C:\python_projetos\3.11.2\tk_desktop\arquivo\rel_nome.pdf", pagesize=A4)
+    cnv.setFont('Helvetica', 9)  
+    #cnv.drawString(10,830, "teste") # canto superior A4
+    cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior
+    #cnv.drawString(10,810, "codigo  nome                endereço           telefone      CPF             Cnpj           cep        E-mail ") #proxima linha
+    eixo = 20
+    y= 810
+    z=7
+    #for x in range(40): # para pagina(pesquisar continuar proxima pagina)
+    #for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+    x=0
+    for (c,n,e,t,ti,cp,cn,ce,ema) in range(len(sqlres)):
+            
+        y -= 20
+        cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        y-= 20
+        cnv.drawString(10,y, "codigo: "+ c+ "Nome: "+ n)
+        y -= 20
+        cnv.drawString(10,y, "Endereço: "+e)
+        y -= 20               
+        cnv.drawString(10,y, "Telefone: " + t+ " Cpf: "+cp+" Cnpj: "+cn)               
+        y -= 20
+        cnv.drawString(10,y, "Cep: "+ce+" E_mail: "+ema)
+        if x == z:
+          z += 8 
+          y=810
+          if z <= len(sqlres)-1: #39:
+            cnv.showPage()
+            cnv.setFont('Helvetica', 9)
+            cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior    
+          else:
+            if x== len(sqlres)-1: #39: 
+              cnv.save()
+        x+=1
    
+
+
+def gerapdf():
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -43,10 +110,13 @@ def gerapdf():
             cursor.close()
             
         else:
-          print("gravar")  
-           # for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-           #    tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               
+           pdfgerado(sqlres) #gerar PDF
+           if escolhido == "A":
+              imprimepdf()              
+           else:        
+              abrirpdf()
+             
+
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
            cursor.close()
@@ -55,23 +125,9 @@ def gerapdf():
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close()
 
-   if escolhido == "A":
-     # escolher qual impressora a gente vai querer usar
-     print("")
-     # escolher qual impressora a gente vai querer usar
-     lista_impressoras = win32print.EnumPrinters(2)
-     impressora = lista_impressoras[2]
-
-     win32print.SetDefaultPrinter(impressora[1])
-
-     # mandar imprimir todos os arquivos de uma pasta
-     caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
-     lista_arquivos = os.listdir(caminho)
-     arquivo="rel_nome.pdf"
-
-     # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
-     for arquivo in lista_arquivos:
-        win32api.ShellExecute(0, "print", arquivo, None, caminho, 0)       
+   
+     
+    
 
       
 
