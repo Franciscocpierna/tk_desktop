@@ -12,6 +12,7 @@ from reportlab.lib.pagesizes import A4
 import win32print
 import win32api
 import os
+import datetime 
 
 #from contasapagar import *
 largura=1200
@@ -35,11 +36,12 @@ def abrirpdf():
  
   win32api.ShellExecute(0, "open", lista_arquivos[0],None, caminho, 0) 
   #input("Pressione <enter> para encerrar!") 
-  messagebox1("Pressione <enter> para encerrar!",janela4)
+
   return
  except Error as ex:
-  messagebox1("Erro ao tentar imprimir linha 40 "+str(ex),janela4)
+  messagebox1("Erro ao tentar Abrir linha 41 "+str(ex),janela4)
   return
+ return
 
 def imprimepdf():
   try: 
@@ -62,8 +64,11 @@ def imprimepdf():
     return
 
 
-def pdfgerado(sqlres): 
- 
+def pdfgerado(sqlres):
+   data = datetime.date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
     #  tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema))
    try: 
     cnv = canvas.Canvas(r"C:\python_projetos\3.11.2\tk_desktop\arquivo\rel_nome.pdf", pagesize=A4)
@@ -73,37 +78,38 @@ def pdfgerado(sqlres):
    cnv.setFont('Helvetica', 9)  
    #cnv.drawString(10,830, "teste") # canto superior A4
    cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior
+   cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
    #cnv.drawString(10,810, "codigo  nome                endereço           telefone      CPF             Cnpj           cep        E-mail ") #proxima linha
    eixo = 20
    y= 810
-   z=7
+   z=1
    #for x in range(40): # para pagina(pesquisar continuar proxima pagina)
    #for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
    x=0
-   for (c,n,e,t,ti,cp,cn,ce,ema) in range(len(sqlres)):
-            
+
+   for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+        x+=1
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         y-= 20
-        cnv.drawString(10,y, "codigo: "+ c+ "Nome: "+ n)
+        cnv.drawString(10,y, "codigo: "+ c+ " Nome: "+ n)
         y -= 20
         cnv.drawString(10,y, "Endereço: "+e)
         y -= 20               
         cnv.drawString(10,y, "Telefone: " + t+ " Cpf: "+cp+" Cnpj: "+cn)               
         y -= 20
         cnv.drawString(10,y, "Cep: "+ce+" E_mail: "+ema)
-        if x == z:
-          z += 8 
+        if z == 8: 
+         if x  < len(sqlres): 
+          z = 0 
           y=810
-          if z <= len(sqlres)-1: #39:
-            cnv.showPage()
-            cnv.setFont('Helvetica', 9)
-            cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior    
-          else:
-            if x== len(sqlres)-1: #39: 
-              cnv.save()
-        x+=1
-   
+          cnv.showPage()
+          cnv.setFont('Helvetica', 9)
+          cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior    
+          cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
+        z+=1  
+            
+   cnv.save()
    return
 
 def gerapdf():
@@ -125,10 +131,11 @@ def gerapdf():
         else:
            pdfgerado(sqlres) #gerar PDF
            if escolhido == "A":
-              imprimepdf()              
+              imprimepdf()
+              cursor.close()              
            else:        
               abrirpdf()
-             
+              cursor.close
 
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
