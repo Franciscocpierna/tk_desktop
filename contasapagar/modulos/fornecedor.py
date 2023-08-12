@@ -55,7 +55,7 @@ def imprimepdf(arquivo1):
    win32api.ShellExecute(0, "print", arquivo1, None, caminho, 0)       
    return
   except  Error as ex:
-    messagebox1("Erro ao tentar imprimir linha 57 "+str(ex),janela4)
+    messagebox1("Erro ao tentar imprimir linha 58 "+str(ex),janela4)
     return
 
 
@@ -64,9 +64,8 @@ def pdfgerado(sqlres,arquivo):
    ano = data.year
    mes = data.month
    dia = data.day
-    #  tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema))
+  
    try: 
-    #cnv = canvas.Canvas(r"C:\python_projetos\3.11.2\tk_desktop\arquivo\rel_nome.pdf", pagesize=A4)
     cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
    except Error as ex:
     messagebox1(str(ex)+ " linha 62",janela4)
@@ -112,9 +111,9 @@ def gerapdf3():
       cursor = banco.cursor()
       try:
         if escolhido1 == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cpf ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj DESC")
 
       
         
@@ -127,12 +126,12 @@ def gerapdf3():
             cursor.close()
             
         else:
-           pdfgerado(sqlres,"rel_codigo.pdf") #gerar PDF
+           pdfgerado(sqlres,"rel_cpfcnpj.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf("rel_codigo.pdf")
+              imprimepdf("rel_cpfcnpj.pdf")
               cursor.close()              
            else:        
-              abrirpdf("rel_codigo.pdf")
+              abrirpdf("rel_cpfcnpj.pdf")
               cursor.close
 
       except Error as ex: 
@@ -184,7 +183,7 @@ def gerapdf2():
 
 def gerapdf1():
    escolhido=escolha.get()
-   #escolhido1=escolha1.get()   
+   escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -203,7 +202,7 @@ def gerapdf1():
         if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta", janela4)
             cursor.close()
-            
+            return             
         else:
            pdfgerado(sqlres,"rel_codigo.pdf") #gerar PDF
            if escolhido == "A":
@@ -212,15 +211,15 @@ def gerapdf1():
            else:        
               abrirpdf("rel_codigo.pdf")
               cursor.close
-
+           return
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
            cursor.close()
-           
+           return
    except Error as ex:
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close()
-
+        return
 def gerapdf():
    escolhido=escolha.get()   
    try: 
@@ -286,10 +285,14 @@ def rel_nome(janela3):
 def rel_cpfcnpj(janela3):
    global janela4 
    global escolhido
+   global escolhido1
    global escolha
+   global escolha1
    escolha=StringVar(value="D")
+   escolha1=StringVar(value="A")
+  
    janela4 = Toplevel()
-   janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
+   janela4.title("Relatório por Cpf/Cnpj ESC para SAIR  F3 - Gerar relatório")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -298,7 +301,12 @@ def rel_cpfcnpj(janela3):
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
-   label.place(relx=0.25, rely=0.2)  
+   label.place(relx=0.25, rely=0.2)
+   optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2.place(relx=0.2,rely=0.3)
+   optado3= Radiobutton(janela4, text= "CNPJ", value="D", variable=escolha1)
+   optado3.place(relx=0.5,rely=0.3)
+   escolhido1=escolha1.get()  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
@@ -307,10 +315,13 @@ def rel_cpfcnpj(janela3):
    keyboard.on_press_key("f3", lambda _: gerapdf3())
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
+
 def rel_nomep(janela3):
    global janela4 
    global escolhido
    global escolha
+   global nomemem
+
    escolha=StringVar(value="D")
    janela4 = Toplevel()
    janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
@@ -322,7 +333,10 @@ def rel_nomep(janela3):
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
-   label.place(relx=0.25, rely=0.2)  
+   label.place(relx=0.25, rely=0.2)
+   nomemem = Entry(janela4,width=50)
+   nomemem.place(relx=0.2,rely=0.3)
+   nomemem.focus()  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
@@ -349,7 +363,7 @@ def rel_codigo(janela3):
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
+   label = Label(janela4,text="Relatório por Código geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
    optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
