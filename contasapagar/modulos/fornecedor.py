@@ -27,52 +27,47 @@ opcao=0
 
 # Relatórios
 
-def abrirpdf():
+def abrirpdf(arquivo1):
  try:
   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
-  lista_arquivos = os.listdir(caminho)
+  #lista_arquivos = os.listdir(caminho)
 
-  print(lista_arquivos[0])
+  #print(lista_arquivos[0])
  # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
  
-  win32api.ShellExecute(0, "open", lista_arquivos[0],None, caminho, 0) 
-  #input("Pressione <enter> para encerrar!") 
-
+  win32api.ShellExecute(0, "open", arquivo1,None, caminho, 0) 
   return
  except Error as ex:
   messagebox1("Erro ao tentar Abrir linha 41 "+str(ex),janela4)
   return
  return
 
-def imprimepdf():
+def imprimepdf(arquivo1):
   try: 
    lista_impressoras = win32print.EnumPrinters(2)
    impressora = lista_impressoras[2]
-      #for impressora in lista_impressoras: 
-      # print(impressora)
-      #
    win32print.SetDefaultPrinter(impressora[2])
    # mandar imprimir todos os arquivos de uma pasta
    caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
-   lista_arquivos = os.listdir(caminho)
-   #print(lista_arquivos)
+   #lista_arquivos = os.listdir(caminho)
    # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
-   for arquivo in lista_arquivos:
-         win32api.ShellExecute(0, "print", arquivo, None, caminho, 0)       
+   #if arquivo in lista_arquivos:
+   win32api.ShellExecute(0, "print", arquivo1, None, caminho, 0)       
    return
   except  Error as ex:
     messagebox1("Erro ao tentar imprimir linha 57 "+str(ex),janela4)
     return
 
 
-def pdfgerado(sqlres):
+def pdfgerado(sqlres,arquivo):
    data = datetime.date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
     #  tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema))
    try: 
-    cnv = canvas.Canvas(r"C:\python_projetos\3.11.2\tk_desktop\arquivo\rel_nome.pdf", pagesize=A4)
+    #cnv = canvas.Canvas(r"C:\python_projetos\3.11.2\tk_desktop\arquivo\rel_nome.pdf", pagesize=A4)
+    cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
    except Error as ex:
     messagebox1(str(ex)+ " linha 62",janela4)
     return
@@ -80,12 +75,9 @@ def pdfgerado(sqlres):
    #cnv.drawString(10,830, "teste") # canto superior A4
    cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior
    cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
-   #cnv.drawString(10,810, "codigo  nome                endereço           telefone      CPF             Cnpj           cep        E-mail ") #proxima linha
    eixo = 20
    y= 810
    z=1
-   #for x in range(40): # para pagina(pesquisar continuar proxima pagina)
-   #for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
    x=0
 
    for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
@@ -112,9 +104,9 @@ def pdfgerado(sqlres):
             
    cnv.save()
    return
-
-def gerapdf1():
-   #escolhido=escolha.get()   
+def gerapdf3():
+   escolhido=escolha.get()
+   #escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -135,12 +127,90 @@ def gerapdf1():
             cursor.close()
             
         else:
-           pdfgerado(sqlres) #gerar PDF
+           pdfgerado(sqlres,"rel_codigo.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf()
+              imprimepdf("rel_codigo.pdf")
               cursor.close()              
            else:        
-              abrirpdf()
+              abrirpdf("rel_codigo.pdf")
+              cursor.close
+
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        cursor.close()
+
+def gerapdf2():
+   escolhido=escolha.get()
+   #escolhido1=escolha1.get()   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        if escolhido1 == "A":
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+        else:
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+
+      
+        
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta", janela4)
+            cursor.close()
+            
+        else:
+           pdfgerado(sqlres,"rel_codigo.pdf") #gerar PDF
+           if escolhido == "A":
+              imprimepdf("rel_codigo.pdf")
+              cursor.close()              
+           else:        
+              abrirpdf("rel_codigo.pdf")
+              cursor.close
+
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        cursor.close()
+
+def gerapdf1():
+   escolhido=escolha.get()
+   #escolhido1=escolha1.get()   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        if escolhido1 == "A":
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+        else:
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+
+      
+        
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta", janela4)
+            cursor.close()
+            
+        else:
+           pdfgerado(sqlres,"rel_codigo.pdf") #gerar PDF
+           if escolhido == "A":
+              imprimepdf("rel_codigo.pdf")
+              cursor.close()              
+           else:        
+              abrirpdf("rel_codigo.pdf")
               cursor.close
 
       except Error as ex: 
@@ -152,7 +222,7 @@ def gerapdf1():
         cursor.close()
 
 def gerapdf():
-   #escolhido=escolha.get()   
+   escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -167,16 +237,16 @@ def gerapdf():
         if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta", janela4)
             cursor.close()
-            
+            return
         else:
-           pdfgerado(sqlres) #gerar PDF
+           pdfgerado(sqlres,"rel_nome.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf()
+              imprimepdf("rel_nome.pdf")
               cursor.close()              
            else:        
-              abrirpdf()
+              abrirpdf("rel_nome.pdf")
               cursor.close
-
+              return 
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
            cursor.close()
@@ -185,7 +255,7 @@ def gerapdf():
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close()
 
-   
+   return
      
     
 def rel_nome(janela3):
@@ -234,7 +304,7 @@ def rel_cpfcnpj(janela3):
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
-   keyboard.on_press_key("f3", lambda _: gerapdf())
+   keyboard.on_press_key("f3", lambda _: gerapdf3())
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 def rel_nomep(janela3):
@@ -258,11 +328,10 @@ def rel_nomep(janela3):
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
-   keyboard.on_press_key("f3", lambda _: gerapdf())
+   keyboard.on_press_key("f3", lambda _: gerapdf2())
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
-   cnv = canvas.Canvas("rel_nome.pdf")
-   cnv.save()
+   
 def rel_codigo(janela3):
    global janela4 
    global escolhido
@@ -293,11 +362,10 @@ def rel_codigo(janela3):
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
    
-   keyboard.on_press_key("f3", lambda _: gerapdf())
+   keyboard.on_press_key("f3", lambda _: gerapdf1())
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
-   cnv = canvas.Canvas("rel_nome.pdf")
-   cnv.save()
+   
 
 def criartabela():
    vererro=""
@@ -1298,7 +1366,7 @@ def fornecedor_menu(janela1):
  editmenu2 = Menu(menujan2, tearoff=0)
  editmenu2.add_command(label = "Nome", command= lambda: rel_nome(janela3))
  editmenu2.add_command(label = "Cnpj/Cpf", command=lambda: rel_cpfcnpj(janela3))
- editmenu2.add_command(label = "Pedaço do nome",command= rel_nomep(janela3))
+ editmenu2.add_command(label = "Pedaço do nome",command=lambda: rel_nomep(janela3))
  editmenu2.add_command(label = "Codigo", command= lambda: rel_codigo(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
