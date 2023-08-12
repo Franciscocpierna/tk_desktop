@@ -13,8 +13,9 @@ import win32print
 import win32api
 import os
 import datetime 
+#import shutil
 
-#from contasapagar import *
+
 largura=1200
 altura=650
 
@@ -112,12 +113,51 @@ def pdfgerado(sqlres):
    cnv.save()
    return
 
-def gerapdf():
-   escolhido=escolha.get()   
+def gerapdf1():
+   #escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
+        if escolhido1 == "A":
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+        else:
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+
+      
+        
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta", janela4)
+            cursor.close()
+            
+        else:
+           pdfgerado(sqlres) #gerar PDF
+           if escolhido == "A":
+              imprimepdf()
+              cursor.close()              
+           else:        
+              abrirpdf()
+              cursor.close
+
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        cursor.close()
+
+def gerapdf():
+   #escolhido=escolha.get()   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        
         cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome ASC")
 
         sqlres=cursor.fetchall()
@@ -148,12 +188,8 @@ def gerapdf():
    
      
     
-
-      
-
 def rel_nome(janela3):
    global janela4 
-   global tv 
    global escolhido
    global escolha
    escolha=StringVar(value="D")
@@ -170,24 +206,98 @@ def rel_nome(janela3):
    label.place(relx=0.25, rely=0.2)  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
-   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar PDF", value="D", variable=escolha)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
    keyboard.on_press_key("f3", lambda _: gerapdf())
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
 def rel_cpfcnpj(janela3):
-    cnv= canvas.Canvas("relcpfcnpj.pdf")
-    cnv.save()
+   global janela4 
+   global escolhido
+   global escolha
+   escolha=StringVar(value="D")
+   janela4 = Toplevel()
+   janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)  
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   escolhido=escolha.get()
+   keyboard.on_press_key("f3", lambda _: gerapdf())
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 def rel_nomep(janela3):
-    cnv = canvas.Canvas("rel_nome.pdf")
-    cnv.save() 
+   global janela4 
+   global escolhido
+   global escolha
+   escolha=StringVar(value="D")
+   janela4 = Toplevel()
+   janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)  
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   escolhido=escolha.get()
+   keyboard.on_press_key("f3", lambda _: gerapdf())
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
+   cnv = canvas.Canvas("rel_nome.pdf")
+   cnv.save()
 def rel_codigo(janela3):
-    cnv = canvas.Canvas("rel_codigo")
-    cnv.save()
-
-
+   global janela4 
+   global escolhido
+   global escolhido1
+   global escolha
+   global escolha1
+   escolha=StringVar(value="D")
+   escolha1=StringVar(value="A")
+   janela4 = Toplevel()
+   janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)
+   optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2.place(relx=0.2,rely=0.3)
+   optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
+   optado3.place(relx=0.5,rely=0.3)
+   escolhido1=escolha1.get()  
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   escolhido=escolha.get()
+   
+   keyboard.on_press_key("f3", lambda _: gerapdf())
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
+   cnv = canvas.Canvas("rel_nome.pdf")
+   cnv.save()
 
 def criartabela():
    vererro=""
