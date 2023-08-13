@@ -13,7 +13,7 @@ import win32print
 import win32api
 import os
 import datetime 
-#import shutil
+import shutil
 
 
 largura=1200
@@ -36,10 +36,11 @@ def abrirpdf(arquivo1):
  # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
  
   win32api.ShellExecute(0, "open", arquivo1,None, caminho, 0) 
-  return
+  
  except Error as ex:
   messagebox1("Erro ao tentar Abrir linha 41 "+str(ex),janela4)
   return
+
  return
 
 def imprimepdf(arquivo1):
@@ -72,7 +73,15 @@ def pdfgerado(sqlres,arquivo):
     return
    cnv.setFont('Helvetica', 9)  
    #cnv.drawString(10,830, "teste") # canto superior A4
-   cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior
+   if arquivo=="rel_nome.pdf":
+    cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
+   elif  arquivo=="rel_codigo.pdf":
+    cnv.drawString(250,830, "Relatório por Código")   
+   elif  arquivo=="rel_nomep.pdf":
+     cnv.drawString(250,830, "Relatório por parte do Nome")   
+   elif  arquivo=="rel_cpfcnpj.pdf":        
+    cnv.drawString(250,830, "Relatório por Cpf/Cnpj")   
+
    cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
    eixo = 20
    y= 810
@@ -97,15 +106,24 @@ def pdfgerado(sqlres,arquivo):
           y=810
           cnv.showPage()
           cnv.setFont('Helvetica', 9)
-          cnv.drawString(250,830, "Relatório por nome") # centro do pdf linha superior    
+          #
+          if arquivo=="rel_nome.pdf":
+            cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
+          elif  arquivo=="rel_codigo.pdf":
+            cnv.drawString(250,830, "Relatório por Código")   
+          elif  arquivo=="rel_nomep.pdf":
+            cnv.drawString(250,830, "Relatório por parte do Nome")   
+          elif  arquivo=="rel_cpfcnpj.pdf":        
+            cnv.drawString(250,830, "Relatório por Cpf/Cnpj")
+          #    
           cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
         z+=1  
             
    cnv.save()
    return
-def gerapdf3():
+def gerapdf3(event):
    escolhido=escolha.get()
-   #escolhido1=escolha1.get()   
+   escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -113,7 +131,7 @@ def gerapdf3():
         if escolhido1 == "A":
           cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cpf ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj DESC")
+          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj ASC")
 
       
         
@@ -142,35 +160,29 @@ def gerapdf3():
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close()
 
-def gerapdf2():
+def gerapdf2(event):
    escolhido=escolha.get()
+   nomemem1= nomemem.get()
    #escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
+      nomemem1=nomemem1+"%"
       try:
-        if escolhido1 == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
-        else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
-
-      
-        
-        sqlres=cursor.fetchall()
+        cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
      
-    
-         
+        sqlres=cursor.fetchall()
         if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta", janela4)
             cursor.close()
             
         else:
-           pdfgerado(sqlres,"rel_codigo.pdf") #gerar PDF
+           pdfgerado(sqlres,"rel_nomep.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf("rel_codigo.pdf")
+              imprimepdf("rel_nomep.pdf")
               cursor.close()              
            else:        
-              abrirpdf("rel_codigo.pdf")
+              abrirpdf("rel_nomep.pdf")
               cursor.close
 
       except Error as ex: 
@@ -181,7 +193,7 @@ def gerapdf2():
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close()
 
-def gerapdf1():
+def gerapdf1(event):
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
@@ -220,7 +232,7 @@ def gerapdf1():
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close()
         return
-def gerapdf():
+def gerapdf(event):
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -256,7 +268,22 @@ def gerapdf():
 
    return
      
-    
+def moverpdf(arquivo):
+  #quebra o codigo se arquivo estiver aberto
+  try:
+   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
+   lista_arquivos = os.listdir(caminho) 
+   if arquivo in lista_arquivos:    
+      shutil.copy(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", rf"C:\python_projetos\3.11.2\tk_desktop\pastausuario\{arquivo}"),
+      messagebox1('Arquivo copiado com sucesso',janela4)
+   else: 
+      messagebox1(f'Arquivo {arquivo} não existe na Pasta gere Arquivo',janela4)    
+      return   
+  except Error as ex:
+    messagebox1('Erro ao copiar arquivo'+str(ex),janela4)
+    return
+  return   
+
 def rel_nome(janela3):
    global janela4 
    global escolhido
@@ -267,7 +294,7 @@ def rel_nome(janela3):
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
-   janela4.grab_set()    # impede que click na janela principal sem
+   janela4.grab_set()    # impede que click na janela principal sem fechar essa
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
@@ -277,10 +304,16 @@ def rel_nome(janela3):
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
+   #label1=Label(janela4,text="Copiar Arquivo Pdf gerado para para pastausuario tecle - F6" )
+   #label1.place(relx=0.2,rely=0.6)
    escolhido=escolha.get()
-   keyboard.on_press_key("f3", lambda _: gerapdf())
+   #keyboard.on_press_key("f3", lambda _: gerapdf())
+   
+   janela4.bind("<F3>", gerapdf)
+
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
+   #keyboard.on_press_key("f6", lambda _: moverpdf("rel_nome.pdf"))
+
 
 def rel_cpfcnpj(janela3):
    global janela4 
@@ -300,7 +333,7 @@ def rel_cpfcnpj(janela3):
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
+   label = Label(janela4,text="Relatório por Cpf/Cnpj geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
    optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
@@ -312,7 +345,8 @@ def rel_cpfcnpj(janela3):
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
-   keyboard.on_press_key("f3", lambda _: gerapdf3())
+  # keyboard.on_press_key("f3", lambda _: gerapdf3())
+   janela4.bind("<F3>", gerapdf3)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
@@ -324,7 +358,7 @@ def rel_nomep(janela3):
 
    escolha=StringVar(value="D")
    janela4 = Toplevel()
-   janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
+   janela4.title("Relatório por parte do Nome ESC para SAIR  F3 - Gerar relatório")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -332,7 +366,7 @@ def rel_nomep(janela3):
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   label = Label(janela4,text="Relatório por Nomes geração em PDF ",font = ("Arial Bold", 12))
+   label = Label(janela4,text="Relatório por por parte do Nome geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
    nomemem = Entry(janela4,width=50)
    nomemem.place(relx=0.2,rely=0.3)
@@ -342,9 +376,10 @@ def rel_nomep(janela3):
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
-   keyboard.on_press_key("f3", lambda _: gerapdf2())
+  # keyboard.on_press_key("f3", lambda _: gerapdf2())
+   janela4.bind("<F3>", gerapdf2)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
+  
    
 def rel_codigo(janela3):
    global janela4 
@@ -355,7 +390,7 @@ def rel_codigo(janela3):
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
    janela4 = Toplevel()
-   janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
+   janela4.title("Relatório por Codigo ESC para SAIR  F3 - Gerar relatório")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -376,7 +411,8 @@ def rel_codigo(janela3):
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
    
-   keyboard.on_press_key("f3", lambda _: gerapdf1())
+   #keyboard.on_press_key("f3", lambda _: gerapdf1())
+   janela4.bind("<F3>", gerapdf1)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
    
@@ -1159,7 +1195,7 @@ def cosulta_cnpj(janela3):
         cursor.close() 
         
 
-def consultacodigoopcao():
+def consultacodigoopcao(event):
    tv.delete(*tv.get_children())
    escolhido=escolha.get()   
    try: 
@@ -1244,10 +1280,10 @@ def consulta_codigo(janela3):
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
    escolhido=escolha.get()
-   keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
-
+  # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   janela4.bind("<F3>", consultacodigoopcao)
    
-def tecla_obtida():
+def tecla_obtida(event):
     tv.delete(*tv.get_children())
     nomemem1= nomemem.get()
     try: 
@@ -1333,8 +1369,8 @@ def consulta_porcao(janela3):
    nomemem.grid(row=1, column=4,sticky=W)
    nomemem.focus()
    print(nomemem.get())
-   keyboard.on_press_key("f3", lambda _: tecla_obtida())
-      
+   #keyboard.on_press_key("f3", lambda _: tecla_obtida())
+   janela4.bind("<F3>", tecla_obtida)   
      
 
 # relatorios
