@@ -1,8 +1,14 @@
 from tkinter import *
 from tkinter import messagebox
-from fornecedor import *
-from contas import *
-from tipo import *
+#from fornecedor import *
+from fornecedor import fornecedor_menu
+from tipo import  tipo_menu
+from contas import contas_menu
+from classes import *
+import keyboard
+
+#from contas import *
+#from tipo import *
 
 
 
@@ -34,6 +40,11 @@ janela1.grab_set()    # impede que click na janela principal sem fechar janela a
 #janela1.configure(background='red')
 #janela1.overrideredirect(True)  
 
+
+
+
+
+
 #adicionando menu
 
 menujan = Menu(janela1)
@@ -56,6 +67,7 @@ janela1.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, 
 largura=1200
 altura=650
 keyboard.on_press_key("f2" , lambda _: janela1.quit())
+
 #janela1.mainloop()
 
 janela.mainloop()

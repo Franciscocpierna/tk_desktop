@@ -97,7 +97,7 @@ def pdfgerado(sqlres,arquivo):
         y -= 20
         cnv.drawString(10,y, "Endereço: "+e)
         y -= 20               
-        cnv.drawString(10,y, "Telefone: " + t+ " Cpf: "+cp+" Cnpj: "+cn)               
+        cnv.drawString(10,y, "Telefone: " + t+" Tipo:"+ti+ " Cpf: "+cp+" Cnpj: "+cn)               
         y -= 20
         cnv.drawString(10,y, "Cep: "+ce+" E_mail: "+ema)
         if z == 8: 
@@ -367,7 +367,9 @@ def rel_nomep(janela3):
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    label = Label(janela4,text="Relatório por por parte do Nome geração em PDF ",font = ("Arial Bold", 12))
-   label.place(relx=0.25, rely=0.2)
+   label.place(relx=0.2, rely=0.1)
+   label1= Label(janela4, text="Entre com parte do Nome:",font=("Arial Bld",12))
+   label1.place(relx=0.25, rely=0.25)
    nomemem = Entry(janela4,width=50)
    nomemem.place(relx=0.2,rely=0.3)
    nomemem.focus()  
