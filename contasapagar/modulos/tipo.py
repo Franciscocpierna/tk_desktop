@@ -90,7 +90,7 @@ def pdfgerado1(sqlres,arquivo):
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         y-= 20
-        cnv.drawString(10,y, "codigo: "+ c+ " Nome: "+ n)
+        cnv.drawString(10,y, "codigo: "+ str(c)+ " Nome: "+ n)
         
         if z == 8: 
          if x  < len(sqlres): 
@@ -306,7 +306,7 @@ def verificacodigo1():
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0:  
-        
+         
         return sqlres
        else:
         
@@ -325,11 +325,7 @@ def consultatipo():
    sqlres=""   
    tela.nome.delete(0,END) 
    
-   if len(tela.codigo.get())!=5:
-        messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
-        tela.codigo.delete(0,END)
-        tela.codigo.focus()
-        return sqlres 
+    
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -346,22 +342,22 @@ def consultatipo():
             tela.codigo.delete(0,END)   
             tela.codigo.focus()
             cursor.close()  
-            return 
+            return sqlres
        else:
             tela.nome.insert(0, sqlres[0][1])
             cursor.close()  
-            return
+            return sqlres
       except Error as ex: 
          messagebox1("Erro ao tentar ler o registro linha 355 "+str(ex),manutencao)
          limpacampostipo()
          cursor.close()  
-         return 
+         return sqlres
               
    except Error as ex:
       messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 360 "+str(ex),manutencao)
       limpacampostipo()
       cursor.close()  
-      return                     
+      return sqlres                    
    
     
  
@@ -385,16 +381,11 @@ def incluirtipo():
    sqlres="" 
    
    
-      
-   if len(tela.codigo.get())!=5:
-        messagebox1("codigo tamanho 5",manutencao)
-        tela.codigo.focus()
-        return
-   else:
-        sqlres =  verificacodigo1()
-        if len(sqlres) !=0:
-          tela.codigo.focus
-          return          
+   
+   sqlres =  verificacodigo1()
+   if len(sqlres) !=0:
+      tela.codigo.focus
+      return          
    
    if len(tela.nome.get())==0 or len(tela.nome.get())>50:
      
@@ -467,10 +458,6 @@ def cosultatipo_click(janela1):
       
 def alteracaotipo():
     
-    if len(tela.codigo.get())!=5:
-        messagebox1("codigo tamanho 5",manutencao)
-        tela.codigo.focus()
-        return
     codigomem=tela.codigo.get() 
     nomemem=tela.nome.get()
     

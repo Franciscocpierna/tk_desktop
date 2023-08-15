@@ -486,7 +486,7 @@ def consultafor():
         messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
         tela.codigo.delete(0,END)
         tela.codigo.focus()
-        return sqlres 
+        return sqlres
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
