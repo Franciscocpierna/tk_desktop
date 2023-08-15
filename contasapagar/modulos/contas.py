@@ -27,7 +27,7 @@ opcao=0
 
 # Relatórios
 
-def abrirpdf(arquivo1):
+def abrirpdf2(arquivo1):
  try:
   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
   #lista_arquivos = os.listdir(caminho)
@@ -43,7 +43,7 @@ def abrirpdf(arquivo1):
 
  return
 
-def imprimepdf(arquivo1):
+def imprimepdf2(arquivo1):
   try: 
    lista_impressoras = win32print.EnumPrinters(2)
    impressora = lista_impressoras[2]
@@ -60,7 +60,7 @@ def imprimepdf(arquivo1):
     return
 
 
-def pdfgerado(sqlres,arquivo):
+def pdfgerado2(sqlres,arquivo):
    data = datetime.date.today() 
    ano = data.year
    mes = data.month
@@ -97,7 +97,7 @@ def pdfgerado(sqlres,arquivo):
         y -= 20
         cnv.drawString(10,y, "Endereço: "+e)
         y -= 20               
-        cnv.drawString(10,y, "Telefone: " + t+" Tipo:"+ti+ " Cpf: "+cp+" Cnpj: "+cn)                              
+        cnv.drawString(10,y, "Telefone: " + t+" Tipo:"+ti+ " Cpf: "+cp+" Cnpj: "+cn)               
         y -= 20
         cnv.drawString(10,y, "Cep: "+ce+" E_mail: "+ema)
         if z == 8: 
@@ -121,7 +121,7 @@ def pdfgerado(sqlres,arquivo):
             
    cnv.save()
    return
-def gerapdf3(event):
+def gerapd3(event):
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
@@ -144,12 +144,12 @@ def gerapdf3(event):
             cursor.close()
             
         else:
-           pdfgerado(sqlres,"rel_cpfcnpj.pdf") #gerar PDF
+           pdfgerado2(sqlres,"rel_cpfcnpj.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf("rel_cpfcnpj.pdf")
+              imprimepdf2("rel_cpfcnpj.pdf")
               cursor.close()              
            else:        
-              abrirpdf("rel_cpfcnpj.pdf")
+              abrirpdf2("rel_cpfcnpj.pdf")
               cursor.close
 
       except Error as ex: 
@@ -177,12 +177,12 @@ def gerapdf2(event):
             cursor.close()
             
         else:
-           pdfgerado(sqlres,"rel_nomep.pdf") #gerar PDF
+           pdfgerado2(sqlres,"rel_nomep.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf("rel_nomep.pdf")
+              imprimepdf2("rel_nomep.pdf")
               cursor.close()              
            else:        
-              abrirpdf("rel_nomep.pdf")
+              abrirpdf2("rel_nomep.pdf")
               cursor.close
 
       except Error as ex: 
@@ -193,7 +193,7 @@ def gerapdf2(event):
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close()
 
-def gerapdf1(event):
+def gerapd1(event):
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
@@ -216,12 +216,12 @@ def gerapdf1(event):
             cursor.close()
             return             
         else:
-           pdfgerado(sqlres,"rel_codigo.pdf") #gerar PDF
+           pdfgerado2(sqlres,"rel_codigo.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf("rel_codigo.pdf")
+              imprimepdf2("rel_codigo.pdf")
               cursor.close()              
            else:        
-              abrirpdf("rel_codigo.pdf")
+              abrirpdf2("rel_codigo.pdf")
               cursor.close
            return
       except Error as ex: 
@@ -250,12 +250,12 @@ def gerapdf(event):
             cursor.close()
             return
         else:
-           pdfgerado(sqlres,"rel_nome.pdf") #gerar PDF
+           pdfgerado2(sqlres,"rel_nome.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf("rel_nome.pdf")
+              imprimepdf2("rel_nome.pdf")
               cursor.close()              
            else:        
-              abrirpdf("rel_nome.pdf")
+              abrirpdf2("rel_nome.pdf")
               cursor.close
               return 
       except Error as ex: 
@@ -268,7 +268,7 @@ def gerapdf(event):
 
    return
      
-def moverpdf(arquivo):
+def moverpdf2(arquivo):
   #quebra o codigo se arquivo estiver aberto
   try:
    caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
@@ -284,7 +284,7 @@ def moverpdf(arquivo):
     return
   return   
 
-def rel_nome(janela3):
+def rel_nome2(janela3):
    global janela4 
    global escolhido
    global escolha
@@ -315,7 +315,7 @@ def rel_nome(janela3):
    #keyboard.on_press_key("f6", lambda _: moverpdf("rel_nome.pdf"))
 
 
-def rel_cpfcnpj(janela3):
+def rel_cpfcnpj2(janela3):
    global janela4 
    global escolhido
    global escolhido1
@@ -346,11 +346,11 @@ def rel_cpfcnpj(janela3):
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
-   janela4.bind("<F3>", gerapdf3)
+   janela4.bind("<F3>", gerapd3)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
-def rel_nomep(janela3):
+def rel_nomep2(janela3):
    global janela4 
    global escolhido
    global escolha
@@ -383,7 +383,7 @@ def rel_nomep(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
   
    
-def rel_codigo(janela3):
+def rel_codigo2(janela3):
    global janela4 
    global escolhido
    global escolhido1
@@ -414,18 +414,18 @@ def rel_codigo(janela3):
    escolhido=escolha.get()
    
    #keyboard.on_press_key("f3", lambda _: gerapdf1())
-   janela4.bind("<F3>", gerapdf1)
+   janela4.bind("<F3>", gerapd1)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
    
 
-def criartabela():
-   vererro=""
+def criartabela2(janela3):
+   
    try:
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
      
-     cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5) PRIMARY KEY NOT NULL, 
+     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) PRIMARY KEY NOT NULL, 
                                                nome varchar(50) NOT NULL,
                                                endereco varchar(50) NOT NULL, 
                                                telefone varchar(11),
@@ -436,47 +436,44 @@ def criartabela():
                                                e_mail varchar(30))''')
      cursor.close() 
    except Error as ex:
-     messagebox1(str(ex)+ " linha 35",manutencao)
-     limpacamposfor()
-     vererro=str(ex)
-     return vererro
-   return vererro
+     messagebox1(str(ex)+ " linha 439",janela3)
+     return 
+   return 
 
 
-def verificacodigo():
-   vererro=""
+def verificacodigo2():
+   
    codigomem=tela.codigo.get()
    try:
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
    except Error as ex:
-       messagebox1("Erro na conexão com Banco de dados linha 26 "+str(ex),manutencao)
-       limpacamposfor()
-       vererro=str(ex)
-       return vererro
+       messagebox1("Erro na conexão com Banco de dados linha 45 "+str(ex),manutencao)
+       limpacamposcontas()
+       
+       return 
    
    try:
        cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0:  
-        verdadeiro=False
-        return verdadeiro,sqlres
+          return sqlres
        else:
-        verdadeiro=True
-        messagebox1("Informação: Registro já existe não pode ser inserido linha 62",manutencao)
-        limpacamposfor()
+        
+        messagebox1("Informação: Registro já existe não pode ser inserido linha 464",manutencao)
+        limpacamposcontas()
         tela.codigo.focus()
-        return verdadeiro,sqlres 
+        return sqlres 
    except Error as ex:
        messagebox1("Erro na leitura da tabela Fornecedor linha 67 "+str(ex),manutencao)
-       limpacamposfor()
-       vererro=str(ex)
-       return vererro
+       limpacamposcontas()
+       
+       return 
 
-def consultafor():
-   vererro=""
+def consultacontas():
    
+   sqlres=""
    tela.nome.delete(0,END) 
    tela.endereco.delete(0,END) 
    tela.telefone.delete(0,END)
@@ -489,7 +486,7 @@ def consultafor():
         messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
         tela.codigo.delete(0,END)
         tela.codigo.focus()
-        return 
+        return sqlres 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -501,11 +498,12 @@ def consultafor():
        
 
        if len(sqlres) == 0:
-            messagebox1("Registro não existe linha 101",manutencao)
+            messagebox1("Registro não existe linha 501",manutencao)
 
             tela.codigo.delete(0,END)   
             tela.codigo.focus()
-            return vererro,sqlres 
+            cursor.close()  
+            return sqlres
        else:
             tela.nome.insert(0, sqlres[0][1])
             tela.endereco.insert(0,sqlres[0][2])
@@ -515,30 +513,32 @@ def consultafor():
             tela.cnpj.insert(0, sqlres[0][6])
             tela.cep.insert(0, sqlres[0][7])
             tela.e_mail.insert(0, sqlres[0][8])
-            print(sqlres[0][1])
+            cursor.close()  
+            return sqlres 
       except Error as ex: 
          messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
-         limpacamposfor()
-         vererro=str(ex)
+         limpacamposcontas()
+         cursor.close()
+         return sqlres
          
    except Error as ex:
-      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 125 "+str(ex),manutencao)
-      limpacamposfor()
-      vererro=(str(ex))
-   cursor.close()  
-   return vererro,sqlres                    
+      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 522 "+str(ex),manutencao)
+      limpacamposcontas()
+      cursor.close()  
+      return sqlres   
+                       
    
     
  
  
 
-def tab_order():
+def tab_order2():
   tela.codigo.focus
   widgets = [tela.codigo,tela.nome,tela.endereco,tela.telefone,tela.tipo,tela.cpf,tela.cnpj,tela.cep,tela.e_mail]
   for w in widgets:
      w.lift()
 
-def limpacamposfor():
+def limpacamposcontas():
   tela.codigo.delete(0,END)
   tela.nome.delete(0,END) 
   tela.endereco.delete(0,END) 
@@ -552,24 +552,18 @@ def limpacamposfor():
 
 
 
-def incluirfor():
+def incluircontas():
       
    sqlres="" 
-   verdadeiro=False
-   ver = criartabela()
-   if len(ver) != 0:
-      limpacamposfor()
-      tela.codigo.focus()
-      return
-      
+   
+         
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         tela.codigo.focus()
         return
    else:
-        verdadeiro, sqlres =  verificacodigo()
-        if verdadeiro == True:
-          print(sqlres)
+        sqlres =  verificacodigo2()
+        if len(sqlres) != 0: 
           tela.codigo.focus
           return          
    
@@ -647,21 +641,21 @@ def incluirfor():
            banco.commit()
            cursor.close()
            messagebox1("registro Incluido com sucesso",manutencao)     
-           limpacamposfor()   
+           limpacamposcontas()   
            tela.codigo.focus()
           except Error as ex:
             messagebox1("erro ao gravar tabela Fornecedor linha 252 "+ str(ex),manutencao)       
-            limpacamposfor()
+            limpacamposcontas()
         else:
            messagebox1("Registro não foi gravado",manutencao)
 
    except Error as ex:
        messagebox1("erro ao conectar com banco de dados linha 225 "+ str(ex),manutencao)
-       limpacamposfor()   
+       limpacamposcontas()   
        tela.codigo.focus()
        return
    
-def incluirfor_click(janela1):
+def incluircontas_click(janela1):
     opcao=1
     opcao1=1
     
@@ -669,9 +663,9 @@ def incluirfor_click(janela1):
     global manutencao  
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-    botao=Button(manutencao, text='Salvar',command=incluirfor)
+    botao=Button(manutencao, text='Salvar',command=incluircontas)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
-    tab_order()
+    tab_order2()
     tela.codigo.focus()
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
@@ -680,19 +674,19 @@ def incluirfor_click(janela1):
     
            
      
-def cosultafor_click(janela1):
+def cosultacontas_click(janela1):
      opcao=2
      opcao1=1
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultafor)
+     botao=Button(manutencao, text='Consultar',command=consultacontas)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
-def alteracaofor():
+def alteracaocontas():
     
     if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
@@ -707,9 +701,9 @@ def alteracaofor():
     cnpjmem=tela.cnpj.get()
     cepmem=tela.cep.get()
     e_mailmem = tela.e_mail.get()
-    ver, sqlres= consultafor()
-    if len(ver) != 0 or len(sqlres)==0:
-      limpacamposfor()
+    sqlres= consultacontas()
+    if len(sqlres)==0:
+      limpacamposcontas()
       tela.codigo.focus()
       return
     if nomemem == "":
@@ -820,7 +814,7 @@ def alteracaofor():
           
       except Error as ex:
        messagebox1("erro ao conectar com banco de dados linha 307 "+ str(ex),manutencao)
-       limpacamposfor()   
+       limpacamposcontas()   
        tela.codigo.focus()
        return
           
@@ -842,28 +836,28 @@ def alteracaofor():
            banco.commit()
            cursor.close()     
            messagebox1("registro Alterado com sucesso",manutencao)
-           limpacamposfor()   
+           limpacamposcontas()   
            tela.codigo.focus()
       except Error as ex:
             messagebox("erro ao regravar tabela Fornecedor linha 333"+ str(ex),manutencao)       
-            limpacamposfor() 
+            limpacamposcontas() 
             return
     else:
            messagebox1("Registro não foi Alterado",manutencao)
            return
     
-def alteracaofor_clik(janela1):
+def alteracaocontas_clik(janela1):
      opcao=3
      opcao1=1
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consutar',command=consultafor)
+     botao=Button(manutencao, text='Consutar',command=consultacontas)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
-     botao1=Button(manutencao, text='Alterar',command=alteracaofor)
+     botao1=Button(manutencao, text='Alterar',command=alteracaocontas)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
-     tab_order()
+     tab_order2()
      tela.codigo.focus()
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
@@ -872,15 +866,15 @@ def alteracaofor_clik(janela1):
      
       
      
-def exclusaofor():
+def exclusaocontas():
     codigomem=tela.codigo.get()
-    ver, sqlres= consultafor()
-    if len(ver) != 0 or len(sqlres)==0:
-      limpacamposfor()
+    sqlres= consultacontas()
+    if len(sqlres)==0:
+      limpacamposcontas()
       tela.codigo.focus()
       return
     
-    res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
+    res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
     if res == 'yes':
        try:
         banco = sqlite3.connect('contaspagar.db')
@@ -890,35 +884,35 @@ def exclusaofor():
            cursor.execute(f"DELETE  FROM fornecedor WHERE codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
-           messagebox("Registro Excluido com sucesso",manutencao)
-           limpacamposfor()   
+           messagebox1("Registro Excluido com sucesso",manutencao)
+           limpacamposcontas()   
            tela.codigo.focus()
         except Error as ex:
             messagebox1("erro ao Excluir tabela Fornecedor linha 366"+ str(ex),manutencao)       
-            limpacamposfor() 
+            limpacamposcontas() 
        except Error as ex:
            messagebox1("erro ao conectar com banco de dados linha 343 "+ str(ex),manutencao)
-           limpacamposfor()   
+           limpacamposcontas()   
            tela.codigo.focus()
            return
     else:
            messagebox1("Registro não foi Excluido",manutencao)      
     return 
-def excluirfor_click(janela1): 
+def excluircontas_click(janela1): 
      opcao=4
      opcao1=1
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultafor)
+     botao=Button(manutencao, text='Consultar',command=consultacontas)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
-     botao1=Button(manutencao, text='Excluir',command=exclusaofor)
+     botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
-def consulta_nome(janela3):
+def consulta_nome2(janela3):
    janela4 = Toplevel()
    janela4.title("Consultas por Nomes ESC para SAIR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -972,7 +966,7 @@ def consulta_nome(janela3):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             
         else:
@@ -980,15 +974,15 @@ def consulta_nome(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 987 "+str(ex),janela4)
         cursor.close() 
         
  
-def cosulta_cpf(janela3):
+def cosulta_cpf2(janela3):
    janela4 = Toplevel()
    janela4.title("Consultas por Cpf ESC para SAIR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -1042,7 +1036,7 @@ def cosulta_cpf(janela3):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             return
         else:
@@ -1050,84 +1044,15 @@ def cosulta_cpf(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
            cursor.close()
            return
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close() 
         return
-def consulta_codigo(janela3):
-   janela4 = Toplevel()
-   janela4.title("Consultas por Codigo ESC para SAIR")
-   janela4.resizable(False, False) # tamanho fixo             
-   janela4.transient(janela3) # de onde vem a janela
-   janela4.focus_force() #forçar foco
-   janela4.grab_set()    # impede que click na janela principal sem
-   #'1500x1500' 
-   centro=centralizacao(janela4,1330, 650, posx, posy)
-   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
-    
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
-   tv.column('Endereço', minwidth=0, width=250)
-   tv.column('Telefone', minwidth=9, width=100)
-   tv.column('Tipo', minwidth=1, width=30)
-   tv.column('Cpf', minwidth=0, width=100)
-   tv.column('Cnpj', minwidth=0, width=150)
-   tv.column('Cep', minwidth=0, width=100)
-   tv.column('E_mail', minwidth=0, width=200)
-   
-   tv.heading('Codigo', text='Codigo' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Endereço', text='ENDEREÇO')
-   tv.heading('Telefone', text='TELEFONE')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Cpf', text='CPF')
-   tv.heading('Cnpj', text='CNPJ')
-   tv.heading('Cep', text='CEP')
-   tv.heading('E_mail', text='E_MAIL')
-  
-   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
 
-   tv.configure(yscroll=verscrlbar)
-  # tv.configure(xscroll=verscrlbar1.set)
-   tv.configure(xscroll=verscrlbar1)
-   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
-   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
-   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   
-   
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo")
-        sqlres=cursor.fetchall()
-     
-    
-         
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
-            cursor.close()
-            
-        else:
-            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
-           cursor.close()
-           
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
-        cursor.close() 
-        
-
-def cosulta_cnpj(janela3):
+def cosulta_cnpj2(janela3):
    janela4 = Toplevel()
    janela4.title("Consultas por Cnpj ESC para SAIR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -1181,7 +1106,7 @@ def cosulta_cnpj(janela3):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             
         else:
@@ -1189,15 +1114,15 @@ def cosulta_cnpj(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 1123 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1127 "+str(ex),janela4)
         cursor.close() 
         
 
-def consultacodigoopcao(event):
+def consultacodigoopcao2(event):
    tv.delete(*tv.get_children())
    escolhido=escolha.get()   
    try: 
@@ -1214,7 +1139,7 @@ def consultacodigoopcao(event):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             
         else:
@@ -1222,15 +1147,15 @@ def consultacodigoopcao(event):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
         cursor.close() 
         
 
-def consulta_codigo(janela3):
+def consulta_codigo2(janela3):
    global janela4 
    global tv 
    global escolhido
@@ -1283,9 +1208,9 @@ def consulta_codigo(janela3):
    optado1.grid(row=1, column=4)
    escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
-   janela4.bind("<F3>", consultacodigoopcao)
+   janela4.bind("<F3>", consultacodigoopcao2)
    
-def tecla_obtida(event):
+def tecla_obtida2(event):
     tv.delete(*tv.get_children())
     nomemem1= nomemem.get()
     try: 
@@ -1312,18 +1237,18 @@ def tecla_obtida(event):
                     cursor.close()
                     return
          except Error as ex: 
-               messagebox1("Erro ao tentar ler o registro linha 782 "+str(ex),janela4)
+               messagebox1("Erro ao tentar ler o registro linha 1315 "+str(ex),janela4)
                cursor.close()
                return
                
     except Error as ex:
-          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1251 "+str(ex),janela4)
           cursor.close()
           return 
      
      
 
-def consulta_porcao(janela3):
+def consulta_porcao2(janela3):
         
    global janela4 
    global tv 
@@ -1372,7 +1297,7 @@ def consulta_porcao(janela3):
    nomemem.focus()
    print(nomemem.get())
    #keyboard.on_press_key("f3", lambda _: tecla_obtida())
-   janela4.bind("<F3>", tecla_obtida)   
+   janela4.bind("<F3>", tecla_obtida2)   
      
 
 # relatorios
@@ -1398,28 +1323,28 @@ def contas_menu(janela1):
  filemenu= Menu(menujan2, tearoff=0,)
 
 
- filemenu.add_command(label = " Inclusão",command= lambda: incluirfor_click(janela3))
- filemenu.add_command(label = " Consulta",command= lambda: cosultafor_click(janela3))
- filemenu.add_command(label = " Alteração",command=lambda: alteracaofor_clik(janela3))
- filemenu.add_command(label = " Excluir", command=lambda:  excluirfor_click(janela3))
+ filemenu.add_command(label = " Inclusão",command= lambda: incluircontas_click(janela3))
+ filemenu.add_command(label = " Consulta",command= lambda: cosultacontas_click(janela3))
+ filemenu.add_command(label = " Alteração",command=lambda: alteracaocontas_clik(janela3))
+ filemenu.add_command(label = " Excluir", command=lambda:  excluircontas_click(janela3))
  menujan2.add_cascade(label = "Manutenção", menu = filemenu)
 
 
  consultamenu= Menu(menujan2, tearoff=0,)
- consultamenu.add_command(label = " Consulta por nome",command= lambda: consulta_nome(janela3))
- consultamenu.add_command(label = " Consulta por Cnpj",command= lambda: cosulta_cnpj(janela3))
- consultamenu.add_command(label = " Consulta por Cpf",command= lambda: cosulta_cpf(janela3))
- consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo(janela3))
- consultamenu.add_command(label = " consulta por pedaço do nome", command=lambda:  consulta_porcao(janela3))
+ consultamenu.add_command(label = " Consulta por nome",command= lambda: consulta_nome2(janela3))
+ consultamenu.add_command(label = " Consulta por Cnpj",command= lambda: cosulta_cnpj2(janela3))
+ consultamenu.add_command(label = " Consulta por Cpf",command= lambda: cosulta_cpf2(janela3))
+ consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo2(janela3))
+ consultamenu.add_command(label = " consulta por pedaço do nome", command=lambda:  consulta_porcao2(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
 
 
 
  editmenu2 = Menu(menujan2, tearoff=0)
- editmenu2.add_command(label = "Nome", command= lambda: rel_nome(janela3))
- editmenu2.add_command(label = "Cnpj/Cpf", command=lambda: rel_cpfcnpj(janela3))
- editmenu2.add_command(label = "Pedaço do nome",command=lambda: rel_nomep(janela3))
- editmenu2.add_command(label = "Codigo", command= lambda: rel_codigo(janela3))
+ editmenu2.add_command(label = "Nome", command= lambda: rel_nome2(janela3))
+ editmenu2.add_command(label = "Cnpj/Cpf", command=lambda: rel_cpfcnpj2(janela3))
+ editmenu2.add_command(label = "Pedaço do nome",command=lambda: rel_nomep2(janela3))
+ editmenu2.add_command(label = "Codigo", command= lambda: rel_codigo2(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
  menusair = Menu(menujan2, tearoff=0)
@@ -1430,8 +1355,9 @@ def contas_menu(janela1):
  largura= 550
  altura = 450
  centro=centralizacao(janela3,largura, altura, posx, posy)
-
+ criartabela2(janela3) 
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
  keyboard.on_press_key("f1", lambda _: janela3.destroy())
  #janela3.mainloop()
+
 

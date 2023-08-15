@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-#from fornecedor import *
 from fornecedor import fornecedor_menu
 from tipo import  tipo_menu
 from contas import contas_menu
@@ -29,7 +28,7 @@ janela.geometry('1500x1500')
 #tela 2
 
 janela1 = Toplevel() # janela de nível superior
-janela1.title("Menu Manutenção PARA SAIR PELO TECLADO F2 DUAS VEZES")
+janela1.title("Menu Manutenção PARA SAIR PELO TECLADO F2")
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            
@@ -46,7 +45,7 @@ janela1.grab_set()    # impede que click na janela principal sem fechar janela a
 
 
 #adicionando menu
-
+''
 menujan = Menu(janela1)
 filemenu= Menu(menujan, tearoff=0,)
 filemenu.add_command(label = " Fornecedor",command= lambda: fornecedor_menu(janela1))

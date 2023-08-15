@@ -419,8 +419,8 @@ def rel_codigo(janela3):
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
    
 
-def criartabela():
-   vererro=""
+def criartabela(janela3):
+   
    try:
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
@@ -436,47 +436,44 @@ def criartabela():
                                                e_mail varchar(30))''')
      cursor.close() 
    except Error as ex:
-     messagebox1(str(ex)+ " linha 35",manutencao)
-     limpacamposfor()
-     vererro=str(ex)
-     return vererro
-   return vererro
+     messagebox1(str(ex)+ " linha 439",janela3)
+     return 
+   return 
 
 
 def verificacodigo():
-   vererro=""
+   
    codigomem=tela.codigo.get()
    try:
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
    except Error as ex:
-       messagebox1("Erro na conexão com Banco de dados linha 26 "+str(ex),manutencao)
+       messagebox1("Erro na conexão com Banco de dados linha 45 "+str(ex),manutencao)
        limpacamposfor()
-       vererro=str(ex)
-       return vererro
+       
+       return 
    
    try:
        cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0:  
-        verdadeiro=False
-        return verdadeiro,sqlres
+          return sqlres
        else:
-        verdadeiro=True
-        messagebox1("Informação: Registro já existe não pode ser inserido linha 62",manutencao)
+        
+        messagebox1("Informação: Registro já existe não pode ser inserido linha 464",manutencao)
         limpacamposfor()
         tela.codigo.focus()
-        return verdadeiro,sqlres 
+        return sqlres 
    except Error as ex:
        messagebox1("Erro na leitura da tabela Fornecedor linha 67 "+str(ex),manutencao)
        limpacamposfor()
-       vererro=str(ex)
-       return vererro
+       
+       return 
 
 def consultafor():
-   vererro=""
    
+   sqlres=""
    tela.nome.delete(0,END) 
    tela.endereco.delete(0,END) 
    tela.telefone.delete(0,END)
@@ -489,7 +486,7 @@ def consultafor():
         messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
         tela.codigo.delete(0,END)
         tela.codigo.focus()
-        return 
+        return sqlres 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -501,11 +498,12 @@ def consultafor():
        
 
        if len(sqlres) == 0:
-            messagebox1("Registro não existe linha 101",manutencao)
+            messagebox1("Registro não existe linha 501",manutencao)
 
             tela.codigo.delete(0,END)   
             tela.codigo.focus()
-            return vererro,sqlres 
+            cursor.close()  
+            return sqlres
        else:
             tela.nome.insert(0, sqlres[0][1])
             tela.endereco.insert(0,sqlres[0][2])
@@ -515,18 +513,20 @@ def consultafor():
             tela.cnpj.insert(0, sqlres[0][6])
             tela.cep.insert(0, sqlres[0][7])
             tela.e_mail.insert(0, sqlres[0][8])
-            print(sqlres[0][1])
+            cursor.close()  
+            return sqlres 
       except Error as ex: 
          messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
          limpacamposfor()
-         vererro=str(ex)
+         cursor.close()
+         return sqlres
          
    except Error as ex:
-      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 125 "+str(ex),manutencao)
+      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 522 "+str(ex),manutencao)
       limpacamposfor()
-      vererro=(str(ex))
-   cursor.close()  
-   return vererro,sqlres                    
+      cursor.close()  
+      return sqlres   
+                       
    
     
  
@@ -555,21 +555,15 @@ def limpacamposfor():
 def incluirfor():
       
    sqlres="" 
-   verdadeiro=False
-   ver = criartabela()
-   if len(ver) != 0:
-      limpacamposfor()
-      tela.codigo.focus()
-      return
-      
+   
+         
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         tela.codigo.focus()
         return
    else:
-        verdadeiro, sqlres =  verificacodigo()
-        if verdadeiro == True:
-          print(sqlres)
+        sqlres =  verificacodigo()
+        if len(sqlres) != 0: 
           tela.codigo.focus
           return          
    
@@ -707,8 +701,8 @@ def alteracaofor():
     cnpjmem=tela.cnpj.get()
     cepmem=tela.cep.get()
     e_mailmem = tela.e_mail.get()
-    ver, sqlres= consultafor()
-    if len(ver) != 0 or len(sqlres)==0:
+    sqlres= consultafor()
+    if len(sqlres)==0:
       limpacamposfor()
       tela.codigo.focus()
       return
@@ -874,13 +868,13 @@ def alteracaofor_clik(janela1):
      
 def exclusaofor():
     codigomem=tela.codigo.get()
-    ver, sqlres= consultafor()
-    if len(ver) != 0 or len(sqlres)==0:
+    sqlres= consultafor()
+    if len(sqlres)==0:
       limpacamposfor()
       tela.codigo.focus()
       return
     
-    res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
+    res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
     if res == 'yes':
        try:
         banco = sqlite3.connect('contaspagar.db')
@@ -890,7 +884,7 @@ def exclusaofor():
            cursor.execute(f"DELETE  FROM fornecedor WHERE codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
-           messagebox("Registro Excluido com sucesso",manutencao)
+           messagebox1("Registro Excluido com sucesso",manutencao)
            limpacamposfor()   
            tela.codigo.focus()
         except Error as ex:
@@ -972,7 +966,7 @@ def consulta_nome(janela3):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             
         else:
@@ -980,11 +974,11 @@ def consulta_nome(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 987 "+str(ex),janela4)
         cursor.close() 
         
  
@@ -1042,7 +1036,7 @@ def cosulta_cpf(janela3):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             return
         else:
@@ -1050,82 +1044,13 @@ def cosulta_cpf(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
            cursor.close()
            return
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
         cursor.close() 
         return
-def consulta_codigo(janela3):
-   janela4 = Toplevel()
-   janela4.title("Consultas por Codigo ESC para SAIR")
-   janela4.resizable(False, False) # tamanho fixo             
-   janela4.transient(janela3) # de onde vem a janela
-   janela4.focus_force() #forçar foco
-   janela4.grab_set()    # impede que click na janela principal sem
-   #'1500x1500' 
-   centro=centralizacao(janela4,1330, 650, posx, posy)
-   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
-    
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
-   tv.column('Endereço', minwidth=0, width=250)
-   tv.column('Telefone', minwidth=9, width=100)
-   tv.column('Tipo', minwidth=1, width=30)
-   tv.column('Cpf', minwidth=0, width=100)
-   tv.column('Cnpj', minwidth=0, width=150)
-   tv.column('Cep', minwidth=0, width=100)
-   tv.column('E_mail', minwidth=0, width=200)
-   
-   tv.heading('Codigo', text='Codigo' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Endereço', text='ENDEREÇO')
-   tv.heading('Telefone', text='TELEFONE')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Cpf', text='CPF')
-   tv.heading('Cnpj', text='CNPJ')
-   tv.heading('Cep', text='CEP')
-   tv.heading('E_mail', text='E_MAIL')
-  
-   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
-
-   tv.configure(yscroll=verscrlbar)
-  # tv.configure(xscroll=verscrlbar1.set)
-   tv.configure(xscroll=verscrlbar1)
-   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
-   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
-   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   
-   
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo")
-        sqlres=cursor.fetchall()
-     
-    
-         
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
-            cursor.close()
-            
-        else:
-            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
-           cursor.close()
-           
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
-        cursor.close() 
-        
 
 def cosulta_cnpj(janela3):
    janela4 = Toplevel()
@@ -1181,7 +1106,7 @@ def cosulta_cnpj(janela3):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             
         else:
@@ -1189,11 +1114,11 @@ def cosulta_cnpj(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 1123 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1127 "+str(ex),janela4)
         cursor.close() 
         
 
@@ -1214,7 +1139,7 @@ def consultacodigoopcao(event):
     
          
         if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",manutencao)
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             
         else:
@@ -1222,11 +1147,11 @@ def consultacodigoopcao(event):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
         cursor.close() 
         
 
@@ -1312,12 +1237,12 @@ def tecla_obtida(event):
                     cursor.close()
                     return
          except Error as ex: 
-               messagebox1("Erro ao tentar ler o registro linha 782 "+str(ex),janela4)
+               messagebox1("Erro ao tentar ler o registro linha 1315 "+str(ex),janela4)
                cursor.close()
                return
                
     except Error as ex:
-          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1251 "+str(ex),janela4)
           cursor.close()
           return 
      
@@ -1430,8 +1355,9 @@ def fornecedor_menu(janela1):
  largura= 550
  altura = 450
  centro=centralizacao(janela3,largura, altura, posx, posy)
-
+ criartabela(janela3) 
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
  keyboard.on_press_key("f1", lambda _: janela3.destroy())
  #janela3.mainloop()
+
 
