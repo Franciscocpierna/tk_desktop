@@ -1,5 +1,20 @@
 from tkinter import *
 import keyboard
+import sqlite3
+from sqlite3 import Error
+def criartabela1(janela3):
+
+   try:
+     banco = sqlite3.connect('contaspagar.db')
+     cursor = banco.cursor()
+     
+     cursor.execute('''CREATE TABLE IF NOT EXISTS tipo (codigo INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, 
+                                                        nome varchar(50) NOT NULL)''')
+     cursor.close() 
+   except Error as ex:
+     messagebox1(str(ex)+ " linha 287",janela3)
+     return 
+   return 
 
 def messagebox1(msg,manutencao):
     toplevel = Toplevel()
@@ -83,4 +98,17 @@ def continua():
                  print('\033[31mdigite opção valida S ou N: \033[m')
             else:
                  return r
+
+def criartabela2(janela3,sql):
+
+   try:
+     banco = sqlite3.connect('contaspagar.db')
+     cursor = banco.cursor()
+     
+     cursor.execute(sql)
+     cursor.close() 
+   except Error as ex:
+     messagebox1(str(ex)+ " linha 111",janela3)
+     return 
+   return 
 

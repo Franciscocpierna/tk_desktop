@@ -1,5 +1,9 @@
 from tkinter import *
 import keyboard
+import sqlite3
+from sqlite3 import Error
+
+from time import sleep
 
 def messagebox1(msg,manutencao):
     toplevel = Toplevel()
@@ -25,7 +29,22 @@ def messagebox1(msg,manutencao):
 
 
 
-from time import sleep
+
+
+def criartabela2(janela3,sql):
+
+   try:
+     banco = sqlite3.connect('contaspagar.db')
+     cursor = banco.cursor()
+     
+     cursor.execute(sql)
+     cursor.close() 
+     #cs compra ou serviço
+   except Error as ex:
+     messagebox1(str(ex)+ " linha 439",janela3)
+     return 
+   return 
+
 def leiaInt1(msg):
   while True:
     try:

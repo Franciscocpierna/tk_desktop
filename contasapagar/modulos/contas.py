@@ -419,61 +419,6 @@ def rel_codigo2(janela3):
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")def rel_codigo(janela3):
    
 
-def criartabela2(janela3):
-   '''
-     add foreign key (cursopreferido)
-     references cursos(idcurso);       
-   codigo
-   compra
-   vencimento
-   descricao
-   documento
-   pagamento
-   tipo
-   desconto
-   juros
-   valpagar
-   tparcela
-   cs
-
- alter table pross
-         add foreign key (cidade)
-         references cidade(CODIGO);
-   
-   CREATE TABLE pista(
-  trackid INTEGER,
-  nome da faixa TEXT,
-  trackartist INTEGER,
-  FOREIGN KEY(artista da faixa) REFERÊNCIAS artista(id do artista)
-);
-   
-   '''
-   try:
-     banco = sqlite3.connect('contaspagar.db')
-     cursor = banco.cursor()
-     
-     cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
-                                               compra date NOT NULL, 
-                                               vencimento date not null,
-                                               descricao varchar(11),
-                                               pagamento date,
-                                               tipo int,
-                                               valpagar float(14),
-                                               desconto float(14),
-                                               juros    float(14)   
-                                               documento varchar(20),
-                                               tparcela int,
-                                               cs varchar(1),               
-                                               PRIMARY KEY (codigo, tparcela),   
-                                               FOREIGN KEY(codigo) REFERÊNCIAS fornecedor(codigo),
-                                               FOREIGN KEY(tipo) REFERÊNCIAS tipo(codigo))''')
-
-     cursor.close() 
-     #cs compra ou serviço
-   except Error as ex:
-     messagebox1(str(ex)+ " linha 439",janela3)
-     return 
-   return 
 
 
 def verificacodigo2():
@@ -1390,7 +1335,23 @@ def contas_menu(janela1):
  largura= 550
  altura = 450
  centro=centralizacao(janela3,largura, altura, posx, posy)
- criartabela2(janela3) 
+ sql='''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
+                                               compra date NOT NULL, 
+                                               vencimento varchhar(8) not null,
+                                               descricao varchar(11),
+                                               pagamento varchar(8),
+                                               tipo integer,
+                                               valpagar real(14),
+                                               desconto real(14),
+                                               juros    real(14),   
+                                               documento varchar(20),
+                                               tparcela integer,
+                                               cs varchar(1),               
+                                               PRIMARY KEY (codigo, tparcela),   
+                                               FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),
+                                               FOREIGN KEY(tipo) REFERENCES  tipo(codigo))'''
+
+ criartabela2(janela3,sql) 
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
  keyboard.on_press_key("f1", lambda _: janela3.destroy())
  #janela3.mainloop()
