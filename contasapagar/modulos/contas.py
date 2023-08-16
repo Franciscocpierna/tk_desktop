@@ -420,21 +420,56 @@ def rel_codigo2(janela3):
    
 
 def criartabela2(janela3):
+   '''
+     add foreign key (cursopreferido)
+     references cursos(idcurso);       
+   codigo
+   compra
+   vencimento
+   descricao
+   documento
+   pagamento
+   tipo
+   desconto
+   juros
+   valpagar
+   tparcela
+   cs
+
+ alter table pross
+         add foreign key (cidade)
+         references cidade(CODIGO);
    
+   CREATE TABLE pista(
+  trackid INTEGER,
+  nome da faixa TEXT,
+  trackartist INTEGER,
+  FOREIGN KEY(artista da faixa) REFERÊNCIAS artista(id do artista)
+);
+   
+   '''
    try:
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
      
-     cursor.execute('''CREATE TABLE IF NOT EXISTS fornecedor (codigo varchar(5) PRIMARY KEY NOT NULL, 
-                                               nome varchar(50) NOT NULL,
-                                               endereco varchar(50) NOT NULL, 
-                                               telefone varchar(11),
-                                               tipo varchar(1)  NOT NULL,
-                                               cpf varchar(11),
-                                               cnpj varchar(14),
-                                               cep varchar(8),
-                                               e_mail varchar(30))''')
+     cursor.execute('''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
+                                               compra date NOT NULL, 
+                                               vencimento date not null,
+                                               descricao varchar(11),
+                                               pagamento date,
+                                               tipo int,
+                                               valpagar float(14),
+                                               desconto float(14),
+                                               juros    float(14)   
+                                               documento varchar(20),
+                                               tparcela int,
+                                               cs varchar(1),               
+                                               PRIMARY KEY (codigo, tparcela),   
+                                               FOREIGN KEY(codigo) REFERÊNCIAS fornecedor(codigo),
+                                               FOREIGN KEY(tipo) REFERÊNCIAS tipo(codigo))''')
+
      cursor.close() 
+     #cs compra ou serviço
    except Error as ex:
      messagebox1(str(ex)+ " linha 439",janela3)
      return 
