@@ -25,6 +25,25 @@ X=0
 ler=""
 opcao=0
 
+def limpacamposcontas():
+  tela.codigo.delete(0,END)
+  tela.nome.delete(0,END)
+  tela.compra.delete(0,END) 
+  tela.vencimento.delete(0,END) 
+  tela.descricao.delete(0,END)
+  tela.tipo.delete(0,END) 
+  tela.pagamento.delete(0,END)
+  tela.valpagar.delete(0,END)
+  tela.desconto.delete(0,END)
+  tela.juros.delete(0,END)
+  tela.documento.delete(0, END) 
+  tela.tparcela.delete(0,END)
+  tela.cs.delete(0,END)      
+  return
+
+
+
+
 # Relatórios
 
 def abrirpdf2(arquivo1):
@@ -42,6 +61,8 @@ def abrirpdf2(arquivo1):
   return
 
  return
+
+
 
 def imprimepdf2(arquivo1):
   try: 
@@ -129,9 +150,9 @@ def gerapd3(event):
       cursor = banco.cursor()
       try:
         if escolhido1 == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cpf ASC")
+          cursor.execute(f"SELECT *  FROM  contas ORDER BY cpf ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj ASC")
+          cursor.execute(f"SELECT *  FROM  contas ORDER BY cnpj ASC")
 
       
         
@@ -169,7 +190,7 @@ def gerapdf2(event):
       cursor = banco.cursor()
       nomemem1=nomemem1+"%"
       try:
-        cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+        cursor.execute(f"SELECT *  FROM contas  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
      
         sqlres=cursor.fetchall()
         if len(sqlres) == 0:
@@ -201,9 +222,9 @@ def gerapd1(event):
       cursor = banco.cursor()
       try:
         if escolhido1 == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+          cursor.execute(f"SELECT *  FROM  contas ORDER BY codigo ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+          cursor.execute(f"SELECT *  FROM  contas ORDER BY codigo DESC")
 
       
         
@@ -239,7 +260,7 @@ def gerapdf(event):
       cursor = banco.cursor()
       try:
         
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome ASC")
+        cursor.execute(f"SELECT *  FROM  contas ORDER BY nome ASC")
 
         sqlres=cursor.fetchall()
      
@@ -434,7 +455,7 @@ def verificacodigo2():
        return 
    
    try:
-       cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+       cursor.execute(f"SELECT * FROM contas WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0:  
@@ -446,7 +467,7 @@ def verificacodigo2():
         tela.codigo.focus()
         return sqlres 
    except Error as ex:
-       messagebox1("Erro na leitura da tabela Fornecedor linha 67 "+str(ex),manutencao)
+       messagebox1("Erro na leitura da tabela contas linha 67 "+str(ex),manutencao)
        limpacamposcontas()
        
        return 
@@ -472,7 +493,7 @@ def consultacontas():
       cursor = banco.cursor()
       try:
        codigomem=tela.codigo.get()
-       cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+       cursor.execute(f"SELECT * FROM contas WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
        
        
@@ -514,21 +535,10 @@ def consultacontas():
 
 def tab_order2():
   tela.codigo.focus
-  widgets = [tela.codigo,tela.nome,tela.endereco,tela.telefone,tela.tipo,tela.cpf,tela.cnpj,tela.cep,tela.e_mail]
+  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.tipo,tela.pagamento,tela.valpagar,tela.desconto,tela.juros,tela.cs]
   for w in widgets:
      w.lift()
 
-def limpacamposcontas():
-  tela.codigo.delete(0,END)
-  tela.nome.delete(0,END) 
-  tela.endereco.delete(0,END) 
-  tela.telefone.delete(0,END)
-  tela.tipo.delete(0,END) 
-  tela.cpf.delete(0,END)
-  tela.cnpj.delete(0,END)
-  tela.cep.delete(0,END)
-  tela.e_mail.delete(0,END)
-  return
 
 
 
@@ -545,61 +555,63 @@ def incluircontas():
         sqlres =  verificacodigo2()
         if len(sqlres) != 0: 
           tela.codigo.focus
-          return          
-   
-   if len(tela.nome.get())==0 or len(tela.nome.get())>50:
-     
-        messagebox1("Informação: digite o Nome esta vazio ou é maior que 50",manutencao)
-        tela.nome.focus()
-        return
-   elif len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
-        messagebox1("Informação: Endereço esta vazio ou é maior que 50",manutencao)
-        tela.endereco.focus()
-        return
-   elif len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
-        messagebox1("Informação: digite o Nome esta vazio ou é maior que 11",manutencao)
-        tela.telefone.focus()
-        return    
-   elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J", "f", "j"):
-        messagebox1("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica",manutencao)
-        tela.tipo.focus()
-        return
-   elif len(tela.cep.get()) != 8:
-        messagebox1("Informação: digite o Cep tamanho 8",manutencao)
-        tela.cep.focus()
-        return
+          return
+   codigomem=tela.codigo.get()         
+   sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
           
-   elif  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) !=11:
-         messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
-         tela.cpf.focus()
-         
-         if  len(tela.cnpj.get()) !=0:
-              messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
-              tela.cnpj.delete(0,END)
-              return
-         else:
-              return
+   sqlres=lerfornecedor(sql,codigomem,manutencao)
+   if len(sqlres)==0:
+       limpacamposcontas()
+       tela.codigo.focus()
+       return
+   else:
+      tela.nome.insert(0, sqlres[0][0]) 
+   '''
+                                               compra
+                                               vencimento 
+                                               descricao varchar(11),
+                                               pagamento varchar(8),
+                                               tipo integer,
+                                               valpagar real(14),
+                                               desconto real(14),
+                                               juros    real(14),   
+                                               documento varchar(20),
+                                               tparcela integer,
+                                               cs varchar(1),               
 
-   elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) !=14:
-               messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
-               tela.cnpj.focus()
-         
-               if  len(tela.cpf.get()) !=0:
-                 messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
-                 tela.cpf.delete(0,END)
-                 return
-               else:
-                 return      
-   elif  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) == 11:
-           if  len(tela.cnpj.get()) !=0:
-               tela.cnpj.delete(0,END) 
-   elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) == 14:
-           if  len(tela.cpf.get()) !=0:
-               tela.cpf.delete(0,END)         
+   '''
+
+   if len(tela.compra.get())==0 or len(tela.compra.get())>8:
+     
+        messagebox1("Informação: digite o compra  esta vazio ou é maior que 8",manutencao)
+        tela.compra.focus()
+        return
+   elif len(tela.vencimento.get())==0 or len(tela.vencimento.get())>8: 
+        messagebox1("Informação: Endereço esta vazio ou é maior que 8",manutencao)
+        tela.vencimento.focus()
+        return
+   elif len(tela.documento.get())==0 or len(tela.documento.get())>20:
+        messagebox1("Informação: digite o Nome esta vazio ou é maior que 20",manutencao)
+        tela.documento.focus()
+        return    
+   elif len(tela.tparcela.get())==0 or len(tela.tparcela.get())>3:
+        messagebox1("Informação: digite parcelado ou é maior que 3 digitos",manutencao)
+        tela.tparcela.focus()
+        return
+   elif len(tela.cs.get()==0) or tela.cs.get() not in ("S","C") :
+        messagebox1("Informação: digite o C para compras e S para Serviço tamanho 1",manutencao)
+        tela.cep.focus()
+        return            
+   elif  len(tela.valpagar.get())==0 or  len(tela.valpagar.get()) > 14:
+         messagebox1("Valor a pagar não pode ser zero e nem maior que 14",manutencao)
+         tela.cpf.focus()
    
+         
+      
    try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
+
         codigomem=tela.codigo.get()
         nomemem=tela.nome.get()
         enderecomem=tela.endereco.get()
@@ -612,7 +624,7 @@ def incluircontas():
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
           try:
-           cursor.execute(f'''INSERT INTO fornecedor VALUES('{codigomem}','{nomemem}','{enderecomem}',
+           cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{nomemem}','{enderecomem}',
                                                             '{telefonemem}','{tipomem}','{cpfmem}',
                                                                  '{cnpjmem}','{cepmem}','{e_mailmem}')''')
                
@@ -624,7 +636,7 @@ def incluircontas():
            limpacamposcontas()   
            tela.codigo.focus()
           except Error as ex:
-            messagebox1("erro ao gravar tabela Fornecedor linha 252 "+ str(ex),manutencao)       
+            messagebox1("erro ao gravar tabela contas linha 252 "+ str(ex),manutencao)       
             limpacamposcontas()
         else:
            messagebox1("Registro não foi gravado",manutencao)
@@ -800,7 +812,7 @@ def alteracaocontas():
           
 
       try:
-           cursor.execute(f'''UPDATE fornecedor SET codigo = '{codigomem}',
+           cursor.execute(f'''UPDATE contas SET codigo = '{codigomem}',
                                                     nome ='{nomemem}',
                                                     endereco ='{enderecomem}',
                                                     telefone ='{telefonemem}',
@@ -819,7 +831,7 @@ def alteracaocontas():
            limpacamposcontas()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 333"+ str(ex),manutencao)       
+            messagebox("erro ao regravar tabela contas linha 333"+ str(ex),manutencao)       
             limpacamposcontas() 
             return
     else:
@@ -861,14 +873,14 @@ def exclusaocontas():
         cursor = banco.cursor()
         
         try:
-           cursor.execute(f"DELETE  FROM fornecedor WHERE codigo = '{codigomem}'")
+           cursor.execute(f"DELETE  FROM contas WHERE codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
            messagebox1("Registro Excluido com sucesso",manutencao)
            limpacamposcontas()   
            tela.codigo.focus()
         except Error as ex:
-            messagebox1("erro ao Excluir tabela Fornecedor linha 366"+ str(ex),manutencao)       
+            messagebox1("erro ao Excluir tabela contas linha 366"+ str(ex),manutencao)       
             limpacamposcontas() 
        except Error as ex:
            messagebox1("erro ao conectar com banco de dados linha 343 "+ str(ex),manutencao)
@@ -940,7 +952,7 @@ def consulta_nome2(janela3):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome")
+        cursor.execute(f"SELECT *  FROM  contas ORDER BY nome")
         sqlres=cursor.fetchall()
      
     
@@ -1010,7 +1022,7 @@ def cosulta_cpf2(janela3):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cpf")
+        cursor.execute(f"SELECT *  FROM  contas ORDER BY cpf")
         sqlres=cursor.fetchall()
      
     
@@ -1080,7 +1092,7 @@ def cosulta_cnpj2(janela3):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj")
+        cursor.execute(f"SELECT *  FROM  contas ORDER BY cnpj")
         sqlres=cursor.fetchall()
      
     
@@ -1110,9 +1122,9 @@ def consultacodigoopcao2(event):
       cursor = banco.cursor()
       try:
         if escolhido == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+          cursor.execute(f"SELECT *  FROM  contas ORDER BY codigo ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+          cursor.execute(f"SELECT *  FROM  contas ORDER BY codigo DESC")
 
         sqlres=cursor.fetchall()
      
@@ -1197,11 +1209,11 @@ def tecla_obtida2(event):
          banco = sqlite3.connect('contaspagar.db')
          cursor = banco.cursor()
          
-         #cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+         #cursor.execute(f"SELECT * FROM contas WHERE codigo = '{codigomem}'")
          #sqlres=cursor.fetchall()
          nomemem1=nomemem1+"%"
          try:
-               cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+               cursor.execute(f"SELECT *  FROM contas  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
                sqlres=cursor.fetchall()
                
           
@@ -1336,8 +1348,8 @@ def contas_menu(janela1):
  altura = 450
  centro=centralizacao(janela3,largura, altura, posx, posy)
  sql='''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
-                                               compra date NOT NULL, 
-                                               vencimento varchhar(8) not null,
+                                               compra varchar(8) NOT NULL, 
+                                               vencimento varchar(8) not null,
                                                descricao varchar(11),
                                                pagamento varchar(8),
                                                tipo integer,
@@ -1347,7 +1359,7 @@ def contas_menu(janela1):
                                                documento varchar(20),
                                                tparcela integer,
                                                cs varchar(1),               
-                                               PRIMARY KEY (codigo, tparcela),   
+                                               PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),
                                                FOREIGN KEY(tipo) REFERENCES  tipo(codigo))'''
 
@@ -1356,4 +1368,17 @@ def contas_menu(janela1):
  keyboard.on_press_key("f1", lambda _: janela3.destroy())
  #janela3.mainloop()
 
+'''
+                                               compra
+                                               vencimento 
+                                               descricao varchar(11),
+                                               pagamento varchar(8),
+                                               tipo integer,
+                                               valpagar real(14),
+                                               desconto real(14),
+                                               juros    real(14),   
+                                               documento varchar(20),
+                                               tparcela integer,
+                                               cs varchar(1),               
 
+'''

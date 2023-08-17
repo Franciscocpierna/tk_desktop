@@ -103,3 +103,32 @@ def continua():
             else:
                  return r
 
+    
+
+def lerfornecedor(sql,codigomem,manutencao):
+   sqlres=""
+   
+   try:
+       banco = sqlite3.connect('contaspagar.db')
+       cursor = banco.cursor()
+   except Error as ex:
+       messagebox1("Erro na conexão com Banco de dados linha 115 em rotinas "+str(ex),manutencao)
+       
+       
+       return sqlres 
+   
+   try:
+       cursor.execute(sql)
+       sqlres=cursor.fetchall()
+       cursor.close() 
+       if len(sqlres) == 0:
+          messagebox1("esse fornecedor não existe",manutencao)  
+          return  sqlres
+       else:
+               
+        return sqlres 
+   except Error as ex:
+       messagebox1("Erro na leitura da tabela contas linha 131 em rotinas "+str(ex),manutencao)
+       
+       
+       return sqlres
