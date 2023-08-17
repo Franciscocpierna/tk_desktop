@@ -539,8 +539,46 @@ def tab_order2():
   for w in widgets:
      w.lift()
 
+def vertipo(manutencao):
+   sqleres=""
+   if len(tela.tipo.get()) ==0 or len(tela.tipo.get()) > 2:
+        messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho até 2",manutencao)
+        tela.pagamento.focus()
+        return
+   if len(tela.pagamento.get())!=8:
+        messagebox1("pagamento tem que ter tamanho 8",manutencao)
+        tela.pagamento.focus()
+        return
+   tipomem=tela.tipo.get()         
+   sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
+          
+   sqlres=lertipo(sql,tipomem,manutencao)
+   if len(sqlres)==0:
+       limpacamposcontas()
+       tela.codigo.focus()
+       return
+   else:
+      tela.nome.insert(0, sqlres[0][0])
+   return
 
 
+def verfornec(manutencao):
+   sqleres=""
+   if len(tela.codigo.get())!=5:
+        messagebox1("codigo tem que ter tamanho 5",manutencao)
+        tela.codigo.focus()
+        return
+   codigomem=tela.codigo.get()         
+   sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
+          
+   sqlres=lerfornecedor(sql,codigomem,manutencao)
+   if len(sqlres)==0:
+       limpacamposcontas()
+       tela.codigo.focus()
+       return
+   else:
+      tela.nome.insert(0, sqlres[0][0])
+   return
 
 def incluircontas():
       
@@ -556,16 +594,6 @@ def incluircontas():
         if len(sqlres) != 0: 
           tela.codigo.focus
           return
-   codigomem=tela.codigo.get()         
-   sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
-          
-   sqlres=lerfornecedor(sql,codigomem,manutencao)
-   if len(sqlres)==0:
-       limpacamposcontas()
-       tela.codigo.focus()
-       return
-   else:
-      tela.nome.insert(0, sqlres[0][0]) 
    '''
                                                compra
                                                vencimento 
@@ -659,6 +687,8 @@ def incluircontas_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order2()
     tela.codigo.focus()
+    manutencao.bind("<F6>",verfornec(manutencao))
+    manutencao.bind("<F7>", vertipo(manutencao))
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
