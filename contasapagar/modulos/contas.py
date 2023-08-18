@@ -549,10 +549,11 @@ def vertipo(manutencao):
         messagebox1("pagamento tem que ter tamanho 8",manutencao)
         tela.pagamento.focus()
         return
-   tipomem=tela.tipo.get()         
+   tipomem=tela.tipo.get()
+   mensagem= "Tipo"           
    sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
           
-   sqlres=lertipo(sql,tipomem,manutencao)
+   sqlres=lertabela(sql,tipomem,manutencao,mensagem)
    if len(sqlres)==0:
        limpacamposcontas()
        tela.codigo.focus()
@@ -570,8 +571,8 @@ def verfornec(manutencao):
         return
    codigomem=tela.codigo.get()         
    sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
-          
-   sqlres=lerfornecedor(sql,codigomem,manutencao)
+   mensagem="fornecedor"       
+   sqlres=lertabela(sql,codigomem,manutencao,mensagem)
    if len(sqlres)==0:
        limpacamposcontas()
        tela.codigo.focus()

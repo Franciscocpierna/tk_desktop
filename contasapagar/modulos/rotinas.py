@@ -2,19 +2,8 @@ from tkinter import *
 import keyboard
 import sqlite3
 from sqlite3 import Error
-def criartabela1(janela3):
 
-   try:
-     banco = sqlite3.connect('contaspagar.db')
-     cursor = banco.cursor()
-     
-     cursor.execute('''CREATE TABLE IF NOT EXISTS tipo (codigo INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, 
-                                                        nome varchar(50) NOT NULL)''')
-     cursor.close() 
-   except Error as ex:
-     messagebox1(str(ex)+ " linha 287",janela3)
-     return 
-   return 
+from time import sleep
 
 def messagebox1(msg,manutencao):
     toplevel = Toplevel()
@@ -40,7 +29,22 @@ def messagebox1(msg,manutencao):
 
 
 
-from time import sleep
+
+
+def criartabela2(janela3,sql):
+
+   try:
+     banco = sqlite3.connect('contaspagar.db')
+     cursor = banco.cursor()
+     
+     cursor.execute(sql)
+     cursor.close() 
+     #cs compra ou serviço
+   except Error as ex:
+     messagebox1(str(ex)+ " linha 439",janela3)
+     return 
+   return 
+
 def leiaInt1(msg):
   while True:
     try:
@@ -99,16 +103,33 @@ def continua():
             else:
                  return r
 
-def criartabela2(janela3,sql):
+    
 
+def lertabela(sql,codigomem,manutencao,mensagem):
+   sqlres=""
+   
    try:
-     banco = sqlite3.connect('contaspagar.db')
-     cursor = banco.cursor()
-     
-     cursor.execute(sql)
-     cursor.close() 
+       banco = sqlite3.connect('contaspagar.db')
+       cursor = banco.cursor()
    except Error as ex:
-     messagebox1(str(ex)+ " linha 111",janela3)
-     return 
-   return 
+       messagebox1("Erro na conexão com Banco de dados linha 115 em rotinas "+str(ex),manutencao)
+       
+       
+       return sqlres 
+   
+   try:
+       cursor.execute(sql)
+       sqlres=cursor.fetchall()
+       cursor.close() 
+       if len(sqlres) == 0:
+          messagebox1("esse "+mensagem+" não existe",manutencao)  
+          return  sqlres
+       else:
+               
+        return sqlres 
+   except Error as ex:
+       messagebox1("Erro na leitura da tabela"+mensagem+"  linha 131 em rotinas "+str(ex),manutencao)
+       
+       
+       return sqlres
 
