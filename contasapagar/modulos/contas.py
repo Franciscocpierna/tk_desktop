@@ -32,6 +32,7 @@ def limpacamposcontas():
   tela.vencimento.delete(0,END) 
   tela.descricao.delete(0,END)
   tela.tipo.delete(0,END) 
+  tela.desctipo.delete(0,END)
   tela.pagamento.delete(0,END)
   tela.valpagar.delete(0,END)
   tela.desconto.delete(0,END)
@@ -475,14 +476,21 @@ def verificacodigo2():
 def consultacontas():
    
    sqlres=""
-   tela.nome.delete(0,END) 
-   tela.endereco.delete(0,END) 
-   tela.telefone.delete(0,END)
+   tela.nome.delete(0,END)
+   tela.compra.delete(0,END) 
+   tela.vencimento.delete(0,END) 
+   tela.descricao.delete(0,END)
    tela.tipo.delete(0,END) 
-   tela.cpf.delete(0,END)
-   tela.cnpj.delete(0,END)
-   tela.cep.delete(0,END)
-   tela.e_mail.delete(0,END)
+   tela.desctipo.delete(0,END)
+   tela.desctipo.delete(0,END)
+   tela.pagamento.delete(0,END)
+   tela.valpagar.delete(0,END)
+   tela.desconto.delete(0,END)
+   tela.juros.delete(0,END)
+   tela.documento.delete(0, END) 
+   tela.tparcela.delete(0,END)
+   tela.cs.delete(0,END)      
+
    if len(tela.codigo.get())!=5:
         messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
         tela.codigo.delete(0,END)
@@ -506,14 +514,19 @@ def consultacontas():
             cursor.close()  
             return sqlres
        else:
-            tela.nome.insert(0, sqlres[0][1])
-            tela.endereco.insert(0,sqlres[0][2])
-            tela.telefone.insert(0, sqlres[0][3])
-            tela.tipo.insert(0, sqlres[0][4]) 
-            tela.cpf.insert(0, sqlres[0][5])
-            tela.cnpj.insert(0, sqlres[0][6])
-            tela.cep.insert(0, sqlres[0][7])
-            tela.e_mail.insert(0, sqlres[0][8])
+            
+            tela.compra.insert(0, sqlres[0][1])
+            tela.vencimento.insert(0,sqlres[0][2])
+            tela.descricao.insert(0, sqlres[0][3])
+            tela.pagamento.insert(0, sqlres[0][4]) 
+            tela.tipo.insert(0, sqlres[0][5])
+            tela.valpagar.insert(0, sqlres[0][6])
+            tela.desconto.insert(0, sqlres[0][7])
+            tela.juros.insert(0, sqlres[0][8])
+            tela.documento.insert(0, sqlres[0][9])
+            tela.tparcela.insert(0, sqlres[0][10])
+            tela.cs.insert(0, sqlres[0][11])
+            
             cursor.close()  
             return sqlres 
       except Error as ex: 
@@ -595,23 +608,9 @@ def incluircontas():
         if len(sqlres) != 0: 
           tela.codigo.focus
           return
-   '''
-                                               compra
-                                               vencimento 
-                                               descricao varchar(11),
-                                               pagamento varchar(8),
-                                               tipo integer,
-                                               valpagar real(14),
-                                               desconto real(14),
-                                               juros    real(14),   
-                                               documento varchar(20),
-                                               tparcela integer,
-                                               cs varchar(1),               
-
-   '''
+   
 
    if len(tela.compra.get())==0 or len(tela.compra.get())>8:
-     
         messagebox1("Informação: digite o compra  esta vazio ou é maior que 8",manutencao)
         tela.compra.focus()
         return
@@ -640,25 +639,29 @@ def incluircontas():
    try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
-
         codigomem=tela.codigo.get()
-        nomemem=tela.nome.get()
-        enderecomem=tela.endereco.get()
-        telefonemem=tela.telefone.get()
-        tipomem=tela.tipo.get().upper()
-        cpfmem=tela.cpf.get()
-        cnpjmem=tela.cnpj.get()
-        cepmem=tela.cep.get()
-        e_mailmem = tela.e_mail.get()
+        compramem=tela.compra.get()
+        vencimentomem=tela.vencimento.get()
+        descricaomem=tela.descricao.get()
+        pagamentomem=tela.pagamento.get()
+        tipomem=tela.tipo.get()
+        valpagarmem=tela.valpagar.get()
+        descontomem = tela.desconto.get()
+        jurosmem = tela.juros.get()
+        documentomem=tela.documento.get()
+        tparcelamem=tela.tparcela.get()
+        csmem=tela.cs.get()
+        
+
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
           try:
-           cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{nomemem}','{enderecomem}',
-                                                            '{telefonemem}','{tipomem}','{cpfmem}',
-                                                                 '{cnpjmem}','{cepmem}','{e_mailmem}')''')
+           cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{compramem}','{vencimentomem}',
+                                                            '{descricaomem}','{pagamentomem}','{tipomem}',
+                                                                 '{valpagarmem}','{descontomem}','{jurosmem}',
+                                                                 '{documentomem}','{tparcelamem}','{csmem}')''')
                
-
-                                      
+                     
            banco.commit()
            cursor.close()
            messagebox1("registro Incluido com sucesso",manutencao)     
@@ -716,14 +719,17 @@ def alteracaocontas():
         tela.codigo.focus()
         return
     codigomem=tela.codigo.get() 
-    nomemem=tela.nome.get()
-    enderecomem=tela.endereco.get()
-    telefonemem=tela.telefone.get()
-    tipomem=tela.tipo.get().upper()
-    cpfmem=tela.cpf.get()
-    cnpjmem=tela.cnpj.get()
-    cepmem=tela.cep.get()
-    e_mailmem = tela.e_mail.get()
+    compramem=tela.compra.get()
+    vencimentomem=tela.vencimento.get()
+    descricaomem=tela.descricao.get()
+    pagamentomem=tela.pagamento.get()
+    tipomem=tela.tipo.get()
+    valpagarmem=tela.valpagar.get()
+    descontomem = tela.desconto.get()
+    jurosmem = tela.juros.get()
+    documentomem=tela.documento.get()
+    tparcelamem=tela.tparcela.get()
+    csmem=tela.cs.get()
     sqlres= consultacontas()
     if len(sqlres)==0:
       limpacamposcontas()
@@ -843,15 +849,20 @@ def alteracaocontas():
           
 
       try:
+          
+
            cursor.execute(f'''UPDATE contas SET codigo = '{codigomem}',
-                                                    nome ='{nomemem}',
-                                                    endereco ='{enderecomem}',
-                                                    telefone ='{telefonemem}',
+                                                    compra ='{compramem}',
+                                                    vencimento ='{vencimentomem}',
+                                                    descricao ='{descricaomem}',
+                                                    pagamento = '{pamentomem}',
                                                     tipo = '{tipomem}',
-                                                    cpf = '{cpfmem}',
-                                                    cnpj = '{cnpjmem}',
-                                                    cep = '{cepmem}',
-                                                    e_mail ='{e_mailmem}'
+                                                    valpagar = '{valpagarmem}',
+                                                    desconto = '{descontomem}',
+                                                    juros ='{jurosmem}'
+                                                    documento={documentomem}
+                                                    tparcela={tparcelamem}
+                                                    cs={csmem}
                                                     WHERE codigo = '{codigomem}' ''')
                
 
