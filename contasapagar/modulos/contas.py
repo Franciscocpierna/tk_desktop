@@ -251,7 +251,7 @@ def gerapd1(event):
            cursor.close()
            return
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 254 "+str(ex),janela4)
         cursor.close()
         return
 def gerapdf(event):
@@ -710,6 +710,8 @@ def cosultacontas_click(janela1):
      botao=Button(manutencao, text='Consultar',command=consultacontas)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
+     manutencao.bind("<F6>",verfornec(manutencao))
+     manutencao.bind("<F7>", vertipo(manutencao))   
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontas():
@@ -855,7 +857,7 @@ def alteracaocontas():
                                                     compra ='{compramem}',
                                                     vencimento ='{vencimentomem}',
                                                     descricao ='{descricaomem}',
-                                                    pagamento = '{pamentomem}',
+                                                    pagamento = '{pagamentomem}',
                                                     tipo = '{tipomem}',
                                                     valpagar = '{valpagarmem}',
                                                     desconto = '{descontomem}',
@@ -893,6 +895,8 @@ def alteracaocontas_clik(janela1):
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order2()
      tela.codigo.focus()
+     manutencao.bind("<F6>",verfornec(manutencao))
+     manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -943,6 +947,8 @@ def excluircontas_click(janela1):
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+     manutencao.bind("<F6>",verfornec(manutencao))
+     manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -957,7 +963,7 @@ def consulta_nome2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
     
    tv.column('Codigo', minwidth=5, width=50)
    tv.column('Nome', minwidth=0, width=250)
@@ -1423,4 +1429,23 @@ def contas_menu(janela1):
                                                tparcela integer,
                                                cs varchar(1),               
 
+
+SELECT a.CODVENDA, a.CODCLIENTE, b.CODCLIENTE, b.NOMECLIENTE, c.CODVENDA, c.PRODUTO
+FROM PEDIDO a, CLIENTES b, ITENS c
+WHERE a.CODCLIENTE = b.CODCLIENTE AND a.CODVENDA = c.CODVENDA;
+
+SELECT nome_da_coluna | constante | expressão aritmética [,...]
+     FROM nome_da_tabela[,...]
+     [WHERE [expressão_de_restrição][expressão_de_junção]]
+     [ORDER BY nome_da_coluna[ASC|DESC][,...][ASC|DESC]]
+
+     SELECT type_id, count(*) FROM foods
+   ...> GROUP BY type_id HAVING count(*) < 20;
+
+SELECT coluna1, coluna2, ...
+FROM tabela1, tabela2, ...
+WHERE [ condição ]
+GROUP BY coluna1, coluna2, ...
+HAVING [ condição ]
+ORDER BY coluna1, coluna2, ...
 '''
