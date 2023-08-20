@@ -553,6 +553,8 @@ def tab_order2():
      w.lift()
 
 def vertipo(manutencao):
+   if len(tela.tipo.get()==0) or len(tela.tipo.get())>1:
+      return
    sqleres=""
    if len(tela.tipo.get()) ==0 or len(tela.tipo.get()) > 2:
         messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho até 2",manutencao)
@@ -577,8 +579,10 @@ def vertipo(manutencao):
 
 
 def verfornec(manutencao):
+   if len(tela.codigo.get())!=4:
+      return
    sqleres=""
-   if len(tela.codigo.get())!=5:
+   if len(tela.codigo.get())!=4:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
         tela.codigo.focus()
         return
@@ -691,8 +695,11 @@ def incluircontas_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order2()
     tela.codigo.focus()
-    manutencao.bind("<F6>",verfornec(manutencao))
-    manutencao.bind("<F7>", vertipo(manutencao))
+    tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
+    tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+    #manutencao.bind("<F6>",verfornec(manutencao))
+    #manutencao.bind("<F7>", vertipo(manutencao))
+
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -710,8 +717,10 @@ def cosultacontas_click(janela1):
      botao=Button(manutencao, text='Consultar',command=consultacontas)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
-     manutencao.bind("<F6>",verfornec(manutencao))
-     manutencao.bind("<F7>", vertipo(manutencao))   
+     tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
+     tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+     #manutencao.bind("<F6>",verfornec(manutencao))
+     #manutencao.bind("<F7>", vertipo(manutencao))   
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontas():
@@ -895,8 +904,10 @@ def alteracaocontas_clik(janela1):
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order2()
      tela.codigo.focus()
-     manutencao.bind("<F6>",verfornec(manutencao))
-     manutencao.bind("<F7>", vertipo(manutencao))
+     tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
+     tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+     #manutencao.bind("<F6>",verfornec(manutencao))
+     #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -947,8 +958,10 @@ def excluircontas_click(janela1):
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
-     manutencao.bind("<F6>",verfornec(manutencao))
-     manutencao.bind("<F7>", vertipo(manutencao))
+     tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
+     tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+     #manutencao.bind("<F6>",verfornec(manutencao))
+     #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -1448,4 +1461,62 @@ WHERE [ condição ]
 GROUP BY coluna1, coluna2, ...
 HAVING [ condição ]
 ORDER BY coluna1, coluna2, ...
+self.en_nome.bind("<Key>", self.comparar_nome)  # rastreia as entradas
+
+
+oding: utf-8
+from tkinter import Tk, ttk, StringVar, END, Entry
+
+__author__ = "Daniel Chaves de Lima"
+__email__ = "danielc...@gmail.com"
+
+
+class Principal:
+    def __init__(self, frame):
+        self.var_nome = StringVar()
+        self.var_nome.trace("w",
+                            self.maiuscula_nome)  # rastrear valor da variavel e executar funcao de validacao quando mudar
+
+        self.en_nome = Entry(root, textvariable=self.var_nome, width=56)
+        self.en_nome.bind("<Key>", self.comparar_nome)  # rastreia as entradas
+        self.en_nome.place(x=50, y=75)
+
+    #  tive probremas quando usava só a StringVar pois quando havia alteraçoes o cursor se movia sempre para o fim da
+    #  entrada então fiz o seguinte:
+
+    def comparar_nome(self, evento):
+        """
+            Captura a entrada 'self.en_nome' antes que o caractere seja inserido para que se possa comparar e definir
+            em qual posicao houve a mudança de caractere. Tambem retorna se foi apertado backspace ou espaço.
+        """
+        self.comparacao1 = [self.en_nome.get(), evento.char == "\b" or evento.char == ""]
+
+    def maiuscula_nome(self, *args):
+        """
+            Altera em tempo real a entrada colocando-a em maiuscula.
+        """
+        s = self.var_nome.get().upper()
+        self.en_nome.delete(0, END)
+        self.en_nome.insert(0, s)  # caso apenas inserido um caractere no final
+
+        # -- caso o caractere seja modificado em qualquer parte da entrada --
+        if len(s) > len(self.comparacao1[0]):
+            tamanho = len(self.comparacao1[0])
+        else:
+            tamanho = len(s)
+
+        for i in range(tamanho):
+            if self.comparacao1[0][i] != s[i]:
+                # dependendo de qual se for digitado ou o caractere foi apagado, move o cursor pra certa posicao
+                if self.comparacao1[1]:
+                    self.en_nome.icursor(i)
+                else:
+                    self.en_nome.icursor(i + 1)
+                break
+
+
+root = Tk()
+Principal(root)
+root.geometry("{}x{}+{}+{}".format(500, 500, 20, 20))
+root.title("ENTRY EM MAIUSCULA")
 '''
