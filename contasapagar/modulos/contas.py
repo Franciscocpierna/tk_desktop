@@ -336,8 +336,13 @@ def rel_nome2(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #keyboard.on_press_key("f6", lambda _: moverpdf("rel_nome.pdf"))
 
+def rel_vencimento(janela3):
+   pass
 
-def rel_cpfcnpj2(janela3):
+def rel_atraso(janela3):
+   pass
+
+def rel_pagamento(janela3):
    global janela4 
    global escolhido
    global escolhido1
@@ -347,7 +352,7 @@ def rel_cpfcnpj2(janela3):
    escolha1=StringVar(value="A")
   
    janela4 = Toplevel()
-   janela4.title("Relatório por Cpf/Cnpj ESC para SAIR  F3 - Gerar relatório")
+   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -514,12 +519,20 @@ def consultacontas():
             cursor.close()  
             return sqlres
        else:
-            
+            codigomem=tela.codigo.get()
+            cursor.execute(f"SELECT mome FROM fornecedor WHERE codigo = '{codigomem}'")
+            sql1 = cursor.fetchall()
+            tela.nome.insert(0, sql1[0][0])
             tela.compra.insert(0, sqlres[0][1])
             tela.vencimento.insert(0,sqlres[0][2])
             tela.descricao.insert(0, sqlres[0][3])
             tela.pagamento.insert(0, sqlres[0][4]) 
             tela.tipo.insert(0, sqlres[0][5])
+            tipomem=sqlres[0][5]
+            if tipomem!="":
+              cursor.execute(f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'")
+              sql2=cursor.fetchall()
+              tela.desctipo.insert(0, sql2[0][0])
             tela.valpagar.insert(0, sqlres[0][6])
             tela.desconto.insert(0, sqlres[0][7])
             tela.juros.insert(0, sqlres[0][8])
@@ -553,11 +566,11 @@ def tab_order2():
      w.lift()
 
 def vertipo(manutencao):
-   if len(tela.tipo.get()==0) or len(tela.tipo.get())>1:
+   if  len(tela.tipo.get())!=2:
       return
    sqleres=""
-   if len(tela.tipo.get()) ==0 or len(tela.tipo.get()) > 2:
-        messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho até 2",manutencao)
+   if len(tela.tipo.get())  !=2:
+        messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
         tela.pagamento.focus()
         return
    if len(tela.pagamento.get())!=8:
@@ -566,7 +579,7 @@ def vertipo(manutencao):
         return
    tipomem=tela.tipo.get()
    mensagem= "Tipo"           
-   sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
+   sql=  f"SELECT nome FROM tipo WHERE contas.tipo = '{tipomem}'"  
           
    sqlres=lertabela(sql,tipomem,manutencao,mensagem)
    if len(sqlres)==0:
@@ -574,20 +587,20 @@ def vertipo(manutencao):
        tela.codigo.focus()
        return
    else:
-      tela.nome.insert(0, sqlres[0][0])
+      tela.desctipo.insert(0, sqlres[0][0])
    return
 
 
 def verfornec(manutencao):
-   if len(tela.codigo.get())!=4:
+   if len(tela.codigo.get())!=5:
       return
    sqleres=""
-   if len(tela.codigo.get())!=4:
+   if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
         tela.codigo.focus()
         return
    codigomem=tela.codigo.get()         
-   sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
+   sql=  f"SELECT nome FROM fornecedor WHERE contas.codigo = '{codigomem}'"  
    mensagem="fornecedor"       
    sqlres=lertabela(sql,codigomem,manutencao,mensagem)
    if len(sqlres)==0:
@@ -695,8 +708,8 @@ def incluircontas_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order2()
     tela.codigo.focus()
-    tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
-    tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+    tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+    tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
     #manutencao.bind("<F6>",verfornec(manutencao))
     #manutencao.bind("<F7>", vertipo(manutencao))
 
@@ -717,8 +730,8 @@ def cosultacontas_click(janela1):
      botao=Button(manutencao, text='Consultar',command=consultacontas)
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
-     tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
-     tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+     #tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     #tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
      #manutencao.bind("<F6>",verfornec(manutencao))
      #manutencao.bind("<F7>", vertipo(manutencao))   
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
@@ -746,23 +759,35 @@ def alteracaocontas():
       limpacamposcontas()
       tela.codigo.focus()
       return
-    if nomemem == "":
-       nomemem = tela.nome.get()
+    if documentomem=="":
+      documentomem=tela.documento.get()
     else:
-       tela.nome.delete(0, END)
-       tela.nome.insert(0, nomemem)
+       tela.documento.delete(0, END)
+       tela.documento.insert(0, documentomem)
+    
+    if tparcelamem=="":
+       tparcelamem = tela.tparcela.get()
+    else:
+       tela.tparcela.delete(0, END)
+       tela.tparcela.insert(0, tparcelamem)      
+    
+    if compramem == "":
+       compramem = tela.compra.get()
+    else:
+       tela.compra.delete(0, END)
+       tela.compra.insert(0, compramem)
 
-    if enderecomem == "":
-       enderecomem = tela.endereco.get()
+    if vencimentomem == "":
+       vencimentomem = tela.vencimento.get()
     else:
-        tela.endereco.delete(0, END)
-        tela.endereco.insert(0, enderecomem)
+        tela.vencimento.delete(0, END)
+        tela.vencimento.insert(0, vencimentomem)
 
-    if telefonemem=="":
-        telefonemem = tela.telefone.get()
+    if descricaomem=="":
+        descricaomem = tela.descricao.get()
     else:
-        tela.telefone.delete(0, END)
-        tela.telefone.insert(0, telefonemem)    
+        tela.descricao.delete(0, END)
+        tela.descricao.insert(0, descricaomem)    
     
     if tipomem =="":
         tipomem = tela.tipo.get()
@@ -770,81 +795,72 @@ def alteracaocontas():
         tela.tipo.delete(0, END)
         tela.tipo.insert(0, tipomem)
 
-
-    if tipomem in ("F","f"):
-       if cpfmem == "":
-         cpfmem=tela.cpf.get()
-       else:
-         tela.cpf.delete(0, END)
-         tela.cpf.insert(0,cpfmem)
-
-    if tipomem in ("J","j"):  
-       if cnpjmem=="":
-         cnpjmem=tela.cnpj.get()
-       else:
-         tela.cnpj.delete(0, END)     
-         tela.cnpj.insert(0,cnpjmem)    
-    
-    if cepmem=="":
-        cepmem=tela.cep.get()
+ 
+    if pagamentomem=="":
+        pagamentomem=tela.pagamento.get()
     else:
-        tela.cep.delete(0, END)    
-        tela.cep.insert(0, cepmem)
+        tela.pagamento.delete(0, END)    
+        tela.pagamento.insert(0, pagamentomem)
 
-    if e_mailmem =="":
-        e_mailmem = tela.e_mail.get()
+    if valpagarmem =="":
+        valpagarmem = tela.valpagar.get()
     else:
-        tela.e_mail.delete(0, END)
-        tela.e_mail.insert(0, e_mailmem)   
-                  
+        tela.valpagar.delete(0, END)
+        tela.valpagar.insert(0, valpagarmem)   
+
+    if descontomem =="":
+        descontomem = tela.desconto.get()
+    else:
+        tela.desconto.delete(0, END)
+        tela.desconto.insert(0, descontomem)
+    if jurosmem =="":
+        jurosmem = tela.juros.get()
+    else:
+        tela.juros.delete(0, END)
+        tela.juros.insert(0, jurosmem)
+    if csmem =="":
+        csmem = tela.cs.get()
+    else:
+        tela.cs.delete(0, END)
+        tela.cs.insert(0, csmem)                         
    
-    if len(nomemem)==0 or len(nomemem) >50:
-        messagebox1("Informação: digite o Nome esta vazio ou é maior que 50",manutencao)
-        tela.nome.focus()
+    if len(compramem)==0 or len(compramem) > 8:
+        messagebox1("Informação: digite data da compra",manutencao)
+        tela.compra.focus()
         return
-    elif len(enderecomem)==0 or len(enderecomem)>50: 
-        messagebox1("Informação: Endereço esta vazio ou é maior que 50",manutencao)
-        tela.endereco.focus()
+    elif len(documentomem)==0 or len(documentomem)>20: 
+        messagebox1("Informação: documento esta vazio ou é maior que 20",manutencao)
+        tela.documento.focus()
         return
-    elif len(telefonemem)==0 or len(telefonemem)>11:
-        messagebox1("Informação: digite o Nome esta vazio ou é maior que 11",manutencao)
+    elif len(tparcelamem)==0 or len(tparcelamem)>3:
+        messagebox1("Informação: digite a parcela esta vazio ou é maior que 3",manutencao)
         tela.telefone.focus()
         return    
-    elif len(tipomem)!=1 or tipomem not in ("F","J", "f", "j"):
-        messagebox1("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica",manutencao)
-        tela.tipo.focus()
+    elif len(vencimentomem)=="" or len(vencimentomem)>8:
+        messagebox1("Informação: vencimento é data  tamanho 8 ",manutencao)
+        tela.vencimento.focus()
         return
-    elif len(cepmem) != 8:
-        messagebox1("Informação: digite o Cep tamanho 8",manutencao)
+    elif len(descricaomem) =="" or len(descricaomem)> 50:
+        messagebox1("Informação: descrição tamanho até 50",manutencao)
         tela.cep.focus()
         return
-    elif  tipomem in ("F","f") and len(cpfmem) !=11:
-         messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
-         tela.cpf.focus()
-         
-         if  len(cnpjmem) !=0:
-              messagebox1("Você digitou Pessoa Fisica então não tem CNPJ ",manutencao)
-              tela.cnpj.delete(0,END)
-              return
-         else:
-              return
-
-    elif tipomem in ("J","j") and len(cnpjmem) !=14:
-               messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
-               tela.cnpj.focus()
-               if  len(cpfmem) !=0:
-                 messagebox1("Você digitou Pessoa Juridica então não tem CPF ",manutencao)
-                 tela.cpf.delete(0,END)
-                 return
-               else:
-                 return      
-    elif  tipomem in ("F","f") and len(cpfmem) == 11:
-           if  len(cnpjmem) !=0:
-               tela.cnpj.delete(0,END) 
-    elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) == 14:
-           if  len(cpfmem) !=0:
-               tela.cpf.delete(0,END)         
-    
+    elif  valpagarmem == "" and len(valpagarmem) > 14:
+         messagebox1("Valor a pagar tem que ser tamanho até 14 ",manutencao)
+         tela.valpagar.focus()
+         return
+    elif csmem=="" or csmem> 1:
+       messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
+       tela.cs.focus()
+       return
+    elif pagamentomem!="":
+        if pagamentomem > 8:
+          messagebox1("Pagamento tem que ser tamanho até 8 ",manutencao)
+          tela.pagamento.focus()
+          return 
+        elif tipomem !=2:
+           messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
+           tela.tipo.focus()
+           return      
     res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
     if res == 'yes':
     
@@ -884,7 +900,7 @@ def alteracaocontas():
            limpacamposcontas()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela contas linha 333"+ str(ex),manutencao)       
+            messagebox("erro ao regravar tabela contas linha 890"+ str(ex),manutencao)       
             limpacamposcontas() 
             return
     else:
@@ -904,8 +920,8 @@ def alteracaocontas_clik(janela1):
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order2()
      tela.codigo.focus()
-     tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
-     tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
      #manutencao.bind("<F6>",verfornec(manutencao))
      #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
@@ -930,7 +946,7 @@ def exclusaocontas():
         cursor = banco.cursor()
         
         try:
-           cursor.execute(f"DELETE  FROM contas WHERE codigo = '{codigomem}'")
+           cursor.execute(f"DELETE  FROM contas WHERE contas.codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
            messagebox1("Registro Excluido com sucesso",manutencao)
@@ -958,8 +974,8 @@ def excluircontas_click(janela1):
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
-     tela.codigo.bind("<Key>", verfornec)  # rastreia as entradas
-     tela.tipo.bind("<Key>", vertipo)  # rastreia as entradas
+     #tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     #tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
      #manutencao.bind("<F6>",verfornec(manutencao))
      #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
@@ -1035,7 +1051,7 @@ def consulta_nome2(janela3):
         cursor.close() 
         
  
-def cosulta_cpf2(janela3):
+def cosulta_pagamento(janela3):
    janela4 = Toplevel()
    janela4.title("Consultas por Cpf ESC para SAIR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -1105,7 +1121,7 @@ def cosulta_cpf2(janela3):
         cursor.close() 
         return
 
-def cosulta_cnpj2(janela3):
+def cosulta_vencimento(janela3):
    janela4 = Toplevel()
    janela4.title("Consultas por Cnpj ESC para SAIR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -1183,10 +1199,14 @@ def consultacodigoopcao2(event):
       cursor = banco.cursor()
       try:
         if escolhido == "A":
-          cursor.execute(f"SELECT *  FROM  contas ORDER BY codigo ASC")
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo ASC''')
+   
         else:
-          cursor.execute(f"SELECT *  FROM  contas ORDER BY codigo DESC")
-
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -1225,26 +1245,36 @@ def consulta_codigo2(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
     
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
-   tv.column('Endereço', minwidth=0, width=250)
-   tv.column('Telefone', minwidth=9, width=100)
-   tv.column('Tipo', minwidth=1, width=30)
-   tv.column('Cpf', minwidth=0, width=100)
-   tv.column('Cnpj', minwidth=0, width=150)
-   tv.column('Cep', minwidth=0, width=100)
-   tv.column('E_mail', minwidth=0, width=200)
+   tv.column('codigo', minwidth=5, width=50)
+   tv.column('nome', minwidth=0, width=250)
+   tv.column('Compra', minwidth=0, width=250)
+   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('descricao', minwidth=1, width=30)
+   tv.column('Pagamento', minwidth=0, width=100)
+   tv.column('Tipo', minwidth=0, width=150)
+   tv.column('Descrição do tipo')
+   tv.column('Valpagar', minwidth=0, width=100)
+   tv.column('Desconto', minwidth=0, width=200)
+   tv.column('Juros', minwidth=0, width=200)
+   tv.column('documento', minwidth=0, width=200)
+   tv.column('tparcela', minwidth=0, width=200)
+   tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Codigo', text='CÓDIGO' )
    tv.heading('Nome', text='NOME')
-   tv.heading('Endereço', text='ENDEREÇO')
-   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Compra', text='COMPRA')
+   tv.heading('Vencimento', text='VENCIMENTO')
+   tv.heading('Descrição', text='DESCRIÇÃO')
+   tv.heading('Pagamento', text='PAGAMENTO')
    tv.heading('Tipo', text='TIPO')
-   tv.heading('Cpf', text='CPF')
-   tv.heading('Cnpj', text='CNPJ')
-   tv.heading('Cep', text='CEP')
-   tv.heading('E_mail', text='E_MAIL')
-  
+   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
+   tv.heading('Desconto', text='DESCONTO')
+   tv.heading('Juros', text='JUROS')
+   tv.heading('Documento', text='DOCUMENTO')
+   tv.heading('Parcela', text='PARCELADO')
+   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+ 
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
 
@@ -1353,6 +1383,78 @@ def consulta_porcao2(janela3):
    janela4.bind("<F3>", tecla_obtida2)   
      
 
+def cosulta_ematraso(janela3):
+   janela4 = Toplevel()
+   janela4.title("Consultas por Cnpj ESC para SAIR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+    
+   tv.column('Codigo', minwidth=5, width=50)
+   tv.column('Nome', minwidth=0, width=250)
+   tv.column('Endereço', minwidth=0, width=250)
+   tv.column('Telefone', minwidth=9, width=100)
+   tv.column('Tipo', minwidth=1, width=30)
+   tv.column('Cpf', minwidth=0, width=100)
+   tv.column('Cnpj', minwidth=0, width=150)
+   tv.column('Cep', minwidth=0, width=100)
+   tv.column('E_mail', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Endereço', text='ENDEREÇO')
+   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Cpf', text='CPF')
+   tv.heading('Cnpj', text='CNPJ')
+   tv.heading('Cep', text='CEP')
+   tv.heading('E_mail', text='E_MAIL')
+  
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   
+   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        cursor.execute(f"SELECT *  FROM  contas ORDER BY cnpj")
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
+            cursor.close()
+            
+        else:
+            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 1123 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1127 "+str(ex),janela4)
+        cursor.close() 
+
+
+  
+
 # relatorios
   
 
@@ -1385,8 +1487,9 @@ def contas_menu(janela1):
 
  consultamenu= Menu(menujan2, tearoff=0,)
  consultamenu.add_command(label = " Consulta por nome",command= lambda: consulta_nome2(janela3))
- consultamenu.add_command(label = " Consulta por Cnpj",command= lambda: cosulta_cnpj2(janela3))
- consultamenu.add_command(label = " Consulta por Cpf",command= lambda: cosulta_cpf2(janela3))
+ consultamenu.add_command(label = " Consulta por pagamento",command= lambda: cosulta_pagamento(janela3))
+ consultamenu.add_command(label = " Consulta em atraso",command= lambda: cosulta_ematraso(janela3))
+ consultamenu.add_command(label = " Consulta por vencimento",command= lambda: cosulta_vencimento(janela3))
  consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo2(janela3))
  consultamenu.add_command(label = " consulta por pedaço do nome", command=lambda:  consulta_porcao2(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
@@ -1395,9 +1498,11 @@ def contas_menu(janela1):
 
  editmenu2 = Menu(menujan2, tearoff=0)
  editmenu2.add_command(label = "Nome", command= lambda: rel_nome2(janela3))
- editmenu2.add_command(label = "Cnpj/Cpf", command=lambda: rel_cpfcnpj2(janela3))
+ editmenu2.add_command(label = "Pagamento", command=lambda: rel_pagamento(janela3))
+ editmenu2.add_command(label = "Vencimento", command= lambda: rel_vencimento(janela3))
+ editmenu2.add_command(label = "Em atraso", command= lambda: rel_atraso(janela3))
  editmenu2.add_command(label = "Pedaço do nome",command=lambda: rel_nomep2(janela3))
- editmenu2.add_command(label = "Codigo", command= lambda: rel_codigo2(janela3))
+ editmenu2.add_command(label = "Codigo Fornecedor", command= lambda: rel_codigo2(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
  menusair = Menu(menujan2, tearoff=0)
@@ -1411,7 +1516,7 @@ def contas_menu(janela1):
  sql='''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
                                                compra varchar(8) NOT NULL, 
                                                vencimento varchar(8) not null,
-                                               descricao varchar(11),
+                                               descricao varchar(50),
                                                pagamento varchar(8),
                                                tipo integer,
                                                valpagar real(14),
@@ -1429,24 +1534,15 @@ def contas_menu(janela1):
  keyboard.on_press_key("f1", lambda _: janela3.destroy())
  #janela3.mainloop()
 
-'''
-                                               compra
-                                               vencimento 
-                                               descricao varchar(11),
-                                               pagamento varchar(8),
-                                               tipo integer,
-                                               valpagar real(14),
-                                               desconto real(14),
-                                               juros    real(14),   
-                                               documento varchar(20),
-                                               tparcela integer,
-                                               cs varchar(1),               
 
-
-SELECT a.CODVENDA, a.CODCLIENTE, b.CODCLIENTE, b.NOMECLIENTE, c.CODVENDA, c.PRODUTO
+'''SELECT a.CODVENDA, a.CODCLIENTE, b.CODCLIENTE, b.NOMECLIENTE, c.CODVENDA, c.PRODUTO
 FROM PEDIDO a, CLIENTES b, ITENS c
 WHERE a.CODCLIENTE = b.CODCLIENTE AND a.CODVENDA = c.CODVENDA;
+'''
 
+   
+
+'''
 SELECT nome_da_coluna | constante | expressão aritmética [,...]
      FROM nome_da_tabela[,...]
      [WHERE [expressão_de_restrição][expressão_de_junção]]
@@ -1467,56 +1563,5 @@ self.en_nome.bind("<Key>", self.comparar_nome)  # rastreia as entradas
 oding: utf-8
 from tkinter import Tk, ttk, StringVar, END, Entry
 
-__author__ = "Daniel Chaves de Lima"
-__email__ = "danielc...@gmail.com"
 
-
-class Principal:
-    def __init__(self, frame):
-        self.var_nome = StringVar()
-        self.var_nome.trace("w",
-                            self.maiuscula_nome)  # rastrear valor da variavel e executar funcao de validacao quando mudar
-
-        self.en_nome = Entry(root, textvariable=self.var_nome, width=56)
-        self.en_nome.bind("<Key>", self.comparar_nome)  # rastreia as entradas
-        self.en_nome.place(x=50, y=75)
-
-    #  tive probremas quando usava só a StringVar pois quando havia alteraçoes o cursor se movia sempre para o fim da
-    #  entrada então fiz o seguinte:
-
-    def comparar_nome(self, evento):
-        """
-            Captura a entrada 'self.en_nome' antes que o caractere seja inserido para que se possa comparar e definir
-            em qual posicao houve a mudança de caractere. Tambem retorna se foi apertado backspace ou espaço.
-        """
-        self.comparacao1 = [self.en_nome.get(), evento.char == "\b" or evento.char == ""]
-
-    def maiuscula_nome(self, *args):
-        """
-            Altera em tempo real a entrada colocando-a em maiuscula.
-        """
-        s = self.var_nome.get().upper()
-        self.en_nome.delete(0, END)
-        self.en_nome.insert(0, s)  # caso apenas inserido um caractere no final
-
-        # -- caso o caractere seja modificado em qualquer parte da entrada --
-        if len(s) > len(self.comparacao1[0]):
-            tamanho = len(self.comparacao1[0])
-        else:
-            tamanho = len(s)
-
-        for i in range(tamanho):
-            if self.comparacao1[0][i] != s[i]:
-                # dependendo de qual se for digitado ou o caractere foi apagado, move o cursor pra certa posicao
-                if self.comparacao1[1]:
-                    self.en_nome.icursor(i)
-                else:
-                    self.en_nome.icursor(i + 1)
-                break
-
-
-root = Tk()
-Principal(root)
-root.geometry("{}x{}+{}+{}".format(500, 500, 20, 20))
-root.title("ENTRY EM MAIUSCULA")
 '''

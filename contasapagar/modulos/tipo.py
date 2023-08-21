@@ -280,7 +280,7 @@ def criartabela1(janela3):
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
      
-     cursor.execute('''CREATE TABLE IF NOT EXISTS tipo (codigo INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, 
+     cursor.execute('''CREATE TABLE IF NOT EXISTS tipo (codigo INTEGER PRIMARY KEY  NOT NULL, 
                                                         nome varchar(50) NOT NULL)''')
      cursor.close() 
    except Error as ex:
@@ -321,7 +321,9 @@ def verificacodigo1():
        return 
 
 def consultatipo():
-   
+   if len(tela.codigo) != 2:
+        messagebox1("Codigo tem que ser tamnho 2", manutencao)
+        return
    sqlres=""   
    tela.nome.delete(0,END) 
    
@@ -379,7 +381,9 @@ def limpacampostipo():
 def incluirtipo():
       
    sqlres="" 
-   
+   if len(tela.codigo) != 2:
+        messagebox1("Codigo tem que ser tamnho 2", manutencao)
+        return
    
    
    sqlres =  verificacodigo1()
@@ -457,7 +461,9 @@ def cosultatipo_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaotipo():
-    
+    if len(tela.codigo) != 2:
+        messagebox1("Codigo tem que ser tamnho 2", manutencao)
+        return
     codigomem=tela.codigo.get() 
     nomemem=tela.nome.get()
     
@@ -533,6 +539,9 @@ def alteracaotipo_clik(janela1):
       
      
 def exclusaotipo():
+    if len(tela.codigo) != 2:
+        messagebox1("Codigo tem que ser tamnho 2", manutencao)
+        return
     codigomem=tela.codigo.get()
     sqlres= consultatipo()
     if len(sqlres)==0:

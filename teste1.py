@@ -14,15 +14,21 @@ from tkinter import Tk, ttk, StringVar, END, Entry
  # tam1=len(s1)
   #print(tam)
  # print(tam1)
+def obter():
+  print(en_codigo.get())
+  
+  
+
 def comparar_tam(event):
   #s=var_codigo.get()
   #tam=len(s)
   #s1=en_codigo.get()
   #tam1=len(s1)
   print(en_codigo.get())
-  if len(en_codigo.get())==4:
+  print(len(en_codigo.get()))
+  if len(en_codigo.get())==5:
     print("chame o nome") 
-   
+    obter()
   
 root = Tk() 
 root.geometry("300x300") 
@@ -31,11 +37,12 @@ w = Label(root, text ='Codigo:',
           font = "50")
 w.grid(row=0, column=0)  
 #var_codigo = StringVar()
-#var_codigo.trace("w", tamanho_codigo)  # rastrear validar
-en_codigo = Entry(root, width=7)
+#var_codigo.trace("w", tamanho_codigo())  # rastrear validar
+en_codigo = Entry(root,width=7)
 en_codigo.grid(row=0, column=1)
-en_codigo.bind("<Key>", comparar_tam)  # rastreia as entradas
-
+en_codigo.focus()
+#en_codigo.bind("<Key>", comparar_tam)  # rastreia as entradas
+en_codigo.bind("<KeyRelease>", comparar_tam)  # rastreia as entradas
 #banco = sqlite3.connect('contaspagar.db')
 #cursor = banco.cursor()
 #tipomem="1C001"
