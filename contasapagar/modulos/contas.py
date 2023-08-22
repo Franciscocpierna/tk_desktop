@@ -337,10 +337,78 @@ def rel_nome2(janela3):
    #keyboard.on_press_key("f6", lambda _: moverpdf("rel_nome.pdf"))
 
 def rel_vencimento(janela3):
-   pass
+   tv.delete(*tv.get_children())
+   escolhido=escolha.get()   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        if escolhido == "A":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo ASC''')
+   
+        else:
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo DESC''')
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
+            cursor.close()
+            
+        else:
+            for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
+        cursor.close() 
+
 
 def rel_atraso(janela3):
-   pass
+   tv.delete(*tv.get_children())
+   escolhido=escolha.get()   
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+        if escolhido == "A":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo ASC''')
+   
+        else:
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo DESC''')
+        sqlres=cursor.fetchall()
+     
+    
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
+            cursor.close()
+            
+        else:
+            for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
+        cursor.close() 
+
 
 def rel_pagamento(janela3):
    global janela4 
@@ -591,9 +659,10 @@ def vertipo(manutencao):
    return
 
 
-def verfornec(manutencao):
+def verfornec():
    if len(tela.codigo.get())!=5:
       return
+
    sqleres=""
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
@@ -695,7 +764,54 @@ def incluircontas():
        limpacamposcontas()   
        tela.codigo.focus()
        return
-   
+def dadosdatac():
+   if len(tela.compra.get()) ==2:
+      memdata=tela.compra.get()
+      if  memdata.isnumeric():
+         memdata=memdata+"/"
+         tela.compras.insert(0,memdata)
+          
+         
+def dadosdatav():
+   if len(data1) ==2:
+      if  isnumeric():
+
+def dadosdatap():
+   if len(data1) ==2:
+      if  isnumeric():
+
+def verificadata(data1):
+     
+    data2=data1.split('/')
+
+    dia = int(data2[0])
+    mes = int(data2[1] )
+    ano = int(data2[2])
+
+    valida = False
+    
+    # Meses com 31 dias
+    if( mes==1 or mes==3 or mes==5 or mes==7 or \
+        mes==8 or mes==10 or mes==12):
+        if(dia<=31):
+            valida = True
+    # Meses com 30 dias
+    elif( mes==4 or mes==6 or mes==9 or mes==11):
+        if(dia<=30):
+            valida = True
+    elif mes==2:
+        # Testa se é bissexto
+        if (ano%4==0 and ano%100!=0) or (ano%400==0):
+            if(dia<=29):
+                valida = True
+        elif(dia<=28):
+                valida = True
+
+    if(valida):
+        print('Data válida')
+    else:
+        print('Inválida')
+
 def incluircontas_click(janela1):
     opcao=1
     opcao1=1
@@ -709,6 +825,13 @@ def incluircontas_click(janela1):
     tab_order2()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+    tela.compra.bind("<KeyRelease>", dadosdatac)
+    tela.compra.bind("<KeyRelease>", dadosdatav)
+    tela.compra.bind("<KeyRelease>", dadosdatap)
+
+    tela.compra.bind("<FocusOut>",verificadata(tela.compra.get()))
+    tela.vencimento.bind("<FocusOut>",verificadata(tela.vencimento.get())
+    tela.pagamento.bind("<FocusOut>",verificadata(tela.pagamento.get()) 
     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
     #manutencao.bind("<F6>",verfornec(manutencao))
     #manutencao.bind("<F7>", vertipo(manutencao))
@@ -824,7 +947,7 @@ def alteracaocontas():
         tela.cs.delete(0, END)
         tela.cs.insert(0, csmem)                         
    
-    if len(compramem)==0 or len(compramem) > 8:
+    if len(compramem)==0 or !verificadata():
         messagebox1("Informação: digite data da compra",manutencao)
         tela.compra.focus()
         return
@@ -836,7 +959,7 @@ def alteracaocontas():
         messagebox1("Informação: digite a parcela esta vazio ou é maior que 3",manutencao)
         tela.telefone.focus()
         return    
-    elif len(vencimentomem)=="" or len(vencimentomem)>8:
+    elif len(vencimentomem)=="" or !verificadata():
         messagebox1("Informação: vencimento é data  tamanho 8 ",manutencao)
         tela.vencimento.focus()
         return
@@ -853,8 +976,8 @@ def alteracaocontas():
        tela.cs.focus()
        return
     elif pagamentomem!="":
-        if pagamentomem > 8:
-          messagebox1("Pagamento tem que ser tamanho até 8 ",manutencao)
+        if !verificadata():
+          messagebox1("Pagamento data invalida ",manutencao)
           tela.pagamento.focus()
           return 
         elif tipomem !=2:
@@ -1050,10 +1173,15 @@ def consulta_nome2(janela3):
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 987 "+str(ex),janela4)
         cursor.close() 
         
- 
+def consultapagopcao2():
+    pass
 def cosulta_pagamento(janela3):
+   global janela4 
+   global tv 
+   global escolhido
+   global escolha
    janela4 = Toplevel()
-   janela4.title("Consultas por Cpf ESC para SAIR")
+   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -1064,26 +1192,36 @@ def cosulta_pagamento(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
     
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
-   tv.column('Endereço', minwidth=0, width=250)
-   tv.column('Telefone', minwidth=9, width=100)
-   tv.column('Tipo', minwidth=1, width=30)
-   tv.column('Cpf', minwidth=0, width=100)
-   tv.column('Cnpj', minwidth=0, width=150)
-   tv.column('Cep', minwidth=0, width=100)
-   tv.column('E_mail', minwidth=0, width=200)
+   tv.column('codigo', minwidth=5, width=50)
+   tv.column('nome', minwidth=0, width=250)
+   tv.column('Compra', minwidth=0, width=250)
+   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('descricao', minwidth=1, width=30)
+   tv.column('Pagamento', minwidth=0, width=100)
+   tv.column('Tipo', minwidth=0, width=150)
+   tv.column('Descrição do tipo')
+   tv.column('Valpagar', minwidth=0, width=100)
+   tv.column('Desconto', minwidth=0, width=200)
+   tv.column('Juros', minwidth=0, width=200)
+   tv.column('documento', minwidth=0, width=200)
+   tv.column('tparcela', minwidth=0, width=200)
+   tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Codigo', text='CÓDIGO' )
    tv.heading('Nome', text='NOME')
-   tv.heading('Endereço', text='ENDEREÇO')
-   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Compra', text='COMPRA')
+   tv.heading('Vencimento', text='VENCIMENTO')
+   tv.heading('Descrição', text='DESCRIÇÃO')
+   tv.heading('Pagamento', text='PAGAMENTO')
    tv.heading('Tipo', text='TIPO')
-   tv.heading('Cpf', text='CPF')
-   tv.heading('Cnpj', text='CNPJ')
-   tv.heading('Cep', text='CEP')
-   tv.heading('E_mail', text='E_MAIL')
-  
+   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
+   tv.heading('Desconto', text='DESCONTO')
+   tv.heading('Juros', text='JUROS')
+   tv.heading('Documento', text='DOCUMENTO')
+   tv.heading('Parcela', text='PARCELADO')
+   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+ 
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
 
@@ -1093,37 +1231,25 @@ def cosulta_pagamento(janela3):
    tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
    verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
    verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   
-   
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        cursor.execute(f"SELECT *  FROM  contas ORDER BY cpf")
-        sqlres=cursor.fetchall()
-     
-    
-         
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",janela4)
-            cursor.close()
-            return
-        else:
-            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
-           cursor.close()
-           return
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
-        cursor.close() 
-        return
+   escolha=StringVar(value="A")
+   optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
+   optado.grid(row=1, column=3)
+   optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
+   optado1.grid(row=1, column=4)
+   escolhido=escolha.get()
+  # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   janela4.bind("<F3>", consultapagopcao2)
 
+
+def consultavencopcao2():
+    pass
 def cosulta_vencimento(janela3):
+   global janela4 
+   global tv 
+   global escolhido
+   global escolha
    janela4 = Toplevel()
-   janela4.title("Consultas por Cnpj ESC para SAIR")
+   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -1132,28 +1258,38 @@ def cosulta_vencimento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
     
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
-   tv.column('Endereço', minwidth=0, width=250)
-   tv.column('Telefone', minwidth=9, width=100)
-   tv.column('Tipo', minwidth=1, width=30)
-   tv.column('Cpf', minwidth=0, width=100)
-   tv.column('Cnpj', minwidth=0, width=150)
-   tv.column('Cep', minwidth=0, width=100)
-   tv.column('E_mail', minwidth=0, width=200)
+   tv.column('codigo', minwidth=5, width=50)
+   tv.column('nome', minwidth=0, width=250)
+   tv.column('Compra', minwidth=0, width=250)
+   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('descricao', minwidth=1, width=30)
+   tv.column('Pagamento', minwidth=0, width=100)
+   tv.column('Tipo', minwidth=0, width=150)
+   tv.column('Descrição do tipo')
+   tv.column('Valpagar', minwidth=0, width=100)
+   tv.column('Desconto', minwidth=0, width=200)
+   tv.column('Juros', minwidth=0, width=200)
+   tv.column('documento', minwidth=0, width=200)
+   tv.column('tparcela', minwidth=0, width=200)
+   tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='Codigo' )
+   tv.heading('Codigo', text='CÓDIGO' )
    tv.heading('Nome', text='NOME')
-   tv.heading('Endereço', text='ENDEREÇO')
-   tv.heading('Telefone', text='TELEFONE')
+   tv.heading('Compra', text='COMPRA')
+   tv.heading('Vencimento', text='VENCIMENTO')
+   tv.heading('Descrição', text='DESCRIÇÃO')
+   tv.heading('Pagamento', text='PAGAMENTO')
    tv.heading('Tipo', text='TIPO')
-   tv.heading('Cpf', text='CPF')
-   tv.heading('Cnpj', text='CNPJ')
-   tv.heading('Cep', text='CEP')
-   tv.heading('E_mail', text='E_MAIL')
-  
+   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
+   tv.heading('Desconto', text='DESCONTO')
+   tv.heading('Juros', text='JUROS')
+   tv.heading('Documento', text='DOCUMENTO')
+   tv.heading('Parcela', text='PARCELADO')
+   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+ 
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
 
@@ -1163,33 +1299,14 @@ def cosulta_vencimento(janela3):
    tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
    verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
    verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   
-   
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        cursor.execute(f"SELECT *  FROM  contas ORDER BY cnpj")
-        sqlres=cursor.fetchall()
-     
-    
-         
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",janela4)
-            cursor.close()
-            
-        else:
-            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
-               
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 1123 "+str(ex),janela4)
-           cursor.close()
-           
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1127 "+str(ex),janela4)
-        cursor.close() 
-        
+   escolha=StringVar(value="A")
+   optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
+   optado.grid(row=1, column=3)
+   optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
+   optado1.grid(row=1, column=4)
+   escolhido=escolha.get()
+  # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   janela4.bind("<F3>", consultavencopcao2)     
 
 def consultacodigoopcao2(event):
    tv.delete(*tv.get_children())
@@ -1216,8 +1333,8 @@ def consultacodigoopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+            for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
@@ -1243,7 +1360,7 @@ def consulta_codigo2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -1381,57 +1498,28 @@ def consulta_porcao2(janela3):
    print(nomemem.get())
    #keyboard.on_press_key("f3", lambda _: tecla_obtida())
    janela4.bind("<F3>", tecla_obtida2)   
-     
 
-def cosulta_ematraso(janela3):
-   janela4 = Toplevel()
-   janela4.title("Consultas por Cnpj ESC para SAIR")
-   janela4.resizable(False, False) # tamanho fixo             
-   janela4.transient(janela3) # de onde vem a janela
-   janela4.focus_force() #forçar foco
-   janela4.grab_set()    # impede que click na janela principal sem
-   #'1500x1500' 
-   centro=centralizacao(janela4,1330, 650, posx, posy)
-   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Endereço', 'Telefone', 'Tipo', 'Cpf', 'Cnpj', 'Cep', 'E_mail' ), show= 'headings')
-    
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
-   tv.column('Endereço', minwidth=0, width=250)
-   tv.column('Telefone', minwidth=9, width=100)
-   tv.column('Tipo', minwidth=1, width=30)
-   tv.column('Cpf', minwidth=0, width=100)
-   tv.column('Cnpj', minwidth=0, width=150)
-   tv.column('Cep', minwidth=0, width=100)
-   tv.column('E_mail', minwidth=0, width=200)
-   
-   tv.heading('Codigo', text='Codigo' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Endereço', text='ENDEREÇO')
-   tv.heading('Telefone', text='TELEFONE')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Cpf', text='CPF')
-   tv.heading('Cnpj', text='CNPJ')
-   tv.heading('Cep', text='CEP')
-   tv.heading('E_mail', text='E_MAIL')
-  
-   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
-
-   tv.configure(yscroll=verscrlbar)
-  # tv.configure(xscroll=verscrlbar1.set)
-   tv.configure(xscroll=verscrlbar1)
-   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
-   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
-   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   
-   
+def consultaatrasoopcao2():
+   tv.delete(*tv.get_children())
+   data = datetime.date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   anomesdia=str(ano)+str(mes)+str(dia)
+   escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  contas ORDER BY cnpj")
+        if escolhido == "A":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.pagamento ASC''')
+   
+        else:
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.pagamento DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -1441,16 +1529,82 @@ def cosulta_ematraso(janela3):
             cursor.close()
             
         else:
-            for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
-               tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+            for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 1123 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1127 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
         cursor.close() 
+
+
+def cosulta_ematraso(janela3):
+   global janela4 
+   global tv 
+   global escolhido
+   global escolha
+   janela4 = Toplevel()
+   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
+    
+   tv.column('codigo', minwidth=5, width=50)
+   tv.column('nome', minwidth=0, width=250)
+   tv.column('Compra', minwidth=0, width=250)
+   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('descricao', minwidth=1, width=30)
+   tv.column('Pagamento', minwidth=0, width=100)
+   tv.column('Tipo', minwidth=0, width=150)
+   tv.column('Descrição do tipo')
+   tv.column('Valpagar', minwidth=0, width=100)
+   tv.column('Desconto', minwidth=0, width=200)
+   tv.column('Juros', minwidth=0, width=200)
+   tv.column('documento', minwidth=0, width=200)
+   tv.column('tparcela', minwidth=0, width=200)
+   tv.column('cs', minwidth=0, width=200)
+   
+   tv.heading('Codigo', text='CÓDIGO' )
+   tv.heading('Nome', text='NOME')
+   tv.heading('Compra', text='COMPRA')
+   tv.heading('Vencimento', text='VENCIMENTO')
+   tv.heading('Descrição', text='DESCRIÇÃO')
+   tv.heading('Pagamento', text='PAGAMENTO')
+   tv.heading('Tipo', text='TIPO')
+   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
+   tv.heading('Desconto', text='DESCONTO')
+   tv.heading('Juros', text='JUROS')
+   tv.heading('Documento', text='DOCUMENTO')
+   tv.heading('Parcela', text='PARCELADO')
+   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+ 
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   escolha=StringVar(value="A")
+   optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
+   optado.grid(row=1, column=3)
+   optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
+   optado1.grid(row=1, column=4)
+   escolhido=escolha.get()
+  # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   janela4.bind("<F3>", consultaatrasoopcao2)
 
 
   
@@ -1514,10 +1668,10 @@ def contas_menu(janela1):
  altura = 450
  centro=centralizacao(janela3,largura, altura, posx, posy)
  sql='''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
-                                               compra varchar(8) NOT NULL, 
-                                               vencimento varchar(8) not null,
+                                               compra TEXT NOT NULL, 
+                                               vencimento TEXT not null,
                                                descricao varchar(50),
-                                               pagamento varchar(8),
+                                               pagamento TEXT,
                                                tipo integer,
                                                valpagar real(14),
                                                desconto real(14),
@@ -1562,6 +1716,35 @@ self.en_nome.bind("<Key>", self.comparar_nome)  # rastreia as entradas
 
 oding: utf-8
 from tkinter import Tk, ttk, StringVar, END, Entry
+
+func data valida
+   dia = int( input('Dia: ') )
+    mes = int( input('Mês: ') )
+    ano = int( input('Ano: ') )
+
+    valida = False
+    
+    # Meses com 31 dias
+    if( mes==1 or mes==3 or mes==5 or mes==7 or \
+        mes==8 or mes==10 or mes==12):
+        if(dia<=31):
+            valida = True
+    # Meses com 30 dias
+    elif( mes==4 or mes==6 or mes==9 or mes==11):
+        if(dia<=30):
+            valida = True
+    elif mes==2:
+        # Testa se é bissexto
+        if (ano%4==0 and ano%100!=0) or (ano%400==0):
+            if(dia<=29):
+                valida = True
+        elif(dia<=28):
+                valida = True
+
+    if(valida):
+        print('Data válida')
+    else:
+        print('Inválida')
 
 
 '''
