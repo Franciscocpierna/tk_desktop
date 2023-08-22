@@ -765,24 +765,96 @@ def incluircontas():
        tela.codigo.focus()
        return
 def dadosdatac():
-   if len(tela.compra.get()) ==2:
+ if len(tela.compra.get()) ==2:
       memdata=tela.compra.get()
-      if  memdata.isnumeric():
+      
+      if memdata.isnumeric():
          memdata=memdata+"/"
          tela.compras.insert(0,memdata)
+      else:
+         messagebox1("digite números é data",manutencao)   
+ elif len(tela.compra.get())==5:
+         memdata1=tela.compra.get()
+         memdata=tela.compra.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.compra.insert(0,memdata1)
+         else:
+           messagebox1("digite números é data",manutencao)   
+ elif len(tela.compra.get())==5:
+         memdata1=memdata
+         memdata=tela.compra.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.compra.insert(0,memdata1)
+         else:
+           messagebox1("digite números é data",manutencao) 
+           tela.compra.focus()   
+         
           
          
 def dadosdatav():
-   if len(data1) ==2:
-      if  isnumeric():
-
+   if len(tela.compra.get()) ==2:
+      memdata=tela.compra.get()
+      
+      if memdata.isnumeric():
+         memdata=memdata+"/"
+         tela.compras.insert(0,memdata)
+      else:
+         messagebox1("digite números é data",manutencao)   
+   elif len(tela.compra.get())==5:
+         memdata1=tela.compra.get()
+         memdata=tela.compra.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.compra.insert(0,memdata1)
+         else:
+           messagebox1("digite números é data",manutencao)   
+   elif len(tela.compra.get())==5:
+         memdata1=memdata
+         memdata=tela.compra.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.compra.insert(0,memdata1)
+         else:
+           messagebox1("digite números é data",manutencao) 
+              
 def dadosdatap():
-   if len(data1) ==2:
-      if  isnumeric():
+   if len(tela.compra.get()) ==2:
+      memdata=tela.compra.get()
+      
+      if memdata.isnumeric():
+         memdata=memdata+"/"
+         tela.compras.insert(0,memdata)
+      else:
+         messagebox1("digite números é data",manutencao)   
+   elif len(tela.compra.get())==5:
+         memdata1=tela.compra.get()
+         memdata=tela.compra.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.compra.insert(0,memdata1)
+         else:
+           messagebox1("digite números é data",manutencao)   
+   elif len(tela.compra.get())==5:
+         memdata1=memdata
+         memdata=tela.compra.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.compra.insert(0,memdata1)
+         else:
+           messagebox1("digite números é data",manutencao) 
 
-def verificadata(data1):
+
+def verificadatac():
      
-    data2=data1.split('/')
+    data2=tela.compra.get().split('/')
 
     dia = int(data2[0])
     mes = int(data2[1] )
@@ -807,10 +879,70 @@ def verificadata(data1):
         elif(dia<=28):
                 valida = True
 
-    if(valida):
-        print('Data válida')
-    else:
-        print('Inválida')
+    if(valida) == False:
+        messagebox1("Data Inválida digite novamente",manutencao)
+        tela.compra.focus()
+
+def verificadatav():
+     
+    data2=tela.vencimento.split('/')
+
+    dia = int(data2[0])
+    mes = int(data2[1] )
+    ano = int(data2[2])
+
+    valida = False
+    
+    # Meses com 31 dias
+    if( mes==1 or mes==3 or mes==5 or mes==7 or \
+        mes==8 or mes==10 or mes==12):
+        if(dia<=31):
+            valida = True
+    # Meses com 30 dias
+    elif( mes==4 or mes==6 or mes==9 or mes==11):
+        if(dia<=30):
+            valida = True
+    elif mes==2:
+        # Testa se é bissexto
+        if (ano%4==0 and ano%100!=0) or (ano%400==0):
+            if(dia<=29):
+                valida = True
+        elif(dia<=28):
+                valida = True
+
+    if(valida) == False:
+        messagebox1("Data Inválida digite novamente",manutencao)
+        tela.vencimento.focus()
+def verificadatap():
+   if tela.pagamento.get() != 0:  
+    data2=tela.pagamento.split('/')
+
+    dia = int(data2[0])
+    mes = int(data2[1] )
+    ano = int(data2[2])
+
+    valida = False
+    
+    # Meses com 31 dias
+    if( mes==1 or mes==3 or mes==5 or mes==7 or \
+        mes==8 or mes==10 or mes==12):
+        if(dia<=31):
+            valida = True
+    # Meses com 30 dias
+    elif( mes==4 or mes==6 or mes==9 or mes==11):
+        if(dia<=30):
+            valida = True
+    elif mes==2:
+        # Testa se é bissexto
+        if (ano%4==0 and ano%100!=0) or (ano%400==0):
+            if(dia<=29):
+                valida = True
+        elif(dia<=28):
+                valida = True
+
+    if(valida) == False:
+        messagebox1("Data Inválida digite novamente",manutencao)
+        tela.pagamento.focus()
 
 def incluircontas_click(janela1):
     opcao=1
@@ -829,9 +961,9 @@ def incluircontas_click(janela1):
     tela.compra.bind("<KeyRelease>", dadosdatav)
     tela.compra.bind("<KeyRelease>", dadosdatap)
 
-    tela.compra.bind("<FocusOut>",verificadata(tela.compra.get()))
-    tela.vencimento.bind("<FocusOut>",verificadata(tela.vencimento.get())
-    tela.pagamento.bind("<FocusOut>",verificadata(tela.pagamento.get()) 
+    tela.compra.bind("<FocusOut>",verificadatac)
+    tela.vencimento.bind("<FocusOut>",verificadatav)
+    tela.pagamento.bind("<FocusOut>",verificadatap) 
     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
     #manutencao.bind("<F6>",verfornec(manutencao))
     #manutencao.bind("<F7>", vertipo(manutencao))
@@ -947,7 +1079,7 @@ def alteracaocontas():
         tela.cs.delete(0, END)
         tela.cs.insert(0, csmem)                         
    
-    if len(compramem)==0 or !verificadata():
+    if len(compramem)==0:
         messagebox1("Informação: digite data da compra",manutencao)
         tela.compra.focus()
         return
@@ -959,8 +1091,8 @@ def alteracaocontas():
         messagebox1("Informação: digite a parcela esta vazio ou é maior que 3",manutencao)
         tela.telefone.focus()
         return    
-    elif len(vencimentomem)=="" or !verificadata():
-        messagebox1("Informação: vencimento é data  tamanho 8 ",manutencao)
+    elif len(vencimentomem)=="":
+        messagebox1("Informação: vencimento é data  ",manutencao)
         tela.vencimento.focus()
         return
     elif len(descricaomem) =="" or len(descricaomem)> 50:
@@ -976,11 +1108,7 @@ def alteracaocontas():
        tela.cs.focus()
        return
     elif pagamentomem!="":
-        if !verificadata():
-          messagebox1("Pagamento data invalida ",manutencao)
-          tela.pagamento.focus()
-          return 
-        elif tipomem !=2:
+        if tipomem !=2:
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
            tela.tipo.focus()
            return      
