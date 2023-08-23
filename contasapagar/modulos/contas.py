@@ -696,12 +696,12 @@ def incluircontas():
           return
    
 
-   if len(tela.compra.get())==0 or len(tela.compra.get())>8:
-        messagebox1("Informação: digite o compra  esta vazio ou é maior que 8",manutencao)
+   if len(tela.compra.get())==0:
+        messagebox1("Informação: digite a compra  esta vazio ",manutencao)
         tela.compra.focus()
         return
-   elif len(tela.vencimento.get())==0 or len(tela.vencimento.get())>8: 
-        messagebox1("Informação: Endereço esta vazio ou é maior que 8",manutencao)
+   elif len(tela.vencimento.get())==0: 
+        messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
    elif len(tela.documento.get())==0 or len(tela.documento.get())>20:
@@ -782,12 +782,11 @@ def dadosdatac():
            tela.compra.insert(0,memdata1)
          else:
            messagebox1("digite números é data",manutencao)   
- elif len(tela.compra.get())==5:
+ elif len(tela.compra.get())==10:
          memdata1=memdata
          memdata=tela.compra.get().split('/')
-         memdata=memdata[1]
-         if memdata[1].isnumeric():
-           memdata1=memdata1+"/"
+         memdata=memdata[2]
+         if memdata[2].isnumeric():
            tela.compra.insert(0,memdata1)
          else:
            messagebox1("digite números é data",manutencao) 
@@ -796,60 +795,61 @@ def dadosdatac():
           
          
 def dadosdatav():
-   if len(tela.compra.get()) ==2:
-      memdata=tela.compra.get()
+   if len(tela.vencimento.get()) ==2:
+      memdata=tela.vencimento.get()
       
       if memdata.isnumeric():
          memdata=memdata+"/"
-         tela.compras.insert(0,memdata)
+         tela.vencimento.insert(0,memdata)
       else:
          messagebox1("digite números é data",manutencao)   
-   elif len(tela.compra.get())==5:
-         memdata1=tela.compra.get()
-         memdata=tela.compra.get().split('/')
+   elif len(tela.vencimento.get())==5:
+         memdata1=tela.vencimento.get()
+         memdata=tela.vencimento.get().split('/')
          memdata=memdata[1]
          if memdata[1].isnumeric():
            memdata1=memdata1+"/"
-           tela.compra.insert(0,memdata1)
+           tela.vencimento.insert(0,memdata1)
          else:
            messagebox1("digite números é data",manutencao)   
-   elif len(tela.compra.get())==5:
+   elif len(tela.vencimento.get())==10:
          memdata1=memdata
-         memdata=tela.compra.get().split('/')
-         memdata=memdata[1]
-         if memdata[1].isnumeric():
-           memdata1=memdata1+"/"
-           tela.compra.insert(0,memdata1)
+         memdata=tela.vencimento.get().split('/')
+         memdata=memdata[2]
+         if memdata[2].isnumeric():
+           tela.vencimento.insert(0,memdata1)
          else:
            messagebox1("digite números é data",manutencao) 
+           tela.vencimento.focus()    
               
 def dadosdatap():
-   if len(tela.compra.get()) ==2:
-      memdata=tela.compra.get()
+   if len(tela.pagamento.get()) ==2:
+      memdata=tela.pagamento.get()
       
       if memdata.isnumeric():
          memdata=memdata+"/"
-         tela.compras.insert(0,memdata)
+         tela.pagamento.insert(0,memdata)
       else:
          messagebox1("digite números é data",manutencao)   
-   elif len(tela.compra.get())==5:
-         memdata1=tela.compra.get()
-         memdata=tela.compra.get().split('/')
+   elif len(tela.pagamento.get())==5:
+         memdata1=tela.pagamento.get()
+         memdata=tela.pagamento.get().split('/')
          memdata=memdata[1]
          if memdata[1].isnumeric():
            memdata1=memdata1+"/"
-           tela.compra.insert(0,memdata1)
+           tela.pagamento.insert(0,memdata1)
          else:
            messagebox1("digite números é data",manutencao)   
-   elif len(tela.compra.get())==5:
+   elif len(tela.pagamento.get())==10:
          memdata1=memdata
-         memdata=tela.compra.get().split('/')
-         memdata=memdata[1]
-         if memdata[1].isnumeric():
-           memdata1=memdata1+"/"
-           tela.compra.insert(0,memdata1)
+         memdata=tela.pagamento.get().split('/')
+         memdata=memdata[2]
+         if memdata[2].isnumeric():
+           tela.pagamento.insert(0,memdata1)
          else:
            messagebox1("digite números é data",manutencao) 
+           tela.compra.focus()   
+
 
 
 def verificadatac():
@@ -958,8 +958,8 @@ def incluircontas_click(janela1):
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
     tela.compra.bind("<KeyRelease>", dadosdatac)
-    tela.compra.bind("<KeyRelease>", dadosdatav)
-    tela.compra.bind("<KeyRelease>", dadosdatap)
+    tela.vencimento.bind("<KeyRelease>", dadosdatav)
+    tela.pagamento.bind("<KeyRelease>", dadosdatap)
 
     tela.compra.bind("<FocusOut>",verificadatac)
     tela.vencimento.bind("<FocusOut>",verificadatav)
@@ -1173,6 +1173,13 @@ def alteracaocontas_clik(janela1):
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
      tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
+     tela.compra.bind("<KeyRelease>", dadosdatac)
+     tela.vencimento.bind("<KeyRelease>", dadosdatav)
+     tela.pagamento.bind("<KeyRelease>", dadosdatap)
+
+     tela.compra.bind("<FocusOut>",verificadatac)
+     tela.vencimento.bind("<FocusOut>",verificadatav)
+     tela.pagamento.bind("<FocusOut>",verificadatap)
      #manutencao.bind("<F6>",verfornec(manutencao))
      #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
@@ -1225,10 +1232,6 @@ def excluircontas_click(janela1):
      botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
-     #tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
-     #tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
-     #manutencao.bind("<F6>",verfornec(manutencao))
-     #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -1633,7 +1636,9 @@ def consultaatrasoopcao2():
    ano = data.year
    mes = data.month
    dia = data.day
-   anomesdia=str(ano)+str(mes)+str(dia)
+   data3= data.strftime("%Y-%m-%d")
+   data3=datetime.strptime(data,"%d/%m/%Y")
+   data3=str(data3)
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -1642,12 +1647,12 @@ def consultaatrasoopcao2():
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.pagamento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento DESC''')
         sqlres=cursor.fetchall()
      
     
