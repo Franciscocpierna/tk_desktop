@@ -117,11 +117,11 @@ def pdfgerado2(sqlres,arquivo):
         y-= 20
         cnv.drawString(10,y, "codigo: "+ c+ " Nome: "+ n)
         y -= 20
-        cnv.drawString(10,y, "Endereço: "+e)
+        cnv.drawString(10,y, "Compra: "+co+"Vencimento: " + ve+" Descrição:"+de) 
         y -= 20               
-        cnv.drawString(10,y, "Telefone: " + t+" Tipo:"+ti+ " Cpf: "+cp+" Cnpj: "+cn)               
+        cnv.drawString(10,y,  " Pagamento: "+pg+" Tipo: "+tp+ " Descrição Tipo:"+str(dt)+ " Valor a Pagar:"+str(vp))        
         y -= 20
-        cnv.drawString(10,y, "Cep: "+ce+" E_mail: "+ema)
+        cnv.drawString(10,y, " Desconto:"+str(des)+" Juros: "+ju+" Documento:"+doc+" Parcelas:"+par+" Serviço ou compra (C)ompra e (S)serviço:"+cs1)
         if z == 8: 
          if x  < len(sqlres): 
           z = 0 
@@ -198,7 +198,7 @@ def gerapdf2(event):
         cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
-       # cursor.execute(f"SELECT *  FROM contas  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+       # cursor.execute(f"SELECT *  FROM contas  WHERE b.nome LIKE '{nomemem1}'  ORDER BY nome ASC")
      
         sqlres=cursor.fetchall()
         if len(sqlres) == 0:
@@ -265,6 +265,7 @@ def gerapd1(event):
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 254 "+str(ex),janela4)
         cursor.close()
         return
+
 def gerapdf(event):
    escolhido=escolha.get()   
    try: 
@@ -350,77 +351,76 @@ def rel_nome2(janela3):
    #keyboard.on_press_key("f6", lambda _: moverpdf("rel_nome.pdf"))
 
 def rel_vencimento(janela3):
-   tv.delete(*tv.get_children())
-   escolhido=escolha.get()   
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        if escolhido == "A":
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo ASC''')
-   
-        else:
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo DESC''')
-        sqlres=cursor.fetchall()
-     
-    
-         
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",janela4)
-            cursor.close()
-            
-        else:
-            for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
-               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
-               
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
-           cursor.close()
-           
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
-        cursor.close() 
+   global janela4 
+   global escolhido
+   global escolhido1
+   global escolha
+   global escolha1
+   escolha=StringVar(value="D")
+   escolha1=StringVar(value="A")
+  
+   janela4 = Toplevel()
+   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório por Cpf/Cnpj geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)
+   optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2.place(relx=0.2,rely=0.3)
+   optado3= Radiobutton(janela4, text= "CNPJ", value="D", variable=escolha1)
+   optado3.place(relx=0.5,rely=0.3)
+   escolhido1=escolha1.get()  
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   escolhido=escolha.get()
+  # keyboard.on_press_key("f3", lambda _: gerapdf3())
+   janela4.bind("<F3>", gerapd3)
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
+
 
 
 def rel_atraso(janela3):
-   tv.delete(*tv.get_children())
-   escolhido=escolha.get()   
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        if escolhido == "A":
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo ASC''')
-   
-        else:
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo DESC''')
-        sqlres=cursor.fetchall()
-     
-    
-         
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta",janela4)
-            cursor.close()
-            
-        else:
-            for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
-               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
-               
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
-           cursor.close()
-           
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
-        cursor.close() 
+   global janela4 
+   global escolhido
+   global escolhido1
+   global escolha
+   global escolha1
+   escolha=StringVar(value="D")
+   escolha1=StringVar(value="A")
+  
+   janela4 = Toplevel()
+   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório por Cpf/Cnpj geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)
+   optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2.place(relx=0.2,rely=0.3)
+   optado3= Radiobutton(janela4, text= "CNPJ", value="D", variable=escolha1)
+   optado3.place(relx=0.5,rely=0.3)
+   escolhido1=escolha1.get()  
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   escolhido=escolha.get()
+  # keyboard.on_press_key("f3", lambda _: gerapdf3())
+   janela4.bind("<F3>", gerapd3)
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
 
 def rel_pagamento(janela3):
@@ -1684,42 +1684,8 @@ def consulta_codigo2(janela3):
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultacodigoopcao2)
    
-def tecla_obtida2(event):
-    tv.delete(*tv.get_children())
-    nomemem1= nomemem.get()
-    try: 
-         banco = sqlite3.connect('contaspagar.db')
-         cursor = banco.cursor()
-         
-         #cursor.execute(f"SELECT * FROM contas WHERE codigo = '{codigomem}'")
-         #sqlres=cursor.fetchall()
-         nomemem1=nomemem1+"%"
-         try:
-               cursor.execute(f"SELECT *  FROM contas  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
-               sqlres=cursor.fetchall()
-               
-          
-               
-               if len(sqlres) == 0:
-                    messagebox1("Não tem dados a mostrar na consulta",janela4)
-                    cursor.close()
-                    return
-               else:
-                   for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
-                     tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1))  
-                    
-                   cursor.close()
-                   return
-         except Error as ex: 
-               messagebox1("Erro ao tentar ler o registro linha 1315 "+str(ex),janela4)
-               cursor.close()
-               return
-               
-    except Error as ex:
-          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1251 "+str(ex),janela4)
-          cursor.close()
-          return 
-def cosultapagopcao(:
+
+def cosultapagopcao():
    tv.delete(*tv.get_children())
    data = datetime.date.today() 
    ano = data.year
@@ -1871,7 +1837,52 @@ def consulta_pagamento():
    janela4.bind("<F3>", consultaatrasoopcao2)
    
 def consutaporcao2()
-    pass
+     tv.delete(*tv.get_children())
+    nomemem1= nomemem.get()
+    try: 
+         banco = sqlite3.connect('contaspagar.db')
+         cursor = banco.cursor()
+         if escolhido == "A":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
+   
+        else:
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento DESC''')
+
+         #cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+         #sqlres=cursor.fetchall()
+         nomemem1=nomemem1+"%"
+         try:
+               #cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+
+               
+               sqlres=cursor.fetchall()
+               
+          
+               
+               if len(sqlres) == 0:
+                    messagebox1("Não tem dados a mostrar na consulta",janela4)
+                    cursor.close()
+                    return
+               else:
+                    for (c,n,e,t,ti,cp,cn,ce,ema) in sqlres:
+                         tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
+                    
+                    cursor.close()
+                    return
+         except Error as ex: 
+               messagebox1("Erro ao tentar ler o registro linha 1315 "+str(ex),janela4)
+               cursor.close()
+               return
+               
+    except Error as ex:
+          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1251 "+str(ex),janela4)
+          cursor.close()
+          return 
+    
 def consulta_porcao2(janela3):
    global janela4 
    global tv 
@@ -1928,6 +1939,10 @@ def consulta_porcao2(janela3):
    tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
    verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
    verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   Label(janela4, text="Entre com parte do nome:", font=('Arial', 15)).grid(row=1, column=3,sticky=W)   
+   nomemem = Entry(janela4,width=50)
+   nomemem.grid(row=1, column=4,sticky=W)
+   nomemem.focus()
    escolha=StringVar(value="A")
    optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
    optado.grid(row=1, column=3)
@@ -1935,7 +1950,7 @@ def consulta_porcao2(janela3):
    optado1.grid(row=1, column=4)
    escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
-   janela4.bind("<F3>", consultacodigoopcao2)
+   janela4.bind("<F3>", consutaporcao2)
 
 def consultaatrasoopcao2():
    tv.delete(*tv.get_children())
@@ -2185,6 +2200,16 @@ func data valida
         print('Data válida')
     else:
         print('Inválida')
+
+        if escolhido == "A":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo ASC''')
+   
+        else:
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo ORDER BY a.codigo DESC''')
 
 
 '''
