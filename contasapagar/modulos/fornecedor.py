@@ -56,7 +56,7 @@ def imprimepdf(arquivo1):
    win32api.ShellExecute(0, "print", arquivo1, None, caminho, 0)       
    return
   except  Error as ex:
-    messagebox1("Erro ao tentar imprimir linha 58 "+str(ex),janela4)
+    messagebox1("Erro ao tentar imprimir linha 59 "+str(ex),janela4)
     return
 
 
@@ -69,7 +69,7 @@ def pdfgerado(sqlres,arquivo):
    try: 
     cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
    except Error as ex:
-    messagebox1(str(ex)+ " linha 62",janela4)
+    messagebox1(str(ex)+ " linha 72",janela4)
     return
    cnv.setFont('Helvetica', 9)  
    #cnv.drawString(10,830, "teste") # canto superior A4
@@ -153,11 +153,11 @@ def gerapdf3(event):
               cursor.close
 
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 156 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 160 "+str(ex),janela4)
         cursor.close()
 
 def gerapdf2(event):
@@ -186,11 +186,11 @@ def gerapdf2(event):
               cursor.close
 
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 189 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 193 "+str(ex),janela4)
         cursor.close()
 
 def gerapdf1(event):
@@ -225,11 +225,11 @@ def gerapdf1(event):
               cursor.close
            return
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 228 "+str(ex),janela4)
            cursor.close()
            return
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 232 "+str(ex),janela4)
         cursor.close()
         return
 def gerapdf(event):
@@ -259,11 +259,11 @@ def gerapdf(event):
               cursor.close
               return 
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 262 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 266 "+str(ex),janela4)
         cursor.close()
 
    return
@@ -448,7 +448,7 @@ def verificacodigo():
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
    except Error as ex:
-       messagebox1("Erro na conexão com Banco de dados linha 45 "+str(ex),manutencao)
+       messagebox1("Erro na conexão com Banco de dados linha 451 "+str(ex),manutencao)
        limpacamposfor()
        
        return 
@@ -466,7 +466,7 @@ def verificacodigo():
         tela.codigo.focus()
         return sqlres 
    except Error as ex:
-       messagebox1("Erro na leitura da tabela Fornecedor linha 67 "+str(ex),manutencao)
+       messagebox1("Erro na leitura da tabela Fornecedor linha 469 "+str(ex),manutencao)
        limpacamposfor()
        
        return 
@@ -516,13 +516,13 @@ def consultafor():
             cursor.close()  
             return sqlres 
       except Error as ex: 
-         messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),manutencao)
+         messagebox1("Erro ao tentar ler o registro linha 519 "+str(ex),manutencao)
          limpacamposfor()
          cursor.close()
          return sqlres
          
    except Error as ex:
-      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 522 "+str(ex),manutencao)
+      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 525 "+str(ex),manutencao)
       limpacamposfor()
       cursor.close()  
       return sqlres   
@@ -644,13 +644,13 @@ def incluirfor():
            limpacamposfor()   
            tela.codigo.focus()
           except Error as ex:
-            messagebox1("erro ao gravar tabela Fornecedor linha 252 "+ str(ex),manutencao)       
+            messagebox1("erro ao gravar tabela Fornecedor linha 647 "+ str(ex),manutencao)       
             limpacamposfor()
         else:
            messagebox1("Registro não foi gravado",manutencao)
 
    except Error as ex:
-       messagebox1("erro ao conectar com banco de dados linha 225 "+ str(ex),manutencao)
+       messagebox1("erro ao conectar com banco de dados linha 653 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
        return
@@ -813,7 +813,7 @@ def alteracaofor():
           cursor = banco.cursor()
           
       except Error as ex:
-       messagebox1("erro ao conectar com banco de dados linha 307 "+ str(ex),manutencao)
+       messagebox1("erro ao conectar com banco de dados linha 817 "+ str(ex),manutencao)
        limpacamposfor()   
        tela.codigo.focus()
        return
@@ -839,7 +839,7 @@ def alteracaofor():
            limpacamposfor()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 333"+ str(ex),manutencao)       
+            messagebox("erro ao regravar tabela Fornecedor linha 842"+ str(ex),manutencao)       
             limpacamposfor() 
             return
     else:
@@ -888,10 +888,10 @@ def exclusaofor():
            limpacamposfor()   
            tela.codigo.focus()
         except Error as ex:
-            messagebox1("erro ao Excluir tabela Fornecedor linha 366"+ str(ex),manutencao)       
+            messagebox1("erro ao Excluir tabela Fornecedor linha 891"+ str(ex),manutencao)       
             limpacamposfor() 
        except Error as ex:
-           messagebox1("erro ao conectar com banco de dados linha 343 "+ str(ex),manutencao)
+           messagebox1("erro ao conectar com banco de dados linha 894 "+ str(ex),manutencao)
            limpacamposfor()   
            tela.codigo.focus()
            return
@@ -974,11 +974,11 @@ def consulta_nome(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 977 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 987 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 981 "+str(ex),janela4)
         cursor.close() 
         
  
@@ -1044,11 +1044,11 @@ def cosulta_cpf(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 1047 "+str(ex),janela4)
            cursor.close()
            return
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1051 "+str(ex),janela4)
         cursor.close() 
         return
 
@@ -1114,11 +1114,11 @@ def cosulta_cnpj(janela3):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 1123 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 1117 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1127 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1121 "+str(ex),janela4)
         cursor.close() 
         
 
@@ -1147,11 +1147,11 @@ def consultacodigoopcao(event):
                tv.insert("","end",value=(c,n,e,t,ti,cp,cn,ce,ema)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 1156 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 1150 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1160 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1154 "+str(ex),janela4)
         cursor.close() 
         
 
@@ -1237,12 +1237,12 @@ def tecla_obtida(event):
                     cursor.close()
                     return
          except Error as ex: 
-               messagebox1("Erro ao tentar ler o registro linha 1315 "+str(ex),janela4)
+               messagebox1("Erro ao tentar ler o registro linha 1240 "+str(ex),janela4)
                cursor.close()
                return
                
     except Error as ex:
-          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1251 "+str(ex),janela4)
+          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1245 "+str(ex),janela4)
           cursor.close()
           return 
      

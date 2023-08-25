@@ -148,7 +148,7 @@ def gerapf1(event):
            cursor.close()
            return
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 151 "+str(ex),janela4)
         cursor.close()
         return
 
@@ -183,7 +183,7 @@ def gerapf(event):
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 186 "+str(ex),janela4)
         cursor.close()
 
    return
@@ -296,7 +296,7 @@ def verificacodigo1():
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
    except Error as ex:
-       messagebox1("Erro na conexão com Banco de dados linha 26 "+str(ex),manutencao)
+       messagebox1("Erro na conexão com Banco de dados linha 299 "+str(ex),manutencao)
        limpacampostipo()
        
        return 
@@ -310,12 +310,12 @@ def verificacodigo1():
         return sqlres
        else:
         
-        messagebox1("Informação: Registro já existe não pode ser inserido linha 62",manutencao)
+        messagebox1("Informação: Registro já existe não pode ser inserido linha 313",manutencao)
         limpacampostipo()
         tela.codigo.focus()
         return sqlres 
    except Error as ex:
-       messagebox1("Erro na leitura da tabela Fornecedor linha 67 "+str(ex),manutencao)
+       messagebox1("Erro na leitura da tabela Fornecedor linha 318 "+str(ex),manutencao)
        limpacampostipo()
        
        return 
@@ -339,7 +339,7 @@ def consultatipo():
        
 
        if len(sqlres) == 0:
-            messagebox1("Registro não existe linha 101",manutencao)
+            messagebox1("Registro não existe linha 342",manutencao)
 
             tela.codigo.delete(0,END)   
             tela.codigo.focus()
@@ -350,13 +350,13 @@ def consultatipo():
             cursor.close()  
             return sqlres
       except Error as ex: 
-         messagebox1("Erro ao tentar ler o registro linha 355 "+str(ex),manutencao)
+         messagebox1("Erro ao tentar ler o registro linha 353 "+str(ex),manutencao)
          limpacampostipo()
          cursor.close()  
          return sqlres
               
    except Error as ex:
-      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 360 "+str(ex),manutencao)
+      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 359 "+str(ex),manutencao)
       limpacampostipo()
       cursor.close()  
       return sqlres                    
@@ -424,7 +424,7 @@ def incluirtipo():
            messagebox1("Registro não foi gravado",manutencao)
 
    except Error as ex:
-       messagebox1("erro ao conectar com banco de dados linha 225 "+ str(ex),manutencao)
+       messagebox1("erro ao conectar com banco de dados linha 427 "+ str(ex),manutencao)
        limpacampostipo()   
        tela.codigo.focus()
        return
@@ -511,7 +511,7 @@ def alteracaotipo():
            limpacampostipo()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 333"+ str(ex),manutencao)       
+            messagebox("erro ao regravar tabela Fornecedor linha 514"+ str(ex),manutencao)       
             limpacampostipo() 
             return
     else:
@@ -563,10 +563,10 @@ def exclusaotipo():
            limpacampostipo()   
            tela.codigo.focus()
         except Error as ex:
-            messagebox1("erro ao Excluir tabela Tipo linha 366"+ str(ex),manutencao)       
+            messagebox1("erro ao Excluir tabela Tipo linha 566"+ str(ex),manutencao)       
             limpacampostipo() 
        except Error as ex:
-           messagebox1("erro ao conectar com banco de dados linha 343 "+ str(ex),manutencao)
+           messagebox1("erro ao conectar com banco de dados linha 569 "+ str(ex),manutencao)
            limpacampostipo()   
            tela.codigo.focus()
            return
@@ -637,11 +637,11 @@ def consulta_nome1(janela3):
                tv.insert("","end",value=(c,n)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 649 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 640 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 664 "+str(ex),janela4)
         cursor.close() 
         
  
@@ -673,11 +673,11 @@ def consultacodigoopcao1(event):
                tv.insert("","end",value=(c,n)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 88 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 676 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 456 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 680 "+str(ex),manutencao)
         cursor.close() 
         
 
