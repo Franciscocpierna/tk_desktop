@@ -1369,10 +1369,10 @@ def alteracaocontas():
                                                     tipo = '{tipomem}',
                                                     valpagar = '{valpagarmem}',
                                                     desconto = '{descontomem}',
-                                                    juros ='{jurosmem}'
-                                                    documento={documentomem}
-                                                    tparcela={tparcelamem}
-                                                    cs={csmem}
+                                                    juros ='{jurosmem}',
+                                                    documento='{documentomem}',
+                                                    tparcela='{tparcelamem}',
+                                                    cs='{csmem}'
                                                     WHERE codigo = '{codigomem}' ''')
                
 

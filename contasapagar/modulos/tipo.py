@@ -321,7 +321,7 @@ def verificacodigo1():
        return 
 
 def consultatipo():
-   if len(tela.codigo) != 2:
+   if len(tela.codigo.get()) != 2:
         messagebox1("Codigo tem que ser tamnho 2", manutencao)
         return
    sqlres=""   
@@ -381,7 +381,7 @@ def limpacampostipo():
 def incluirtipo():
       
    sqlres="" 
-   if len(tela.codigo) != 2:
+   if len(tela.codigo.get()) != 2:
         messagebox1("Codigo tem que ser tamnho 2", manutencao)
         return
    
@@ -403,7 +403,7 @@ def incluirtipo():
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
         codigomem=tela.codigo.get()
-        nomemem=tela.nome.get()
+        nomemem=tela.nome.get().upper()
         
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
@@ -461,11 +461,11 @@ def cosultatipo_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaotipo():
-    if len(tela.codigo) != 2:
+    if len(tela.codigo.get()) != 2:
         messagebox1("Codigo tem que ser tamnho 2", manutencao)
         return
     codigomem=tela.codigo.get() 
-    nomemem=tela.nome.get()
+    nomemem=tela.nome.get().upper()
     
     sqlres= consultatipo()
     if len(sqlres)==0:
@@ -473,7 +473,7 @@ def alteracaotipo():
       tela.codigo.focus()
       return
     if nomemem == "":
-       nomemem = tela.nome.get()
+       nomemem = tela.nome.get().upper()
     else:
        tela.nome.delete(0, END)
        tela.nome.insert(0, nomemem)
@@ -499,8 +499,8 @@ def alteracaotipo():
           
 
       try:
-           cursor.execute(f'''UPDATE fornecedor SET codigo = '{codigomem}',
-                                                    nome ='{nomemem}',
+           cursor.execute(f'''UPDATE tipo SET codigo = '{codigomem}',
+                                                    nome ='{nomemem}'
                                                     WHERE codigo = '{codigomem}' ''')
                
 
@@ -511,7 +511,7 @@ def alteracaotipo():
            limpacampostipo()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 514"+ str(ex),manutencao)       
+            messagebox("erro ao regravar tabela tipo linha 514"+ str(ex),manutencao)       
             limpacampostipo() 
             return
     else:
@@ -539,7 +539,7 @@ def alteracaotipo_clik(janela1):
       
      
 def exclusaotipo():
-    if len(tela.codigo) != 2:
+    if len(tela.codigo.get()) != 2:
         messagebox1("Codigo tem que ser tamnho 2", manutencao)
         return
     codigomem=tela.codigo.get()
@@ -549,14 +549,14 @@ def exclusaotipo():
       tela.codigo.focus()
       return
     
-    res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
+    res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
     if res == 'yes':
        try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
         
         try:
-           cursor.execute(f"DELETE  FROM fornecedor WHERE codigo = '{codigomem}'")
+           cursor.execute(f"DELETE  FROM tipo WHERE codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
            messagebox1("Registro Excluido com sucesso",manutencao)
