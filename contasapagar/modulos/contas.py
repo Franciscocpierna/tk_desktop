@@ -493,7 +493,7 @@ def rel_nome2(janela3):
    escolha1=StringVar(value="A")
   
    janela4 = Toplevel()
-   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
+   janela4.title("Relatório por Nome ESC para SAIR  F3 - Gerar relatório")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -501,7 +501,7 @@ def rel_nome2(janela3):
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   label = Label(janela4,text="Relatório por Vencimento geração em PDF ",font = ("Arial Bold", 12))
+   label = Label(janela4,text="Relatório por Nome geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
    optado2= Radiobutton(janela4, text="Crescente", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
@@ -531,7 +531,7 @@ def rel_vencimento(janela3):
    escolha1=StringVar(value="A")
   
    janela4 = Toplevel()
-   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
+   janela4.title("Relatório por Vencimento ESC para SAIR  F3 - Gerar relatório")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -611,7 +611,7 @@ def rel_compras(janela3):
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   label = Label(janela4,text="Relatório por Cpf/Cnpj geração em PDF ",font = ("Arial Bold", 12))
+   label = Label(janela4,text="Relatório por Compras geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
    optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
@@ -646,7 +646,7 @@ def rel_pagamento(janela3):
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   label = Label(janela4,text="Relatório por Cpf/Cnpj geração em PDF ",font = ("Arial Bold", 12))
+   label = Label(janela4,text="Relatório por Pagamento geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
    optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
@@ -1210,9 +1210,81 @@ def valorout():
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
         if len(valpag) == 12:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
-   
-   
-                       
+     tela.valpagar.insert(0, valpag1)      
+     return
+def dadosdesconto():
+   if len(tela.desconto.get())==0:
+      return
+   if tela.desconto.get() in ",0123456789":
+     return
+   else:
+      messagebox1("valor inválido digite novamente",manutencao)
+      tela.desconto.insert(0,END)
+      return        
+def descontoout():
+   valpag=tela.desconto.get()
+   if len(valpag)> 0:
+     if valpag.find(',')==0 or len(valpag)>12:
+        messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
+        tela.desconto.insert(0,END)
+        tela.desconto.focus()
+     else:   
+      if len(valpag[valpag.find(',')+1:]) > 2:
+        messagebox1("digite novamente tem que ter 2 casas decimais",manutencao)
+        tela.desconto.insert(0,END)
+        tela.desconto.focus()
+      else:
+        if len(valpag) == 7:
+           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
+        if len(valpag) == 8:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
+        if len(valpag) == 9:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
+        if len(valpag) == 10:
+           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
+        if len(valpag) == 11:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
+        if len(valpag) == 12:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
+     tela.desconto.insert(0, valpag1)      
+     return
+def dadosjuros():
+   if len(tela.juros.get())==0:
+      return
+   if tela.juros.get() in ",0123456789":
+     return
+   else:
+      messagebox1("valor inválido digite novamente",manutencao)
+      tela.juros.insert(0,END)
+      return        
+def jurosout():
+   valpag=tela.juros.get()
+   if len(valpag)> 0:
+     if valpag.find(',')==0 or len(valpag)>12:
+        messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
+        tela.juros.insert(0,END)
+        tela.juros.focus()
+        return
+     else:   
+      if len(valpag[valpag.find(',')+1:]) > 2:
+        messagebox1("digite novamente tem que ter 2 casas decimais",manutencao)
+        tela.juros.insert(0,END)
+        tela.juros.focus()
+      else:
+        if len(valpag) == 7:
+           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
+        if len(valpag) == 8:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
+        if len(valpag) == 9:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
+        if len(valpag) == 10:
+           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
+        if len(valpag) == 11:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
+        if len(valpag) == 12:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
+     tela.juros.insert(0, valpag1)      
+     return     
 
 
 def incluircontas_click(janela1):
@@ -1403,7 +1475,7 @@ def alteracaocontas():
           cursor = banco.cursor()
           
       except Error as ex:
-       messagebox1("erro ao conectar com banco de dados linha 1355 "+ str(ex),manutencao)
+       messagebox1("erro ao conectar com banco de dados linha 1478 "+ str(ex),manutencao)
        limpacamposcontas()   
        tela.codigo.focus()
        return
@@ -1434,7 +1506,7 @@ def alteracaocontas():
            limpacamposcontas()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela contas linha 1386"+ str(ex),manutencao)       
+            messagebox("erro ao regravar tabela contas linha 1509"+ str(ex),manutencao)       
             limpacamposcontas() 
             return
     else:
@@ -1494,10 +1566,10 @@ def exclusaocontas():
            limpacamposcontas()   
            tela.codigo.focus()
         except Error as ex:
-            messagebox1("erro ao Excluir tabela contas linha 1446"+ str(ex),manutencao)       
+            messagebox1("erro ao Excluir tabela contas linha 1569"+ str(ex),manutencao)       
             limpacamposcontas() 
        except Error as ex:
-           messagebox1("erro ao conectar com banco de dados linha 1449 "+ str(ex),manutencao)
+           messagebox1("erro ao conectar com banco de dados linha 1572 "+ str(ex),manutencao)
            limpacamposcontas()   
            tela.codigo.focus()
            return
@@ -1557,7 +1629,7 @@ def consultacompraopcao():
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1509 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1632 "+str(ex),janela4)
         cursor.close() 
 
 
@@ -1665,7 +1737,7 @@ def consultapagopcao2():
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1617 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1740 "+str(ex),janela4)
         cursor.close() 
 
 def consulta_pagamento(janela3):
@@ -1775,7 +1847,7 @@ def consultavencopcao2():
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1727 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1850 "+str(ex),janela4)
         cursor.close() 
 
 def consulta_vencimento(janela3):
@@ -1872,11 +1944,11 @@ def consultacodigoopcao2(event):
                tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 1824 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 1947 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1828 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1951 "+str(ex),janela4)
         cursor.close() 
         
 
@@ -1956,45 +2028,43 @@ def consutaporcao2():
     try: 
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
-        if escolhido == "A" and escolhido1== "N":
-          nomemem1= nomemem.get()
-          nomemem1=nomemem1+"%"
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
-   
-        elif escolhido == "D" and escolhido1=="N":
-          nomemem1= nomemem.get()
-          nomemem1=nomemem1+"%"
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome DESC''')
-        elif escolhido == "A" and escolhido1=="C":
-          codigomem=nomemem.get()
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' ORDER BY a.codigo ASC''')
-          
-        else:
-           codigomem=nomemem.get()
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' ORDER BY a.codigo DESC''')
+        try:
+         if escolhido == "A" and escolhido1== "N":
+            nomemem1= nomemem.get()
+            nomemem1=nomemem1+"%"
+            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                       a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                       FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
+      
+         elif escolhido == "D" and escolhido1=="N":
+            nomemem1= nomemem.get()
+            nomemem1=nomemem1+"%"
+            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                       a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                       FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome DESC''')
+         elif escolhido == "A" and escolhido1=="C":
+            codigomem=nomemem.get()
+            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                       a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                       FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' ORDER BY a.codigo ASC''')
+            
+         else:
+            codigomem=nomemem.get()
+            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                       a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                       FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' ORDER BY a.codigo DESC''')
 
        
-        try:
-               #cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
-
-               
-               sqlres=cursor.fetchall()
+                       
+         sqlres=cursor.fetchall()
                
           
                
-               if len(sqlres) == 0:
+         if len(sqlres) == 0:
                     messagebox1("Não tem dados a mostrar na consulta",janela4)
                     cursor.close()
                     return
-               else:
+         else:
                     for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
                       tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
  
@@ -2002,12 +2072,12 @@ def consutaporcao2():
                     cursor.close()
                     return
         except Error as ex: 
-               messagebox1("Erro ao tentar ler o registro linha 1954 "+str(ex),janela4)
+               messagebox1("Erro ao tentar ler o registro linha 2075 "+str(ex),janela4)
                cursor.close()
                return
                
     except Error as ex:
-          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1959 "+str(ex),janela4)
+          messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 2080 "+str(ex),janela4)
           cursor.close()
           return 
     
@@ -2124,11 +2194,11 @@ def consultaatrasoopcao2():
                tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 2076 "+str(ex),janela4)
+           messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 2080 "+str(ex),janela4)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 2203 "+str(ex),janela4)
         cursor.close() 
 
 
@@ -2277,65 +2347,3 @@ def contas_menu(janela1):
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
  keyboard.on_press_key("f1", lambda _: janela3.destroy())
  #janela3.mainloop()
-
-
-'''SELECT a.CODVENDA, a.CODCLIENTE, b.CODCLIENTE, b.NOMECLIENTE, c.CODVENDA, c.PRODUTO
-FROM PEDIDO a, CLIENTES b, ITENS c
-WHERE a.CODCLIENTE = b.CODCLIENTE AND a.CODVENDA = c.CODVENDA;
-'''
-
-   
-
-'''
-SELECT nome_da_coluna | constante | expressão aritmética [,...]
-     FROM nome_da_tabela[,...]
-     [WHERE [expressão_de_restrição][expressão_de_junção]]
-     [ORDER BY nome_da_coluna[ASC|DESC][,...][ASC|DESC]]
-
-     SELECT type_id, count(*) FROM foods
-   ...> GROUP BY type_id HAVING count(*) < 20;
-
-SELECT coluna1, coluna2, ...
-FROM tabela1, tabela2, ...
-WHERE [ condição ]
-GROUP BY coluna1, coluna2, ...
-HAVING [ condição ]
-ORDER BY coluna1, coluna2, ...
-self.en_nome.bind("<Key>", self.comparar_nome)  # rastreia as entradas
-
-
-oding: utf-8
-from tkinter import Tk, ttk, StringVar, END, Entry
-
-func data valida
-   dia = int( input('Dia: ') )
-    mes = int( input('Mês: ') )
-    ano = int( input('Ano: ') )
-
-    valida = False
-    
-    # Meses com 31 dias
-    if( mes==1 or mes==3 or mes==5 or mes==7 or \
-        mes==8 or mes==10 or mes==12):
-        if(dia<=31):
-            valida = True
-    # Meses com 30 dias
-    elif( mes==4 or mes==6 or mes==9 or mes==11):
-        if(dia<=30):
-            valida = True
-    elif mes==2:
-        # Testa se é bissexto
-        if (ano%4==0 and ano%100!=0) or (ano%400==0):
-            if(dia<=29):
-                valida = True
-        elif(dia<=28):
-                valida = True
-
-    if(valida):
-        print('Data válida')
-    else:
-        print('Inválida')
-
-        
-
-'''

@@ -6,3 +6,7 @@ conta de luz
 telefone
 internet
 outros
+
+dados por tela conferindo que foi digitado,  fiz dessa forma, para ter um controle dos dados melhor possível
+cadastro de tipo para evitar manutenção em contas
+contas se relaciona com fornecedor  pelo codigo e tipo pelo codigo em tipo
