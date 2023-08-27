@@ -948,9 +948,9 @@ def incluircontas():
         messagebox1("Informação: digite o C para compras e S para Serviço tamanho 1",manutencao)
         tela.cep.focus()
         return            
-   elif  len(tela.valpagar.get())==0 or  len(tela.valpagar.get()) > 14:
-         messagebox1("Valor a pagar não pode ser zero e nem maior que 14",manutencao)
-         tela.cpf.focus()
+   #elif  len(tela.valpagar.get())==0 or  len(tela.valpagar.get()) > 14:
+   #      messagebox1("Valor a pagar não pode ser zero e nem maior que 14",manutencao)
+   #      tela.cpf.focus()
    
          
       
@@ -1176,6 +1176,45 @@ def verificadatap():
         messagebox1("Data Inválida digite novamente",manutencao)
         tela.pagamento.focus()
 
+def dadosvalor():
+   if len(tela.valpagar.get())==0:
+      return
+   if tela.valpagar.get() in ",0123456789":
+     return
+   else:
+      messagebox1("valor inválido digite novamente",manutencao)
+      tela.valpagar.insert(0,END)
+      return        
+def valorout():
+   valpag=tela.valapagar.get()
+   if len(valpag)> 0:
+     if valpag.find(',')==0 or len(valpag)>12:
+        messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
+        tela.valpagar.insert(0,END)
+        tela.valpagar.focus()
+     else:   
+      if len(valpag[valpag.find(',')+1:]) > 2:
+        messagebox1("digite novamente tem que ter 2 casas decimais",manutencao)
+        tela.valpagar.insert(0,END)
+        tela.valpagar.focus()
+      else:
+        if len(valpag) == 7:
+           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
+        if len(valpag) == 8:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
+        if len(valpag) == 9:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
+        if len(valpag) == 10:
+           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
+        if len(valpag) == 11:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
+        if len(valpag) == 12:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
+   
+   
+                       
+
+
 def incluircontas_click(janela1):
     opcao=1
     opcao1=1
@@ -1192,6 +1231,18 @@ def incluircontas_click(janela1):
     tela.compra.bind("<KeyRelease>", dadosdatac)
     tela.vencimento.bind("<KeyRelease>", dadosdatav)
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
+    #
+    tela.valpagar.bind("<KeyRelease>", dadosvalor)
+    tela.valpagar.bind("<FocusOut>",valorout)
+    #
+    #
+    tela.desconto.bind("<KeyRelease>", dadosdesconto)
+    tela.desconto.bind("<FocusOut>",descontoout)
+    #
+    #
+    tela.juros.bind("<KeyRelease>", dadosjuros)
+    tela.juros.bind("<FocusOut>",jurosout)
+    #
 
     tela.compra.bind("<FocusOut>",verificadatac)
     tela.vencimento.bind("<FocusOut>",verificadatav)
@@ -2208,13 +2259,13 @@ def contas_menu(janela1):
  centro=centralizacao(janela3,largura, altura, posx, posy)
  sql='''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
                                                compra TEXT NOT NULL, 
-                                               vencimento TEXT not null,
+                                               vencimento TEXT NOT NULL,
                                                descricao varchar(50),
                                                pagamento TEXT,
                                                tipo integer,
-                                               valpagar real(14),
-                                               desconto real(14),
-                                               juros    real(14),   
+                                               valpagar TEXT NOT NULL,
+                                               desconto TEXT,
+                                               juros    TEXT,   
                                                documento varchar(20),
                                                tparcela integer,
                                                cs varchar(1),               
