@@ -1031,6 +1031,7 @@ def dadosdatac(event):
          if memdata[2].isnumeric():
            tela.compra.insert(0,memdata1)
            verificadatac()
+           return
          else:
            messagebox1("digite números é data",manutencao) 
            tela.compra.insert(0,END)
@@ -1063,6 +1064,7 @@ def dadosdatav(event):
          if memdata[2].isnumeric():
            tela.vencimento.insert(0,memdata1)
            verificadatav()
+           return
          else:
            messagebox1("digite números é data",manutencao) 
            tela.vencimento.focus()    
@@ -1092,6 +1094,7 @@ def dadosdatap(event):
          if memdata[2].isnumeric():
            tela.pagamento.insert(0,memdata1)
            verificadatap()
+           return
          else:
            messagebox1("digite números é data",manutencao) 
            tela.compra.focus()   
@@ -1197,111 +1200,105 @@ def dadosvalor(event):
    if len(tela.valpagar.get())==0:
       return
    if tela.valpagar.get() in ",0123456789":
-     return
+      valpag=tela.valapagar.get()
+      if valpag in ",":
+       if len(valpag[valpag.find(',')+1:]) == 2:
+          valorout()
+       elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
+          messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
+          tela.valpagar.insert(0,END)  
+          tela.valpagar.focus()
+      return
    else:
       messagebox1("valor inválido digite novamente",manutencao)
       tela.valpagar.insert(0,END)
-      return        
-def valorout(event):
+      return     
+      
+def valorout():
    valpag=tela.valapagar.get()
-   if len(valpag)> 0:
-     if valpag.find(',')==0 or len(valpag)>12:
-        messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
-        tela.valpagar.insert(0,END)
-        tela.valpagar.focus()
-     else:   
-      if len(valpag[valpag.find(',')+1:]) > 2:
-        messagebox1("digite novamente tem que ter 2 casas decimais",manutencao)
-        tela.valpagar.insert(0,END)
-        tela.valpagar.focus()
-      else:
-        if len(valpag) == 7:
-           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
-        if len(valpag) == 8:
+   if len(valpag) == 7:
+        valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
+   elif len(valpag) == 8:
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
-        if len(valpag) == 9:
+   elif len(valpag) == 9:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
-        if len(valpag) == 10:
+   elif len(valpag) == 10:
            valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
-        if len(valpag) == 11:
+   elif len(valpag) == 11:
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
-        if len(valpag) == 12:
+   elif len(valpag) == 12:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
-     tela.valpagar.insert(0, valpag1)      
-     return
+   tela.valpagar.insert(0, valpag1)      
+   return
+
 def dadosdesconto(event):
    if len(tela.desconto.get())==0:
       return
    if tela.desconto.get() in ",0123456789":
-     return
+      valpag=tela.desconto.get()
+      if valpag in ",":
+       if len(valpag[valpag.find(',')+1:]) == 2:
+          descontoout()
+       elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
+          messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
+          tela.desconto.insert(0,END)  
+          tela.desconto.focus()
+      return
+ 
    else:
       messagebox1("valor inválido digite novamente",manutencao)
       tela.desconto.insert(0,END)
       return        
 def descontoout(event):
    valpag=tela.desconto.get()
-   if len(valpag)> 0:
-     if valpag.find(',')==0 or len(valpag)>12:
-        messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
-        tela.desconto.insert(0,END)
-        tela.desconto.focus()
-     else:   
-      if len(valpag[valpag.find(',')+1:]) > 2:
-        messagebox1("digite novamente tem que ter 2 casas decimais",manutencao)
-        tela.desconto.insert(0,END)
-        tela.desconto.focus()
-      else:
-        if len(valpag) == 7:
+   if len(valpag) == 7:
            valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
-        if len(valpag) == 8:
+   elif len(valpag) == 8:
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
-        if len(valpag) == 9:
+   elif len(valpag) == 9:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
-        if len(valpag) == 10:
+   elif len(valpag) == 10:
            valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
-        if len(valpag) == 11:
+   elif len(valpag) == 11:
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
-        if len(valpag) == 12:
+   elif len(valpag) == 12:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
-     tela.desconto.insert(0, valpag1)      
-     return
+   tela.desconto.insert(0, valpag1)      
+   return
 def dadosjuros(event):
    if len(tela.juros.get())==0:
       return
    if tela.juros.get() in ",0123456789":
-     return
+      valpag=tela.juros.get()
+      if valpag in ",":
+       if len(valpag[valpag.find(',')+1:]) == 2:
+          jurosout()
+       elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
+          messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
+          tela.juros.insert(0,END)  
+          tela.juros.focus()
+      return
+ 
    else:
       messagebox1("valor inválido digite novamente",manutencao)
       tela.juros.insert(0,END)
       return        
-def jurosout(event):
+def jurosout():
    valpag=tela.juros.get()
-   if len(valpag)> 0:
-     if valpag.find(',')==0 or len(valpag)>12:
-        messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
-        tela.juros.insert(0,END)
-        tela.juros.focus()
-        return
-     else:   
-      if len(valpag[valpag.find(',')+1:]) > 2:
-        messagebox1("digite novamente tem que ter 2 casas decimais",manutencao)
-        tela.juros.insert(0,END)
-        tela.juros.focus()
-      else:
-        if len(valpag) == 7:
+   if len(valpag) == 7:
            valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
-        if len(valpag) == 8:
+   elif len(valpag) == 8:
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
-        if len(valpag) == 9:
+   elif len(valpag) == 9:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
-        if len(valpag) == 10:
+   elif len(valpag) == 10:
            valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
-        if len(valpag) == 11:
+   elif len(valpag) == 11:
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
-        if len(valpag) == 12:
+   elif len(valpag) == 12:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
-     tela.juros.insert(0, valpag1)      
-     return     
+   tela.juros.insert(0, valpag1)      
+   return     
 
 
 def incluircontas_click(janela1):
@@ -1320,23 +1317,10 @@ def incluircontas_click(janela1):
     tela.compra.bind("<KeyRelease>", dadosdatac)
     tela.vencimento.bind("<KeyRelease>", dadosdatav)
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
-    #
     tela.valpagar.bind("<KeyRelease>", dadosvalor)
-    #tela.valpagar.bind("<FocusOut>",valorout)
-    #
-    #
     tela.desconto.bind("<KeyRelease>", dadosdesconto)
-    #tela.desconto.bind("<FocusOut>",descontoout)
-    #
-    #
     tela.juros.bind("<KeyRelease>", dadosjuros)
-    #tela.juros.bind("<FocusOut>",jurosout)
-    #
-
     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
-    #manutencao.bind("<F6>",verfornec(manutencao))
-    #manutencao.bind("<F7>", vertipo(manutencao))
-
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -1544,26 +1528,10 @@ def alteracaocontas_clik(janela1):
      tela.compra.bind("<KeyRelease>", dadosdatac)
      tela.vencimento.bind("<KeyRelease>", dadosdatav)
      tela.pagamento.bind("<KeyRelease>", dadosdatap)
-     #
      tela.valpagar.bind("<KeyRelease>", dadosvalor)
-     tela.valpagar.bind("<FocusOut>",valorout)
-     #
-     #
      tela.desconto.bind("<KeyRelease>", dadosdesconto)
-     tela.desconto.bind("<FocusOut>",descontoout)
-     #
-     #
      tela.juros.bind("<KeyRelease>", dadosjuros)
-     tela.juros.bind("<FocusOut>",jurosout)
-     #
-
-     tela.compra.bind("<FocusOut>",verificadatac)
-     tela.vencimento.bind("<FocusOut>",verificadatav)
-     tela.pagamento.bind("<FocusOut>",verificadatap) 
      tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
-    
-     #manutencao.bind("<F6>",verfornec(manutencao))
-     #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
