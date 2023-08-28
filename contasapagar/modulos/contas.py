@@ -891,7 +891,7 @@ def vertipo(manutencao):
    return
 
 
-def verfornec():
+def verfornec(event):
    if len(tela.codigo.get())!=5:
       return
 
@@ -901,7 +901,7 @@ def verfornec():
         tela.codigo.focus()
         return
    codigomem=tela.codigo.get()         
-   sql=  f"SELECT nome FROM fornecedor WHERE contas.codigo = '{codigomem}'"  
+   sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
    mensagem="fornecedor"       
    sqlres=lertabela(sql,codigomem,manutencao,mensagem)
    if len(sqlres)==0:
@@ -944,7 +944,7 @@ def incluircontas():
         messagebox1("Informação: digite parcelado ou é maior que 3 digitos",manutencao)
         tela.tparcela.focus()
         return
-   elif len(tela.cs.get()==0) or tela.cs.get() not in ("S","C") :
+   elif len(tela.cs.get()==0) or tela.cs.get().upper() not in ("S","C") :
         messagebox1("Informação: digite o C para compras e S para Serviço tamanho 1",manutencao)
         tela.cep.focus()
         return            
@@ -968,7 +968,7 @@ def incluircontas():
         jurosmem = tela.juros.get()
         documentomem=tela.documento.get()
         tparcelamem=tela.tparcela.get()
-        csmem=tela.cs.get()
+        csmem=tela.cs.get().upper()
         
 
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
@@ -996,7 +996,10 @@ def incluircontas():
        limpacamposcontas()   
        tela.codigo.focus()
        return
-def dadosdatac():
+def dadosdatac(event):
+ if len(tela.compra.get()) ==1:
+    tela.compra.focus()
+    return 
  if len(tela.compra.get()) ==2:
       memdata=tela.compra.get()
       
@@ -1004,7 +1007,10 @@ def dadosdatac():
          memdata=memdata+"/"
          tela.compras.insert(0,memdata)
       else:
-         messagebox1("digite números é data",manutencao)   
+         messagebox1("digite números é data",manutencao)
+         tela.compra.insert(0,END)
+         tela.compra.focus()
+         return   
  elif len(tela.compra.get())==5:
          memdata1=tela.compra.get()
          memdata=tela.compra.get().split('/')
@@ -1012,21 +1018,27 @@ def dadosdatac():
          if memdata[1].isnumeric():
            memdata1=memdata1+"/"
            tela.compra.insert(0,memdata1)
+           return
          else:
-           messagebox1("digite números é data",manutencao)   
+           messagebox1("digite números é data",manutencao)
+           tela.compra.insert(0,END)
+           tela.compra.focus()   
+           return
  elif len(tela.compra.get())==10:
          memdata1=memdata
          memdata=tela.compra.get().split('/')
          memdata=memdata[2]
          if memdata[2].isnumeric():
            tela.compra.insert(0,memdata1)
+           verificadatac()
          else:
            messagebox1("digite números é data",manutencao) 
+           tela.compra.insert(0,END)
            tela.compra.focus()   
+           return
+                    
          
-          
-         
-def dadosdatav():
+def dadosdatav(event):
    if len(tela.vencimento.get()) ==2:
       memdata=tela.vencimento.get()
       
@@ -1050,11 +1062,12 @@ def dadosdatav():
          memdata=memdata[2]
          if memdata[2].isnumeric():
            tela.vencimento.insert(0,memdata1)
+           verificadatav()
          else:
            messagebox1("digite números é data",manutencao) 
            tela.vencimento.focus()    
               
-def dadosdatap():
+def dadosdatap(event):
    if len(tela.pagamento.get()) ==2:
       memdata=tela.pagamento.get()
       
@@ -1078,6 +1091,7 @@ def dadosdatap():
          memdata=memdata[2]
          if memdata[2].isnumeric():
            tela.pagamento.insert(0,memdata1)
+           verificadatap()
          else:
            messagebox1("digite números é data",manutencao) 
            tela.compra.focus()   
@@ -1085,7 +1099,9 @@ def dadosdatap():
 
 
 def verificadatac():
-     
+    if len(tela.compra.get())!=10:
+       return 
+    
     data2=tela.compra.get().split('/')
 
     dia = int(data2[0])
@@ -1176,7 +1192,8 @@ def verificadatap():
         messagebox1("Data Inválida digite novamente",manutencao)
         tela.pagamento.focus()
 
-def dadosvalor():
+def dadosvalor(event):
+
    if len(tela.valpagar.get())==0:
       return
    if tela.valpagar.get() in ",0123456789":
@@ -1185,7 +1202,7 @@ def dadosvalor():
       messagebox1("valor inválido digite novamente",manutencao)
       tela.valpagar.insert(0,END)
       return        
-def valorout():
+def valorout(event):
    valpag=tela.valapagar.get()
    if len(valpag)> 0:
      if valpag.find(',')==0 or len(valpag)>12:
@@ -1212,7 +1229,7 @@ def valorout():
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
      tela.valpagar.insert(0, valpag1)      
      return
-def dadosdesconto():
+def dadosdesconto(event):
    if len(tela.desconto.get())==0:
       return
    if tela.desconto.get() in ",0123456789":
@@ -1221,7 +1238,7 @@ def dadosdesconto():
       messagebox1("valor inválido digite novamente",manutencao)
       tela.desconto.insert(0,END)
       return        
-def descontoout():
+def descontoout(event):
    valpag=tela.desconto.get()
    if len(valpag)> 0:
      if valpag.find(',')==0 or len(valpag)>12:
@@ -1248,7 +1265,7 @@ def descontoout():
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
      tela.desconto.insert(0, valpag1)      
      return
-def dadosjuros():
+def dadosjuros(event):
    if len(tela.juros.get())==0:
       return
    if tela.juros.get() in ",0123456789":
@@ -1257,7 +1274,7 @@ def dadosjuros():
       messagebox1("valor inválido digite novamente",manutencao)
       tela.juros.insert(0,END)
       return        
-def jurosout():
+def jurosout(event):
    valpag=tela.juros.get()
    if len(valpag)> 0:
      if valpag.find(',')==0 or len(valpag)>12:
@@ -1289,14 +1306,14 @@ def jurosout():
 
 def incluircontas_click(janela1):
     opcao=1
-    opcao1=1
+    opcao1=2
     
     global tela
     global manutencao  
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluircontas)
-    botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+    botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
     tab_order2()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
@@ -1305,20 +1322,17 @@ def incluircontas_click(janela1):
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
     #
     tela.valpagar.bind("<KeyRelease>", dadosvalor)
-    tela.valpagar.bind("<FocusOut>",valorout)
+    #tela.valpagar.bind("<FocusOut>",valorout)
     #
     #
     tela.desconto.bind("<KeyRelease>", dadosdesconto)
-    tela.desconto.bind("<FocusOut>",descontoout)
+    #tela.desconto.bind("<FocusOut>",descontoout)
     #
     #
     tela.juros.bind("<KeyRelease>", dadosjuros)
-    tela.juros.bind("<FocusOut>",jurosout)
+    #tela.juros.bind("<FocusOut>",jurosout)
     #
 
-    tela.compra.bind("<FocusOut>",verificadatac)
-    tela.vencimento.bind("<FocusOut>",verificadatav)
-    tela.pagamento.bind("<FocusOut>",verificadatap) 
     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
     #manutencao.bind("<F6>",verfornec(manutencao))
     #manutencao.bind("<F7>", vertipo(manutencao))
@@ -1332,13 +1346,13 @@ def incluircontas_click(janela1):
      
 def cosultacontas_click(janela1):
      opcao=2
-     opcao1=1
+     opcao1=2
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao=Button(manutencao, text='Consultar',command=consultacontas)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+     botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
      #tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
      #tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
@@ -1429,7 +1443,7 @@ def alteracaocontas():
         tela.juros.delete(0, END)
         tela.juros.insert(0, jurosmem)
     if csmem =="":
-        csmem = tela.cs.get()
+        csmem = tela.cs.get().upper()
     else:
         tela.cs.delete(0, END)
         tela.cs.insert(0, csmem)                         
@@ -1458,7 +1472,7 @@ def alteracaocontas():
          messagebox1("Valor a pagar tem que ser tamanho até 14 ",manutencao)
          tela.valpagar.focus()
          return
-    elif csmem=="" or csmem> 1:
+    elif csmem=="" or len(csmem)> 1:
        messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
        tela.cs.focus()
        return
@@ -1515,26 +1529,39 @@ def alteracaocontas():
     
 def alteracaocontas_clik(janela1):
      opcao=3
-     opcao1=1
+     opcao1=2
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao=Button(manutencao, text='Consutar',command=consultacontas)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+     botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Alterar',command=alteracaocontas)
-     botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+     botao1.grid(row=13, column=1,padx=0,pady=50,sticky=W)
      tab_order2()
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
-     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
      tela.compra.bind("<KeyRelease>", dadosdatac)
      tela.vencimento.bind("<KeyRelease>", dadosdatav)
      tela.pagamento.bind("<KeyRelease>", dadosdatap)
+     #
+     tela.valpagar.bind("<KeyRelease>", dadosvalor)
+     tela.valpagar.bind("<FocusOut>",valorout)
+     #
+     #
+     tela.desconto.bind("<KeyRelease>", dadosdesconto)
+     tela.desconto.bind("<FocusOut>",descontoout)
+     #
+     #
+     tela.juros.bind("<KeyRelease>", dadosjuros)
+     tela.juros.bind("<FocusOut>",jurosout)
+     #
 
      tela.compra.bind("<FocusOut>",verificadatac)
      tela.vencimento.bind("<FocusOut>",verificadatav)
-     tela.pagamento.bind("<FocusOut>",verificadatap)
+     tela.pagamento.bind("<FocusOut>",verificadatap) 
+     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
+    
      #manutencao.bind("<F6>",verfornec(manutencao))
      #manutencao.bind("<F7>", vertipo(manutencao))
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
@@ -1578,15 +1605,15 @@ def exclusaocontas():
     return 
 def excluircontas_click(janela1): 
      opcao=4
-     opcao1=1
+     opcao1=2
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao=Button(manutencao, text='Consultar',command=consultacontas)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+     botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
-     botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+     botao1.grid(row=13, column=1,padx=0,pady=50,sticky=W)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
