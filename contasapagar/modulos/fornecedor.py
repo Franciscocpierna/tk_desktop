@@ -443,7 +443,7 @@ def criartabela(janela3):
 
 def verificacodigo():
    
-   codigomem=tela.codigo.get()
+   codigomem=tela.codigo.get().upper
    try:
        banco = sqlite3.connect('contaspagar.db')
        cursor = banco.cursor()
@@ -620,7 +620,7 @@ def incluirfor():
    try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
-        codigomem=tela.codigo.get()
+        codigomem=tela.codigo.get().upper()
         nomemem=tela.nome.get()
         enderecomem=tela.endereco.get()
         telefonemem=tela.telefone.get()

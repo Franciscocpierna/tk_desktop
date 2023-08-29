@@ -957,7 +957,7 @@ def incluircontas():
    try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
-        codigomem=tela.codigo.get()
+        codigomem=tela.codigo.get().upper()
         compramem=tela.compra.get()
         vencimentomem=tela.vencimento.get()
         descricaomem=tela.descricao.get()
@@ -1032,18 +1032,27 @@ def verificadatac(memdata1):
 
 
 def dadosdatac(event):
- if len(tela.compra)==0 or len(tela.compra.get()) ==1:
+ if len(tela.compra.get())==0:
       tela.compra.focus()
       return 
+ if len(tela.compra.get()) ==1:
+    digitado=tela.compra.get()
+    if digitado in ("0","1","2","3","4","5","6","7","8","9"):
+       return
+    else: 
+       messagebox1("digite números é data",manutencao)
+       tela.compra.delete(0,END)
+       tela.compra.focus()   
+       return
  if len(tela.compra.get()) ==2:
       memdata=tela.compra.get()
-      
-      if memdata in "0123456789":
+      if memdata.isnumeric():
          memdata=memdata+"/"
-         tela.compras.insert(0,memdata)
+         tela.compra.delete(0,END)
+         tela.compra.insert(0,memdata)
       else:
          messagebox1("digite números é data",manutencao)
-         tela.compra.insert(0,END)
+         tela.compra.delete(0,END)
          tela.compra.focus()
          return   
  elif len(tela.compra.get())==5:
@@ -1052,11 +1061,12 @@ def dadosdatac(event):
          memdata=memdata[1]
          if memdata[1].isnumeric():
            memdata1=memdata1+"/"
+           tela.compra.delete(0,END)
            tela.compra.insert(0,memdata1)
            return
          else:
            messagebox1("digite números é data",manutencao)
-           tela.compra.insert(0,END)
+           tela.compra.delete(0,END)
            tela.compra.focus()   
            return
  elif len(tela.compra.get())==10:
@@ -1064,6 +1074,7 @@ def dadosdatac(event):
          memdata=tela.compra.get().split('/')
          memdata=memdata[2]
          if memdata[2].isnumeric():
+           tela.compra.delete(0,END)
            tela.compra.insert(0,memdata1)
            valida=verificadatac(memdata1)
            if valida==False:
@@ -1072,37 +1083,52 @@ def dadosdatac(event):
            return
          else:
            messagebox1("digite números é data",manutencao) 
-           tela.compra.insert(0,END)
+           tela.compra.delete(0,END)
            tela.compra.focus()   
            return
                     
          
 def dadosdatav(event):
-   if len(tela.vencimento)==0 or len(tela.vencimento.get()) ==1:
+   if len(tela.compra.get())==0:
       tela.vencimento.focus()
       return 
+   if len(tela.vencimento.get()) ==1:
+     digitado=tela.vencimento.get()
+     if digitado in ("0","1","2","3","4","5","6","7","8","9"):
+       return
+     else: 
+       messagebox1("digite números é data",manutencao)
+       tela.vencimento.delete(0,END)
+       tela.vencimento.focus()   
+       return
    if len(tela.vencimento.get()) ==2:
       memdata=tela.vencimento.get()
-      
       if memdata.isnumeric():
          memdata=memdata+"/"
+         tela.vencimento.delete(0,END)
          tela.vencimento.insert(0,memdata)
       else:
-         messagebox1("digite números é data",manutencao)   
+         messagebox1("digite números é data",manutencao)
+         tela.vencimento.delete(0,END)
+         tela.vencimento.focus()
+         return      
    elif len(tela.vencimento.get())==5:
          memdata1=tela.vencimento.get()
          memdata=tela.vencimento.get().split('/')
          memdata=memdata[1]
          if memdata[1].isnumeric():
            memdata1=memdata1+"/"
+           tela.vencimento.delete(0,END)
            tela.vencimento.insert(0,memdata1)
          else:
-           messagebox1("digite números é data",manutencao)   
+           messagebox1("digite números é data",manutencao)
+           tela.vencimento.delete(0,END)   
    elif len(tela.vencimento.get())==10:
          memdata1=memdata
          memdata=tela.vencimento.get().split('/')
          memdata=memdata[2]
          if memdata[2].isnumeric():
+           tela.vencimento.delete(0,END)
            tela.vencimento.insert(0,memdata1)
            valida=verificadatac(memdata1)
            if valida==False:
@@ -1110,35 +1136,51 @@ def dadosdatav(event):
              tela.vencimento.focus()
            return
          else:
-           messagebox1("digite números é data",manutencao) 
+           messagebox1("digite números é data",manutencao)
+           tela.vencimento.delete(0,END) 
            tela.vencimento.focus()    
               
 def dadosdatap(event):
-   if len(tela.pagamento)==0 or len(tela.pagamento.get()) ==1:
+   if len(tela.pagamento.get())==0:
       tela.pagamento.focus()
-      return
+      return 
+   if len(tela.pagamento.get()) ==1:
+    digitado=tela.pagamento.get()
+    if digitado in ("0","1","2","3","4","5","6","7","8","9"):
+       return
+    else: 
+       messagebox1("digite números é data",manutencao)
+       tela.pagamento.delete(0,END)
+       tela.pagamento.focus()   
+       return
    if len(tela.pagamento.get()) ==2:
       memdata=tela.pagamento.get()
-      
       if memdata.isnumeric():
          memdata=memdata+"/"
+         tela.pagamento.delete(0,END)
          tela.pagamento.insert(0,memdata)
       else:
-         messagebox1("digite números é data",manutencao)   
+         messagebox1("digite números é data",manutencao)
+         tela.pagamento.delete(0,END)
+         tela.pagamento.focus()
+         return      
    elif len(tela.pagamento.get())==5:
          memdata1=tela.pagamento.get()
          memdata=tela.pagamento.get().split('/')
          memdata=memdata[1]
          if memdata[1].isnumeric():
            memdata1=memdata1+"/"
+           tela.pagamento.delete(0,END)
            tela.pagamento.insert(0,memdata1)
          else:
-           messagebox1("digite números é data",manutencao)   
+           messagebox1("digite números é data",manutencao)
+           tela.pagamento.delete(0,END)   
    elif len(tela.pagamento.get())==10:
          memdata1=memdata
          memdata=tela.pagamento.get().split('/')
          memdata=memdata[2]
          if memdata[2].isnumeric():
+           tela.pagamento.delete(0,END)
            tela.pagamento.insert(0,memdata1)
            valida=verificadatac(memdata1)
            if valida==False:
@@ -1146,7 +1188,8 @@ def dadosdatap(event):
              tela.pagamento.focus()
            return
          else:
-           messagebox1("digite números é data",manutencao) 
+           messagebox1("digite números é data",manutencao)
+           tela.pagamento.delete(0,END) 
            tela.compra.focus()   
 
 
@@ -1157,21 +1200,22 @@ def dadosvalor(event):
 
    if len(tela.valpagar.get())==0:
       return
-   if tela.valpagar.get() in ",0123456789":
-      valpag=tela.valapagar.get()
-      if valpag in ",":
-       if len(valpag[valpag.find(',')+1:]) == 2:
+   valpag=tela.valapagar.get()
+   if valpag in ",":
+     if len(valpag[valpag.find(',')+1:]) == 2:
           valpag=tela.valapagar.get()
           valpag1=valorout(valpag)
+          tela.valpagar.delete(0,END)
           tela.valpagar.insert(0, valpag1)
-       elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
+     elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
           messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
-          tela.valpagar.insert(0,END)  
+          tela.valpagar.delete(0,END)  
           tela.valpagar.focus()
-      return
+     return
    else:
-      messagebox1("valor inválido digite novamente",manutencao)
-      tela.valpagar.insert(0,END)
+      if not valpag.isnumeric():
+        messagebox1("valor inválido digite novamente",manutencao)
+        tela.valpagar.delete(0,END)
       return     
       
 def valorout(valpag):
@@ -1200,44 +1244,46 @@ def valorout(valpag):
 def dadosdesconto(event):
    if len(tela.desconto.get())==0:
       return
-   if tela.desconto.get() in ",0123456789":
-      valpag=tela.desconto.get()
-      if valpag in ",":
+   valpag=tela.desconto.get()
+   if valpag in ",":
        if len(valpag[valpag.find(',')+1:]) == 2:
           valpag=tela.desconto.get()
           valpag1=valorout(valpag)
+          tela.desconto.delete(0,END)
           tela.desconto.insert(0, valpag1)
        elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
           messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
-          tela.desconto.insert(0,END)  
+          tela.desconto.delete(0,END)  
           tela.desconto.focus()
-      return
+       return
  
    else:
-      messagebox1("valor inválido digite novamente",manutencao)
-      tela.desconto.insert(0,END)
-      return        
+      if not valpag.isnumeric():
+        messagebox1("valor inválido digite novamente",manutencao)
+        tela.desconto.delete(0,END)
+        return        
 
 def dadosjuros(event):
    if len(tela.juros.get())==0:
       return
-   if tela.juros.get() in ",0123456789":
-      valpag=tela.juros.get()
-      if valpag in ",":
+   valpag=tela.juros.get()
+   if valpag in ",":
        if len(valpag[valpag.find(',')+1:]) == 2:
           valpag=tela.juros.get()
           valpag1=valorout(valpag)
+          tela.juros.delete(0,END)
           tela.juros.insert(0, valpag1)
        elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
           messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
-          tela.juros.insert(0,END)  
+          tela.juros.deletet(0,END)  
           tela.juros.focus()
-      return
+       return
  
    else:
-      messagebox1("valor inválido digite novamente",manutencao)
-      tela.juros.insert(0,END)
-      return        
+      if not valpag.isnumeric():
+         messagebox1("valor inválido digite novamente",manutencao)
+         tela.juros.delete(0,END)
+         return        
 
 
 def incluircontas_click(janela1):
