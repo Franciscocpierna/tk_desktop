@@ -996,14 +996,49 @@ def incluircontas():
        limpacamposcontas()   
        tela.codigo.focus()
        return
+
+
+def verificadatac(memdata1):
+
+    data2=tela.memdata1.split('/')
+
+    dia = int(data2[0])
+    mes = int(data2[1] )
+    ano = int(data2[2])
+
+    valida = False
+    
+    # Meses com 31 dias
+    if( mes==1 or mes==3 or mes==5 or mes==7 or \
+        mes==8 or mes==10 or mes==12):
+        if(dia<=31):
+            valida = True
+    # Meses com 30 dias
+    elif( mes==4 or mes==6 or mes==9 or mes==11):
+        if(dia<=30):
+            valida = True
+    elif mes==2:
+        # Testa se é bissexto
+        if (ano%4==0 and ano%100!=0) or (ano%400==0):
+            if(dia<=29):
+                valida = True
+        elif(dia<=28):
+                valida = True
+
+    if(valida) == False:
+        messagebox1("Data Inválida digite novamente",manutencao)
+        return valida 
+    return valida
+
+
 def dadosdatac(event):
- if len(tela.compra.get()) ==1:
-    tela.compra.focus()
-    return 
+ if len(tela.compra)==0 or len(tela.compra.get()) ==1:
+      tela.compra.focus()
+      return 
  if len(tela.compra.get()) ==2:
       memdata=tela.compra.get()
       
-      if memdata.isnumeric():
+      if memdata in "0123456789":
          memdata=memdata+"/"
          tela.compras.insert(0,memdata)
       else:
@@ -1030,7 +1065,10 @@ def dadosdatac(event):
          memdata=memdata[2]
          if memdata[2].isnumeric():
            tela.compra.insert(0,memdata1)
-           verificadatac()
+           valida=verificadatac(memdata1)
+           if valida==False:
+             tela.compra.delete(0,END) 
+             tela.compra.focus()   
            return
          else:
            messagebox1("digite números é data",manutencao) 
@@ -1040,6 +1078,9 @@ def dadosdatac(event):
                     
          
 def dadosdatav(event):
+   if len(tela.vencimento)==0 or len(tela.vencimento.get()) ==1:
+      tela.vencimento.focus()
+      return 
    if len(tela.vencimento.get()) ==2:
       memdata=tela.vencimento.get()
       
@@ -1063,13 +1104,19 @@ def dadosdatav(event):
          memdata=memdata[2]
          if memdata[2].isnumeric():
            tela.vencimento.insert(0,memdata1)
-           verificadatav()
+           valida=verificadatac(memdata1)
+           if valida==False:
+             tela.vencimento.delete(0,END) 
+             tela.vencimento.focus()
            return
          else:
            messagebox1("digite números é data",manutencao) 
            tela.vencimento.focus()    
               
 def dadosdatap(event):
+   if len(tela.pagamento)==0 or len(tela.pagamento.get()) ==1:
+      tela.pagamento.focus()
+      return
    if len(tela.pagamento.get()) ==2:
       memdata=tela.pagamento.get()
       
@@ -1093,7 +1140,10 @@ def dadosdatap(event):
          memdata=memdata[2]
          if memdata[2].isnumeric():
            tela.pagamento.insert(0,memdata1)
-           verificadatap()
+           valida=verificadatac(memdata1)
+           if valida==False:
+             tela.pagamento.delete(0,END) 
+             tela.pagamento.focus()
            return
          else:
            messagebox1("digite números é data",manutencao) 
@@ -1101,99 +1151,7 @@ def dadosdatap(event):
 
 
 
-def verificadatac():
-    if len(tela.compra.get())!=10:
-       return 
-    
-    data2=tela.compra.get().split('/')
 
-    dia = int(data2[0])
-    mes = int(data2[1] )
-    ano = int(data2[2])
-
-    valida = False
-    
-    # Meses com 31 dias
-    if( mes==1 or mes==3 or mes==5 or mes==7 or \
-        mes==8 or mes==10 or mes==12):
-        if(dia<=31):
-            valida = True
-    # Meses com 30 dias
-    elif( mes==4 or mes==6 or mes==9 or mes==11):
-        if(dia<=30):
-            valida = True
-    elif mes==2:
-        # Testa se é bissexto
-        if (ano%4==0 and ano%100!=0) or (ano%400==0):
-            if(dia<=29):
-                valida = True
-        elif(dia<=28):
-                valida = True
-
-    if(valida) == False:
-        messagebox1("Data Inválida digite novamente",manutencao)
-        tela.compra.focus()
-
-def verificadatav():
-     
-    data2=tela.vencimento.split('/')
-
-    dia = int(data2[0])
-    mes = int(data2[1] )
-    ano = int(data2[2])
-
-    valida = False
-    
-    # Meses com 31 dias
-    if( mes==1 or mes==3 or mes==5 or mes==7 or \
-        mes==8 or mes==10 or mes==12):
-        if(dia<=31):
-            valida = True
-    # Meses com 30 dias
-    elif( mes==4 or mes==6 or mes==9 or mes==11):
-        if(dia<=30):
-            valida = True
-    elif mes==2:
-        # Testa se é bissexto
-        if (ano%4==0 and ano%100!=0) or (ano%400==0):
-            if(dia<=29):
-                valida = True
-        elif(dia<=28):
-                valida = True
-
-    if(valida) == False:
-        messagebox1("Data Inválida digite novamente",manutencao)
-        tela.vencimento.focus()
-def verificadatap():
-   if tela.pagamento.get() != 0:  
-    data2=tela.pagamento.split('/')
-
-    dia = int(data2[0])
-    mes = int(data2[1] )
-    ano = int(data2[2])
-
-    valida = False
-    
-    # Meses com 31 dias
-    if( mes==1 or mes==3 or mes==5 or mes==7 or \
-        mes==8 or mes==10 or mes==12):
-        if(dia<=31):
-            valida = True
-    # Meses com 30 dias
-    elif( mes==4 or mes==6 or mes==9 or mes==11):
-        if(dia<=30):
-            valida = True
-    elif mes==2:
-        # Testa se é bissexto
-        if (ano%4==0 and ano%100!=0) or (ano%400==0):
-            if(dia<=29):
-                valida = True
-        elif(dia<=28):
-                valida = True
-
-    if(valida) == False:
-        messagebox1("Data Inválida digite novamente",manutencao)
-        tela.pagamento.focus()
 
 def dadosvalor(event):
 
@@ -1203,7 +1161,9 @@ def dadosvalor(event):
       valpag=tela.valapagar.get()
       if valpag in ",":
        if len(valpag[valpag.find(',')+1:]) == 2:
-          valorout()
+          valpag=tela.valapagar.get()
+          valpag1=valorout(valpag)
+          tela.valpagar.insert(0, valpag1)
        elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
           messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
           tela.valpagar.insert(0,END)  
@@ -1214,9 +1174,15 @@ def dadosvalor(event):
       tela.valpagar.insert(0,END)
       return     
       
-def valorout():
-   valpag=tela.valapagar.get()
-   if len(valpag) == 7:
+def valorout(valpag):
+   
+   if len(valpag) == 4:
+       valpag1=valpag[0]+valpag[1]+valpag[2]+valpag[3]
+   elif len(valpag)== 5:
+       valpag1=valpag[0]+valpag[1]+valpag[2]+valpag[3]+valpag[4]
+   elif len(valpag)==6:
+       valpag1=valpag[0]+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]
+   elif len(valpag) == 7:
         valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
    elif len(valpag) == 8:
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
@@ -1228,8 +1194,8 @@ def valorout():
            valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
    elif len(valpag) == 12:
            valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
-   tela.valpagar.insert(0, valpag1)      
-   return
+         
+   return valpag1 
 
 def dadosdesconto(event):
    if len(tela.desconto.get())==0:
@@ -1238,7 +1204,9 @@ def dadosdesconto(event):
       valpag=tela.desconto.get()
       if valpag in ",":
        if len(valpag[valpag.find(',')+1:]) == 2:
-          descontoout()
+          valpag=tela.desconto.get()
+          valpag1=valorout(valpag)
+          tela.desconto.insert(0, valpag1)
        elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
           messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
           tela.desconto.insert(0,END)  
@@ -1249,22 +1217,7 @@ def dadosdesconto(event):
       messagebox1("valor inválido digite novamente",manutencao)
       tela.desconto.insert(0,END)
       return        
-def descontoout(event):
-   valpag=tela.desconto.get()
-   if len(valpag) == 7:
-           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
-   elif len(valpag) == 8:
-           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
-   elif len(valpag) == 9:
-           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
-   elif len(valpag) == 10:
-           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
-   elif len(valpag) == 11:
-           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
-   elif len(valpag) == 12:
-           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
-   tela.desconto.insert(0, valpag1)      
-   return
+
 def dadosjuros(event):
    if len(tela.juros.get())==0:
       return
@@ -1272,7 +1225,9 @@ def dadosjuros(event):
       valpag=tela.juros.get()
       if valpag in ",":
        if len(valpag[valpag.find(',')+1:]) == 2:
-          jurosout()
+          valpag=tela.juros.get()
+          valpag1=valorout(valpag)
+          tela.juros.insert(0, valpag1)
        elif len(valpag[valpag.find(',')+1:]) > 2 or len(valpag)>12:
           messagebox1("digite virgula tem que ter 2 casas decimais ou tem mais de 12 digitos",manutencao)
           tela.juros.insert(0,END)  
@@ -1283,22 +1238,6 @@ def dadosjuros(event):
       messagebox1("valor inválido digite novamente",manutencao)
       tela.juros.insert(0,END)
       return        
-def jurosout():
-   valpag=tela.juros.get()
-   if len(valpag) == 7:
-           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
-   elif len(valpag) == 8:
-           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
-   elif len(valpag) == 9:
-           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
-   elif len(valpag) == 10:
-           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
-   elif len(valpag) == 11:
-           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
-   elif len(valpag) == 12:
-           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
-   tela.juros.insert(0, valpag1)      
-   return     
 
 
 def incluircontas_click(janela1):

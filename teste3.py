@@ -3,9 +3,9 @@ n = n.replace(',', '.').replace()
 n = float(n)
 print(n)
 '''
-lucro="1.000,00"  #tela.valapagar.get()
+lucro="1.000,02"  #tela.valapagar.get()
 #if cnum1[cnum1.find('.') + 1] == '0':
-if len(lucro[lucro.find(',')+1:]) > 2:
+if len(lucro[lucro.find(',')+1:]) == 2:
     print(lucro[lucro.find(',')+1:])
     print("digite novamente tem que ter 2 casas decimais")
 else:
