@@ -1,8 +1,13 @@
 from tkinter import *
 
-#from contaspagar import incluirfor 
-#from contasapagar.contaspagar import incluirfor
-#from modulos.contaspagar import incluirfor
+class teste():
+     def __init__(self,indice):
+       self.indice=indice
+
+     def getvalor(self):
+          return self.indice
+     def setvalor(self,indice2):
+          self.indice=indice2+1       
 
 class montatela():
       def __init__(self, manutencao1,janela1, opcao,posx,posy,largura, altura,opcao1):
@@ -13,7 +18,10 @@ class montatela():
          self.opcao1=opcao1
          self.largura = largura
          self.altura = altura
-         #manutenção Inclusão  
+         
+         #manutenção Inclusão
+         
+         #   
          if self.opcao==1 and self.opcao1 == 1: 
               manutencao1.title("Inclusão-Fornecedor - Esc para sair")
               Label(manutencao1, text= 'Fornecedor - Inclusão',font=('Arial', 20) ,fg="black").grid(row=0,column=2,padx=90,pady=30,sticky=W)

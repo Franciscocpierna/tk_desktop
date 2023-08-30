@@ -105,7 +105,7 @@ def continua():
 
     
 
-def lertabela(sql,codigomem,manutencao,mensagem):
+def lertabela(*argumento):
    sqlres=""
    
    try:

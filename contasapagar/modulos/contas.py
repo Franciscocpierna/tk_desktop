@@ -5,7 +5,7 @@ from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
-from classes import montatela,centralizacao
+from classes import montatela,centralizacao,teste
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -24,6 +24,9 @@ posy=0
 X=0
 ler=""
 opcao=0
+
+     
+     
 
 def limpacamposcontas():
   tela.codigo.delete(0,END)
@@ -871,15 +874,16 @@ def vertipo(manutencao):
    sqleres=""
    if len(tela.tipo.get())  !=2:
         messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
+
         tela.pagamento.focus()
         return
-   if len(tela.pagamento.get())!=8:
-        messagebox1("pagamento tem que ter tamanho 8",manutencao)
+   if len(tela.pagamento.get())!=10:
+        messagebox1("pagamento tem que ter tamanho 10",manutencao)
         tela.pagamento.focus()
         return
    tipomem=tela.tipo.get()
    mensagem= "Tipo"           
-   sql=  f"SELECT nome FROM tipo WHERE contas.tipo = '{tipomem}'"  
+   sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
           
    sqlres=lertabela(sql,tipomem,manutencao,mensagem)
    if len(sqlres)==0:
@@ -912,6 +916,35 @@ def verfornec(event):
       tela.nome.insert(0, sqlres[0][0])
    return
 
+
+def verchave():
+  if len(tela.codigo.get) !=5:
+    messagebox1("tamanho do campo codigo fornecedor  é 5 ",manutencao)
+    return 
+  
+  if len(tela.documento.get())== 0:    
+     messagebox1("é necessário preencher nr documento ",manutencao)
+     return 
+  if len(tela.tparcela.get()) ==  0 or len(tela.tparcela.get()) > 3:
+     messagebox1("é necessário preencher nr parcela e tamanho até 3 ",manutencao)
+     return 
+  codigomem=tela.codigo
+  documentomem=tela.documento.get()
+  tparcelamem=tela.tparcela.get()
+
+  sql=f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE  codigo = '{codigomem}' and documento='{documentomem}' and tparcela = '{tparcelamem}'''
+    
+  mensagem="Contas"        
+  sqlres=lertabela(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem)
+  if len(sqlres)!=0:
+   messagebox1("Registro já existe não pode ser incluido ",manutencao)
+   limpacamposcontas()
+   tela.codigo.focus()
+   return
+  
+  
 def incluircontas():
       
    sqlres="" 
@@ -1000,7 +1033,7 @@ def incluircontas():
 
 def verificadatac(memdata1):
 
-    data2=tela.memdata1.split('/')
+    data2=memdata1.split('/')
 
     dia = int(data2[0])
     mes = int(data2[1] )
@@ -1032,6 +1065,46 @@ def verificadatac(memdata1):
 
 
 def dadosdatac(event):
+ indice=len(tela.compra.get())
+ if indice==0:
+   return
+ indice=indice-1
+
+ print(indice)
+ memdata=tela.compra.get()
+ print(memdata[indice])
+ if str(indice) in ("0","1","3","4","6","7","8","9"):
+    if memdata[indice].isnumeric():
+       if indice ==1 or indice ==4:
+          memdata=memdata+"/"
+          tela.compra.delete(0,END)
+          tela.compra.insert(0,memdata)
+          return
+       elif indice == 9:
+           valida=verificadatac(memdata)
+           if valida==False:
+             tela.compra.delete(0,END) 
+             tela.compra.focus()
+             return
+           else:
+             return 
+       else:         
+           return
+    else:
+      messagebox1("data tem que ser numerica nessa posição",manutencao) 
+      tela.compra.delete(0,END)
+      tela.compra.focus()
+      return
+ 
+ elif indice==2 or indice==5:
+     if memdata[indice] not in ("/"):
+         messagebox1("digite barra automatica nesta posição é data",manutencao)
+         tela.compra.delete(0,END)
+         tela.compra.focus()
+         return   
+     else:
+        return 
+   
  if len(tela.compra.get())==0:
       tela.compra.focus()
       return 
@@ -1070,6 +1143,7 @@ def dadosdatac(event):
            tela.compra.focus()   
            return
  elif len(tela.compra.get())==10:
+         memdata=tela.compra.get()
          memdata1=memdata
          memdata=tela.compra.get().split('/')
          memdata=memdata[2]
@@ -1089,108 +1163,84 @@ def dadosdatac(event):
                     
          
 def dadosdatav(event):
-   if len(tela.compra.get())==0:
-      tela.vencimento.focus()
-      return 
-   if len(tela.vencimento.get()) ==1:
-     digitado=tela.vencimento.get()
-     if digitado in ("0","1","2","3","4","5","6","7","8","9"):
-       return
-     else: 
-       messagebox1("digite números é data",manutencao)
-       tela.vencimento.delete(0,END)
-       tela.vencimento.focus()   
-       return
-   if len(tela.vencimento.get()) ==2:
-      memdata=tela.vencimento.get()
-      if memdata.isnumeric():
-         memdata=memdata+"/"
-         tela.vencimento.delete(0,END)
-         tela.vencimento.insert(0,memdata)
-      else:
-         messagebox1("digite números é data",manutencao)
-         tela.vencimento.delete(0,END)
-         tela.vencimento.focus()
-         return      
-   elif len(tela.vencimento.get())==5:
-         memdata1=tela.vencimento.get()
-         memdata=tela.vencimento.get().split('/')
-         memdata=memdata[1]
-         if memdata[1].isnumeric():
-           memdata1=memdata1+"/"
-           tela.vencimento.delete(0,END)
-           tela.vencimento.insert(0,memdata1)
-         else:
-           messagebox1("digite números é data",manutencao)
-           tela.vencimento.delete(0,END)   
-   elif len(tela.vencimento.get())==10:
-         memdata1=memdata
-         memdata=tela.vencimento.get().split('/')
-         memdata=memdata[2]
-         if memdata[2].isnumeric():
-           tela.vencimento.delete(0,END)
-           tela.vencimento.insert(0,memdata1)
-           valida=verificadatac(memdata1)
+ indice=len(tela.vencimento.get())
+ if indice==0:
+   return
+ indice=indice-1
+ memdata=tela.vencimento.get()
+ if str(indice) in ("0","1","3","4","6","7","8","9"):
+    if memdata[indice].isnumeric():
+       if indice ==1 or indice ==4:
+          memdata=memdata+"/"
+          tela.vencimento.delete(0,END)
+          tela.vencimento.insert(0,memdata)
+          return
+       elif indice == 9:
+           valida=verificadatac(memdata)
            if valida==False:
              tela.vencimento.delete(0,END) 
              tela.vencimento.focus()
+             return
+           else:
+             return 
+       else:         
            return
-         else:
-           messagebox1("digite números é data",manutencao)
-           tela.vencimento.delete(0,END) 
-           tela.vencimento.focus()    
+    else:
+      messagebox1("data tem que ser numerica nessa posição",manutencao) 
+      tela.vencimento.delete(0,END)
+      tela.vencimento.focus()
+      return
+ 
+ elif indice==2 or indice==5:
+     if memdata[indice] not in ("/"):
+         messagebox1("digite barra automatica nesta posição é data",manutencao)
+         tela.vencimento.delete(0,END)
+         tela.vencimento.focus()
+         return   
+     else:
+        return 
+
               
 def dadosdatap(event):
-   if len(tela.pagamento.get())==0:
-      tela.pagamento.focus()
-      return 
-   if len(tela.pagamento.get()) ==1:
-    digitado=tela.pagamento.get()
-    if digitado in ("0","1","2","3","4","5","6","7","8","9"):
-       return
-    else: 
-       messagebox1("digite números é data",manutencao)
-       tela.pagamento.delete(0,END)
-       tela.pagamento.focus()   
-       return
-   if len(tela.pagamento.get()) ==2:
-      memdata=tela.pagamento.get()
-      if memdata.isnumeric():
-         memdata=memdata+"/"
-         tela.pagamento.delete(0,END)
-         tela.pagamento.insert(0,memdata)
-      else:
-         messagebox1("digite números é data",manutencao)
-         tela.pagamento.delete(0,END)
-         tela.pagamento.focus()
-         return      
-   elif len(tela.pagamento.get())==5:
-         memdata1=tela.pagamento.get()
-         memdata=tela.pagamento.get().split('/')
-         memdata=memdata[1]
-         if memdata[1].isnumeric():
-           memdata1=memdata1+"/"
-           tela.pagamento.delete(0,END)
-           tela.pagamento.insert(0,memdata1)
-         else:
-           messagebox1("digite números é data",manutencao)
-           tela.pagamento.delete(0,END)   
-   elif len(tela.pagamento.get())==10:
-         memdata1=memdata
-         memdata=tela.pagamento.get().split('/')
-         memdata=memdata[2]
-         if memdata[2].isnumeric():
-           tela.pagamento.delete(0,END)
-           tela.pagamento.insert(0,memdata1)
-           valida=verificadatac(memdata1)
+ indice=len(tela.pagamento.get())
+ if indice==0:
+   return
+ indice=indice-1
+
+ print(indice)
+ memdata=tela.pagamento.get()
+ print(memdata[indice])
+ if str(indice) in ("0","1","3","4","6","7","8","9"):
+    if memdata[indice].isnumeric():
+       if indice ==1 or indice ==4:
+          memdata=memdata+"/"
+          tela.pagamento.delete(0,END)
+          tela.pagamento.insert(0,memdata)
+          return
+       elif indice == 9:
+           valida=verificadatac(memdata)
            if valida==False:
              tela.pagamento.delete(0,END) 
              tela.pagamento.focus()
+             return
+           else:
+             return 
+       else:         
            return
-         else:
-           messagebox1("digite números é data",manutencao)
-           tela.pagamento.delete(0,END) 
-           tela.compra.focus()   
+    else:
+      messagebox1("data tem que ser numerica nessa posição",manutencao) 
+      tela.pagamento.delete(0,END)
+      tela.pagamento.focus()
+      return
+ 
+ elif indice==2 or indice==5:
+     if memdata[indice] not in ("/"):
+         messagebox1("digite barra automatica nesta posição é data",manutencao)
+         tela.compra.delete(0,END)
+         tela.compra.focus()
+         return   
+     else:
+        return 
 
 
 
@@ -1289,9 +1339,10 @@ def dadosjuros(event):
 def incluircontas_click(janela1):
     opcao=1
     opcao1=2
-    
     global tela
-    global manutencao  
+    global manutencao 
+    indice1=teste(-1)
+
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluircontas)
@@ -1299,6 +1350,7 @@ def incluircontas_click(janela1):
     tab_order2()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+    tela.tparcela.bind("<KeyRelease>", verchave)
     tela.compra.bind("<KeyRelease>", dadosdatac)
     tela.vencimento.bind("<KeyRelease>", dadosdatav)
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
