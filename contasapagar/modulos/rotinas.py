@@ -105,7 +105,7 @@ def continua():
 
     
 
-def lertabela(*argumento):
+def lertabela(sql,codigomem,manutencao,mensagem):
    sqlres=""
    
    try:
@@ -129,6 +129,34 @@ def lertabela(*argumento):
         return sqlres 
    except Error as ex:
        messagebox1("Erro na leitura da tabela"+mensagem+"  linha 131 em rotinas "+str(ex),manutencao)
+       
+       
+       return sqlres
+
+def lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem):
+   sqlres=""
+   
+   try:
+       banco = sqlite3.connect('contaspagar.db')
+       cursor = banco.cursor()
+   except Error as ex:
+       messagebox1("Erro na conexão com Banco de dados linha 115 em rotinas "+str(ex),manutencao)
+       
+       
+       return sqlres 
+   
+   try:
+       cursor.execute(sql)
+       sqlres=cursor.fetchall()
+       cursor.close() 
+       if len(sqlres) == 0:
+          messagebox1("esse "+mensagem+" não existe",manutencao)  
+          return  sqlres
+       else:
+               
+        return sqlres 
+   except Error as ex:
+       messagebox1("Erro na leitura da tabela"+mensagem+"  linha 159 em rotinas "+str(ex),manutencao)
        
        
        return sqlres

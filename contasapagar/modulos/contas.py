@@ -778,7 +778,7 @@ def verificacodigo2():
        
        return 
 
-def consultacontas():
+'''def consultacontas():
    
    sqlres=""
    tela.nome.delete(0,END)
@@ -792,71 +792,27 @@ def consultacontas():
    tela.valpagar.delete(0,END)
    tela.desconto.delete(0,END)
    tela.juros.delete(0,END)
-   tela.documento.delete(0, END) 
-   tela.tparcela.delete(0,END)
    tela.cs.delete(0,END)      
 
    if len(tela.codigo.get())!=5:
         messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
         tela.codigo.delete(0,END)
         tela.codigo.focus()
-        return sqlres 
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-       codigomem=tela.codigo.get()
-       #cursor.execute(f"SELECT * FROM contas WHERE codigo = '{codigomem}'")
-       cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
-       sqlres=cursor.fetchall()
-       
-       
-
-       if len(sqlres) == 0:
-            messagebox1("Registro não existe linha 815",manutencao)
-
-            tela.codigo.delete(0,END)   
-            tela.codigo.focus()
-            cursor.close()  
-            return sqlres
-       else:
-            codigomem=tela.codigo.get()
-            cursor.execute(f"SELECT mome FROM fornecedor WHERE codigo = '{codigomem}'")
-            sql1 = cursor.fetchall()
-            tela.nome.insert(0, sql1[0][0])
-            tela.compra.insert(0, sqlres[0][1])
-            tela.vencimento.insert(0,sqlres[0][2])
-            tela.descricao.insert(0, sqlres[0][3])
-            tela.pagamento.insert(0, sqlres[0][4]) 
-            tela.tipo.insert(0, sqlres[0][5])
-            tipomem=sqlres[0][5]
-            if tipomem!="":
-              cursor.execute(f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'")
-              sql2=cursor.fetchall()
-              tela.desctipo.insert(0, sql2[0][0])
-            tela.valpagar.insert(0, sqlres[0][6])
-            tela.desconto.insert(0, sqlres[0][7])
-            tela.juros.insert(0, sqlres[0][8])
-            tela.documento.insert(0, sqlres[0][9])
-            tela.tparcela.insert(0, sqlres[0][10])
-            tela.cs.insert(0, sqlres[0][11])
-            
-            cursor.close()  
-            return sqlres 
-      except Error as ex: 
-         messagebox1("Erro ao tentar ler o registro linha 846 "+str(ex),manutencao)
-         limpacamposcontas()
-         cursor.close()
-         return sqlres
-         
-   except Error as ex:
-      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 852 "+str(ex),manutencao)
-      limpacamposcontas()
-      cursor.close()  
-      return sqlres   
-                       
+        return sqlres
+   
+   tela.nome.insert(0, sqlres[0][0])
+   tela.compra.insert(0, sqlres[0][1])
+   tela.vencimento.insert(0,sqlres[0][2])
+   tela.descricao.insert(0, sqlres[0][3])
+   tela.pagamento.insert(0, sqlres[0][4]) 
+   tela.tipo.insert(0, sqlres[0][5])
+   tela.desctipo.insert(0, sqlres[0][6])
+   tela.valpagar.insert(0, sqlres[0][7])
+   tela.desconto.insert(0, sqlres[0][8])
+   tela.juros.insert(0, sqlres[0][9])
+   tela.cs.insert(0, sqlres[0][10])
+'''   
+                  
    
     
  
@@ -868,23 +824,25 @@ def tab_order2():
   for w in widgets:
      w.lift()
 
-def vertipo(manutencao):
-   if  len(tela.tipo.get())!=2:
+def vertipo(event):
+   if  len(tela.tipo.get())==1:
       return
    sqleres=""
    if len(tela.tipo.get())  !=2:
         messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
-
-        tela.pagamento.focus()
+        tela.tipo.delete(0,END)
+        tela.tipo.focus()
         return
    if len(tela.pagamento.get())!=10:
         messagebox1("pagamento tem que ter tamanho 10",manutencao)
+        tela.pagamento.delete(0,END)
         tela.pagamento.focus()
         return
    tipomem=tela.tipo.get()
-   mensagem= "Tipo"           
+   mensagem= "Tipo"  
+   
+            
    sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
-          
    sqlres=lertabela(sql,tipomem,manutencao,mensagem)
    if len(sqlres)==0:
        limpacamposcontas()
@@ -902,11 +860,14 @@ def verfornec(event):
    sqleres=""
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
+      
         tela.codigo.focus()
         return
    codigomem=tela.codigo.get()         
    sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
    mensagem="fornecedor"       
+   
+   
    sqlres=lertabela(sql,codigomem,manutencao,mensagem)
    if len(sqlres)==0:
        limpacamposcontas()
@@ -917,33 +878,61 @@ def verfornec(event):
    return
 
 
-def verchave():
-  if len(tela.codigo.get) !=5:
+def verchave(event):
+  sqlres=""
+  if len(tela.codigo.get()) !=5:
     messagebox1("tamanho do campo codigo fornecedor  é 5 ",manutencao)
-    return 
+    return  
   
-  if len(tela.documento.get())== 0:    
-     messagebox1("é necessário preencher nr documento ",manutencao)
-     return 
+  if len(tela.documento.get())==0 or len(tela.documento.get())>20:
+        messagebox1("Informação: digite o Nome esta vazio ou é maior que 20",manutencao)
+        tela.documento.focus()
+        return           
   if len(tela.tparcela.get()) ==  0 or len(tela.tparcela.get()) > 3:
      messagebox1("é necessário preencher nr parcela e tamanho até 3 ",manutencao)
      return 
-  codigomem=tela.codigo
+  tela.nome.delete(0,END)
+  tela.compra.delete(0,END) 
+  tela.vencimento.delete(0,END) 
+  tela.descricao.delete(0,END)
+  tela.tipo.delete(0,END) 
+  tela.desctipo.delete(0,END)
+  tela.desctipo.delete(0,END)
+  tela.pagamento.delete(0,END)
+  tela.valpagar.delete(0,END)
+  tela.desconto.delete(0,END)
+  tela.juros.delete(0,END)
+  tela.cs.delete(0,END)      
+
+  codigomem=tela.codigo()
   documentomem=tela.documento.get()
   tparcelamem=tela.tparcela.get()
 
-  sql=f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE  codigo = '{codigomem}' and documento='{documentomem}' and tparcela = '{tparcelamem}'''
-    
+  sql=f'''SELECT b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
+        
   mensagem="Contas"        
-  sqlres=lertabela(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem)
+  sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem)
   if len(sqlres)!=0:
-   messagebox1("Registro já existe não pode ser incluido ",manutencao)
-   limpacamposcontas()
-   tela.codigo.focus()
-   return
-  
+   if opcao ==1:
+     messagebox1("Registro já existe não pode ser incluido ",manutencao)
+     limpacamposcontas()
+     tela.codigo.focus()
+     return 
+   else:
+     tela.nome.insert(0, sqlres[0][0])
+     tela.compra.insert(0, sqlres[0][1])
+     tela.vencimento.insert(0,sqlres[0][2])
+     tela.descricao.insert(0, sqlres[0][3])
+     tela.pagamento.insert(0, sqlres[0][4]) 
+     tela.tipo.insert(0, sqlres[0][5])
+     tela.desctipo.insert(0, sqlres[0][6])
+     tela.valpagar.insert(0, sqlres[0][7])
+     tela.desconto.insert(0, sqlres[0][8])
+     tela.juros.insert(0, sqlres[0][9])
+     tela.cs.insert(0, sqlres[0][10])
+     return 
   
 def incluircontas():
       
@@ -981,10 +970,12 @@ def incluircontas():
         messagebox1("Informação: digite o C para compras e S para Serviço tamanho 1",manutencao)
         tela.cep.focus()
         return            
-   #elif  len(tela.valpagar.get())==0 or  len(tela.valpagar.get()) > 14:
-   #      messagebox1("Valor a pagar não pode ser zero e nem maior que 14",manutencao)
-   #      tela.cpf.focus()
-   
+    
+   #sqlres=verchave():
+   #if len(sqlres)!=0:
+   #    limpacamposcontas
+   #    tela.codigo.focus()
+   #    return
          
       
    try:
@@ -1340,9 +1331,13 @@ def incluircontas_click(janela1):
     opcao=1
     opcao1=2
     global tela
-    global manutencao 
-    indice1=teste(-1)
-
+    global manutencao
+    global codigomem
+    global documentomem
+    global tparcelamem 
+    codigomem=""
+    documentomem=""
+    tparcelamem =""
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluircontas)
@@ -1370,24 +1365,52 @@ def cosultacontas_click(janela1):
      opcao1=2
      global tela
      global manutencao
+     global codigomem
+     global documentomem
+     global tparcelamem 
+     codigomem=""
+     documentomem=""
+     tparcelamem =""
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultacontas)
-     botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
+     #botao=Button(manutencao, text='Consultar',command=consultacontas)
+     #botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
      #tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
      #tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
-     #manutencao.bind("<F6>",verfornec(manutencao))
-     #manutencao.bind("<F7>", vertipo(manutencao))   
+       
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontas():
-    
-    if len(tela.codigo.get())!=5:
-        messagebox1("codigo tamanho 5",manutencao)
-        tela.codigo.focus()
+    if len(compramem)==0:
+        messagebox1("Informação: digite data da compra",manutencao)
+        tela.compra.focus()
         return
-    codigomem=tela.codigo.get() 
+    
+        
+    elif len(vencimentomem)=="":
+        messagebox1("Informação: vencimento é data  ",manutencao)
+        tela.vencimento.focus()
+        return
+    elif len(descricaomem) =="" or len(descricaomem)> 50:
+        messagebox1("Informação: descrição tamanho até 50",manutencao)
+        tela.cep.focus()
+        return
+    elif  valpagarmem == "" and len(valpagarmem) > 12:
+         messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
+         tela.valpagar.focus()
+         return
+    elif csmem=="" or len(csmem)> 1:
+       messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
+       tela.cs.focus()
+       return
+    elif pagamentomem!="":
+        if tipomem !=2:
+           messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
+           tela.tipo.focus()
+           return      
+     
+     
     compramem=tela.compra.get()
     vencimentomem=tela.vencimento.get()
     descricaomem=tela.descricao.get()
@@ -1396,26 +1419,9 @@ def alteracaocontas():
     valpagarmem=tela.valpagar.get()
     descontomem = tela.desconto.get()
     jurosmem = tela.juros.get()
-    documentomem=tela.documento.get()
-    tparcelamem=tela.tparcela.get()
     csmem=tela.cs.get()
-    sqlres= consultacontas()
-    if len(sqlres)==0:
-      limpacamposcontas()
-      tela.codigo.focus()
-      return
-    if documentomem=="":
-      documentomem=tela.documento.get()
-    else:
-       tela.documento.delete(0, END)
-       tela.documento.insert(0, documentomem)
-    
-    if tparcelamem=="":
-       tparcelamem = tela.tparcela.get()
-    else:
-       tela.tparcela.delete(0, END)
-       tela.tparcela.insert(0, tparcelamem)      
-    
+       
+       
     if compramem == "":
        compramem = tela.compra.get()
     else:
@@ -1469,40 +1475,7 @@ def alteracaocontas():
         tela.cs.delete(0, END)
         tela.cs.insert(0, csmem)                         
    
-    if len(compramem)==0:
-        messagebox1("Informação: digite data da compra",manutencao)
-        tela.compra.focus()
-        return
-    elif len(documentomem)==0 or len(documentomem)>20: 
-        messagebox1("Informação: documento esta vazio ou é maior que 20",manutencao)
-        tela.documento.focus()
-        return
-    elif len(tparcelamem)==0 or len(tparcelamem)>3:
-        messagebox1("Informação: digite a parcela esta vazio ou é maior que 3",manutencao)
-        tela.telefone.focus()
-        return    
-    elif len(vencimentomem)=="":
-        messagebox1("Informação: vencimento é data  ",manutencao)
-        tela.vencimento.focus()
-        return
-    elif len(descricaomem) =="" or len(descricaomem)> 50:
-        messagebox1("Informação: descrição tamanho até 50",manutencao)
-        tela.cep.focus()
-        return
-    elif  valpagarmem == "" and len(valpagarmem) > 14:
-         messagebox1("Valor a pagar tem que ser tamanho até 14 ",manutencao)
-         tela.valpagar.focus()
-         return
-    elif csmem=="" or len(csmem)> 1:
-       messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
-       tela.cs.focus()
-       return
-    elif pagamentomem!="":
-        if tipomem !=2:
-           messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
-           tela.tipo.focus()
-           return      
-    res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
+        res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
     if res == 'yes':
     
       try:
@@ -1548,15 +1521,22 @@ def alteracaocontas():
            messagebox1("Registro não foi Alterado",manutencao)
            return
     
-def alteracaocontas_clik(janela1):
+def alteracaocontas_click(janela1):
      opcao=3
      opcao1=2
      global tela
      global manutencao
+     global codigomem
+     global documentomem
+     global tparcelamem 
+     codigomem=""
+     documentomem=""
+     tparcelamem =""
+
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consutar',command=consultacontas)
-     botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
+     #botao=Button(manutencao, text='Consutar',command=consultacontas)
+     #botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Alterar',command=alteracaocontas)
      botao1.grid(row=13, column=1,padx=0,pady=50,sticky=W)
      tab_order2()
@@ -1577,12 +1557,7 @@ def alteracaocontas_clik(janela1):
       
      
 def exclusaocontas():
-    codigomem=tela.codigo.get()
-    sqlres= consultacontas()
-    if len(sqlres)==0:
-      limpacamposcontas()
-      tela.codigo.focus()
-      return
+    
     
     res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
     if res == 'yes':
@@ -1591,7 +1566,7 @@ def exclusaocontas():
         cursor = banco.cursor()
         
         try:
-           cursor.execute(f"DELETE  FROM contas WHERE contas.codigo = '{codigomem}'")
+           cursor.execute(f"DELETE  FROM contas WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}'")
            banco.commit()
            cursor.close()     
            messagebox1("Registro Excluido com sucesso",manutencao)
@@ -1611,14 +1586,20 @@ def exclusaocontas():
 def excluircontas_click(janela1): 
      opcao=4
      opcao1=2
+     global codigomem
+     global documentomem
+     global tparcelamem
      global tela
      global manutencao
+     codigomem=""
+     documentomem=""
+     tparcelamem =""
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultacontas)
-     botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
+     #botao=Button(manutencao, text='Consultar',command=consultacontas)
+     #botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
-     botao1.grid(row=13, column=1,padx=0,pady=50,sticky=W)
+     botao1.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -2325,7 +2306,7 @@ def contas_menu(janela1):
 
  filemenu.add_command(label = " Inclusão",command= lambda: incluircontas_click(janela3))
  filemenu.add_command(label = " Consulta",command= lambda: cosultacontas_click(janela3))
- filemenu.add_command(label = " Alteração",command=lambda: alteracaocontas_clik(janela3))
+ filemenu.add_command(label = " Alteração",command=lambda: alteracaocontas_click(janela3))
  filemenu.add_command(label = " Excluir", command=lambda:  excluircontas_click(janela3))
  menujan2.add_cascade(label = "Manutenção", menu = filemenu)
 
