@@ -33,28 +33,36 @@ def vercodigo(event):
   
   if not tela.codigo.get().isnumeric():
      messagebox1("é necessário preencher codigo com numeros e tamanho  2 ",manutencao)
-     tela.codigo.delete(0,END)
+     tela.codigo.delete(0,END)          
      tela.codigo.focus()
      return
   
   if len(tela.codigo.get()) > 2:
       messagebox1("é necessário preencher codigo  tamanho  2 ",manutencao)
-      tela.tparcela.delete(0,END)
-      tela.tparcela.focus()
+      tela.codigo.delete(0,END)
+      tela.codigo.focus()
       return
   sqleres=""
-  tipomem=tela.tipo.get()
+  tipomem=tela.codigo.get()
   mensagem= "Tipo"  
    
             
   sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
-  sqlres=lertabela(sql,tipomem,manutencao,mensagem)
-  if len(sqlres)==0:
+  sqlres=lertabela(sql,tipomem,manutencao,mensagem,opcao)
+  if len(sqlres)==0: 
+      if opcao==1:
+       tela.nome.focus()
+       return
+      else:
        limpacampostipo()
-       tela.codigo.focus()
+       tela.codigo.focus()  
        return
   else:
-      tela.nome.insert(0, sqlres[0][0])
+      if opcao==1:
+        limpacampostipo()
+        tela.codigo.focus
+        return
+  tela.nome.insert(0, sqlres[0][0])
   return
 
 # Relatórios
@@ -321,79 +329,7 @@ def criartabela1(janela3):
    return 
 
 
-def verificacodigo1():
-   
-   codigomem=tela.codigo.get()
-   try:
-       banco = sqlite3.connect('contaspagar.db')
-       cursor = banco.cursor()
-   except Error as ex:
-       messagebox1("Erro na conexão com Banco de dados linha 299 "+str(ex),manutencao)
-       limpacampostipo()
-       
-       return 
-   
-   try:
-       cursor.execute(f"SELECT * FROM tipo WHERE codigo = '{codigomem}'")
-       sqlres=cursor.fetchall()
-       cursor.close() 
-       if len(sqlres) == 0:  
-         
-        return sqlres
-       else:
-        
-        messagebox1("Informação: Registro já existe não pode ser inserido linha 313",manutencao)
-        limpacampostipo()
-        tela.codigo.focus()
-        return sqlres 
-   except Error as ex:
-       messagebox1("Erro na leitura da tabela Fornecedor linha 318 "+str(ex),manutencao)
-       limpacampostipo()
-       
-       return 
 
-def consultatipo():
-   if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
-      messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
-      tela.codigo.delete(0,END)
-      tela.codigo.focus()
-      return
-   sqlres=""   
-   tela.nome.delete(0,END) 
-   
-    
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-       codigomem=tela.codigo.get()
-       cursor.execute(f"SELECT * FROM tipo WHERE codigo = '{codigomem}'")
-       sqlres=cursor.fetchall()
-       
-       
-
-       if len(sqlres) == 0:
-            messagebox1("Registro não existe linha 342",manutencao)
-
-            tela.codigo.delete(0,END)   
-            tela.codigo.focus()
-            cursor.close()  
-            return sqlres
-       else:
-            tela.nome.insert(0, sqlres[0][1])
-            cursor.close()  
-            return sqlres
-      except Error as ex: 
-         messagebox1("Erro ao tentar ler o registro linha 353 "+str(ex),manutencao)
-         limpacampostipo()
-         cursor.close()  
-         return sqlres
-              
-   except Error as ex:
-      messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 359 "+str(ex),manutencao)
-      limpacampostipo()
-      cursor.close()  
-      return sqlres                    
    
     
  
@@ -414,18 +350,17 @@ def limpacampostipo():
 
 def incluirtipo():
       
-   sqlres="" 
-   if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
+    
+   if not tela.codigo.get().isnumeric() and tela.codigo.get() !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
+      tela.nome.delete(0,END)
       tela.codigo.focus()
       return
    
    
-   sqlres =  verificacodigo1()
-   if len(sqlres) !=0:
-      tela.codigo.focus
-      return          
+   
+             
    
    if len(tela.nome.get())==0 or len(tela.nome.get())>50:
      
@@ -466,18 +401,18 @@ def incluirtipo():
        return
    
 def incluirtipo_click(janela1):
-    opcao=1
-    opcao1=3
-    
+    global opcao
     global tela
-    global manutencao  
+    global manutencao
+    opcao=1
+    opcao1=3  
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirtipo)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
-    tela.tipo.bind("<KeyRelease>", vercodigo)
+    tela.codigo.bind("<KeyRelease>", vercodigo)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -486,18 +421,19 @@ def incluirtipo_click(janela1):
            
      
 def cosultatipo_click(janela1):
-     opcao=2
-     opcao1=3
+     global opcao
      global tela
      global manutencao
+     opcao=2
+     opcao1=3
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
-     tela.tipo.bind("<KeyRelease>", vercodigo)
+     tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaotipo():
-    if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
+    if not tela.codigo.get().isnumeric() and tela.codigo.get() !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
       tela.codigo.focus()
@@ -505,17 +441,6 @@ def alteracaotipo():
     codigomem=tela.codigo.get() 
     nomemem=tela.nome.get().upper()
     
-    sqlres= consultatipo()
-    if len(sqlres)==0:
-      limpacampostipo()
-      tela.codigo.focus()
-      return
-    if nomemem == "":
-       nomemem = tela.nome.get().upper()
-    else:
-       tela.nome.delete(0, END)
-       tela.nome.insert(0, nomemem)
-
        
     if len(nomemem)==0 or len(nomemem) >50:
         messagebox1("Informação: digite o Nome esta vazio ou é maior que 50",manutencao)
@@ -557,17 +482,19 @@ def alteracaotipo():
            return
     
 def alteracaotipo_click(janela1):
-     opcao=3
-     opcao1=3
+     
+     global opcao
      global tela
      global manutencao
+     opcao=3
+     opcao1=3
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Alterar',command=alteracaotipo)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order()
      tela.codigo.focus()
-     tela.tipo.bind("<KeyRelease>", vercodigo)
+     tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -609,15 +536,16 @@ def exclusaotipo():
     return 
 
 def excluirtipo_click(janela1): 
-     opcao=4
-     opcao1=3
+     global opcao 
      global tela
      global manutencao
+     opcao=4
+     opcao1=3
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaotipo)
      botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
-     tela.tipo.bind("<KeyRelease>", vercodigo)
+     tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
