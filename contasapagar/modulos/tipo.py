@@ -25,6 +25,38 @@ X=0
 ler=""
 opcao=0
 
+
+
+def vercodigo(event):
+  if len(tela.codigo.get()) < 2 and tela.codigo.get().isnumeric():
+     return
+  
+  if not tela.codigo.get().isnumeric():
+     messagebox1("é necessário preencher codigo com numeros e tamanho  2 ",manutencao)
+     tela.codigo.delete(0,END)
+     tela.codigo.focus()
+     return
+  
+  if len(tela.codigo.get()) > 2:
+      messagebox1("é necessário preencher codigo  tamanho  2 ",manutencao)
+      tela.tparcela.delete(0,END)
+      tela.tparcela.focus()
+      return
+  sqleres=""
+  tipomem=tela.tipo.get()
+  mensagem= "Tipo"  
+   
+            
+  sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
+  sqlres=lertabela(sql,tipomem,manutencao,mensagem)
+  if len(sqlres)==0:
+       limpacampostipo()
+       tela.codigo.focus()
+       return
+  else:
+      tela.nome.insert(0, sqlres[0][0])
+  return
+
 # Relatórios
 
 def abrirpdf1(arquivo1):
@@ -280,7 +312,7 @@ def criartabela1(janela3):
      banco = sqlite3.connect('contaspagar.db')
      cursor = banco.cursor()
      
-     cursor.execute('''CREATE TABLE IF NOT EXISTS tipo (codigo INTEGER PRIMARY KEY  NOT NULL, 
+     cursor.execute('''CREATE TABLE IF NOT EXISTS tipo (codigo varchar(2) PRIMARY KEY  NOT NULL, 
                                                         nome varchar(50) NOT NULL)''')
      cursor.close() 
    except Error as ex:
@@ -321,9 +353,11 @@ def verificacodigo1():
        return 
 
 def consultatipo():
-   if len(tela.codigo.get()) != 2:
-        messagebox1("Codigo tem que ser tamnho 2", manutencao)
-        return
+   if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
+      messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
+      tela.codigo.delete(0,END)
+      tela.codigo.focus()
+      return
    sqlres=""   
    tela.nome.delete(0,END) 
    
@@ -381,9 +415,11 @@ def limpacampostipo():
 def incluirtipo():
       
    sqlres="" 
-   if len(tela.codigo.get()) != 2:
-        messagebox1("Codigo tem que ser tamnho 2", manutencao)
-        return
+   if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
+      messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
+      tela.codigo.delete(0,END)
+      tela.codigo.focus()
+      return
    
    
    sqlres =  verificacodigo1()
@@ -441,6 +477,7 @@ def incluirtipo_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
+    tela.tipo.bind("<KeyRelease>", vercodigo)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -455,15 +492,16 @@ def cosultatipo_click(janela1):
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultatipo)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
+     tela.tipo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaotipo():
-    if len(tela.codigo.get()) != 2:
-        messagebox1("Codigo tem que ser tamnho 2", manutencao)
-        return
+    if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
+      messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
+      tela.codigo.delete(0,END)
+      tela.codigo.focus()
+      return
     codigomem=tela.codigo.get() 
     nomemem=tela.nome.get().upper()
     
@@ -518,19 +556,18 @@ def alteracaotipo():
            messagebox1("Registro não foi Alterado",manutencao)
            return
     
-def alteracaotipo_clik(janela1):
+def alteracaotipo_click(janela1):
      opcao=3
      opcao1=3
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consutar',command=consultatipo)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Alterar',command=alteracaotipo)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order()
      tela.codigo.focus()
+     tela.tipo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -539,16 +576,13 @@ def alteracaotipo_clik(janela1):
       
      
 def exclusaotipo():
-    if len(tela.codigo.get()) != 2:
-        messagebox1("Codigo tem que ser tamnho 2", manutencao)
-        return
-    codigomem=tela.codigo.get()
-    sqlres= consultatipo()
-    if len(sqlres)==0:
-      limpacampostipo()
+    if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
+      messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
+      tela.codigo.delete(0,END)
       tela.codigo.focus()
       return
-    
+    codigomem=tela.codigo.get()
+      
     res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
     if res == 'yes':
        try:
@@ -573,6 +607,7 @@ def exclusaotipo():
     else:
            messagebox1("Registro não foi Excluido",manutencao)      
     return 
+
 def excluirtipo_click(janela1): 
      opcao=4
      opcao1=3
@@ -580,10 +615,9 @@ def excluirtipo_click(janela1):
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultatipo)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaotipo)
-     botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+     botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+     tela.tipo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -752,7 +786,7 @@ def tipo_menu(janela1):
 
  filemenu.add_command(label = " Inclusão",command= lambda: incluirtipo_click(janela3))
  filemenu.add_command(label = " Consulta",command= lambda: cosultatipo_click(janela3))
- filemenu.add_command(label = " Alteração",command=lambda: alteracaotipo_clik(janela3))
+ filemenu.add_command(label = " Alteração",command=lambda: alteracaotipo_click(janela3))
  filemenu.add_command(label = " Excluir", command=lambda:  excluirtipo_click(janela3))
  menujan2.add_cascade(label = "Manutenção", menu = filemenu)
 

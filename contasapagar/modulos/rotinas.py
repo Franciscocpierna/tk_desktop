@@ -105,7 +105,7 @@ def continua():
 
     
 
-def lertabela(sql,codigomem,manutencao,mensagem):
+def lertabela(sql,codigomem,manutencao,mensagem,opcao=0):
    sqlres=""
    
    try:
@@ -121,7 +121,7 @@ def lertabela(sql,codigomem,manutencao,mensagem):
        cursor.execute(sql)
        sqlres=cursor.fetchall()
        cursor.close() 
-       if len(sqlres) == 0:
+       if len(sqlres) == 0 and opcao!=1:
           messagebox1("esse "+mensagem+" não existe",manutencao)  
           return  sqlres
        else:
@@ -133,7 +133,7 @@ def lertabela(sql,codigomem,manutencao,mensagem):
        
        return sqlres
 
-def lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem):
+def lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao=0):
    sqlres=""
    
    try:
@@ -149,7 +149,7 @@ def lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem):
        cursor.execute(sql)
        sqlres=cursor.fetchall()
        cursor.close() 
-       if len(sqlres) == 0:
+       if len(sqlres) == 0 and opcao!=1:
           messagebox1("esse "+mensagem+" não existe",manutencao)  
           return  sqlres
        else:

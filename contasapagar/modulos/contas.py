@@ -745,73 +745,7 @@ def rel_codigo2(janela3):
 
 
 
-def verificacodigo2():
-   
-   codigomem=tela.codigo.get()
-   try:
-       banco = sqlite3.connect('contaspagar.db')
-       cursor = banco.cursor()
-   except Error as ex:
-       messagebox1("Erro na conexão com Banco de dados linha 752 "+str(ex),manutencao)
-       limpacamposcontas()
-       
-       return 
-   
-   try:
-       #cursor.execute(f"SELECT * FROM contas WHERE codigo = '{codigomem}'")
-       cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
-       sqlres=cursor.fetchall()
-       cursor.close() 
-       if len(sqlres) == 0:  
-          return sqlres
-       else:
-        
-        messagebox1("Informação: Registro já existe não pode ser inserido linha 768",manutencao)
-        limpacamposcontas()
-        tela.codigo.focus()
-        return sqlres 
-   except Error as ex:
-       messagebox1("Erro na leitura da tabela contas linha 773 "+str(ex),manutencao)
-       limpacamposcontas()
-       
-       return 
 
-'''def consultacontas():
-   
-   sqlres=""
-   tela.nome.delete(0,END)
-   tela.compra.delete(0,END) 
-   tela.vencimento.delete(0,END) 
-   tela.descricao.delete(0,END)
-   tela.tipo.delete(0,END) 
-   tela.desctipo.delete(0,END)
-   tela.desctipo.delete(0,END)
-   tela.pagamento.delete(0,END)
-   tela.valpagar.delete(0,END)
-   tela.desconto.delete(0,END)
-   tela.juros.delete(0,END)
-   tela.cs.delete(0,END)      
-
-   if len(tela.codigo.get())!=5:
-        messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
-        tela.codigo.delete(0,END)
-        tela.codigo.focus()
-        return sqlres
-   
-   tela.nome.insert(0, sqlres[0][0])
-   tela.compra.insert(0, sqlres[0][1])
-   tela.vencimento.insert(0,sqlres[0][2])
-   tela.descricao.insert(0, sqlres[0][3])
-   tela.pagamento.insert(0, sqlres[0][4]) 
-   tela.tipo.insert(0, sqlres[0][5])
-   tela.desctipo.insert(0, sqlres[0][6])
-   tela.valpagar.insert(0, sqlres[0][7])
-   tela.desconto.insert(0, sqlres[0][8])
-   tela.juros.insert(0, sqlres[0][9])
-   tela.cs.insert(0, sqlres[0][10])
-'''   
                   
    
     
@@ -825,14 +759,22 @@ def tab_order2():
      w.lift()
 
 def vertipo(event):
-   if  len(tela.tipo.get())==1:
+   if len(tela.tipo.get()) < 2 and tela.tipo.get().isnumeric():
+     return
+  
+   if not tela.tipo.get().isnumeric():
+     messagebox1("é necessário preencher nr parcela com numeros e tamanho  2 ",manutencao)
+     tela.tipo.delete(0,END)
+     tela.tipo.focus()
+     return
+  
+   if len(tela.tipo.get()) > 2:
+      messagebox1("é necessário preencher nr parcela  tamanho  2 ",manutencao)
+      tela.ipo.delete(0,END)
+      tela.tipo.focus()
       return
-   sqleres=""
-   if len(tela.tipo.get())  !=2:
-        messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
-        tela.tipo.delete(0,END)
-        tela.tipo.focus()
-        return
+
+      sqleres=""
    if len(tela.pagamento.get())!=10:
         messagebox1("pagamento tem que ter tamanho 10",manutencao)
         tela.pagamento.delete(0,END)
@@ -880,17 +822,40 @@ def verfornec(event):
 
 def verchave(event):
   sqlres=""
+  if len(tela.tparcela.get()) < 3 and tela.tparcela.get().isnumeric():
+     return
+  
+  if not tela.tparcela.get().isnumeric():
+     messagebox1("é necessário preencher nr parcela com numeros e tamanho  3 ",manutencao)
+     tela.tparcela.delete(0,END)
+     tela.tparcela.focus()
+     return
+  
+  if len(tela.tparcela.get()) > 3:
+      messagebox1("é necessário preencher nr parcela  tamanho  3 ",manutencao)
+      tela.tparcela.delete(0,END)
+      tela.tparcela.focus()
+      return
+  
   if len(tela.codigo.get()) !=5:
     messagebox1("tamanho do campo codigo fornecedor  é 5 ",manutencao)
+    tela.tparcela.delete(0,END)
+    tela.codigo.delete(0,END)
+    tela.documento.delete(0,END)
+    tela.codigo.focus()
     return  
   
   if len(tela.documento.get())==0 or len(tela.documento.get())>20:
-        messagebox1("Informação: digite o Nome esta vazio ou é maior que 20",manutencao)
-        tela.documento.focus()
-        return           
-  if len(tela.tparcela.get()) ==  0 or len(tela.tparcela.get()) > 3:
-     messagebox1("é necessário preencher nr parcela e tamanho até 3 ",manutencao)
-     return 
+    messagebox1("Informação: digite o Nome esta vazio ou é maior que 20",manutencao)
+    tela.tparcela.delete(0,END)
+    tela.codigo.delete(0,END)
+    tela.documento.delete(0,END)
+    tela.codigo.focus()
+    return           
+  
+
+     
+     
   tela.nome.delete(0,END)
   tela.compra.delete(0,END) 
   tela.vencimento.delete(0,END) 
@@ -904,7 +869,7 @@ def verchave(event):
   tela.juros.delete(0,END)
   tela.cs.delete(0,END)      
 
-  codigomem=tela.codigo()
+  codigomem=tela.codigo.get().upper()
   documentomem=tela.documento.get()
   tparcelamem=tela.tparcela.get()
 
@@ -913,7 +878,7 @@ def verchave(event):
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         
   mensagem="Contas"        
-  sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem)
+  sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao)
   if len(sqlres)!=0:
    if opcao ==1:
      messagebox1("Registro já existe não pode ser incluido ",manutencao)
@@ -936,19 +901,11 @@ def verchave(event):
   
 def incluircontas():
       
-   sqlres="" 
-   
-         
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         tela.codigo.focus()
         return
-   else:
-        sqlres =  verificacodigo2()
-        if len(sqlres) != 0: 
-          tela.codigo.focus
-          return
-   
+      
 
    if len(tela.compra.get())==0:
         messagebox1("Informação: digite a compra  esta vazio ",manutencao)
@@ -961,27 +918,22 @@ def incluircontas():
    elif len(tela.documento.get())==0 or len(tela.documento.get())>20:
         messagebox1("Informação: digite o Nome esta vazio ou é maior que 20",manutencao)
         tela.documento.focus()
-        return    
-   elif len(tela.tparcela.get())==0 or len(tela.tparcela.get())>3:
-        messagebox1("Informação: digite parcelado ou é maior que 3 digitos",manutencao)
-        tela.tparcela.focus()
         return
+   elif  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
+        messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
+        tela.tparcela.delete(0,END)
+        tela.tparcela.focus()    
    elif len(tela.cs.get()==0) or tela.cs.get().upper() not in ("S","C") :
         messagebox1("Informação: digite o C para compras e S para Serviço tamanho 1",manutencao)
         tela.cep.focus()
         return            
     
-   #sqlres=verchave():
-   #if len(sqlres)!=0:
-   #    limpacamposcontas
-   #    tela.codigo.focus()
-   #    return
+   
          
       
    try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
-        codigomem=tela.codigo.get().upper()
         compramem=tela.compra.get()
         vencimentomem=tela.vencimento.get()
         descricaomem=tela.descricao.get()
@@ -990,8 +942,6 @@ def incluircontas():
         valpagarmem=tela.valpagar.get()
         descontomem = tela.desconto.get()
         jurosmem = tela.juros.get()
-        documentomem=tela.documento.get()
-        tparcelamem=tela.tparcela.get()
         csmem=tela.cs.get().upper()
         
 
@@ -1373,12 +1323,9 @@ def cosultacontas_click(janela1):
      tparcelamem =""
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     #botao=Button(manutencao, text='Consultar',command=consultacontas)
-     #botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
-     #tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
-     #tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
-       
+     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     tela.tparcela.bind("<KeyRelease>", verchave)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontas():
@@ -1596,10 +1543,11 @@ def excluircontas_click(janela1):
      tparcelamem =""
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     #botao=Button(manutencao, text='Consultar',command=consultacontas)
-     #botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
      botao1.grid(row=13, column=0,padx=0,pady=50,sticky=W)
+     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     tela.tparcela.bind("<KeyRelease>", verchave)
+
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -2345,12 +2293,12 @@ def contas_menu(janela1):
                                                vencimento TEXT NOT NULL,
                                                descricao varchar(50),
                                                pagamento TEXT,
-                                               tipo integer,
+                                               tipo varchar(2),
                                                valpagar TEXT NOT NULL,
                                                desconto TEXT,
                                                juros    TEXT,   
                                                documento varchar(20),
-                                               tparcela integer,
+                                               tparcela varchar(3),
                                                cs varchar(1),               
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),

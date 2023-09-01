@@ -25,6 +25,65 @@ X=0
 ler=""
 opcao=0
 
+def verfornec1(event):
+   if len(tela.codigo.get())!=5:
+      return
+
+   sqleres=""
+   if len(tela.codigo.get())!=5:
+        messagebox1("codigo tem que ter tamanho 5",manutencao)
+      
+        tela.codigo.focus()
+        return
+   codigomem=tela.codigo.get()         
+   sql=  f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'"  
+   mensagem="fornecedor"       
+   
+   
+   sqlres=lertabela2(sql,codigomem,manutencao,mensagem)
+   if len(sqlres)==0:
+       limpacamposfor()
+       tela.codigo.focus()
+       return
+   else:
+       tela.nome.insert(0, sqlres[0][1])
+       tela.endereco.insert(0,sqlres[0][2])
+       tela.telefone.insert(0, sqlres[0][3])
+       tela.tipo.insert(0, sqlres[0][4]) 
+       tela.cpf.insert(0, sqlres[0][5])
+       tela.cnpj.insert(0, sqlres[0][6])
+       tela.cep.insert(0, sqlres[0][7])
+       tela.e_mail.insert(0, sqlres[0][8])
+   return
+
+
+def lertabela2(sql,codigomem,manutencao,mensagem):
+   sqlres=""
+   
+   try:
+       banco = sqlite3.connect('contaspagar.db')
+       cursor = banco.cursor()
+   except Error as ex:
+       messagebox1("Erro na conexão com Banco de dados linha 60  "+str(ex),manutencao)
+       
+       
+       return sqlres 
+   
+   try:
+       cursor.execute(sql)
+       sqlres=cursor.fetchall()
+       cursor.close() 
+       if len(sqlres) == 0 and opcao!=1:
+          messagebox1("esse "+mensagem+" não existe",manutencao)  
+          return  sqlres
+       else:
+               
+        return sqlres 
+   except Error as ex:
+       messagebox1("Erro na leitura da tabela"+mensagem+"  linha 131 em rotinas "+str(ex),manutencao)
+
+
+
 # Relatórios
 
 def abrirpdf(arquivo1):
@@ -667,6 +726,7 @@ def incluirfor_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
+    tela.codigo.bind("<KeyRelease>", verfornec1)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -681,9 +741,8 @@ def cosultafor_click(janela1):
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultafor)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.focus()
+     tela.codigo.bind("<KeyRelease>", verfornec1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaofor():
@@ -846,19 +905,18 @@ def alteracaofor():
            messagebox1("Registro não foi Alterado",manutencao)
            return
     
-def alteracaofor_clik(janela1):
+def alteracaofor_click(janela1):
      opcao=3
      opcao1=1
      global tela
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consutar',command=consultafor)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Alterar',command=alteracaofor)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order()
      tela.codigo.focus()
+     tela.codigo.bind("<KeyRelease>", verfornec1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -905,10 +963,9 @@ def excluirfor_click(janela1):
      global manutencao
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao=Button(manutencao, text='Consultar',command=consultafor)
-     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Excluir',command=exclusaofor)
-     botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
+     botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+     tela.codigo.bind("<KeyRelease>", verfornec1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -1325,7 +1382,7 @@ def fornecedor_menu(janela1):
 
  filemenu.add_command(label = " Inclusão",command= lambda: incluirfor_click(janela3))
  filemenu.add_command(label = " Consulta",command= lambda: cosultafor_click(janela3))
- filemenu.add_command(label = " Alteração",command=lambda: alteracaofor_clik(janela3))
+ filemenu.add_command(label = " Alteração",command=lambda: alteracaofor_click(janela3))
  filemenu.add_command(label = " Excluir", command=lambda:  excluirfor_click(janela3))
  menujan2.add_cascade(label = "Manutenção", menu = filemenu)
 
