@@ -778,6 +778,7 @@ def vertipo(event):
    if len(tela.pagamento.get())!=10:
         messagebox1("pagamento tem que ter tamanho 10",manutencao)
         tela.pagamento.delete(0,END)
+        tela.ipo.delete(0,END)
         tela.pagamento.focus()
         return
    tipomem=tela.tipo.get()
@@ -810,14 +811,22 @@ def verfornec(event):
    mensagem="fornecedor"       
    
    
-   sqlres=lertabela(sql,codigomem,manutencao,mensagem)
+   sqlres=lertabela(sql,codigomem,manutencao,mensagem,opcao)
    if len(sqlres)==0:
-       limpacamposcontas()
-       tela.codigo.focus()
-       return
+       if opcao == 1:
+         return 
+       else:
+          limpacamposcontas()
+          tela.codigo.focus()
+          return
    else:
+      if opcao==1:
+         limpacamposcontas()
+         tela.codigo.focus()
+         return
+
       tela.nome.insert(0, sqlres[0][0])
-   return
+      return
 
 
 def verchave(event):
@@ -884,7 +893,7 @@ def verchave(event):
      messagebox1("Registro já existe não pode ser incluido ",manutencao)
      limpacamposcontas()
      tela.codigo.focus()
-     return 
+     return
    else:
      tela.nome.insert(0, sqlres[0][0])
      tela.compra.insert(0, sqlres[0][1])
@@ -897,8 +906,15 @@ def verchave(event):
      tela.desconto.insert(0, sqlres[0][8])
      tela.juros.insert(0, sqlres[0][9])
      tela.cs.insert(0, sqlres[0][10])
-     return 
-  
+  else:
+    if opcao==1: 
+       tela.compra.focus()
+       return 
+    else:
+       limpacamposcontas()
+       tela.codigo.focus()
+       return
+
 def incluircontas():
       
    if len(tela.codigo.get())!=5:
@@ -1193,6 +1209,11 @@ def dadosvalor(event):
       return
    valpag=tela.valapagar.get()
    if valpag in ",":
+     if not valpag[valpag.find(',')+1:].isnumeric():
+        messagebox1("valor inválido digite novamente",manutencao)
+        tela.valpagar.delete(0,END)
+        tela.valpagar.focus()
+        return
      if len(valpag[valpag.find(',')+1:]) == 2:
           valpag=tela.valapagar.get()
           valpag1=valorout(valpag)
@@ -1207,6 +1228,7 @@ def dadosvalor(event):
       if not valpag.isnumeric():
         messagebox1("valor inválido digite novamente",manutencao)
         tela.valpagar.delete(0,END)
+        tela.valpagar.focus()
       return     
       
 def valorout(valpag):
@@ -1237,6 +1259,11 @@ def dadosdesconto(event):
       return
    valpag=tela.desconto.get()
    if valpag in ",":
+       if not valpag[valpag.find(',')+1:].isnumeric():
+        messagebox1("valor inválido digite novamente",manutencao)
+        tela.desconto.delete(0,END)
+        tela.desconto.focus()
+        return
        if len(valpag[valpag.find(',')+1:]) == 2:
           valpag=tela.desconto.get()
           valpag1=valorout(valpag)
@@ -1259,6 +1286,11 @@ def dadosjuros(event):
       return
    valpag=tela.juros.get()
    if valpag in ",":
+       if not valpag[valpag.find(',')+1:].isnumeric():
+        messagebox1("valor inválido digite novamente",manutencao)
+        tela.juros.delete(0,END)
+        tela.juros.focus()
+        return
        if len(valpag[valpag.find(',')+1:]) == 2:
           valpag=tela.juros.get()
           valpag1=valorout(valpag)

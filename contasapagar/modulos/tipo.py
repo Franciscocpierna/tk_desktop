@@ -503,9 +503,10 @@ def alteracaotipo_click(janela1):
       
      
 def exclusaotipo():
-    if tela.codigo.get() not in ("0","1","2","3","4","5","6","7","8","9",) and tela.codigo.get() !=2 :
+    if not tela.codigo.get().isnumeric()  and tela.codigo.get() !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
+      tela.nome.delete(0,END)
       tela.codigo.focus()
       return
     codigomem=tela.codigo.get()

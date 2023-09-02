@@ -28,7 +28,14 @@ opcao=0
 def verfornec1(event):
    if len(tela.codigo.get())!=5:
       return
-
+   tela.nome.delete(0,END) 
+   tela.endereco.delete(0,END) 
+   tela.telefone.delete(0,END)
+   tela.tipo.delete(0,END) 
+   tela.cpf.delete(0,END)
+   tela.cnpj.delete(0,END)
+   tela.cep.delete(0,END)
+   tela.e_mail.delete(0,END)
    sqleres=""
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
@@ -40,24 +47,28 @@ def verfornec1(event):
    mensagem="fornecedor"       
    
    
-   sqlres=lertabela2(sql,codigomem,manutencao,mensagem)
+   sqlres=lertabela2(sql,codigomem,manutencao,mensagem,opcao)
    if len(sqlres)==0:
-       limpacamposfor()
-       tela.codigo.focus()
+       if opcao ==1:
+         tela.nome.focus()
        return
    else:
-       tela.nome.insert(0, sqlres[0][1])
-       tela.endereco.insert(0,sqlres[0][2])
-       tela.telefone.insert(0, sqlres[0][3])
-       tela.tipo.insert(0, sqlres[0][4]) 
-       tela.cpf.insert(0, sqlres[0][5])
-       tela.cnpj.insert(0, sqlres[0][6])
-       tela.cep.insert(0, sqlres[0][7])
-       tela.e_mail.insert(0, sqlres[0][8])
+       if opcao ==1:
+         limpacamposfor()
+         return
+       else:  
+         tela.nome.insert(0, sqlres[0][1])
+         tela.endereco.insert(0,sqlres[0][2])
+         tela.telefone.insert(0, sqlres[0][3])
+         tela.tipo.insert(0, sqlres[0][4]) 
+         tela.cpf.insert(0, sqlres[0][5])
+         tela.cnpj.insert(0, sqlres[0][6])
+         tela.cep.insert(0, sqlres[0][7])
+         tela.e_mail.insert(0, sqlres[0][8])
    return
 
 
-def lertabela2(sql,codigomem,manutencao,mensagem):
+def lertabela2(sql,codigomem,manutencao,mensagem,opcao):
    sqlres=""
    
    try:
@@ -73,12 +84,16 @@ def lertabela2(sql,codigomem,manutencao,mensagem):
        cursor.execute(sql)
        sqlres=cursor.fetchall()
        cursor.close() 
-       if len(sqlres) == 0 and opcao!=1:
-          messagebox1("esse "+mensagem+" não existe",manutencao)  
+       if len(sqlres) == 0: 
+         if opcao!=1:
+          messagebox1("esse "+mensagem+" não existe",manutencao)
+          limpacamposfor()
+          tela.codigo.focus()  
           return  sqlres
-       else:
-               
-        return sqlres 
+       else:  
+         if opcao ==1:
+            messagebox1("esse "+mensagem+" já  existe não pode incluir ",manutencao)                  
+       return sqlres 
    except Error as ex:
        messagebox1("Erro na leitura da tabela"+mensagem+"  linha 131 em rotinas "+str(ex),manutencao)
 
