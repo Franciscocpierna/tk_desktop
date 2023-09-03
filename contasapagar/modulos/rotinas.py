@@ -122,14 +122,11 @@ def lertabela(sql,codigomem,manutencao,mensagem,opcao=0):
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0: 
-         if opcao!=1:
-          messagebox1("esse "+mensagem+" não existe",manutencao)  
+         messagebox1("esse "+mensagem+" não existe",manutencao)  
          return  sqlres
          
        else:
-         if opcao==1:
-            messagebox1("esse "+mensagem+" já existe",manutencao)          
-       return sqlres 
+         return sqlres 
    except Error as ex:
        messagebox1("Erro na leitura da tabela"+mensagem+"  linha 131 em rotinas "+str(ex),manutencao)
        
@@ -152,8 +149,9 @@ def lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao=
        cursor.execute(sql)
        sqlres=cursor.fetchall()
        cursor.close() 
-       if len(sqlres) == 0 and opcao!=1:
-          messagebox1("esse "+mensagem+" não existe",manutencao)  
+       if len(sqlres) == 0: 
+          if opcao!=1:
+            messagebox1("esse "+mensagem+" não existe",manutencao)  
           return  sqlres
        else:
           if opcao ==1:

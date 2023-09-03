@@ -754,14 +754,21 @@ def rel_codigo2(janela3):
 
 def tab_order2():
   tela.codigo.focus
-  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.tipo,tela.pagamento,tela.valpagar,tela.desconto,tela.juros,tela.cs]
+  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desctipo,tela.desconto,tela.juros,tela.valpagar,tela.cs]
   for w in widgets:
      w.lift()
 
 def vertipo(event):
-   if len(tela.tipo.get()) < 2 and tela.tipo.get().isnumeric():
+   if len(tela.pagamento.get())!=10:
+        messagebox1("pagamento tem que ter tamanho 10",manutencao)
+        tela.pagamento.delete(0,END)
+        tela.tipo.delete(0,END)
+        tela.pagamento.focus()
+        return
+
+   if len(tela.tipo.get()) < 2:
      return
-  
+   
    if not tela.tipo.get().isnumeric():
      messagebox1("é necessário preencher nr parcela com numeros e tamanho  2 ",manutencao)
      tela.tipo.delete(0,END)
@@ -775,12 +782,6 @@ def vertipo(event):
       return
 
       sqleres=""
-   if len(tela.pagamento.get())!=10:
-        messagebox1("pagamento tem que ter tamanho 10",manutencao)
-        tela.pagamento.delete(0,END)
-        tela.ipo.delete(0,END)
-        tela.pagamento.focus()
-        return
    tipomem=tela.tipo.get()
    mensagem= "Tipo"  
    
@@ -788,10 +789,11 @@ def vertipo(event):
    sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
    sqlres=lertabela(sql,tipomem,manutencao,mensagem)
    if len(sqlres)==0:
-       limpacamposcontas()
+       tela.tipo.delete(0,END)
        tela.codigo.focus()
        return
    else:
+      tela.desctipo.delete(0,END)
       tela.desctipo.insert(0, sqlres[0][0])
    return
 
@@ -813,20 +815,13 @@ def verfornec(event):
    
    sqlres=lertabela(sql,codigomem,manutencao,mensagem,opcao)
    if len(sqlres)==0:
-       if opcao == 1:
-         return 
-       else:
-          limpacamposcontas()
-          tela.codigo.focus()
-          return
-   else:
-      if opcao==1:
+         messagebox1("codigo não existe em fornecedor",manutencao)
          limpacamposcontas()
          tela.codigo.focus()
          return
-
-      tela.nome.insert(0, sqlres[0][0])
-      return
+   tela.nome.insert(0, sqlres[0][0])
+   tela.documento.focus()
+   return
 
 
 def verchave(event):
@@ -865,7 +860,7 @@ def verchave(event):
 
      
      
-  tela.nome.delete(0,END)
+
   tela.compra.delete(0,END) 
   tela.vencimento.delete(0,END) 
   tela.descricao.delete(0,END)
@@ -919,14 +914,23 @@ def incluircontas():
       
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
+        limpacamposcontas()
         tela.codigo.focus()
         return
-      
-
-   if len(tela.compra.get())==0:
-        messagebox1("Informação: digite a compra  esta vazio ",manutencao)
-        tela.compra.focus()
+   if len(tela.documento.get()) ==0:
+        messagebox1(" digite documento  ",manutencao)
+        limpacamposcontas()
+        tela.documento.focus()
         return
+   if len(tela.tparcela.get()) < 3:
+        messagebox1("parcela tamanho 3 digite ",manutencao)
+        limpacamposcontas() 
+        tela.tparcela.focus()
+        return     
+   if len(tela.compra.get())==0:
+      messagebox1("Informação: digite a compra  esta vazio ",manutencao)
+      tela.compra.focus()
+      return
    elif len(tela.vencimento.get())==0: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
@@ -939,12 +943,14 @@ def incluircontas():
         messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
         tela.tparcela.delete(0,END)
         tela.tparcela.focus()    
-   elif len(tela.cs.get()==0) or tela.cs.get().upper() not in ("S","C") :
+   elif len(tela.cs.get())==0 or tela.cs.get().upper() not in ("S","C") :
         messagebox1("Informação: digite o C para compras e S para Serviço tamanho 1",manutencao)
         tela.cep.focus()
         return            
-    
-   
+   elif len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
+         messagebox1("Falta decrição da compra",manutencao)
+         tela.descricao.focus()
+       
          
       
    try:
@@ -1207,15 +1213,17 @@ def dadosvalor(event):
 
    if len(tela.valpagar.get())==0:
       return
-   valpag=tela.valapagar.get()
-   if valpag in ",":
+   valpag=tela.valpagar.get()
+   if "," in valpag:
+     if len(valpag[valpag.find(','):])==1:
+       return
      if not valpag[valpag.find(',')+1:].isnumeric():
         messagebox1("valor inválido digite novamente",manutencao)
         tela.valpagar.delete(0,END)
         tela.valpagar.focus()
         return
      if len(valpag[valpag.find(',')+1:]) == 2:
-          valpag=tela.valapagar.get()
+          valpag=tela.valpagar.get()
           valpag1=valorout(valpag)
           tela.valpagar.delete(0,END)
           tela.valpagar.insert(0, valpag1)
@@ -1258,7 +1266,10 @@ def dadosdesconto(event):
    if len(tela.desconto.get())==0:
       return
    valpag=tela.desconto.get()
-   if valpag in ",":
+   if "," in valpag:
+       if len(valpag[valpag.find(','):])==1:
+        return
+
        if not valpag[valpag.find(',')+1:].isnumeric():
         messagebox1("valor inválido digite novamente",manutencao)
         tela.desconto.delete(0,END)
@@ -1285,7 +1296,10 @@ def dadosjuros(event):
    if len(tela.juros.get())==0:
       return
    valpag=tela.juros.get()
-   if valpag in ",":
+   if "," in valpag:
+       if len(valpag[valpag.find(','):])==1:
+        return
+
        if not valpag[valpag.find(',')+1:].isnumeric():
         messagebox1("valor inválido digite novamente",manutencao)
         tela.juros.delete(0,END)
@@ -1307,16 +1321,38 @@ def dadosjuros(event):
          messagebox1("valor inválido digite novamente",manutencao)
          tela.juros.delete(0,END)
          return        
+    
 
+def vercampos(event):
+   if len(tela.codigo.get())!=5:
+        messagebox1("campo chave incompleto digite",manutencao)
+        limpacamposcontas()
+        tela.codigo.focus()
+        return
+   if len(tela.documento.get()) ==0:
+        messagebox1("campo chave incompleto digite",manutencao)
+        limpacamposcontas()
+        tela.codigo.focus()
+        return
+   if len(tela.tparcela.get()) < 3:
+        messagebox1("campo chave incompleto digite",manutencao)
+        limpacamposcontas() 
+        tela.codigo.focus()
+        return
+   if len(tela.pagamento.get()) ==10: 
+       if len(tela.tipo.get())==0 or len(tela.tipo.get())==1:
+        tela.tipo.focus()
+        return  
 
 def incluircontas_click(janela1):
-    opcao=1
-    opcao1=2
     global tela
     global manutencao
     global codigomem
     global documentomem
-    global tparcelamem 
+    global tparcelamem
+    global opcao
+    opcao=1
+    opcao1=2 
     codigomem=""
     documentomem=""
     tparcelamem =""
@@ -1335,6 +1371,16 @@ def incluircontas_click(janela1):
     tela.desconto.bind("<KeyRelease>", dadosdesconto)
     tela.juros.bind("<KeyRelease>", dadosjuros)
     tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
+    tela.compra.bind("<FocusIn>",vercampos)
+    tela.vencimento.bind("<FocusIn>",vercampos)
+    tela.valpagar.bind("<FocusIn>",vercampos)
+    tela.descricao.bind("<FocusIn>",vercampos)
+    tela.pagamento.bind("<FocusIn>",vercampos)
+    tela.tipo.bind("<FocusIn>",vercampos)
+    tela.desctipo.bind("<FocusIn>",vercampos)
+    tela.desconto.bind("<FocusIn>",vercampos)
+    tela.juros.bind("<FocusIn>",vercampos)
+    tela.cs.bind("<FocusIn>",vercampos)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -1343,13 +1389,14 @@ def incluircontas_click(janela1):
            
      
 def cosultacontas_click(janela1):
-     opcao=2
-     opcao1=2
+     global opcao
      global tela
      global manutencao
      global codigomem
      global documentomem
      global tparcelamem 
+     opcao=2
+     opcao1=2
      codigomem=""
      documentomem=""
      tparcelamem =""
@@ -1358,33 +1405,59 @@ def cosultacontas_click(janela1):
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
      tela.tparcela.bind("<KeyRelease>", verchave)
+     tela.compra.bind("<FocusIn>",vercampos)
+     tela.vencimento.bind("<FocusIn>",vercampos)
+     tela.valpagar.bind("<FocusIn>",vercampos)
+     tela.descricao.bind("<FocusIn>",vercampos)
+     tela.pagamento.bind("<FocusIn>",vercampos)
+     tela.tipo.bind("<FocusIn>",vercampos)
+     tela.desctipo.bind("<FocusIn>",vercampos)
+     tela.desconto.bind("<FocusIn>",vercampos)
+     tela.juros.bind("<FocusIn>",vercampos)
+     tela.cs.bind("<FocusIn>",vercampos) 
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontas():
-    if len(compramem)==0:
+    if len(tela.codigo.get())!=5:
+        messagebox1("codigo tamanho 5",manutencao)
+        limpacamposcontas()
+        tela.codigo.focus()
+        return
+    if len(tela.documento.get()) ==0:
+        messagebox1(" digite documento  ",manutencao)
+        limpacamposcontas()
+        tela.documento.focus()
+        return
+    if len(tela.tparcela.get()) < 3:
+        messagebox1("parcela tamanho 3 digite ",manutencao)
+        limpacamposcontas() 
+        tela.tparcela.focus()
+        return
+    
+
+    if len(tela.compra.get())==0:
         messagebox1("Informação: digite data da compra",manutencao)
         tela.compra.focus()
         return
-    
-        
-    elif len(vencimentomem)=="":
+            
+    elif len(tela.vencimento.get())==0:
         messagebox1("Informação: vencimento é data  ",manutencao)
         tela.vencimento.focus()
         return
-    elif len(descricaomem) =="" or len(descricaomem)> 50:
+    elif len(tela.descricao.get()) ==0 or len(tela.descricao.get())> 50:
         messagebox1("Informação: descrição tamanho até 50",manutencao)
-        tela.cep.focus()
+        tela.descricao.focus()
         return
-    elif  valpagarmem == "" and len(valpagarmem) > 12:
+    elif  len(tela.valpagar.get()) == 0  and len(tela.valpagar.get()) > 12:
          messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
          tela.valpagar.focus()
          return
-    elif csmem=="" or len(csmem)> 1:
+    elif len(tela.cs.get())==0 or len(tela.cs.get())> 1:
        messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
        tela.cs.focus()
        return
-    elif pagamentomem!="":
-        if tipomem !=2:
+    elif len(tela.pagamento.get())!=0:
+        if len(tela.tipo.get()) !=2:
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
            tela.tipo.focus()
            return      
@@ -1400,61 +1473,8 @@ def alteracaocontas():
     jurosmem = tela.juros.get()
     csmem=tela.cs.get()
        
-       
-    if compramem == "":
-       compramem = tela.compra.get()
-    else:
-       tela.compra.delete(0, END)
-       tela.compra.insert(0, compramem)
-
-    if vencimentomem == "":
-       vencimentomem = tela.vencimento.get()
-    else:
-        tela.vencimento.delete(0, END)
-        tela.vencimento.insert(0, vencimentomem)
-
-    if descricaomem=="":
-        descricaomem = tela.descricao.get()
-    else:
-        tela.descricao.delete(0, END)
-        tela.descricao.insert(0, descricaomem)    
     
-    if tipomem =="":
-        tipomem = tela.tipo.get()
-    else:
-        tela.tipo.delete(0, END)
-        tela.tipo.insert(0, tipomem)
-
- 
-    if pagamentomem=="":
-        pagamentomem=tela.pagamento.get()
-    else:
-        tela.pagamento.delete(0, END)    
-        tela.pagamento.insert(0, pagamentomem)
-
-    if valpagarmem =="":
-        valpagarmem = tela.valpagar.get()
-    else:
-        tela.valpagar.delete(0, END)
-        tela.valpagar.insert(0, valpagarmem)   
-
-    if descontomem =="":
-        descontomem = tela.desconto.get()
-    else:
-        tela.desconto.delete(0, END)
-        tela.desconto.insert(0, descontomem)
-    if jurosmem =="":
-        jurosmem = tela.juros.get()
-    else:
-        tela.juros.delete(0, END)
-        tela.juros.insert(0, jurosmem)
-    if csmem =="":
-        csmem = tela.cs.get().upper()
-    else:
-        tela.cs.delete(0, END)
-        tela.cs.insert(0, csmem)                         
-   
-        res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
+    res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
     if res == 'yes':
     
       try:
@@ -1501,13 +1521,14 @@ def alteracaocontas():
            return
     
 def alteracaocontas_click(janela1):
-     opcao=3
-     opcao1=2
+     global opcao
      global tela
      global manutencao
      global codigomem
      global documentomem
      global tparcelamem 
+     opcao=3
+     opcao1=2
      codigomem=""
      documentomem=""
      tparcelamem =""
@@ -1528,6 +1549,16 @@ def alteracaocontas_click(janela1):
      tela.desconto.bind("<KeyRelease>", dadosdesconto)
      tela.juros.bind("<KeyRelease>", dadosjuros)
      tela.tipo.bind("<KeyRelease>", vertipo)  # rastreia as entradas
+     tela.compra.bind("<FocusIn>",vercampos)
+     tela.vencimento.bind("<FocusIn>",vercampos)
+     tela.valpagar.bind("<FocusIn>",vercampos)
+     tela.descricao.bind("<FocusIn>",vercampos)
+     tela.pagamento.bind("<FocusIn>",vercampos)
+     tela.tipo.bind("<FocusIn>",vercampos)
+     tela.desctipo.bind("<FocusIn>",vercampos)
+     tela.desconto.bind("<FocusIn>",vercampos)
+     tela.juros.bind("<FocusIn>",vercampos)
+     tela.cs.bind("<FocusIn>",vercampos)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -1536,10 +1567,24 @@ def alteracaocontas_click(janela1):
       
      
 def exclusaocontas():
+   if len(tela.codigo.get())!=5:
+        messagebox1("codigo tamanho 5",manutencao)
+        limpacamposcontas()
+        tela.codigo.focus()
+        return
+   if len(tela.documento.get()) ==0:
+        messagebox1(" digite documento  ",manutencao)
+        limpacamposcontas()
+        tela.codigo.focus()
+        return
+   if len(tela.tparcela.get()) < 3:
+        messagebox1("parcela tamanho 3 digite ",manutencao)
+        limpacamposcontas() 
+        tela.codigo.focus()
+        return
     
-    
-    res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
-    if res == 'yes':
+   res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
+   if res == 'yes':
        try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
@@ -1559,17 +1604,18 @@ def exclusaocontas():
            limpacamposcontas()   
            tela.codigo.focus()
            return
-    else:
+   else:
            messagebox1("Registro não foi Excluido",manutencao)      
-    return 
+   return 
 def excluircontas_click(janela1): 
-     opcao=4
-     opcao1=2
+     global opcao
      global codigomem
      global documentomem
      global tparcelamem
      global tela
      global manutencao
+     opcao=4
+     opcao1=2
      codigomem=""
      documentomem=""
      tparcelamem =""
@@ -1579,6 +1625,16 @@ def excluircontas_click(janela1):
      botao1.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
      tela.tparcela.bind("<KeyRelease>", verchave)
+     tela.compra.bind("<FocusIn>",vercampos)
+     tela.vencimento.bind("<FocusIn>",vercampos)
+     tela.valpagar.bind("<FocusIn>",vercampos)
+     tela.descricao.bind("<FocusIn>",vercampos)
+     tela.pagamento.bind("<FocusIn>",vercampos)
+     tela.tipo.bind("<FocusIn>",vercampos)
+     tela.desctipo.bind("<FocusIn>",vercampos)
+     tela.desconto.bind("<FocusIn>",vercampos)
+     tela.juros.bind("<FocusIn>",vercampos)
+     tela.cs.bind("<FocusIn>",vercampos)
 
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
