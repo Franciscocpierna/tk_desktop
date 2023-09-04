@@ -754,20 +754,29 @@ def rel_codigo2(janela3):
 
 def tab_order2():
   tela.codigo.focus
-  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desctipo,tela.desconto,tela.juros,tela.valpagar,tela.cs]
+  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desconto,tela.juros,tela.valpagar,tela.cs]
   for w in widgets:
      w.lift()
 
 def vertipo(event):
+   if len(tela.tipo.get())==0:
+      return    
+   if len(tela.tipo.get()) < 2:
+     if len(tela.pagamento.get())!=10:
+        messagebox1("pagamento tem que ter tamanho 10",manutencao)
+        tela.pagamento.delete(0,END)
+        tela.tipo.delete(0,END)
+        tela.pagamento.focus()
+     else:  
+        return
    if len(tela.pagamento.get())!=10:
         messagebox1("pagamento tem que ter tamanho 10",manutencao)
         tela.pagamento.delete(0,END)
         tela.tipo.delete(0,END)
         tela.pagamento.focus()
         return
-
-   if len(tela.tipo.get()) < 2:
-     return
+   
+  
    
    if not tela.tipo.get().isnumeric():
      messagebox1("é necessário preencher nr parcela com numeros e tamanho  2 ",manutencao)
@@ -826,6 +835,8 @@ def verfornec(event):
 
 def verchave(event):
   sqlres=""
+  if len(tela.tparcela.get()) == 0:
+      return
   if len(tela.tparcela.get()) < 3 and tela.tparcela.get().isnumeric():
      return
   
@@ -1483,7 +1494,7 @@ def vercampos(event):
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        tela.vencimento.delete(0,END)
        tela.vencimento.focus()
-if len(tela.pagamento.get())>10:
+   if len(tela.pagamento.get())>10:
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        tela.pagamento.delete(0,END)
        tela.pagamento.focus()
