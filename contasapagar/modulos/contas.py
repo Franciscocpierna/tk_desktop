@@ -927,14 +927,26 @@ def incluircontas():
         limpacamposcontas() 
         tela.tparcela.focus()
         return     
-   if len(tela.compra.get())==0:
+   if len(tela.compra.get())!=10:
       messagebox1("Informação: digite a compra  esta vazio ",manutencao)
       tela.compra.focus()
       return
-   elif len(tela.vencimento.get())==0: 
+   elif len(tela.vencimento.get())!=10: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
+   elif len(tela.pagamento.get())!=0:
+        if len(tela.pagamento.get())!=10: 
+          messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
+          tela.pagamento.focus()
+          return        
+        else:
+         if len(tela.tipo.get()) !=2:
+           messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
+           tela.tipo.focus()
+           return 
+
+
    elif len(tela.documento.get())==0 or len(tela.documento.get())>20:
         messagebox1("Informação: digite o Nome esta vazio ou é maior que 20",manutencao)
         tela.documento.focus()
@@ -956,6 +968,9 @@ def incluircontas():
    try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
+        codigomem=tela.codigo.get()
+        documentomem=tela.documento.get()
+        tparcelamem = tela.tparcela.get()
         compramem=tela.compra.get()
         vencimentomem=tela.vencimento.get()
         descricaomem=tela.descricao.get()
@@ -1130,7 +1145,10 @@ def dadosdatav(event):
  if indice==0:
    return
  indice=indice-1
+
+ print(indice)
  memdata=tela.vencimento.get()
+ print(memdata[indice])
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
        if indice ==1 or indice ==4:
@@ -1162,6 +1180,63 @@ def dadosdatav(event):
          return   
      else:
         return 
+   
+ if len(tela.vencimento.get())==0:
+      tela.compra.focus()
+      return 
+ if len(tela.vencimento.get()) ==1:
+    digitado=tela.vencimento.get()
+    if digitado in ("0","1","2","3","4","5","6","7","8","9"):
+       return
+    else: 
+       messagebox1("digite números é data",manutencao)
+       tela.vencimento.delete(0,END)
+       tela.vencimento.focus()   
+       return
+ if len(tela.vencimento.get()) ==2:
+      memdata=tela.compra.get()
+      if memdata.isnumeric():
+         memdata=memdata+"/"
+         tela.vencimento.delete(0,END)
+         tela.vencimento.insert(0,memdata)
+      else:
+         messagebox1("digite números é data",manutencao)
+         tela.vencimento.delete(0,END)
+         tela.vencimento.focus()
+         return   
+ elif len(tela.vencimento.get())==5:
+         memdata1=tela.vencimento.get()
+         memdata=tela.vencimento.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.vencimento.delete(0,END)
+           tela.vencimento.insert(0,memdata1)
+           return
+         else:
+           messagebox1("digite números é data",manutencao)
+           tela.vencimento.delete(0,END)
+           tela.vencimento.focus()   
+           return
+ elif len(tela.vencimento.get())==10:
+         memdata=tela.vencimento.get()
+         memdata1=memdata
+         memdata=tela.vencimento.get().split('/')
+         memdata=memdata[2]
+         if memdata[2].isnumeric():
+           tela.vencimento.delete(0,END)
+           tela.vencimento.insert(0,memdata1)
+           valida=verificadatac(memdata1)
+           if valida==False:
+             tela.vencimento.delete(0,END) 
+             tela.vencimento.focus()   
+           return
+         else:
+           messagebox1("digite números é data",manutencao) 
+           tela.vencimento.delete(0,END)
+           tela.vencimento.focus()   
+           return
+                    
 
               
 def dadosdatap(event):
@@ -1199,11 +1274,68 @@ def dadosdatap(event):
  elif indice==2 or indice==5:
      if memdata[indice] not in ("/"):
          messagebox1("digite barra automatica nesta posição é data",manutencao)
-         tela.compra.delete(0,END)
-         tela.compra.focus()
+         tela.pagamento.delete(0,END)
+         tela.pagamento.focus()
          return   
      else:
         return 
+   
+ if len(tela.pagamento.get())==0:
+      tela.pagamento.focus()
+      return 
+ if len(tela.pagamento.get()) ==1:
+    digitado=tela.pagamento.get()
+    if digitado in ("0","1","2","3","4","5","6","7","8","9"):
+       return
+    else: 
+       messagebox1("digite números é data",manutencao)
+       tela.pagamento.delete(0,END)
+       tela.pagamento.focus()   
+       return
+ if len(tela.pagamento.get()) ==2:
+      memdata=tela.pagamento.get()
+      if memdata.isnumeric():
+         memdata=memdata+"/"
+         tela.pagamento.delete(0,END)
+         tela.pagamento.insert(0,memdata)
+      else:
+         messagebox1("digite números é data",manutencao)
+         tela.pagamento.delete(0,END)
+         tela.pagamento.focus()
+         return   
+ elif len(tela.pagamento.get())==5:
+         memdata1=tela.pagamento.get()
+         memdata=tela.pagamento.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           tela.pagamento.delete(0,END)
+           tela.pagamento.insert(0,memdata1)
+           return
+         else:
+           messagebox1("digite números é data",manutencao)
+           tela.pagamento.delete(0,END)
+           tela.pagamento.focus()   
+           return
+ elif len(tela.pagamento.get())==10:
+         memdata=tela.pagamento.get()
+         memdata1=memdata
+         memdata=tela.pagamento.get().split('/')
+         memdata=memdata[2]
+         if memdata[2].isnumeric():
+           tela.pagamento.delete(0,END)
+           tela.pagamento.insert(0,memdata1)
+           valida=verificadatac(memdata1)
+           if valida==False:
+             tela.pagamento.delete(0,END) 
+             tela.pagamento.focus()   
+           return
+         else:
+           messagebox1("digite números é data",manutencao) 
+           tela.pagamento.delete(0,END)
+           tela.pagamento.focus()   
+           return
+                    
 
 
 
@@ -1343,6 +1475,19 @@ def vercampos(event):
        if len(tela.tipo.get())==0 or len(tela.tipo.get())==1:
         tela.tipo.focus()
         return  
+   if len(tela.compra.get())>10:
+       messagebox1("campo data tamanho 10 digite novamente",manutencao)
+       tela.compra.delete(0,END)
+       tela.compra.focus()
+   if len(tela.vencimento.get())>10:
+       messagebox1("campo data tamanho 10 digite novamente",manutencao)
+       tela.vencimento.delete(0,END)
+       tela.vencimento.focus()
+if len(tela.pagamento.get())>10:
+       messagebox1("campo data tamanho 10 digite novamente",manutencao)
+       tela.pagamento.delete(0,END)
+       tela.pagamento.focus()
+    
 
 def incluircontas_click(janela1):
     global tela
@@ -1435,15 +1580,26 @@ def alteracaocontas():
         return
     
 
-    if len(tela.compra.get())==0:
-        messagebox1("Informação: digite data da compra",manutencao)
-        tela.compra.focus()
-        return
-            
-    elif len(tela.vencimento.get())==0:
-        messagebox1("Informação: vencimento é data  ",manutencao)
+    if len(tela.compra.get())!=10:
+      messagebox1("Informação: digite a compra  esta vazio ",manutencao)
+      tela.compra.focus()
+      return
+    elif len(tela.vencimento.get())!=10: 
+        messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
+    elif len(tela.pagamento.get())!=0:
+        if len(tela.pagamento.get())!=10: 
+          messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
+          tela.pagamento.focus()
+          return        
+        else:
+         if len(tela.tipo.get()) !=2:
+           messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
+           tela.tipo.focus()
+           return 
+    
+    
     elif len(tela.descricao.get()) ==0 or len(tela.descricao.get())> 50:
         messagebox1("Informação: descrição tamanho até 50",manutencao)
         tela.descricao.focus()
@@ -1462,7 +1618,9 @@ def alteracaocontas():
            tela.tipo.focus()
            return      
      
-     
+    codigomem=tela.codigo.get()
+    documentomem=tela.documento.get()
+    tparcelamem = tela.tparcela.get() 
     compramem=tela.compra.get()
     vencimentomem=tela.vencimento.get()
     descricaomem=tela.descricao.get()
