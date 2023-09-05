@@ -759,17 +759,10 @@ def tab_order2():
      w.lift()
 
 def vertipo(event):
-   if len(tela.tipo.get())==0:
+   if len(tela.tipo.get())==0 or len(tela.tipo.get())<2:
       return    
-   if len(tela.tipo.get()) < 2:
-     if len(tela.pagamento.get())!=10:
-        messagebox1("pagamento tem que ter tamanho 10",manutencao)
-        tela.pagamento.delete(0,END)
-        tela.tipo.delete(0,END)
-        tela.pagamento.focus()
-     else:  
-        return
-   if len(tela.pagamento.get())!=10:
+   if tela.tipo.get() != "00": 
+    if len(tela.pagamento.get())!=10:
         messagebox1("pagamento tem que ter tamanho 10",manutencao)
         tela.pagamento.delete(0,END)
         tela.tipo.delete(0,END)
@@ -779,13 +772,13 @@ def vertipo(event):
   
    
    if not tela.tipo.get().isnumeric():
-     messagebox1("é necessário preencher nr parcela com numeros e tamanho  2 ",manutencao)
+     messagebox1("é necessário preencher nr tipo com numeros e tamanho  2 ",manutencao)
      tela.tipo.delete(0,END)
      tela.tipo.focus()
      return
   
    if len(tela.tipo.get()) > 2:
-      messagebox1("é necessário preencher nr parcela  tamanho  2 ",manutencao)
+      messagebox1("é necessário preencher numeros e  tamanho  2 ",manutencao)
       tela.ipo.delete(0,END)
       tela.tipo.focus()
       return
@@ -952,7 +945,7 @@ def incluircontas():
           tela.pagamento.focus()
           return        
         else:
-         if len(tela.tipo.get()) !=2:
+         if len(tela.tipo.get()) !=2 or tela.tipo.get()=="00":
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
            tela.tipo.focus()
            return 
@@ -996,17 +989,20 @@ def incluircontas():
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
           try:
-           cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{compramem}','{vencimentomem}',
+       
+            banco = sqlite3.connect('contaspagar.db')
+            cursor = banco.cursor()
+            cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{compramem}','{vencimentomem}',
                                                             '{descricaomem}','{pagamentomem}','{tipomem}',
                                                                  '{valpagarmem}','{descontomem}','{jurosmem}',
                                                                  '{documentomem}','{tparcelamem}','{csmem}')''')
                
                      
-           banco.commit()
-           cursor.close()
-           messagebox1("registro Incluido com sucesso",manutencao)     
-           limpacamposcontas()   
-           tela.codigo.focus()
+            banco.commit()
+            cursor.close()
+            messagebox1("registro Incluido com sucesso",manutencao)     
+            limpacamposcontas()   
+            tela.codigo.focus()
           except Error as ex:
             messagebox1("erro ao gravar tabela contas linha 252 "+ str(ex),manutencao)       
             limpacamposcontas()
@@ -1605,7 +1601,7 @@ def alteracaocontas():
           tela.pagamento.focus()
           return        
         else:
-         if len(tela.tipo.get()) !=2:
+         if len(tela.tipo.get()) !=2 or tela.tipo=="00":
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
            tela.tipo.focus()
            return 
