@@ -12,7 +12,7 @@ from reportlab.lib.pagesizes import A4
 import win32print
 import win32api
 import os
-import datetime 
+from datetime import date
 import shutil
 
 
@@ -86,10 +86,14 @@ def imprimepdf2(arquivo1):
 
 
 def pdfgerado2(sqlres,arquivo):
-   data = datetime.date.today() 
+   data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
+   data3= data.strftime("%Y-%m-%d")
+   data3=date.strptime(data,"%d/%m/%Y")
+   data3=str(data3)
+
   
    try: 
     cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
@@ -205,6 +209,14 @@ def gerapdv(event):
 
 
 def gerapdp(event):
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   data3= data.strftime("%Y-%m-%d")
+   data3=date.strptime(data,"%d/%m/%Y")
+   data3=str(data3)
+
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
@@ -214,11 +226,11 @@ def gerapdp(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento DESC''')
 
       
         
@@ -248,6 +260,15 @@ def gerapdp(event):
         cursor.close()
 
 def gerapdat(event):
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   data3= data.strftime("%Y-%m-%d")
+   data3=date.strptime(data,"%d/%m/%Y")
+   data3=str(data3)
+
+
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
@@ -257,11 +278,11 @@ def gerapdat(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento DESC''')
 
       
         
@@ -340,6 +361,14 @@ def gerapdf2(event):
         cursor.close()
 
 def gerapd1(event):
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   data3= data.strftime("%Y-%m-%d")
+   data3=date.strptime(data,"%d/%m/%Y")
+   data3=str(data3)
+
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
@@ -349,11 +378,11 @@ def gerapd1(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento DESC''')
 
       
         
@@ -385,6 +414,15 @@ def gerapd1(event):
 def geracompras(event):
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   data3= data.strftime("%Y-%m-%d")
+   data3=date.strptime(data,"%d/%m/%Y")
+   data3=str(data3)
+
+
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -392,11 +430,11 @@ def geracompras(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.compras ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.compras ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.compras DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.compras DESC''')
 
       
         
@@ -429,6 +467,14 @@ def geracompras(event):
 def gerapdf(event):
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   data3= data.strftime("%Y-%m-%d")
+   data3=date.strptime(data,"%d/%m/%Y")
+   data3=str(data3)
+
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -436,11 +482,11 @@ def gerapdf(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY b.nome ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY b.nome ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY b.nome DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY b.nome DESC''')
 
       
         
@@ -1804,14 +1850,20 @@ def excluircontas_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
-def consultacompraopcao():
+def consultacompraopcao(event):
    tv.delete(*tv.get_children())
-   data = datetime.date.today() 
+   data = date.today()
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=datetime.strptime(data,"%d/%m/%Y")
+   data3=str(data)
+   print(data3)
+   data3= date.strftime(data,"%d/%m/%Y")
+   print(data3)
+   #data3=datetime.strptime(data,"%d/%m/%Y")
+   #data3=datetime.strptime(data3,"%d/%m/%Y")
+   #date_object = datetime.strptime(date_string, "%d %B, %Y")
+   #dt_object2 = datetime.strptime(dt_string, "%m/%d/%Y %H:%M:%S")
    data3=str(data3)
    escolhido=escolha.get()   
    try: 
@@ -1862,37 +1914,37 @@ def consulta_compra(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
-   tv.column('Compra', minwidth=0, width=250)
-   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('compra', minwidth=0, width=250)
+   tv.column('vencimento', minwidth=9, width=100)
    tv.column('descricao', minwidth=1, width=30)
-   tv.column('Pagamento', minwidth=0, width=100)
-   tv.column('Tipo', minwidth=0, width=150)
-   tv.column('Descrição do tipo')
-   tv.column('Valpagar', minwidth=0, width=100)
-   tv.column('Desconto', minwidth=0, width=200)
-   tv.column('Juros', minwidth=0, width=200)
+   tv.column('pagamento', minwidth=0, width=100)
+   tv.column('tipo', minwidth=0, width=150)
+   tv.column('desctipo')
+   tv.column('valpagar', minwidth=0, width=100)
+   tv.column('desconto', minwidth=0, width=200)
+   tv.column('juros', minwidth=0, width=200)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='CÓDIGO' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Compra', text='COMPRA')
-   tv.heading('Vencimento', text='VENCIMENTO')
-   tv.heading('Descrição', text='DESCRIÇÃO')
-   tv.heading('Pagamento', text='PAGAMENTO')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
-   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
-   tv.heading('Desconto', text='DESCONTO')
-   tv.heading('Juros', text='JUROS')
-   tv.heading('Documento', text='DOCUMENTO')
-   tv.heading('Parcela', text='PARCELADO')
-   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
+   tv.heading('compra', text='COMPRA')
+   tv.heading('vencimento', text='VENCIMENTO')
+   tv.heading('descricao', text='DESCRIÇÃO')
+   tv.heading('pagamento', text='PAGAMENTO')
+   tv.heading('tipo', text='TIPO')
+   tv.heading('desctipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('valpagar', text='VALOR A PAGAR')
+   tv.heading('desconto', text='DESCONTO')
+   tv.heading('juros', text='JUROS')
+   tv.heading('documento', text='DOCUMENTO')
+   tv.heading('tparcela', text='PARCELADO')
+   tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
@@ -1913,12 +1965,12 @@ def consulta_compra(janela3):
         
 def consultapagopcao2():
    tv.delete(*tv.get_children())
-   data = datetime.date.today() 
+   data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
    data3= data.strftime("%Y-%m-%d")
-   data3=datetime.strptime(data,"%d/%m/%Y")
+   data3=date.strptime(data,"%d/%m/%Y")
    data3=str(data3)
    escolhido=escolha.get()   
    try: 
@@ -1969,38 +2021,38 @@ def consulta_pagamento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
-
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
-   tv.column('Compra', minwidth=0, width=250)
-   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('compra', minwidth=0, width=250)
+   tv.column('vencimento', minwidth=9, width=100)
    tv.column('descricao', minwidth=1, width=30)
-   tv.column('Pagamento', minwidth=0, width=100)
-   tv.column('Tipo', minwidth=0, width=150)
-   tv.column('Descrição do tipo')
-   tv.column('Valpagar', minwidth=0, width=100)
-   tv.column('Desconto', minwidth=0, width=200)
-   tv.column('Juros', minwidth=0, width=200)
+   tv.column('pagamento', minwidth=0, width=100)
+   tv.column('tipo', minwidth=0, width=150)
+   tv.column('desctipo')
+   tv.column('valpagar', minwidth=0, width=100)
+   tv.column('desconto', minwidth=0, width=200)
+   tv.column('juros', minwidth=0, width=200)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='CÓDIGO' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Compra', text='COMPRA')
-   tv.heading('Vencimento', text='VENCIMENTO')
-   tv.heading('Descrição', text='DESCRIÇÃO')
-   tv.heading('Pagamento', text='PAGAMENTO')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
-   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
-   tv.heading('Desconto', text='DESCONTO')
-   tv.heading('Juros', text='JUROS')
-   tv.heading('Documento', text='DOCUMENTO')
-   tv.heading('Parcela', text='PARCELADO')
-   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
+   tv.heading('compra', text='COMPRA')
+   tv.heading('vencimento', text='VENCIMENTO')
+   tv.heading('descricao', text='DESCRIÇÃO')
+   tv.heading('pagamento', text='PAGAMENTO')
+   tv.heading('tipo', text='TIPO')
+   tv.heading('desctipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('valpagar', text='VALOR A PAGAR')
+   tv.heading('desconto', text='DESCONTO')
+   tv.heading('juros', text='JUROS')
+   tv.heading('documento', text='DOCUMENTO')
+   tv.heading('tparcela', text='PARCELADO')
+   tv.heading('cs', text='COMPRA OU SEVIÇO') 
+ 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
@@ -2023,13 +2075,14 @@ def consulta_pagamento(janela3):
 
 def consultavencopcao2():
    tv.delete(*tv.get_children())
-   data = datetime.date.today() 
+   data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
    data3= data.strftime("%Y-%m-%d")
-   data3=datetime.strptime(data,"%d/%m/%Y")
+   data3=date.strptime(data,"%d/%m/%Y")
    data3=str(data3)
+
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2079,37 +2132,37 @@ def consulta_vencimento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
-   tv.column('Compra', minwidth=0, width=250)
-   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('compra', minwidth=0, width=250)
+   tv.column('vencimento', minwidth=9, width=100)
    tv.column('descricao', minwidth=1, width=30)
-   tv.column('Pagamento', minwidth=0, width=100)
-   tv.column('Tipo', minwidth=0, width=150)
-   tv.column('Descrição do tipo')
-   tv.column('Valpagar', minwidth=0, width=100)
-   tv.column('Desconto', minwidth=0, width=200)
-   tv.column('Juros', minwidth=0, width=200)
+   tv.column('pagamento', minwidth=0, width=100)
+   tv.column('tipo', minwidth=0, width=150)
+   tv.column('desctipo')
+   tv.column('valpagar', minwidth=0, width=100)
+   tv.column('desconto', minwidth=0, width=200)
+   tv.column('juros', minwidth=0, width=200)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='CÓDIGO' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Compra', text='COMPRA')
-   tv.heading('Vencimento', text='VENCIMENTO')
-   tv.heading('Descrição', text='DESCRIÇÃO')
-   tv.heading('Pagamento', text='PAGAMENTO')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
-   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
-   tv.heading('Desconto', text='DESCONTO')
-   tv.heading('Juros', text='JUROS')
-   tv.heading('Documento', text='DOCUMENTO')
-   tv.heading('Parcela', text='PARCELADO')
-   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
+   tv.heading('compra', text='COMPRA')
+   tv.heading('vencimento', text='VENCIMENTO')
+   tv.heading('descricao', text='DESCRIÇÃO')
+   tv.heading('pagamento', text='PAGAMENTO')
+   tv.heading('tipo', text='TIPO')
+   tv.heading('desctipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('valpagar', text='VALOR A PAGAR')
+   tv.heading('desconto', text='DESCONTO')
+   tv.heading('juros', text='JUROS')
+   tv.heading('documento', text='DOCUMENTO')
+   tv.heading('tparcela', text='PARCELADO')
+   tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
@@ -2181,37 +2234,38 @@ def consulta_codigo2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
-   tv.column('Compra', minwidth=0, width=250)
-   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('compra', minwidth=0, width=250)
+   tv.column('vencimento', minwidth=9, width=100)
    tv.column('descricao', minwidth=1, width=30)
-   tv.column('Pagamento', minwidth=0, width=100)
-   tv.column('Tipo', minwidth=0, width=150)
-   tv.column('Descrição do tipo')
-   tv.column('Valpagar', minwidth=0, width=100)
-   tv.column('Desconto', minwidth=0, width=200)
-   tv.column('Juros', minwidth=0, width=200)
+   tv.column('pagamento', minwidth=0, width=100)
+   tv.column('tipo', minwidth=0, width=150)
+   tv.column('desctipo')
+   tv.column('valpagar', minwidth=0, width=100)
+   tv.column('desconto', minwidth=0, width=200)
+   tv.column('juros', minwidth=0, width=200)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='CÓDIGO' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Compra', text='COMPRA')
-   tv.heading('Vencimento', text='VENCIMENTO')
-   tv.heading('Descrição', text='DESCRIÇÃO')
-   tv.heading('Pagamento', text='PAGAMENTO')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
-   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
-   tv.heading('Desconto', text='DESCONTO')
-   tv.heading('Juros', text='JUROS')
-   tv.heading('Documento', text='DOCUMENTO')
-   tv.heading('Parcela', text='PARCELADO')
-   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
+   tv.heading('compra', text='COMPRA')
+   tv.heading('vencimento', text='VENCIMENTO')
+   tv.heading('descricao', text='DESCRIÇÃO')
+   tv.heading('pagamento', text='PAGAMENTO')
+   tv.heading('tipo', text='TIPO')
+   tv.heading('desctipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('valpagar', text='VALOR A PAGAR')
+   tv.heading('desconto', text='DESCONTO')
+   tv.heading('juros', text='JUROS')
+   tv.heading('documento', text='DOCUMENTO')
+   tv.heading('tparcela', text='PARCELADO')
+   tv.heading('cs', text='COMPRA OU SEVIÇO') 
+
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
@@ -2312,37 +2366,37 @@ def consulta_porcao2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
-   tv.column('Compra', minwidth=0, width=250)
-   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('compra', minwidth=0, width=250)
+   tv.column('vencimento', minwidth=9, width=100)
    tv.column('descricao', minwidth=1, width=30)
-   tv.column('Pagamento', minwidth=0, width=100)
-   tv.column('Tipo', minwidth=0, width=150)
-   tv.column('Descrição do tipo')
-   tv.column('Valpagar', minwidth=0, width=100)
-   tv.column('Desconto', minwidth=0, width=200)
-   tv.column('Juros', minwidth=0, width=200)
+   tv.column('pagamento', minwidth=0, width=100)
+   tv.column('tipo', minwidth=0, width=150)
+   tv.column('desctipo')
+   tv.column('valpagar', minwidth=0, width=100)
+   tv.column('desconto', minwidth=0, width=200)
+   tv.column('juros', minwidth=0, width=200)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='CÓDIGO' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Compra', text='COMPRA')
-   tv.heading('Vencimento', text='VENCIMENTO')
-   tv.heading('Descrição', text='DESCRIÇÃO')
-   tv.heading('Pagamento', text='PAGAMENTO')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
-   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
-   tv.heading('Desconto', text='DESCONTO')
-   tv.heading('Juros', text='JUROS')
-   tv.heading('Documento', text='DOCUMENTO')
-   tv.heading('Parcela', text='PARCELADO')
-   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
+   tv.heading('compra', text='COMPRA')
+   tv.heading('vencimento', text='VENCIMENTO')
+   tv.heading('descricao', text='DESCRIÇÃO')
+   tv.heading('pagamento', text='PAGAMENTO')
+   tv.heading('tipo', text='TIPO')
+   tv.heading('desctipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('valpagar', text='VALOR A PAGAR')
+   tv.heading('desconto', text='DESCONTO')
+   tv.heading('juros', text='JUROS')
+   tv.heading('documento', text='DOCUMENTO')
+   tv.heading('tparcela', text='PARCELADO')
+   tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
@@ -2374,13 +2428,14 @@ def consulta_porcao2(janela3):
 
 def consultaatrasoopcao2():
    tv.delete(*tv.get_children())
-   data = datetime.date.today() 
+   data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
    data3= data.strftime("%Y-%m-%d")
-   data3=datetime.strptime(data,"%d/%m/%Y")
+   data3=date.strptime(data,"%d/%m/%Y")
    data3=str(data3)
+
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2389,12 +2444,12 @@ def consultaatrasoopcao2():
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.vencimento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < data3 ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.vencimento DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2431,37 +2486,37 @@ def consulta_ematraso(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome', 'Compra', 'vencimento','Descrição', 'Pagamento', 'Tipo', 'Descrição do tipo', 'Valor a Pagar', 'Desconto','juros','Documento','Parcela','Compra ou serviço' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
-   tv.column('Compra', minwidth=0, width=250)
-   tv.column('Vencimento', minwidth=9, width=100)
+   tv.column('compra', minwidth=0, width=250)
+   tv.column('vencimento', minwidth=9, width=100)
    tv.column('descricao', minwidth=1, width=30)
-   tv.column('Pagamento', minwidth=0, width=100)
-   tv.column('Tipo', minwidth=0, width=150)
-   tv.column('Descrição do tipo')
-   tv.column('Valpagar', minwidth=0, width=100)
-   tv.column('Desconto', minwidth=0, width=200)
-   tv.column('Juros', minwidth=0, width=200)
+   tv.column('pagamento', minwidth=0, width=100)
+   tv.column('tipo', minwidth=0, width=150)
+   tv.column('desctipo')
+   tv.column('valpagar', minwidth=0, width=100)
+   tv.column('desconto', minwidth=0, width=200)
+   tv.column('juros', minwidth=0, width=200)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
    
-   tv.heading('Codigo', text='CÓDIGO' )
-   tv.heading('Nome', text='NOME')
-   tv.heading('Compra', text='COMPRA')
-   tv.heading('Vencimento', text='VENCIMENTO')
-   tv.heading('Descrição', text='DESCRIÇÃO')
-   tv.heading('Pagamento', text='PAGAMENTO')
-   tv.heading('Tipo', text='TIPO')
-   tv.heading('Descrição do Tipo', text='DESCRIÇÃO DO TIPO')
-   tv.heading('Valor a Pagar', text='VALOR A PAGAR')
-   tv.heading('Desconto', text='DESCONTO')
-   tv.heading('Juros', text='JUROS')
-   tv.heading('Documento', text='DOCUMENTO')
-   tv.heading('Parcela', text='PARCELADO')
-   tv.heading('Compra ou Serviço', text='COMPRA OU SEVIÇO') 
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
+   tv.heading('compra', text='COMPRA')
+   tv.heading('vencimento', text='VENCIMENTO')
+   tv.heading('descricao', text='DESCRIÇÃO')
+   tv.heading('pagamento', text='PAGAMENTO')
+   tv.heading('tipo', text='TIPO')
+   tv.heading('desctipo', text='DESCRIÇÃO DO TIPO')
+   tv.heading('valpagar', text='VALOR A PAGAR')
+   tv.heading('desconto', text='DESCONTO')
+   tv.heading('juros', text='JUROS')
+   tv.heading('documento', text='DOCUMENTO')
+   tv.heading('tparcela', text='PARCELADO')
+   tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
