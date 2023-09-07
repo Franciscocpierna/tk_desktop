@@ -12,7 +12,7 @@ from reportlab.lib.pagesizes import A4
 import win32print
 import win32api
 import os
-from datetime import date
+from datetime import date,datetime
 import shutil
 
 
@@ -90,8 +90,8 @@ def pdfgerado2(sqlres,arquivo):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
+   data3= date.strftime(data,"%Y-%m-%d")
+   #data3=date.strftime(data,"%d/%m/%Y")
    data3=str(data3)
 
   
@@ -130,7 +130,7 @@ def pdfgerado2(sqlres,arquivo):
         y-= 20
         cnv.drawString(10,y, "codigo: "+ c+ " Nome: "+ n)
         y -= 20
-        cnv.drawString(10,y, "Compra: "+co+"Vencimento: " + ve+" Descrição:"+de) 
+        cnv.drawString(10,y, "Compra: "+co+" Vencimento: " + ve+" Descrição:"+de) 
         y -= 20               
         cnv.drawString(10,y,  " Pagamento: "+pg+" Tipo: "+tp+ " Descrição Tipo:"+str(dt)+ " Valor a Pagar:"+str(vp))        
         y -= 20
@@ -213,8 +213,8 @@ def gerapdp(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
+   data3= data.strftime(data,"%Y-%m-%d")
+   #data3=date.strftime(data,"%d/%m/%Y")
    data3=str(data3)
 
    escolhido=escolha.get()
@@ -264,9 +264,13 @@ def gerapdat(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
+   data3= data.strftime(data,"%Y-%m-%d")
+   #data3=date.strftime(data,"%d/%m/%Y")
    data3=str(data3)
+   data1="21/09/2023"
+   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
+   
+   print(data5)
 
 
    escolhido=escolha.get()
@@ -365,8 +369,8 @@ def gerapd1(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
+   data3= data.strftime(data,"%Y-%m-%d")
+   #data3=date.strftime(data,"%d/%m/%Y")
    data3=str(data3)
 
    escolhido=escolha.get()
@@ -414,14 +418,27 @@ def gerapd1(event):
 def geracompras(event):
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
-   data = date.today() 
+   data = date.today()
+   print(data)  
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
-   data3=str(data3)
+   #data3=str(data)
+   #print(data3)
+   data3= date.strftime(data,"%d/%m/%Y")
+   print(data3)
 
+   #data3=date.strptime(data,"%d/%m/%Y")
+   #print(data3)
+   data4=date.strftime(data,"%Y-%m-%d")
+   data4=str(data4)
+   print(data4) 
+   #-data1="07/09/2023"
+   data1='23/09/2023'
+   
+   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
+   
+   print(data5)
 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -430,11 +447,11 @@ def geracompras(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.compras ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.compra ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.compras DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.compra DESC''')
 
       
         
@@ -471,9 +488,7 @@ def gerapdf(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
-   data3=str(data3)
+  
 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -482,11 +497,11 @@ def gerapdf(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY b.nome ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY b.nome ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY b.nome DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY b.nome DESC''')
 
       
         
@@ -662,9 +677,9 @@ def rel_compras(janela3):
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    label = Label(janela4,text="Relatório por Compras geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
-   optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
-   optado3= Radiobutton(janela4, text= "CNPJ", value="D", variable=escolha1)
+   optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
    escolhido1=escolha1.get()  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
@@ -1856,8 +1871,8 @@ def consultacompraopcao(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3=str(data)
-   print(data3)
+   #data3=str(data)
+   #print(data3)
    data3= date.strftime(data,"%d/%m/%Y")
    print(data3)
    #data3=datetime.strptime(data,"%d/%m/%Y")
@@ -1920,7 +1935,7 @@ def consulta_compra(janela3):
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
    tv.column('vencimento', minwidth=9, width=100)
-   tv.column('descricao', minwidth=1, width=30)
+   tv.column('descricao', minwidth=1, width=250)
    tv.column('pagamento', minwidth=0, width=100)
    tv.column('tipo', minwidth=0, width=150)
    tv.column('desctipo')
@@ -1947,7 +1962,7 @@ def consulta_compra(janela3):
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -1969,8 +1984,8 @@ def consultapagopcao2():
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
+   data3= data.strftime(data,"%Y-%m-%d")
+   #data3=date.strftime(data,"%d/%m/%Y")
    data3=str(data3)
    escolhido=escolha.get()   
    try: 
@@ -2027,7 +2042,7 @@ def consulta_pagamento(janela3):
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
    tv.column('vencimento', minwidth=9, width=100)
-   tv.column('descricao', minwidth=1, width=30)
+   tv.column('descricao', minwidth=1, width=250)
    tv.column('pagamento', minwidth=0, width=100)
    tv.column('tipo', minwidth=0, width=150)
    tv.column('desctipo')
@@ -2055,7 +2070,7 @@ def consulta_pagamento(janela3):
  
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -2079,8 +2094,8 @@ def consultavencopcao2():
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
+   data3= data.strftime(data,"%Y-%m-%d")
+   #data3=date.strftime(data,"%d/%m/%Y")
    data3=str(data3)
 
    escolhido=escolha.get()   
@@ -2138,7 +2153,7 @@ def consulta_vencimento(janela3):
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
    tv.column('vencimento', minwidth=9, width=100)
-   tv.column('descricao', minwidth=1, width=30)
+   tv.column('descricao', minwidth=1, width=250)
    tv.column('pagamento', minwidth=0, width=100)
    tv.column('tipo', minwidth=0, width=150)
    tv.column('desctipo')
@@ -2165,7 +2180,7 @@ def consulta_vencimento(janela3):
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -2240,7 +2255,7 @@ def consulta_codigo2(janela3):
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
    tv.column('vencimento', minwidth=9, width=100)
-   tv.column('descricao', minwidth=1, width=30)
+   tv.column('descricao', minwidth=1, width=250)
    tv.column('pagamento', minwidth=0, width=100)
    tv.column('tipo', minwidth=0, width=150)
    tv.column('desctipo')
@@ -2268,7 +2283,7 @@ def consulta_codigo2(janela3):
 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -2372,7 +2387,7 @@ def consulta_porcao2(janela3):
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
    tv.column('vencimento', minwidth=9, width=100)
-   tv.column('descricao', minwidth=1, width=30)
+   tv.column('descricao', minwidth=1, width=250)
    tv.column('pagamento', minwidth=0, width=100)
    tv.column('tipo', minwidth=0, width=150)
    tv.column('desctipo')
@@ -2399,7 +2414,7 @@ def consulta_porcao2(janela3):
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -2426,14 +2441,14 @@ def consulta_porcao2(janela3):
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consutaporcao2)
 
-def consultaatrasoopcao2():
+def consultaatrasoopcao2(event):
    tv.delete(*tv.get_children())
    data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime("%Y-%m-%d")
-   data3=date.strptime(data,"%d/%m/%Y")
+   data3= date.strftime(data,"%Y-%m-%d")
+   #data3=date.strftime(data,"%d/%m/%Y")
    data3=str(data3)
 
    escolhido=escolha.get()   
@@ -2492,7 +2507,7 @@ def consulta_ematraso(janela3):
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
    tv.column('vencimento', minwidth=9, width=100)
-   tv.column('descricao', minwidth=1, width=30)
+   tv.column('descricao', minwidth=1, width=250)
    tv.column('pagamento', minwidth=0, width=100)
    tv.column('tipo', minwidth=0, width=150)
    tv.column('desctipo')
@@ -2519,7 +2534,7 @@ def consulta_ematraso(janela3):
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
