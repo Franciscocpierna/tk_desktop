@@ -1018,7 +1018,7 @@ def consulta_nome(janela3):
    tv.heading('E_mail', text='E_MAIL')
   
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -1088,7 +1088,7 @@ def cosulta_cpf(janela3):
    tv.heading('E_mail', text='E_MAIL')
   
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -1158,7 +1158,7 @@ def cosulta_cnpj(janela3):
    tv.heading('E_mail', text='E_MAIL')
   
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)
@@ -1265,7 +1265,7 @@ def consulta_codigo(janela3):
    tv.heading('E_mail', text='E_MAIL')
   
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
-   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
    tv.configure(yscroll=verscrlbar)
   # tv.configure(xscroll=verscrlbar1.set)

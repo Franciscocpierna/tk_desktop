@@ -226,11 +226,11 @@ def gerapdp(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.pagamento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.pagamento DESC''')
 
       
         
@@ -264,15 +264,9 @@ def gerapdat(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime(data,"%Y-%m-%d")
-   #data3=date.strftime(data,"%d/%m/%Y")
-   data3=str(data3)
-   data1="21/09/2023"
-   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
+#   data1="21/09/2023"
+#   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
    
-   print(data5)
-
-
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
@@ -282,11 +276,11 @@ def gerapdat(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento DESC''')
 
       
         
@@ -382,11 +376,11 @@ def gerapd1(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.codigo ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.codigo DESC''')
 
       
         
@@ -955,7 +949,6 @@ def verchave(event):
      tela.codigo.focus()
      return
    else:
-     tela.nome.insert(0, sqlres[0][0])
      tela.compra.insert(0, sqlres[0][1])
      tela.vencimento.insert(0,sqlres[0][2])
      tela.descricao.insert(0, sqlres[0][3])
@@ -1056,7 +1049,8 @@ def incluircontas():
             cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{compramem}','{vencimentomem}',
                                                             '{descricaomem}','{pagamentomem}','{tipomem}',
                                                                  '{valpagarmem}','{descontomem}','{jurosmem}',
-                                                                 '{documentomem}','{tparcelamem}','{csmem}')''')
+                                                                 '{documentomem}','{tparcelamem}','{csmem}
+                                                                 ')''')
                
                      
             banco.commit()
@@ -1065,7 +1059,7 @@ def incluircontas():
             limpacamposcontas()   
             tela.codigo.focus()
           except Error as ex:
-            messagebox1("erro ao gravar tabela contas linha 252 "+ str(ex),manutencao)       
+            messagebox1("erro ao gravar tabela contas linha 1062 "+ str(ex),manutencao)       
             limpacamposcontas()
         else:
            messagebox1("Registro não foi gravado",manutencao)
@@ -1672,14 +1666,14 @@ def alteracaocontas():
         messagebox1("Informação: descrição tamanho até 50",manutencao)
         tela.descricao.focus()
         return
-    elif  len(tela.valpagar.get()) == 0  and len(tela.valpagar.get()) > 12:
+    elif  len(tela.valpagar.get()) == 0  or len(tela.valpagar.get()) > 12:
          messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
          tela.valpagar.focus()
          return
-    elif len(tela.cs.get())==0 or len(tela.cs.get())> 1:
-       messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
-       tela.cs.focus()
-       return
+    elif len(tela.cs.get())==0 or tela.cs.get().upper() not in ("S","C") :
+        messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
+        tela.cs.focus()
+        return
     elif len(tela.pagamento.get())!=0:
         if len(tela.tipo.get()) !=2:
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
@@ -1728,8 +1722,7 @@ def alteracaocontas():
                                                     juros ='{jurosmem}',
                                                     documento='{documentomem}',
                                                     tparcela='{tparcelamem}',
-                                                    cs='{csmem}'
-                                                    WHERE codigo = '{codigomem}' ''')
+                                                    cs='{csmem}' WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
                
 
                                       
@@ -1739,7 +1732,7 @@ def alteracaocontas():
            limpacamposcontas()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela contas linha 1509"+ str(ex),manutencao)       
+            messagebox1("erro ao regravar tabela contas linha 1509"+ str(ex),manutencao)       
             limpacamposcontas() 
             return
     else:
@@ -1768,6 +1761,7 @@ def alteracaocontas_click(janela1):
      tab_order2()
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     tela.tparcela.bind("<KeyRelease>", verchave)
      tela.compra.bind("<KeyRelease>", dadosdatac)
      tela.vencimento.bind("<KeyRelease>", dadosdatav)
      tela.pagamento.bind("<KeyRelease>", dadosdatap)
@@ -1871,15 +1865,7 @@ def consultacompraopcao(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   #data3=str(data)
-   #print(data3)
-   data3= date.strftime(data,"%d/%m/%Y")
-   print(data3)
-   #data3=datetime.strptime(data,"%d/%m/%Y")
-   #data3=datetime.strptime(data3,"%d/%m/%Y")
-   #date_object = datetime.strptime(date_string, "%d %B, %Y")
-   #dt_object2 = datetime.strptime(dt_string, "%m/%d/%Y %H:%M:%S")
-   data3=str(data3)
+   
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -1978,15 +1964,13 @@ def consulta_compra(janela3):
    escolhido=escolha.get()
    janela4.bind("<F3>", consultacompraopcao)
         
-def consultapagopcao2():
+def consultapagopcao2(event):
    tv.delete(*tv.get_children())
    data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime(data,"%Y-%m-%d")
-   #data3=date.strftime(data,"%d/%m/%Y")
-   data3=str(data3)
+   
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2027,7 +2011,7 @@ def consulta_pagamento(janela3):
    global escolhido
    global escolha
    janela4 = Toplevel()
-   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.title("Consultas por Pagamento ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -2088,16 +2072,13 @@ def consulta_pagamento(janela3):
    janela4.bind("<F3>", consultapagopcao2)
 
 
-def consultavencopcao2():
+def consultavencopcao2(event):
    tv.delete(*tv.get_children())
    data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime(data,"%Y-%m-%d")
-   #data3=date.strftime(data,"%d/%m/%Y")
-   data3=str(data3)
-
+   
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2304,7 +2285,7 @@ def consulta_codigo2(janela3):
                      
                         
    
-def consutaporcao2():
+def consutaporcao2(event):
     tv.delete(*tv.get_children())
     escolhido=escolha.get()   
     escolhido1=escolha1.get()
@@ -2447,10 +2428,7 @@ def consultaatrasoopcao2(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= date.strftime(data,"%Y-%m-%d")
-   #data3=date.strftime(data,"%d/%m/%Y")
-   data3=str(data3)
-
+   
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2459,15 +2437,15 @@ def consultaatrasoopcao2(event):
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND pagamento="" AND strftime("%Y-%m-%d", vencimento) < '{data3}' ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento DESC''')
         sqlres=cursor.fetchall()
      
-    
+    #strftime("%Y-%m-%d", a.vencimento) '{data3}'
          
         if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta",janela4)
@@ -2492,7 +2470,7 @@ def consulta_ematraso(janela3):
    global escolhido
    global escolha
    janela4 = Toplevel()
-   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.title("Consultas por Pagamento em atraso ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
