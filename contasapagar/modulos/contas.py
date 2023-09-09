@@ -314,34 +314,29 @@ def gerapdf2(event):
    escolhido=escolha.get()
    nomemem1= nomemem.get()
    
-   escolhido1=escolha1.get()   
+   #escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       #nomemem1=nomemem1+"%"
       #nome ou codigo
       try:
-        if  escolhido1== "N":
-          nomemem1= nomemem.get()
-          nomemem1=nomemem1+"%"
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+         nomemem1= nomemem.get()
+         nomemem1=nomemem1+"%"
+         cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
             
-        else:
-           codigomem=nomemem.get()
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' ORDER BY a.codigo ASC''')
+     
 
        # cursor.execute(f"SELECT *  FROM contas  WHERE b.nome LIKE '{nomemem1}'  ORDER BY nome ASC")
      
-        sqlres=cursor.fetchall()
-        if len(sqlres) == 0:
+         sqlres=cursor.fetchall()
+         if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta", janela4)
             cursor.close()
             
-        else:
+         else:
            pdfgerado2(sqlres,"rel_nomep.pdf") #gerar PDF
            if escolhido == "A":
               imprimepdf2("rel_nomep.pdf")
@@ -724,7 +719,6 @@ def rel_pagamento(janela3):
 def rel_nomep2(janela3):
    global janela4 
    global escolhido
-   global escolha
    global nomemem
    global escolha1
    global escolhido1
@@ -751,11 +745,7 @@ def rel_nomep2(janela3):
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    escolhido=escolha.get()
-   optado3= Radiobutton(janela4, text="Nome", value="N", variable=escolha1)
-   optado3.grid(relx=0.8,rely=0.4)
-   optado4= Radiobutton(janela4, text= "Código", value="C", variable=escolha1)
-   optado4.grid(relx=1.0,rely=0.4)
-   escolhido1=escolha1.get()
+  
 
   # keyboard.on_press_key("f3", lambda _: gerapdf2())
    janela4.bind("<F3>", gerapdf2)
@@ -2287,48 +2277,29 @@ def consulta_codigo2(janela3):
    
 def consutaporcao2(event):
     tv.delete(*tv.get_children())
-    escolhido=escolha.get()   
-    escolhido1=escolha1.get()
+    
     try: 
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
         try:
-         if escolhido == "A" and escolhido1== "N":
             nomemem1= nomemem.get()
             nomemem1=nomemem1+"%"
             cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                        a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                        FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
       
-         elif escolhido == "D" and escolhido1=="N":
-            nomemem1= nomemem.get()
-            nomemem1=nomemem1+"%"
-            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                       a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                       FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome DESC''')
-         elif escolhido == "A" and escolhido1=="C":
-            codigomem=nomemem.get()
-            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                       a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                       FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' ORDER BY a.codigo ASC''')
-            
-         else:
-            codigomem=nomemem.get()
-            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                       a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                       FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.codigo = '{codigomem}' ORDER BY a.codigo DESC''')
-
+         
        
                        
-         sqlres=cursor.fetchall()
+            sqlres=cursor.fetchall()
                
           
                
-         if len(sqlres) == 0:
+            if len(sqlres) == 0:
                     messagebox1("Não tem dados a mostrar na consulta",janela4)
                     cursor.close()
                     return
-         else:
+            else:
                     for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
                       tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
  
@@ -2407,19 +2378,7 @@ def consulta_porcao2(janela3):
    nomemem = Entry(janela4,width=50)
    nomemem.grid(row=1, column=4,sticky=W)
    nomemem.focus()
-   escolha=StringVar(value="A")
-   escolha1=StringVar(value= "N")
-   optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
-   optado.grid(row=1, column=3)
-   optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
-   optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
-   optado3= Radiobutton(janela4, text="Nome", value="N", variable=escolha1)
-   optado3.grid(row=1, column=4)
-   optado4= Radiobutton(janela4, text= "Código", value="C", variable=escolha1)
-   optado4.grid(row=1, column=5)
-   escolhido1=escolha1.get()
-  # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consutaporcao2)
 
 def consultaatrasoopcao2(event):
