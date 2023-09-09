@@ -1291,7 +1291,7 @@ def tecla_obtida(event):
          
          #cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
          #sqlres=cursor.fetchall()
-         nomemem1=nomemem1+"%"
+         nomemem1="%"+nomemem1+"%"
          try:
                cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
                sqlres=cursor.fetchall()

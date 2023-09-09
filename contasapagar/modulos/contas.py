@@ -322,7 +322,7 @@ def gerapdf2(event):
       #nome ou codigo
       try:
          nomemem1= nomemem.get()
-         nomemem1=nomemem1+"%"
+         nomemem1="%"+nomemem1+"%"
          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
@@ -2283,7 +2283,7 @@ def consutaporcao2(event):
         cursor = banco.cursor()
         try:
             nomemem1= nomemem.get()
-            nomemem1=nomemem1+"%"
+            nomemem1="%"+nomemem1+"%"
             cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                        a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                        FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
@@ -2319,10 +2319,7 @@ def consutaporcao2(event):
 def consulta_porcao2(janela3):
    global janela4 
    global tv 
-   global escolhido
-   global escolhido1
-   global escolha
-   global escolha1
+   global nomemem
    janela4 = Toplevel()
    janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -2374,7 +2371,7 @@ def consulta_porcao2(janela3):
    tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
    verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
    verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
-   Label(janela4, text="Entre com parte do nome  ou código:", font=('Arial', 15)).grid(row=1, column=3,sticky=W)   
+   Label(janela4, text="Entre com parte do nome :", font=('Arial', 15)).grid(row=1, column=3,sticky=W)   
    nomemem = Entry(janela4,width=50)
    nomemem.grid(row=1, column=4,sticky=W)
    nomemem.focus()
