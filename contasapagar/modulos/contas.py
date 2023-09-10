@@ -42,7 +42,7 @@ def limpacamposcontas():
   tela.juros.delete(0,END)
   tela.documento.delete(0, END) 
   tela.tparcela.delete(0,END)
-  tela.cs.delete(0,END)      
+  tela.cs.delete(0, END)      
   return
 
 
@@ -90,10 +90,7 @@ def pdfgerado2(sqlres,arquivo):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= date.strftime(data,"%Y-%m-%d")
-   #data3=date.strftime(data,"%d/%m/%Y")
-   data3=str(data3)
-
+  
   
    try: 
     cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
@@ -108,7 +105,7 @@ def pdfgerado2(sqlres,arquivo):
     cnv.drawString(250,830, "Relatório por Código")   
    elif  arquivo=="rel_nomep.pdf":
      cnv.drawString(250,830, "Relatório por parte do Nome ou Código")   
-   elif  arquivo=="rel_verncimento.pdf":        
+   elif  arquivo=="rel_vencimento.pdf":        
     cnv.drawString(250,830, "Relatório por Vencimento")   
    elif arquivo == "rel_compras.pdf":
     cnv.drawString(250,830, "Relatório por Compras")  
@@ -213,9 +210,7 @@ def gerapdp(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime(data,"%Y-%m-%d")
-   #data3=date.strftime(data,"%d/%m/%Y")
-   data3=str(data3)
+ 
 
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
@@ -243,7 +238,7 @@ def gerapdp(event):
             cursor.close()
             
         else:
-           pdfgerado2(sqlres,"rel_pagemento.pdf") #gerar PDF
+           pdfgerado2(sqlres,"rel_pagamento.pdf") #gerar PDF
            if escolhido == "A":
               imprimepdf2("rel_pagamento.pdf")
               cursor.close()              
@@ -358,9 +353,7 @@ def gerapd1(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   data3= data.strftime(data,"%Y-%m-%d")
-   #data3=date.strftime(data,"%d/%m/%Y")
-   data3=str(data3)
+   
 
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
@@ -412,22 +405,9 @@ def geracompras(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   #data3=str(data)
-   #print(data3)
-   data3= date.strftime(data,"%d/%m/%Y")
-   print(data3)
+   
 
-   #data3=date.strptime(data,"%d/%m/%Y")
-   #print(data3)
-   data4=date.strftime(data,"%Y-%m-%d")
-   data4=str(data4)
-   print(data4) 
-   #-data1="07/09/2023"
-   data1='23/09/2023'
    
-   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
-   
-   print(data5)
 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -455,7 +435,7 @@ def geracompras(event):
         else:
            pdfgerado2(sqlres,"rel_compras.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf2("rel_compras")
+              imprimepdf2("rel_compras.pdf")
               cursor.close()              
            else:        
               abrirpdf2("rel_compras.pdf")
@@ -701,9 +681,9 @@ def rel_pagamento(janela3):
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    label = Label(janela4,text="Relatório por Pagamento geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
-   optado2= Radiobutton(janela4, text="CPF", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
-   optado3= Radiobutton(janela4, text= "CNPJ", value="D", variable=escolha1)
+   optado3= Radiobutton(janela4, text= "Desacendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
    escolhido1=escolha1.get()  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
@@ -806,14 +786,19 @@ def tab_order2():
 def vertipo(event):
    if len(tela.tipo.get())==0 or len(tela.tipo.get())<2:
       return    
-   if tela.tipo.get() != "00": 
-    if len(tela.pagamento.get())!=10:
-        messagebox1("pagamento tem que ter tamanho 10",manutencao)
-        tela.pagamento.delete(0,END)
-        tela.tipo.delete(0,END)
-        tela.pagamento.focus()
-        return
-   
+   if len(tela.pagamento.get())!=0:
+        if len(tela.pagamento.get())!=10: 
+          messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
+          tela.pagamento.focus()
+          return        
+        else:
+         if len(tela.tipo.get()) !=2 or tela.tipo.get()=="00":
+           messagebox1("Tipo é a Forma que Pagou e tamanho 2 diferente 00 ",manutencao)
+           tela.tipo.focus()
+           return 
+   else:
+         if tela.tipo.get()!="00":
+            messagebox1("sem Data de pagamento tamanho  tipo igual 00",manutencao)
   
    
    if not tela.tipo.get().isnumeric():
@@ -855,6 +840,21 @@ def verfornec(event):
       
         tela.codigo.focus()
         return
+   #
+   tela.nome.delete(0,END)
+   tela.compra.delete(0,END) 
+   tela.vencimento.delete(0,END) 
+   tela.descricao.delete(0,END)
+   tela.tipo.delete(0,END) 
+   tela.desctipo.delete(0,END)
+   tela.pagamento.delete(0,END)
+   tela.valpagar.delete(0,END)
+   tela.desconto.delete(0,END)
+   tela.juros.delete(0,END)
+   tela.documento.delete(0, END) 
+   tela.tparcela.delete(0,END)
+   tela.cs.delete(0, END)
+   #
    codigomem=tela.codigo.get()         
    sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
    mensagem="fornecedor"       
@@ -920,7 +920,7 @@ def verchave(event):
   tela.valpagar.delete(0,END)
   tela.desconto.delete(0,END)
   tela.juros.delete(0,END)
-  tela.cs.delete(0,END)      
+  tela.cs.delete(0, END)      
 
   codigomem=tela.codigo.get().upper()
   documentomem=tela.documento.get()
@@ -1003,10 +1003,12 @@ def incluircontas():
         messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
         tela.tparcela.delete(0,END)
         tela.tparcela.focus()    
-   elif len(tela.cs.get())==0 or tela.cs.get().upper() not in ("S","C") :
-        messagebox1("Informação: digite o C para compras e S para Serviço tamanho 1",manutencao)
-        tela.cep.focus()
-        return            
+   elif "S" not in tela.cs.get().upper(): 
+         if "C" not in tela.cs.get().upper():
+           messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
+           tela.cs.delete(0, END)
+           tela.cs.focus()
+           return            
    elif len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
          messagebox1("Falta decrição da compra",manutencao)
          tela.descricao.focus()
@@ -1660,10 +1662,12 @@ def alteracaocontas():
          messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
          tela.valpagar.focus()
          return
-    elif len(tela.cs.get())==0 or tela.cs.get().upper() not in ("S","C") :
-        messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
-        tela.cs.focus()
-        return
+    elif "S" not in tela.cs.get().upper(): 
+         if "C" not in tela.cs.get().upper():
+           messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
+           tela.cs.delete(0, END)
+           tela.cs.focus()
+           return
     elif len(tela.pagamento.get())!=0:
         if len(tela.tipo.get()) !=2:
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
@@ -1681,7 +1685,7 @@ def alteracaocontas():
     valpagarmem=tela.valpagar.get()
     descontomem = tela.desconto.get()
     jurosmem = tela.juros.get()
-    csmem=tela.cs.get()
+    csmem=tela.cs.get().upper()
        
     
     res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
@@ -2403,8 +2407,6 @@ def consultaatrasoopcao2(event):
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento DESC''')
         sqlres=cursor.fetchall()
-     
-    #strftime("%Y-%m-%d", a.vencimento) '{data3}'
          
         if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta",janela4)

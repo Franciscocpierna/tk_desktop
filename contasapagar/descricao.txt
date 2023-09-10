@@ -13,3 +13,7 @@ contas se relaciona com fornecedor  pelo codigo e tipo pelo codigo em tipo
 tipo tem que ser colocado 00 se o pagamento não aconteceu,
 tipo sempre tamanho 2, 00 não previsto e 01 em diante se foi pago,
 
+relatórios se  der erro, a impressora  padrão não esta igual ao meu computador,
+ai é melhor imprimir pelo pdf 
+
+

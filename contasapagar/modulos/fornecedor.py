@@ -241,7 +241,7 @@ def gerapdf2(event):
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
-      nomemem1=nomemem1+"%"
+      nomemem1= "%"+nomemem1+"%"
       try:
         cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
      
