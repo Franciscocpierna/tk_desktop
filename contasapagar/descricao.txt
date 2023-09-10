@@ -10,3 +10,6 @@ outros
 dados por tela conferindo que foi digitado,  fiz dessa forma, para ter um controle dos dados melhor possível
 cadastro de tipo para evitar manutenção em contas
 contas se relaciona com fornecedor  pelo codigo e tipo pelo codigo em tipo
+tipo tem que ser colocado 00 se o pagamento não aconteceu,
+tipo sempre tamanho 2, 00 não previsto e 01 em diante se foi pago,
+

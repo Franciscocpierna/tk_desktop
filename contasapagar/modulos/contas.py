@@ -656,7 +656,7 @@ def rel_compras(janela3):
    escolha1=StringVar(value="A")
   
    janela4 = Toplevel()
-   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
+   janela4.title("Relatório por Compra ESC para SAIR  F3 - Gerar relatório")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -1777,6 +1777,9 @@ def alteracaocontas_click(janela1):
       
      
 def exclusaocontas():
+   codigomem=tela.codigo.get()
+   documentomem=tela.documento.get()
+   tparcelamem = tela.tparcela.get()
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         limpacamposcontas()
@@ -1896,7 +1899,7 @@ def consulta_compra(janela3):
    global escolhido
    global escolha
    janela4 = Toplevel()
-   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.title("Consultas por Compras ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -2522,7 +2525,7 @@ def contas_menu(janela1):
  consultamenu.add_command(label = " Consulta em atraso",command= lambda: consulta_ematraso(janela3))
  consultamenu.add_command(label = " Consulta por vencimento",command= lambda: consulta_vencimento(janela3))
  consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo2(janela3))
- consultamenu.add_command(label = " consulta por pedaço do nome ou codigo", command=lambda:  consulta_porcao2(janela3))
+ consultamenu.add_command(label = " consulta por pedaço do nome: ", command=lambda:  consulta_porcao2(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
 
 
