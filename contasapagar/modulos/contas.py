@@ -2110,13 +2110,211 @@ def consultavencopcao2(event):
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1850 "+str(ex),janela4)
         cursor.close() 
 
+
+def dadosdataini(event):
+ indice=len(dataini.get())
+ if indice==0:
+   return
+ indice=indice-1
+
+ print(indice)
+ memdata=tela.dataini.get()
+ print(memdata[indice])
+ if str(indice) in ("0","1","3","4","6","7","8","9"):
+    if memdata[indice].isnumeric():
+       if indice ==1 or indice ==4:
+          memdata=memdata+"/"
+          dataini.delete(0,END)
+          dataini.insert(0,memdata)
+          return
+       elif indice == 9:
+           valida=verificadatac(memdata)
+           if valida==False:
+             dataini.delete(0,END) 
+             dataini.focus()
+             return
+           else:
+             return 
+       else:         
+           return
+    else:
+      messagebox1("data tem que ser numerica nessa posição",manutencao) 
+      dataini.delete(0,END)
+      dataini.focus()
+      return
+ 
+ elif indice==2 or indice==5:
+     if memdata[indice] not in ("/"):
+         messagebox1("digite barra automatica nesta posição é data",manutencao)
+         dataini.delete(0,END)
+         dataini.focus()
+         return   
+     else:
+        return 
+   
+ if len(dataini.get())==0:
+      dataini.focus()
+      return 
+ if len(tela.dataini.get()) ==1:
+    digitado=dataini.get()
+    if digitado in ("0","1","2","3","4","5","6","7","8","9"):
+       return
+    else: 
+       messagebox1("digite números é data",manutencao)
+       dataini.delete(0,END)
+       dataini.focus()   
+       return
+ if len(dataini.get()) ==2:
+      memdata=dataini.get()
+      if memdata.isnumeric():
+         memdata=memdata+"/"
+         dataini.delete(0,END)
+         dataini.insert(0,memdata)
+      else:
+         messagebox1("digite números é data",manutencao)
+         dataini.delete(0,END)
+         dataini.focus()
+         return   
+ elif len(dataini.get())==5:
+         memdata1=dataini.get()
+         memdata=dataini.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           dataini.delete(0,END)
+           dataini.insert(0,memdata1)
+           return
+         else:
+           messagebox1("digite números é data",manutencao)
+           dataini.delete(0,END)
+           dataini.focus()   
+           return
+ elif len(dataini.get())==10:
+         memdata=dataini.get()
+         memdata1=memdata
+         memdata=dataini.get().split('/')
+         memdata=memdata[2]
+         if memdata[2].isnumeric():
+           dataini.delete(0,END)
+           dataini.insert(0,memdata1)
+           valida=verificadatac(memdata1)
+           if valida==False:
+             dataini.delete(0,END) 
+             dataini.focus()   
+           return
+         else:
+           messagebox1("digite números é data",manutencao) 
+           dataini.delete(0,END)
+           dataini.focus()   
+           return
+
+def dadosdatafim(event):
+ indice=len(datafim.get())
+ if indice==0:
+   return
+ indice=indice-1
+
+ print(indice)
+ memdata=tela.datafim.get()
+ print(memdata[indice])
+ if str(indice) in ("0","1","3","4","6","7","8","9"):
+    if memdata[indice].isnumeric():
+       if indice ==1 or indice ==4:
+          memdata=memdata+"/"
+          datafim.delete(0,END)
+          datafim.insert(0,memdata)
+          return
+       elif indice == 9:
+           valida=verificadatac(memdata)
+           if valida==False:
+             datafim.delete(0,END) 
+             datafim.focus()
+             return
+           else:
+             return 
+       else:         
+           return
+    else:
+      messagebox1("data tem que ser numerica nessa posição",manutencao) 
+      datafim.delete(0,END)
+      datafim.focus()
+      return
+ 
+ elif indice==2 or indice==5:
+     if memdata[indice] not in ("/"):
+         messagebox1("digite barra automatica nesta posição é data",manutencao)
+         datafim.delete(0,END)
+         datafim.focus()
+         return   
+     else:
+        return 
+   
+ if len(datafim.get())==0:
+      datafim.focus()
+      return 
+ if len(datafim.get()) ==1:
+    digitado=dataini.get()
+    if digitado in ("0","1","2","3","4","5","6","7","8","9"):
+       return
+    else: 
+       messagebox1("digite números é data",manutencao)
+       datafim.delete(0,END)
+       datafim.focus()   
+       return
+ if len(datafim.get()) ==2:
+      memdata=datafim.get()
+      if memdata.isnumeric():
+         memdata=memdata+"/"
+         datafim.delete(0,END)
+         datafim.insert(0,memdata)
+      else:
+         messagebox1("digite números é data",manutencao)
+         datafim.delete(0,END)
+         datafim.focus()
+         return   
+ elif len(datafim.get())==5:
+         memdata1=datafim.get()
+         memdata=datafim.get().split('/')
+         memdata=memdata[1]
+         if memdata[1].isnumeric():
+           memdata1=memdata1+"/"
+           datafim.delete(0,END)
+           datafim.insert(0,memdata1)
+           return
+         else:
+           messagebox1("digite números é data",manutencao)
+           datafim.delete(0,END)
+           datafim.focus()   
+           return
+ elif len(datafim.get())==10:
+         memdata=datafim.get()
+         memdata1=memdata
+         memdata=datafim.get().split('/')
+         memdata=memdata[2]
+         if memdata[2].isnumeric():
+           datafim.delete(0,END)
+           datafim.insert(0,memdata1)
+           valida=verificadatac(memdata1)
+           if valida==False:
+             datafim.delete(0,END) 
+             datafim.focus()   
+           return
+         else:
+           messagebox1("digite números é data",manutencao) 
+           datafim.delete(0,END)
+           datafim.focus()   
+           return
+
+
 def consulta_vencimento(janela3):
    global janela4 
    global tv 
    global escolhido
    global escolha
+   global dataini 
+   global datafim
    janela4 = Toplevel()
-   janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.title("Consultas por Vencimento ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -2156,7 +2354,13 @@ def consulta_vencimento(janela3):
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
- 
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.06,rely=0.05)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.17,rely=0.05)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.22,rely=0.05)
+
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
@@ -2173,6 +2377,8 @@ def consulta_vencimento(janela3):
    optado1.grid(row=1, column=4)
    escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
    janela4.bind("<F3>", consultavencopcao2)     
 
 def consultacodigoopcao2(event):
