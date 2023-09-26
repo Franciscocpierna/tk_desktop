@@ -1236,7 +1236,7 @@ def dadosdatav(event):
         return 
    
  if len(tela.vencimento.get())==0:
-      tela.compra.focus()
+      tela.vencimento.focus()
       return 
  if len(tela.vencimento.get()) ==1:
     digitado=tela.vencimento.get()
@@ -1248,7 +1248,7 @@ def dadosdatav(event):
        tela.vencimento.focus()   
        return
  if len(tela.vencimento.get()) ==2:
-      memdata=tela.compra.get()
+      memdata=tela.vencimento.get()
       if memdata.isnumeric():
          memdata=memdata+"/"
          tela.vencimento.delete(0,END)
@@ -2081,15 +2081,25 @@ def consultavencopcao2(event):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        if escolhido == "A":
+        if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.vencimento ASC''')
    
-        else:
+        elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.vencimento DESC''')
+        elif escolha == "A" and dataini.get()!="":
+           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento == daini.get() or a.vencimento==datafim.get()) ORDER BY a.vencimento ASC''')  
+        else:
+           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento == daini.get() or a.vencimento==datafim.get() ORDER BY a.vencimento DESC''')
+             
+        
         sqlres=cursor.fetchall()
      
     
@@ -2305,6 +2315,18 @@ def dadosdatafim(event):
            datafim.focus()   
            return
 
+def vercampos1(event):
+  if len(dataini.get())>10:
+       messagebox1("campo data tamanho 10 digite novamente",manutencao)
+       dataini.delete(0,END)
+       dataini.focus()
+  if len(datafim.get())>10:
+       messagebox1("campo data tamanho 10 digite novamente",manutencao)
+       datafim.delete(0,END)
+       datafim.focus()
+
+
+
 
 def consulta_vencimento(janela3):
    global janela4 
@@ -2379,6 +2401,8 @@ def consulta_vencimento(janela3):
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    dataini.bind("<KeyRelease>", dadosdataini)
    datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
    janela4.bind("<F3>", consultavencopcao2)     
 
 def consultacodigoopcao2(event):
