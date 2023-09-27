@@ -2075,7 +2075,14 @@ def consultavencopcao2(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
+   #   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
+   #memini=datetime.strptime(memini,"%Y-%m-%d").date()
+   #memfim=datetime.strptime(memfim,"%Y-%m-%d").date()
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2090,10 +2097,11 @@ def consultavencopcao2(event):
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.vencimento DESC''')
-        elif escolha == "A" and dataini.get()!="":
+        elif escolhido == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento == daini.get() or a.vencimento==datafim.get()) ORDER BY a.vencimento ASC''')  
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento > '{memfim}') ORDER BY a.vencimento ASC''')  
+                               #'{memini}'<=
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
@@ -2128,7 +2136,7 @@ def dadosdataini(event):
  indice=indice-1
 
  print(indice)
- memdata=tela.dataini.get()
+ memdata=dataini.get()
  print(memdata[indice])
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
@@ -2148,14 +2156,14 @@ def dadosdataini(event):
        else:         
            return
     else:
-      messagebox1("data tem que ser numerica nessa posição",manutencao) 
+      messagebox1("data tem que ser numerica nessa posição",janela4) 
       dataini.delete(0,END)
       dataini.focus()
       return
  
  elif indice==2 or indice==5:
      if memdata[indice] not in ("/"):
-         messagebox1("digite barra automatica nesta posição é data",manutencao)
+         messagebox1("digite barra automatica nesta posição é data",janela4)
          dataini.delete(0,END)
          dataini.focus()
          return   
@@ -2170,7 +2178,7 @@ def dadosdataini(event):
     if digitado in ("0","1","2","3","4","5","6","7","8","9"):
        return
     else: 
-       messagebox1("digite números é data",manutencao)
+       messagebox1("digite números é data",janela4)
        dataini.delete(0,END)
        dataini.focus()   
        return
@@ -2181,7 +2189,7 @@ def dadosdataini(event):
          dataini.delete(0,END)
          dataini.insert(0,memdata)
       else:
-         messagebox1("digite números é data",manutencao)
+         messagebox1("digite números é data",janela4)
          dataini.delete(0,END)
          dataini.focus()
          return   
@@ -2195,7 +2203,7 @@ def dadosdataini(event):
            dataini.insert(0,memdata1)
            return
          else:
-           messagebox1("digite números é data",manutencao)
+           messagebox1("digite números é data",janela4)
            dataini.delete(0,END)
            dataini.focus()   
            return
@@ -2213,7 +2221,7 @@ def dadosdataini(event):
              dataini.focus()   
            return
          else:
-           messagebox1("digite números é data",manutencao) 
+           messagebox1("digite números é data",janela4) 
            dataini.delete(0,END)
            dataini.focus()   
            return
@@ -2225,7 +2233,7 @@ def dadosdatafim(event):
  indice=indice-1
 
  print(indice)
- memdata=tela.datafim.get()
+ memdata=datafim.get()
  print(memdata[indice])
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
@@ -2245,20 +2253,19 @@ def dadosdatafim(event):
        else:         
            return
     else:
-      messagebox1("data tem que ser numerica nessa posição",manutencao) 
+      messagebox1("data tem que ser numerica nessa posição",janela4) 
       datafim.delete(0,END)
       datafim.focus()
       return
  
  elif indice==2 or indice==5:
      if memdata[indice] not in ("/"):
-         messagebox1("digite barra automatica nesta posição é data",manutencao)
+         messagebox1("digite barra automatica nesta posição é data",janela4)
          datafim.delete(0,END)
          datafim.focus()
          return   
      else:
         return 
-   
  if len(datafim.get())==0:
       datafim.focus()
       return 
@@ -2267,7 +2274,7 @@ def dadosdatafim(event):
     if digitado in ("0","1","2","3","4","5","6","7","8","9"):
        return
     else: 
-       messagebox1("digite números é data",manutencao)
+       messagebox1("digite números é data",janela4)
        datafim.delete(0,END)
        datafim.focus()   
        return
@@ -2278,7 +2285,7 @@ def dadosdatafim(event):
          datafim.delete(0,END)
          datafim.insert(0,memdata)
       else:
-         messagebox1("digite números é data",manutencao)
+         messagebox1("digite números é data",janela4)
          datafim.delete(0,END)
          datafim.focus()
          return   
@@ -2292,7 +2299,7 @@ def dadosdatafim(event):
            datafim.insert(0,memdata1)
            return
          else:
-           messagebox1("digite números é data",manutencao)
+           messagebox1("digite números é data",janela4)
            datafim.delete(0,END)
            datafim.focus()   
            return
@@ -2310,7 +2317,7 @@ def dadosdatafim(event):
              datafim.focus()   
            return
          else:
-           messagebox1("digite números é data",manutencao) 
+           messagebox1("digite números é data",janela4) 
            datafim.delete(0,END)
            datafim.focus()   
            return
