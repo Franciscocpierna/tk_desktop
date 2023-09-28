@@ -7,7 +7,7 @@ lucro="1.000,02"  #tela.valapagar.get()
 #if cnum1[cnum1.find('.') + 1] == '0':
 if len(lucro[lucro.find(',')+1:]) == 2:
     print(lucro[lucro.find(',')+1:])
-    print("digite novamente tem que ter 2 casas decimais")
+    
 else:
      print(lucro[lucro.find(',')+1:])
      

@@ -996,7 +996,7 @@ def incluircontas():
 
 
    elif len(tela.documento.get())==0 or len(tela.documento.get())>20:
-        messagebox1("Informação: digite o Nome esta vazio ou é maior que 20",manutencao)
+        messagebox1("Informação: digite o DOCUMENTO esta vazio ou é maior que 20",manutencao)
         tela.documento.focus()
         return
    elif  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
@@ -2098,9 +2098,9 @@ def consultavencopcao2(event):
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.vencimento DESC''')
         elif escolhido == "A" and dataini.get()!="":
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,strftime("%Y-%m-%d",a.vencimento),a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento > '{memfim}') ORDER BY a.vencimento ASC''')  
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento) > '{memfim}' ORDER BY a.vencimento ASC''')  
                                #'{memini}'<=
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
@@ -2793,9 +2793,9 @@ def contas_menu(janela1):
                                                descricao varchar(50),
                                                pagamento TEXT,
                                                tipo varchar(2),
-                                               valpagar TEXT NOT NULL,
-                                               desconto TEXT,
-                                               juros    TEXT,   
+                                               valpagar REAL(14,2) NOT NULL,
+                                               desconto REAL(14,2),
+                                               juros    REAL(14,2),   
                                                documento varchar(20),
                                                tparcela varchar(3),
                                                cs varchar(1),               
