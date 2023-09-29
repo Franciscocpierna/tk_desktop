@@ -24,12 +24,17 @@ print(lucro)
 #print(texto_lucro)
 #texto_lucro = lucro.replace('.',',').replace('_','.')
 #print(texto_lucro)
-valor = lucro.replace('.','').replace(',','.')
-
-print(valor)
+while True:
+    if lucro.find('.')==-1:
+      break
+    else:
+      lucro = lucro.replace('.','')
+      print(lucro)
+lucro=lucro.replace(',','.')  
+print(lucro)
 #valor=valor.replace("_",",")
 #print(valor)
-valor=float(valor)
+valor=float(lucro)
 print(f'O lucro foi de {valor-10}')
 
 

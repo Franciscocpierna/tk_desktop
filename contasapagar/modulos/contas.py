@@ -941,13 +941,13 @@ def verchave(event):
    else:
      tela.compra.insert(0, sqlres[0][1])
      tela.vencimento.insert(0,sqlres[0][2])
-     tela.descricao.insert(0, sqlres[0][3])
+     tela.descricao.insert(0, sqlres[0][3]) 
      tela.pagamento.insert(0, sqlres[0][4]) 
      tela.tipo.insert(0, sqlres[0][5])
      tela.desctipo.insert(0, sqlres[0][6])
-     tela.valpagar.insert(0, sqlres[0][7])
-     tela.desconto.insert(0, sqlres[0][8])
-     tela.juros.insert(0, sqlres[0][9])
+     tela.valpagar.insert(0, recuperaval(sqlres[0][7]))
+     tela.desconto.insert(0, recuperaval(sqlres[0][8]))
+     tela.juros.insert(0, recuperaval(sqlres[0][9]))
      tela.cs.insert(0, sqlres[0][10])
   else:
     if opcao==1: 
@@ -957,6 +957,19 @@ def verchave(event):
        limpacamposcontas()
        tela.codigo.focus()
        return
+
+def valores(valor):
+   while True:
+    if valor.find('.')==-1:
+     break
+    else:
+     valor = valor.replace('.','')
+   valor=valor.replace(',','.')  
+   return valor
+
+def dataa(datav):
+   memdata = datav[6:]+"-"+datav[3:5]+"-"+datav[0:2]
+   return memdata
 
 def incluircontas():
       
@@ -1021,14 +1034,17 @@ def incluircontas():
         codigomem=tela.codigo.get()
         documentomem=tela.documento.get()
         tparcelamem = tela.tparcela.get()
-        compramem=tela.compra.get()
-        vencimentomem=tela.vencimento.get()
+        compramem=dataa(tela.compra.get())
+        vencimentomem= dataa(tela.vencimento.get())
         descricaomem=tela.descricao.get()
-        pagamentomem=tela.pagamento.get()
+        if tela.pagamento.get()!="":
+          pagamentomem=dataa(tela.pagamento.get()) 
+        else:    
+          pagamentomem=tela.pagamento.get()
         tipomem=tela.tipo.get()
-        valpagarmem=tela.valpagar.get()
-        descontomem = tela.desconto.get()
-        jurosmem = tela.juros.get()
+        valpagarmem= valores(tela.valpagar.get())
+        descontomem = valores(tela.desconto.get())
+        jurosmem = valores(tela.juros.get())
         csmem=tela.cs.get().upper()
         
 
@@ -1424,7 +1440,33 @@ def dadosvalor(event):
         tela.valpagar.delete(0,END)
         tela.valpagar.focus()
       return     
-      
+
+def recuperaval(valpag):
+   valpag1=valpag
+   if len(valpag[valpag.find('.')+1:]) == 1:
+         valpag=valpag+"0"
+   valpag = valpag.replace('.',',')      
+   if len(valpag) == 4:
+       valpag1=valpag[0]+valpag[1]+valpag[2]+valpag[3]
+   elif len(valpag)== 5:
+       valpag1=valpag[0]+valpag[1]+valpag[2]+valpag[3]+valpag[4]
+   elif len(valpag)==6:
+       valpag1=valpag[0]+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]
+   elif len(valpag) == 7:
+        valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6]
+   elif len(valpag) == 8:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]          
+   elif len(valpag) == 9:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]
+   elif len(valpag) == 10:
+           valpag1=valpag[0]+"."+valpag[1]+valpag[2]+valpag[3]+"."+valpag[4]+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]
+   elif len(valpag) == 11:
+           valpag1=valpag[0]+valpag[1]+"."+valpag[2]+valpag[3]+valpag[4]+"."+valpag[5]+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]
+   elif len(valpag) == 12:
+           valpag1=valpag[0]+valpag[1]+valpag[2]+"."+valpag[3]+valpag[4]+valpag[5]+"."+valpag[6] + valpag[7]+valpag[8]+valpag[9]+valpag[10]+valpag[11]
+         
+   return valpag1
+
 def valorout(valpag):
    
    if len(valpag) == 4:
@@ -1676,11 +1718,14 @@ def alteracaocontas():
      
     codigomem=tela.codigo.get()
     documentomem=tela.documento.get()
-    tparcelamem = tela.tparcela.get() 
-    compramem=tela.compra.get()
-    vencimentomem=tela.vencimento.get()
+    tparcelamem = tela.tparcela.get()
+    compramem=dataa(tela.compra.get()) 
+    vencimentomem=dataa(tela.vencimento.get())
     descricaomem=tela.descricao.get()
-    pagamentomem=tela.pagamento.get()
+    if tela.pagamento.get()!="":
+          pagamentomem=dataa(tela.pagamento.get()) 
+    else:    
+          pagamentomem=tela.pagamento.get()
     tipomem=tela.tipo.get()
     valpagarmem=tela.valpagar.get()
     descontomem = tela.desconto.get()
