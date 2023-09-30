@@ -121,6 +121,12 @@ def pdfgerado2(sqlres,arquivo):
    x=0
 
    for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+        co=recupdata(co)
+        ve=recupdata(ve)
+        pg=recupdata(pg)
+        vp=recuperaval(vp)
+        des=recuperaval(des)
+        ju=recuperaval(ju)
         x+=1
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -939,10 +945,10 @@ def verchave(event):
      tela.codigo.focus()
      return
    else:
-     tela.compra.insert(0, sqlres[0][1])
-     tela.vencimento.insert(0,sqlres[0][2])
+     tela.compra.insert(0, recupdata(sqlres[0][1]))
+     tela.vencimento.insert(0,recupdata(sqlres[0][2]))
      tela.descricao.insert(0, sqlres[0][3]) 
-     tela.pagamento.insert(0, sqlres[0][4]) 
+     tela.pagamento.insert(0, recupdata(sqlres[0][4])) 
      tela.tipo.insert(0, sqlres[0][5])
      tela.desctipo.insert(0, sqlres[0][6])
      tela.valpagar.insert(0, recuperaval(sqlres[0][7]))
@@ -970,6 +976,7 @@ def valores(valor):
 def dataa(datav):
    memdata = datav[6:]+"-"+datav[3:5]+"-"+datav[0:2]
    return memdata
+
 
 def incluircontas():
       
@@ -1441,7 +1448,14 @@ def dadosvalor(event):
         tela.valpagar.focus()
       return     
 
+def recupdata(data):
+   if len(data)==0:
+      return data
+   data=  data[8:]+"/"+data[5:7]+"/"+data[0:4]
+   return data
+                   
 def recuperaval(valpag):
+   valpag=str(valpag)
    valpag1=valpag
    if len(valpag[valpag.find('.')+1:]) == 1:
          valpag=valpag+"0"
@@ -1727,9 +1741,9 @@ def alteracaocontas():
     else:    
           pagamentomem=tela.pagamento.get()
     tipomem=tela.tipo.get()
-    valpagarmem=tela.valpagar.get()
-    descontomem = tela.desconto.get()
-    jurosmem = tela.juros.get()
+    valpagarmem=valores(tela.valpagar.get())
+    descontomem = valores(tela.desconto.get())
+    jurosmem = valores(tela.juros.get())
     csmem=tela.cs.get().upper()
        
     
@@ -1931,6 +1945,12 @@ def consultacompraopcao(event):
             cursor.close()
         else:
             for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               co=recupdata(co)
+               ve=recupdata(ve)
+               pg=recupdata(pg)
+               vp=recuperaval(vp)
+               des=recuperaval(des)
+               ju=recuperaval(ju)
                tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
@@ -2037,6 +2057,12 @@ def consultapagopcao2(event):
             
         else:
             for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               co=recupdata(co)
+               ve=recupdata(ve)
+               pg=recupdata(pg)
+               vp=recuperaval(vp)
+               des=recuperaval(des)
+               ju=recuperaval(ju)
                tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
@@ -2163,6 +2189,12 @@ def consultavencopcao2(event):
             
         else:
             for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               co=recupdata(co)
+               ve=recupdata(ve)
+               pg=recupdata(pg)
+               vp=recuperaval(vp)
+               des=recuperaval(des)
+               ju=recuperaval(ju)
                tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
@@ -2483,6 +2515,12 @@ def consultacodigoopcao2(event):
             
         else:
             for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               co=recupdata(co)
+               ve=recupdata(ve)
+               pg=recupdata(pg)
+               vp=recuperaval(vp)
+               des=recuperaval(des)
+               ju=recuperaval(ju)
                tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
@@ -2590,6 +2628,12 @@ def consutaporcao2(event):
                     return
             else:
                     for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+                      co=recupdata(co)
+                      ve=recupdata(ve)
+                      pg=recupdata(pg)
+                      vp=recuperaval(vp)
+                      des=recuperaval(des)
+                      ju=recuperaval(ju)
                       tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
  
                     
@@ -2696,6 +2740,12 @@ def consultaatrasoopcao2(event):
             
         else:
             for (c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1) in sqlres:
+               co=recupdata(co)
+               ve=recupdata(ve)
+               pg=recupdata(pg)
+               vp=recuperaval(vp)
+               des=recuperaval(des)
+               ju=recuperaval(ju)
                tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,des,ju,doc,par,cs1)) 
                
       except Error as ex: 
