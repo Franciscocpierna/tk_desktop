@@ -277,11 +277,11 @@ def gerapdat(event):
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento DESC''')
 
       
         
@@ -2728,12 +2728,12 @@ def consultaatrasoopcao2(event):
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento  < 'now') ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento DESC''')
         sqlres=cursor.fetchall()
          
         if len(sqlres) == 0:
