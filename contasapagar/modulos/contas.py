@@ -169,19 +169,45 @@ def pdfgerado2(sqlres,arquivo):
 
 def gerapdv(event):
    escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   escolhido1=escolha1.get()
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+             
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        if escolhido1 == "A":
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+        if escolhido1 == "A" and dataini.get()=="":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
                                     FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.vencimento ASC''')
+   
+        elif escolhido1=="D" and dataini.get()=="":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.vencimento DESC''')
+        elif escolhido1 == "A" and dataini.get()!="":
+           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+        
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo  ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
         
@@ -267,21 +293,48 @@ def gerapdat(event):
    dia = data.day
 #   data1="21/09/2023"
 #   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
-   
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
+
    escolhido=escolha.get()
    escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        if escolhido1 == "A":
+        if escolhido1 == "A" and dataini.get()=="":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
+   
+        elif escolhido1=="D" and dataini.get()=="":
+          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
+          
+        elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+        
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
         
@@ -566,6 +619,9 @@ def rel_vencimento(janela3):
    global escolhido1
    global escolha
    global escolha1
+   global dataini 
+   global datafim
+
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
   
@@ -589,6 +645,17 @@ def rel_vencimento(janela3):
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.2,rely=0.5)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.32,rely=0.5)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.51,rely=0.5)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.62,rely=0.5)
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
+
    escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    janela4.bind("<F3>", gerapdv)
@@ -603,6 +670,9 @@ def rel_atraso(janela3):
    global escolhido1
    global escolha
    global escolha1
+   global dataini 
+   global datafim
+
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
   
@@ -626,6 +696,17 @@ def rel_atraso(janela3):
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.2,rely=0.5)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.32,rely=0.5)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.51,rely=0.5)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.62,rely=0.5)
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
+
    escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    janela4.bind("<F3>", gerapdat)
@@ -2148,6 +2229,17 @@ def consultavencopcao2(event):
    dia = data.day
    memini=dataini.get()
    memfim=datafim.get()
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+
       
    memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
    memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
@@ -2182,7 +2274,7 @@ def consultavencopcao2(event):
         sqlres=cursor.fetchall()
      
     
-                           #    AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}'
+                         
       
          
         if len(sqlres) == 0:
@@ -2719,21 +2811,48 @@ def consultaatrasoopcao2(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
+      
    escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        if escolhido == "A":
+        if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
-        else:
+        elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
-                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento)  < 'now' ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
+          
+        elif escolhido == "A" and dataini.get()!="":
+           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+        
+        else:
+           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs
+                                    FROM  contas a, fornecedor b, tipo c WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+  
         sqlres=cursor.fetchall()
          
         if len(sqlres) == 0:
@@ -2764,6 +2883,9 @@ def consulta_ematraso(janela3):
    global tv 
    global escolhido
    global escolha
+   global dataini 
+   global datafim
+
    janela4 = Toplevel()
    janela4.title("Consultas por Pagamento em atraso ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -2774,6 +2896,8 @@ def consulta_ematraso(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   
+
    tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
@@ -2806,6 +2930,12 @@ def consulta_ematraso(janela3):
    tv.heading('tparcela', text='PARCELADO')
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
  
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.06,rely=0.05)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.17,rely=0.05)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.22,rely=0.05)
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
@@ -2823,7 +2953,10 @@ def consulta_ematraso(janela3):
    escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultaatrasoopcao2)
-
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
 
   
   
