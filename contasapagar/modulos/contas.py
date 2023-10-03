@@ -3028,10 +3028,12 @@ def contas_menu(janela1):
                                                juros    REAL(14,2),   
                                                documento varchar(20),
                                                tparcela varchar(3),
-                                               cs varchar(1),               
+                                               cs varchar(1),
+                                               produto varchar(5),               
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),
-                                               FOREIGN KEY(tipo) REFERENCES  tipo(codigo))'''
+                                               FOREIGN KEY(tipo) REFERENCES  tipo(codigo),
+                                               FOREIGN KEY(produto) REFERENCES  produto(codigo))'''
 
  criartabela2(janela3,sql) 
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
