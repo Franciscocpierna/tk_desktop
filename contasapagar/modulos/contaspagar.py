@@ -3,6 +3,7 @@ from tkinter import messagebox
 from fornecedor import fornecedor_menu
 from tipo import  tipo_menu
 from contas import contas_menu
+from produto import prod_menu
 from classes import *
 import keyboard
 
@@ -51,8 +52,10 @@ filemenu= Menu(menujan, tearoff=0,)
 filemenu.add_command(label = " Fornecedor",command= lambda: fornecedor_menu(janela1))
 filemenu.add_command(label = " Contas",command= lambda: contas_menu(janela1))
 filemenu.add_command(label = " Tipo",command=lambda: tipo_menu(janela1))
-menujan.add_cascade(label='Manutenção Geral',menu = filemenu)
+filemenu.add_command(label = " Tipo",command=lambda: prod_menu(janela1))
 
+menujan.add_cascade(label='Manutenção Geral',menu = filemenu)
+#prod_menu
 menusair = Menu(menujan, tearoff=0)
 menusair.add_command(label= "Sair click aqui", command=quit) 
 menujan.add_cascade(label='para Sair',menu = menusair)

@@ -32,6 +32,9 @@ class montatela():
          elif self.opcao==1 and self.opcao1 == 3: 
              manutencao1.title("Inclusão-Tipo- Esc para sair")
              Label(manutencao1, text= 'Tipo - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)
+         elif self.opcao==1 and self.opcao1 == 4: 
+             manutencao1.title("Inclusão-Produto- Esc para sair")
+             Label(manutencao1, text= 'Produto - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)    
         
 
            #fim manutenção inclusão
@@ -47,7 +50,9 @@ class montatela():
          elif self.opcao == 2 and self.opcao1 == 3: 
              manutencao1.title("Consulta-Tipo")
              Label(manutencao1, text= 'Tipo - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)       
-
+         elif self.opcao==2 and self.opcao1 == 4: 
+             manutencao1.title("Consulta-Produto")
+             Label(manutencao1, text= 'Produto - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)     
 
           # fim manutençao consulta
 
@@ -61,7 +66,10 @@ class montatela():
               Label(manutencao1, text= 'Contas - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 15, pady=15)
          elif self.opcao == 3 and self.opcao1 == 3:
               manutencao1.title("Ateração-Tipo- Esc para sair")    
-              Label(manutencao1, text= 'Tipo - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)         
+              Label(manutencao1, text= 'Tipo - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30) 
+         elif self.opcao==3 and self.opcao1 == 4: 
+             manutencao1.title("Alteração-Produto")
+             Label(manutencao1, text= 'Produto - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)             
            
            #fim manutenção Alteração
            
@@ -76,7 +84,9 @@ class montatela():
          elif self.opcao == 4 and self.opcao1 == 3: 
               manutencao1.title("Exclusão-Tipo- Esc para sair")
               Label(manutencao1, text= 'Tipo - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)     
-
+         elif self.opcao==4 and self.opcao1 == 4: 
+             manutencao1.title("Exclusão-Produto")
+             Label(manutencao1, text= 'Produto - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)  
 
 
              #fim manutenção exclusão
@@ -166,7 +176,16 @@ class montatela():
                Label(manutencao1, text="(C)ompra ou (S)erviço:",font=('Arial', 15)).grid(row=12, column=0,sticky=W)
                self.cs = Entry(manutencao1,width=2)
                self.cs.grid(row=12, column=1,sticky=W)
-
+               Label(manutencao1, text="Cod Produto:",font=('Arial', 15)).grid(row=13, column=0,sticky=W)
+               self.produto = Entry(manutencao1,width=2)
+               self.produto.grid(row=13, column=1,sticky=W)
+         if self.opcao1==3:
+               Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
+               self.codigo = Entry(manutencao1,width=7)
+               self.codigo.grid(row=1, column=1, sticky=W)
+               Label(manutencao1, text="Nome:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
+               self.nome = Entry(manutencao1,width=50)
+               self.nome.grid(row=2, column=1,sticky=W) 
          else: 
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
                self.codigo = Entry(manutencao1,width=7)

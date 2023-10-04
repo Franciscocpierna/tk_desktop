@@ -43,23 +43,23 @@ def vercodigo(event):
       tela.codigo.focus()
       return
   sqleres=""
-  tipomem=tela.codigo.get()
-  mensagem= "Tipo"  
+  prodmem=tela.codigo.get()
+  mensagem= "Produto"  
    
             
-  sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
-  sqlres=lertabela(sql,tipomem,manutencao,mensagem,opcao)
+  sql=  f"SELECT nome FROM produto WHERE codigo = '{prodmem}'"  
+  sqlres=lertabela(sql,prodmem,manutencao,mensagem,opcao)
   if len(sqlres)==0: 
       if opcao==1:
        tela.nome.focus()
        return
       else:
-       limpacampostipo()
+       limpacamposprod()
        tela.codigo.focus()  
        return
   else:
       if opcao==1:
-        limpacampostipo()
+        limpacamposprod()
         tela.codigo.focus
         return
   tela.nome.insert(0, sqlres[0][0])
@@ -96,7 +96,7 @@ def imprimepdf1(arquivo1):
    win32api.ShellExecute(0, "print", arquivo1, None, caminho, 0)       
    return
   except  Error as ex:
-    messagebox1("Erro ao tentar imprimir linha 58 "+str(ex),janela4)
+    messagebox1("Erro ao tentar imprimir linha 99 "+str(ex),janela4)
     return
 
 
@@ -160,9 +160,9 @@ def gerapf1(event):
       cursor = banco.cursor()
       try:
         if escolhido1 == "A":
-          cursor.execute(f"SELECT *  FROM  tipo ORDER BY codigo ASC")
+          cursor.execute(f"SELECT *  FROM  produto ORDER BY codigo ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  tipo ORDER BY codigo DESC")
+          cursor.execute(f"SELECT *  FROM  produto ORDER BY codigo DESC")
 
       
         
@@ -199,7 +199,7 @@ def gerapf(event):
       cursor = banco.cursor()
       try:
         
-        cursor.execute(f"SELECT *  FROM  tipo ORDER BY nome ASC")
+        cursor.execute(f"SELECT *  FROM  produto ORDER BY nome ASC")
 
         sqlres=cursor.fetchall()
      
@@ -321,10 +321,9 @@ def criartabela1(janela3):
      cursor = banco.cursor()
      
      cursor.execute('''CREATE TABLE IF NOT EXISTS produto (codigo varchar(5) PRIMARY KEY  NOT NULL, 
-                                                        nome varchar(50) NOT NULL,
-                                                        fornecedor varchar(5) NOT NULL,  
-                                                        FOREIGN KEY(fornecedor) REFERENCES  fornecedor(codigo)
-                    )''')
+                                                        nome varchar(50) NOT NULL
+                                                        
+                                                         )''')
      cursor.close() 
    except Error as ex:
      messagebox1(str(ex)+ " linha 287",janela3)
@@ -344,14 +343,14 @@ def tab_order():
   for w in widgets:
      w.lift()
 
-def limpacampostipo():
+def limpacamposprod():
   tela.codigo.delete(0,END)
   tela.nome.delete(0,END) 
   return
 
 
 
-def incluirtipo():
+def incluirprod():
       
     
    if not tela.codigo.get().isnumeric() and tela.codigo.get() !=5:
@@ -389,29 +388,29 @@ def incluirtipo():
            banco.commit()
            cursor.close()
            messagebox1("registro Incluido com sucesso",manutencao)     
-           limpacampostipo()   
+           limpacamposprod()   
            tela.codigo.focus()
           except Error as ex:
-            messagebox1("erro ao gravar tabela Fornecedor linha 252 "+ str(ex),manutencao)       
-            limpacampostipo()
+            messagebox1("erro ao gravar tabela Produto linha 252 "+ str(ex),manutencao)       
+            limpacamposprod()
         else:
            messagebox1("Registro não foi gravado",manutencao)
 
    except Error as ex:
        messagebox1("erro ao conectar com banco de dados linha 427 "+ str(ex),manutencao)
-       limpacampostipo()   
+       limpacamposprod()   
        tela.codigo.focus()
        return
    
-def incluirtipo_click(janela1):
+def incluirprod_click(janela1):
     global opcao
     global tela
     global manutencao
     opcao=1
-    opcao1=3  
+    opcao1=4  
     manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-    botao=Button(manutencao, text='Salvar',command=incluirtipo)
+    botao=Button(manutencao, text='Salvar',command=incluirprod)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
@@ -423,19 +422,19 @@ def incluirtipo_click(janela1):
     
            
      
-def cosultatipo_click(janela1):
+def cosultaprod_click(janela1):
      global opcao
      global tela
      global manutencao
      opcao=2
-     opcao1=3
+     opcao1=4
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
-def alteracaotipo():
+def alteracaoprod():
     if not tela.codigo.get().isnumeric() and tela.codigo.get() !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
@@ -459,7 +458,7 @@ def alteracaotipo():
           
       except Error as ex:
        messagebox1("erro ao conectar com banco de dados linha 307 "+ str(ex),manutencao)
-       limpacampostipo()   
+       limpacamposprod()   
        tela.codigo.focus()
        return
           
@@ -474,26 +473,26 @@ def alteracaotipo():
            banco.commit()
            cursor.close()     
            messagebox1("registro Alterado com sucesso",manutencao)
-           limpacampostipo()   
+           limpacamposprod()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela tipo linha 514"+ str(ex),manutencao)       
-            limpacampostipo() 
+            messagebox("erro ao regravar tabela produto linha 514"+ str(ex),manutencao)       
+            limpacamposprod() 
             return
     else:
            messagebox1("Registro não foi Alterado",manutencao)
            return
     
-def alteracaotipo_click(janela1):
+def alteracaoprod_click(janela1):
      
      global opcao
      global tela
      global manutencao
      opcao=3
-     opcao1=3
+     opcao1=4
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao1=Button(manutencao, text='Alterar',command=alteracaotipo)
+     botao1=Button(manutencao, text='Alterar',command=alteracaoprod)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order()
      tela.codigo.focus()
@@ -505,9 +504,9 @@ def alteracaotipo_click(janela1):
      
       
      
-def exclusaotipo():
+def exclusaoprod():
     if not tela.codigo.get().isnumeric()  and tela.codigo.get() !=5:
-      messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
+      messagebox1("Codigo tem que ser diferente de 0 tem que ter tamanho  5",manutencao)
       tela.codigo.delete(0,END)
       tela.nome.delete(0,END)
       tela.codigo.focus()
@@ -525,29 +524,29 @@ def exclusaotipo():
            banco.commit()
            cursor.close()     
            messagebox1("Registro Excluido com sucesso",manutencao)
-           limpacampostipo()   
+           limpacamposprod()   
            tela.codigo.focus()
         except Error as ex:
             messagebox1("erro ao Excluir tabela produto linha 566"+ str(ex),manutencao)       
-            limpacampostipo() 
+            limpacamposprod() 
        except Error as ex:
            messagebox1("erro ao conectar com banco de dados linha 569 "+ str(ex),manutencao)
-           limpacampostipo()   
+           limpacamposprod()   
            tela.codigo.focus()
            return
     else:
            messagebox1("Registro não foi Excluido",manutencao)      
     return 
 
-def excluirtipo_click(janela1): 
+def excluirprod_click(janela1): 
      global opcao 
      global tela
      global manutencao
      opcao=4
-     opcao1=3
+     opcao1=4
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-     botao1=Button(manutencao, text='Excluir',command=exclusaotipo)
+     botao1=Button(manutencao, text='Excluir',command=exclusaoprod)
      botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
@@ -564,14 +563,14 @@ def consulta_nome1(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome'), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome'), show= 'headings')
     
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
+   tv.column('codigo', minwidth=5, width=50)
+   tv.column('nome', minwidth=0, width=250)
    
    
-   tv.heading('Codigo', text='Codigo' )
-   tv.heading('Nome', text='NOME')
+   tv.heading('codigo', text='Codigo' )
+   tv.heading('nome', text='NOME')
    
   
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
@@ -589,7 +588,7 @@ def consulta_nome1(janela3):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  tipo ORDER BY nome")
+        cursor.execute(f"SELECT *  FROM  produto ORDER BY nome")
         sqlres=cursor.fetchall()
      
     
@@ -662,13 +661,13 @@ def consulta_codigo1(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('Codigo', 'Nome'), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome'), show= 'headings')
     
-   tv.column('Codigo', minwidth=5, width=50)
-   tv.column('Nome', minwidth=0, width=250)
+   tv.column('codigo', minwidth=5, width=50)
+   tv.column('nome', minwidth=0, width=250)
       
-   tv.heading('Codigo', text='Codigo' )
-   tv.heading('Nome', text='NOME')
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
      
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.yview)
@@ -696,7 +695,7 @@ def consulta_codigo1(janela3):
 # relatorios
   
 
-def tipo_menu(janela1):
+def prod_menu(janela1):
  pass
  janela3 = Toplevel() # janela de nível superior
  janela3.title("Menu Manutenção - Consultas Relatorios  F1 - PARA SAIR")
@@ -716,10 +715,10 @@ def tipo_menu(janela1):
  filemenu= Menu(menujan2, tearoff=0,)
 
 
- filemenu.add_command(label = " Inclusão",command= lambda: incluirtipo_click(janela3))
- filemenu.add_command(label = " Consulta",command= lambda: cosultatipo_click(janela3))
- filemenu.add_command(label = " Alteração",command=lambda: alteracaotipo_click(janela3))
- filemenu.add_command(label = " Excluir", command=lambda:  excluirtipo_click(janela3))
+ filemenu.add_command(label = " Inclusão",command= lambda: incluirprod_click(janela3))
+ filemenu.add_command(label = " Consulta",command= lambda: cosultaprod_click(janela3))
+ filemenu.add_command(label = " Alteração",command=lambda: alteracaoprod_click(janela3))
+ filemenu.add_command(label = " Excluir", command=lambda:  excluirprod_click(janela3))
  menujan2.add_cascade(label = "Manutenção", menu = filemenu)
 
 
