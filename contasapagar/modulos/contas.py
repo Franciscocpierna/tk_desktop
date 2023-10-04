@@ -42,7 +42,9 @@ def limpacamposcontas():
   tela.juros.delete(0,END)
   tela.documento.delete(0, END) 
   tela.tparcela.delete(0,END)
-  tela.cs.delete(0, END)      
+  tela.cs.delete(0, END)  
+  tela.produto.delete(0,END)    
+  tela.descproduto.delete(0,END)
   return
 
 
@@ -941,6 +943,8 @@ def verfornec(event):
    tela.documento.delete(0, END) 
    tela.tparcela.delete(0,END)
    tela.cs.delete(0, END)
+   tela.produto.delete(0,END)
+   tela.descproduto.delete(0,END)
    #
    codigomem=tela.codigo.get()         
    sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
@@ -957,6 +961,47 @@ def verfornec(event):
    tela.documento.focus()
    return
 
+def verproduto(event):
+   if len(tela.codigo.get())!=5:
+      return
+
+   sqleres=""
+   if len(tela.codigo.get())!=5:
+        messagebox1("codigo tem que ter tamanho 5",manutencao)
+      
+        tela.codigo.focus()
+        return
+   #
+   tela.nome.delete(0,END)
+   tela.compra.delete(0,END) 
+   tela.vencimento.delete(0,END) 
+   tela.descricao.delete(0,END)
+   tela.tipo.delete(0,END) 
+   tela.desctipo.delete(0,END)
+   tela.pagamento.delete(0,END)
+   tela.valpagar.delete(0,END)
+   tela.desconto.delete(0,END)
+   tela.juros.delete(0,END)
+   tela.documento.delete(0, END) 
+   tela.tparcela.delete(0,END)
+   tela.cs.delete(0, END)
+   tela.produto.delete(0,END)
+   tela.descproduto.delete(0,END)
+   #
+   produtomem=tela.produto.get()         
+   sql=  f"SELECT nome FROM produto WHERE codigo = '{produtomem}'"  
+   mensagem="Produto"       
+   
+   
+   sqlres=lertabela(sql,produtomem,manutencao,mensagem,opcao)
+   if len(sqlres)==0:
+         messagebox1("codigo não existe em Produto",manutencao)
+         limpacamposcontas()
+         tela.codigo.focus()
+         return
+   tela.descproduto.insert(0, sqlres[0][0])
+   tela.codigo.focus()
+   return
 
 def verchave(event):
   sqlres=""
@@ -1008,6 +1053,8 @@ def verchave(event):
   tela.desconto.delete(0,END)
   tela.juros.delete(0,END)
   tela.cs.delete(0, END)      
+  tela.produto.delete(0,END)
+  tela.descproduto.delete(0,END)
 
   codigomem=tela.codigo.get().upper()
   documentomem=tela.documento.get()
@@ -2058,7 +2105,7 @@ def consulta_compra(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2074,7 +2121,8 @@ def consulta_compra(janela3):
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
-   
+   tv.column('produto', minwidth=5, width=50)
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2089,7 +2137,8 @@ def consulta_compra(janela3):
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
- 
+   tv.heading('produto', text='PRODUTO' )
+
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
@@ -2169,7 +2218,7 @@ def consulta_pagamento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2185,7 +2234,8 @@ def consulta_pagamento(janela3):
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
-   
+   tv.column('produto', minwidth=5, width=50)
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2200,7 +2250,7 @@ def consulta_pagamento(janela3):
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
- 
+   tv.heading('produto', text='PRODUTO')
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
@@ -2523,7 +2573,7 @@ def consulta_vencimento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto'), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2539,7 +2589,8 @@ def consulta_vencimento(janela3):
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
-   
+   tv.column('produto', minwidth=5, width=50)
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2554,6 +2605,8 @@ def consulta_vencimento(janela3):
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
+   tv.heading('produto', text='PRODUTO')
+
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
    dataini = Entry(janela4,width=15)
    dataini.place(relx=0.06,rely=0.05)
@@ -2641,7 +2694,7 @@ def consulta_codigo2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2657,7 +2710,8 @@ def consulta_codigo2(janela3):
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
-   
+   tv.column('produto', minwidth=5, width=50)
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2672,7 +2726,7 @@ def consulta_codigo2(janela3):
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
-
+   tv.heading('produto', text='PRODUTO')  
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
@@ -2757,7 +2811,7 @@ def consulta_porcao2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2773,7 +2827,8 @@ def consulta_porcao2(janela3):
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
-   
+   tv.column('produto', minwidth=5, width=50)
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2788,7 +2843,8 @@ def consulta_porcao2(janela3):
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
    tv.heading('cs', text='COMPRA OU SEVIÇO') 
- 
+   tv.heading('produto', text='PRODUTO')
+
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
@@ -2898,7 +2954,7 @@ def consulta_ematraso(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto'), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2914,7 +2970,9 @@ def consulta_ematraso(janela3):
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
    tv.column('cs', minwidth=0, width=200)
+   tv.column('produto', minwidth=5, width=50)
    
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2928,7 +2986,8 @@ def consulta_ematraso(janela3):
    tv.heading('juros', text='JUROS')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   tv.heading('cs', text='COMPRA OU SEVIÇO') 
+   tv.heading('cs', text='COMPRA OU SEVIÇO')
+   tv.heading('produto', text='PRODUTO') 
  
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
    dataini = Entry(janela4,width=15)
