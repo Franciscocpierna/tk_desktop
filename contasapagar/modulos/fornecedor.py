@@ -607,7 +607,7 @@ def consultafor():
  
 
 def tab_order():
-  tela.codigo.focus
+  tela.codigo.focus()
   widgets = [tela.codigo,tela.nome,tela.endereco,tela.telefone,tela.tipo,tela.cpf,tela.cnpj,tela.cep,tela.e_mail]
   for w in widgets:
      w.lift()
@@ -638,7 +638,7 @@ def incluirfor():
    else:
         sqlres =  verificacodigo()
         if len(sqlres) != 0: 
-          tela.codigo.focus
+          tela.codigo.focus()
           return          
    
    if len(tela.nome.get())==0 or len(tela.nome.get())>50:

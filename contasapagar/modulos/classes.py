@@ -103,8 +103,8 @@ class montatela():
 
          if self.opcao1 == 1: 
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
-               codigo = Entry(manutencao1,width=7)
-               codigo.grid(row=1, column=1, sticky=W)
+               self.codigo = Entry(manutencao1,width=7)
+               self.codigo.grid(row=1, column=1, sticky=W)
                Label(manutencao1, text="Nome:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.nome = Entry(manutencao1,width=50)
                self.nome.grid(row=2, column=1,sticky=W)
@@ -177,11 +177,11 @@ class montatela():
                self.cs = Entry(manutencao1,width=2)
                self.cs.grid(row=12, column=1,sticky=W)
                Label(manutencao1, text="Cod Produto:",font=('Arial', 15)).grid(row=13, column=0,sticky=W)
-               self.produto = Entry(manutencao1,width=2)
+               self.produto = Entry(manutencao1,width=7)
                self.produto.grid(row=13, column=1,sticky=W)
-               Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.3,rely=0.6)#grid(row=1, column=2,sticky=W)
+               Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.25,rely=0.64)#grid(row=1, column=2,sticky=W)
                self.descproduto = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
-               self.descproduto.place(relx=0.35,rely=0.68)#grid(row=1, column=3,sticky=E)
+               self.descproduto.place(relx=0.365,rely=0.65)#grid(row=1, column=3,sticky=E)
 
          if self.opcao1==3:
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
@@ -190,7 +190,7 @@ class montatela():
                Label(manutencao1, text="Nome:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.nome = Entry(manutencao1,width=50)
                self.nome.grid(row=2, column=1,sticky=W) 
-         else: 
+         if self.opcao1 == 4:
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
                self.codigo = Entry(manutencao1,width=7)
                self.codigo.grid(row=1, column=1, sticky=W)
