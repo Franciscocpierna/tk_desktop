@@ -52,7 +52,7 @@ filemenu= Menu(menujan, tearoff=0,)
 filemenu.add_command(label = " Fornecedor",command= lambda: fornecedor_menu(janela1))
 filemenu.add_command(label = " Contas",command= lambda: contas_menu(janela1))
 filemenu.add_command(label = " Tipo",command=lambda: tipo_menu(janela1))
-filemenu.add_command(label = " Tipo",command=lambda: prod_menu(janela1))
+filemenu.add_command(label = " Produto",command=lambda: prod_menu(janela1))
 
 menujan.add_cascade(label='Manutenção Geral',menu = filemenu)
 #prod_menu

@@ -351,7 +351,7 @@ def limpacampostipo():
 def incluirtipo():
       
     
-   if not tela.codigo.get().isnumeric() and tela.codigo.get() !=2 :
+   if not tela.codigo.get().isnumeric() and len(tela.codigo.get()) !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
       tela.nome.delete(0,END)
@@ -433,7 +433,7 @@ def cosultatipo_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaotipo():
-    if not tela.codigo.get().isnumeric() and tela.codigo.get() !=2 :
+    if not tela.codigo.get().isnumeric() and len(tela.codigo.get()) !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
       tela.codigo.focus()

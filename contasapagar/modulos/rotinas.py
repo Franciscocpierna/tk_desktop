@@ -122,7 +122,8 @@ def lertabela(sql,codigomem,manutencao,mensagem,opcao=0):
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0:
-         messagebox1("esse "+mensagem+" não existe",manutencao)  
+         if opcao!=1:
+           messagebox1("esse "+mensagem+" não existe",manutencao)  
          return  sqlres
        else:
          return  sqlres   

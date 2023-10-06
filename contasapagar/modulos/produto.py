@@ -28,17 +28,13 @@ opcao=0
 
 
 def vercodigo(event):
-  if len(tela.codigo.get()) < 5 and tela.codigo.get().isnumeric():
+  if len(tela.codigo.get()) < 5:
      return
   
-  if not tela.codigo.get().isnumeric():
-     messagebox1("é necessário preencher codigo com numeros e tamanho  5 ",manutencao)
-     tela.codigo.delete(0,END)          
-     tela.codigo.focus()
-     return
+ 
   
-  if len(tela.codigo.get()) > 2:
-      messagebox1("é necessário preencher codigo  tamanho  2 ",manutencao)
+  if len(tela.codigo.get()) > 5:
+      messagebox1("é necessário preencher codigo  tamanho  5 ",manutencao)
       tela.codigo.delete(0,END)
       tela.codigo.focus()
       return
@@ -62,6 +58,7 @@ def vercodigo(event):
         limpacamposprod()
         tela.codigo.focus
         return
+  tela.nome.delete(0, END)    
   tela.nome.insert(0, sqlres[0][0])
   return
 
@@ -353,8 +350,8 @@ def limpacamposprod():
 def incluirprod():
       
     
-   if not tela.codigo.get().isnumeric() and tela.codigo.get() !=5:
-      messagebox1("Codigo tem que ser diferente de 0 tem que ter tamanho  5",manutencao)
+   if len(tela.codigo.get()) !=5:
+      messagebox1("Codigo tem que ter tamanho  5",manutencao)
       tela.codigo.delete(0,END)
       tela.nome.delete(0,END)
       tela.codigo.focus()
@@ -435,8 +432,8 @@ def cosultaprod_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaoprod():
-    if not tela.codigo.get().isnumeric() and tela.codigo.get() !=2 :
-      messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
+    if len(tela.codigo.get()) !=5 :
+      messagebox1("Produto tem que ter tamanho  5",manutencao)
       tela.codigo.delete(0,END)
       tela.codigo.focus()
       return
@@ -505,8 +502,8 @@ def alteracaoprod_click(janela1):
       
      
 def exclusaoprod():
-    if not tela.codigo.get().isnumeric()  and tela.codigo.get() !=5:
-      messagebox1("Codigo tem que ser diferente de 0 tem que ter tamanho  5",manutencao)
+    if len(tela.codigo.get()) !=5:
+      messagebox1("Código tem que ter tamanho  5",manutencao)
       tela.codigo.delete(0,END)
       tela.nome.delete(0,END)
       tela.codigo.focus()
