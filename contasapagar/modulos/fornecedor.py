@@ -730,6 +730,7 @@ def incluirfor():
        return
    
 def incluirfor_click(janela1):
+    global opcao
     opcao=1
     opcao1=1
     
@@ -750,6 +751,7 @@ def incluirfor_click(janela1):
            
      
 def cosultafor_click(janela1):
+     global opcao
      opcao=2
      opcao1=1
      global tela
@@ -921,6 +923,7 @@ def alteracaofor():
            return
     
 def alteracaofor_click(janela1):
+     global opcao
      opcao=3
      opcao1=1
      global tela
@@ -972,6 +975,7 @@ def exclusaofor():
            messagebox1("Registro não foi Excluido",manutencao)      
     return 
 def excluirfor_click(janela1): 
+     global opcao
      opcao=4
      opcao1=1
      global tela

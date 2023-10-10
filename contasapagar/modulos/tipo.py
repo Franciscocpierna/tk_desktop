@@ -59,9 +59,11 @@ def vercodigo(event):
        return
   else:
       if opcao==1:
+        messagebox1("Registro já existe não pode ser incluido", manutencao)
         limpacampostipo()
         tela.codigo.focus
         return
+  tela.nome.delete(0, END)    
   tela.nome.insert(0, sqlres[0][0])
   return
 
