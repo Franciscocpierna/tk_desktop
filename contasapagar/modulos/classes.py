@@ -1,8 +1,29 @@
 from tkinter import *
 
-class teste():
-     def __init__(self,indice):
+class variaveis():
+     def __init__(self,indice,opcao,opcao1,manutencao):
        self.indice=indice
+       self.opcao=opcao
+       self.opcao1=opcao1
+       self.manutencao=manutencao
+
+     def getmanutencao(self):
+         return self.manutencao
+     def setmanutencao(self,manut):
+         self.manutencao=manut
+         return
+     def getopcao(self):
+         return self.opcao
+     
+     def setopcao(self,optar):
+         self.opcao=optar
+         return
+     def getopcao1(self):
+         return self.opcao1
+     
+     def setopcao1(self,optar):
+         self.opcao1=optar
+         return 
 
      def getvalor(self):
           return self.indice

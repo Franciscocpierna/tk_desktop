@@ -5,7 +5,7 @@ from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
-from classes import montatela,centralizacao
+from classes import montatela,centralizacao,variaveis
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -24,7 +24,7 @@ posy=0
 X=0
 ler=""
 opcao=0
-
+variaveis=variaveis(0,0,0,"")
 
 
 def vercodigo(event):
@@ -45,7 +45,7 @@ def vercodigo(event):
   sqleres=""
   tipomem=tela.codigo.get()
   mensagem= "Tipo"  
-   
+  opcao=variaveis.getopcao() 
             
   sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
   sqlres=lertabela(sql,tipomem,manutencao,mensagem,opcao)
@@ -403,12 +403,16 @@ def incluirtipo():
        return
    
 def incluirtipo_click(janela1):
-    global opcao
+    #global opcao
     global tela
     global manutencao
-    opcao=1
-    opcao1=3  
-    manutencao = Toplevel() # janela de nível superior
+    opcao=variaveis.setopcao(1)
+    opcao1=variaveis.setopcao1(3)
+    manutencao=variaveis.setmanutencao(Toplevel())  
+    #manutencao = Toplevel() # janela de nível superior
+    opcao=variaveis.getopcao()
+    opcao1=variaveis.getopcao1()
+    manutencao=variaveis.getmanutencao()
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirtipo)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
@@ -423,12 +427,16 @@ def incluirtipo_click(janela1):
            
      
 def cosultatipo_click(janela1):
-     global opcao
+    # global opcao
      global tela
      global manutencao
-     opcao=2
-     opcao1=3
-     manutencao = Toplevel() # janela de nível superior
+     opcao=variaveis.setopcao(2)
+     opcao1=variaveis.setopcao1(3)
+     manutencao=variaveis.setmanutencao(Toplevel())  
+     #manutencao = Toplevel() # janela de nível superior
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1()
+     manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", vercodigo)
