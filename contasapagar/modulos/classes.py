@@ -28,7 +28,21 @@ class variaveis():
      def getvalor(self):
           return self.indice
      def setvalor(self,indice2):
-          self.indice=indice2+1       
+          self.indice=indice2+1
+
+class variaveis1():
+     def __init__(self,escolhido,escolhido1):
+         self.escolhido=escolhido
+         self.escolhido1=escolhido1
+     def getescolhido(self):
+         return self.escolhido       
+     def setescolhido(self,escolha):
+         self.escolhido = escolha
+     def getescolhido1(self):
+         return self.escolhido       
+     def setescolhido1(self,escolha):
+         self.escolhido1 = escolha           
+
 
 class montatela():
       def __init__(self, manutencao1,janela1, opcao,posx,posy,largura, altura,opcao1):

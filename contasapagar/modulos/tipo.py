@@ -5,7 +5,7 @@ from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
-from classes import montatela,centralizacao,variaveis
+from classes import montatela,centralizacao,variaveis,variaveis1
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -25,7 +25,7 @@ X=0
 ler=""
 opcao=0
 variaveis=variaveis(0,0,0,"")
-
+variaveis1 = variaveis1(0,0)
 
 def vercodigo(event):
   if len(tela.codigo.get()) < 2 and tela.codigo.get().isnumeric():
@@ -282,10 +282,12 @@ def rel_nome1(janela3):
    
 def rel_codigo1(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+#   global escolhido
+#   global escolhido1
    global escolha
    global escolha1
+   
+
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
    janela4 = Toplevel()
@@ -303,13 +305,16 @@ def rel_codigo1(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
+   escolhido1=variaveis1.getescolhido1()  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
-   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.getescolhido()
    #keyboard.on_press_key("f3", lambda _: gerapdf1())
    janela4.bind("<F3>", gerapf1)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -493,12 +498,18 @@ def alteracaotipo():
     
 def alteracaotipo_click(janela1):
      
-     global opcao
+     #global opcao
      global tela
      global manutencao
-     opcao=3
-     opcao1=3
-     manutencao = Toplevel() # janela de nível superior
+     
+     #manutencao = Toplevel() # janela de nível superior
+     opcao=variaveis.setopcao(3)
+     opcao1=variaveis.setopcao1(3)
+     manutencao=variaveis.setmanutencao(Toplevel()) # janela de nível superior  
+     #manutencao = Toplevel() # janela de nível superior
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1()
+     manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Alterar',command=alteracaotipo)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
@@ -547,12 +558,18 @@ def exclusaotipo():
     return 
 
 def excluirtipo_click(janela1): 
-     global opcao 
+    # global opcao 
      global tela
      global manutencao
-     opcao=4
-     opcao1=3
-     manutencao = Toplevel() # janela de nível superior
+     opcao=variaveis.setopcao(4)
+     opcao1=variaveis.setopcao1(3)
+     manutencao=variaveis.setmanutencao(Toplevel()) # janela de nível superior  
+     #manutencao = Toplevel() # janela de nível superior
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1()
+     manutencao=variaveis.getmanutencao()
+
+   
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaotipo)
      botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
