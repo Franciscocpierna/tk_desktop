@@ -155,8 +155,12 @@ def pdfgerado1(sqlres,arquivo):
    return
 
 def gerapf1(event):
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   #escolhido1=escolha1.get()  
+   #escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.getescolhido()
+   #escolhido1=variaveis1.setescolhido1(escolha1.get())
+   escolhido1=variaveis1.getescolhido1() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -195,7 +199,9 @@ def gerapf1(event):
         return
 
 def gerapf(event):
-   escolhido=escolha.get()   
+   #escolhido=escolha.get()
+   #escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.getescolhido()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -248,7 +254,7 @@ def copiapdf(arquivo):
 
 def rel_nome1(janela3):
    global janela4 
-   global escolhido
+   #global escolhido
    global escolha
    escolha=StringVar(value="D")
    janela4 = Toplevel()
@@ -268,7 +274,9 @@ def rel_nome1(janela3):
    optado1.place(relx=0.5,rely=0.4)
    #label1=Label(janela4,text="Copiar Arquivo Pdf gerado para para pastausuario tecle - F6" )
    #label1.place(relx=0.2,rely=0.6)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+   #escolhido=variaveis1.getescolhido()
    #keyboard.on_press_key("f3", lambda _: gerapdf())
    
    janela4.bind("<F3>", gerapf)
@@ -307,14 +315,14 @@ def rel_codigo1(janela3):
    optado3.place(relx=0.5,rely=0.3)
    #escolhido1=escolha1.get()
    escolhido1=variaveis1.setescolhido1(escolha1.get())
-   escolhido1=variaveis1.getescolhido1()  
+   #escolhido1=variaveis1.getescolhido1()  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    #escolhido=escolha.get()
    escolhido=variaveis1.setescolhido(escolha.get())
-   escolhido=variaveis1.getescolhido()
+   #escolhido=variaveis1.getescolhido()
    #keyboard.on_press_key("f3", lambda _: gerapdf1())
    janela4.bind("<F3>", gerapf1)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -640,7 +648,9 @@ def consulta_nome1(janela3):
 
 def consultacodigoopcao1(event):
    tv.delete(*tv.get_children())
-   escolhido=escolha.get()   
+   escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.getescolhido()
+   #escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -674,7 +684,7 @@ def consultacodigoopcao1(event):
 def consulta_codigo1(janela3):
    global janela4 
    global tv 
-   global escolhido
+   #global escolhido
    global escolha
    janela4 = Toplevel()
    janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
@@ -708,7 +718,9 @@ def consulta_codigo1(janela3):
    optado.grid(row=1, column=3)
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.getescolhido()
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultacodigoopcao1)
    
