@@ -28,6 +28,7 @@ variaveis=variaveis(0,0,0,"")
 variaveis1 = variaveis1(0,0)
 
 def vercodigo(event):
+  manutencao=variaveis.getmanutencao()
   if len(tela.codigo.get()) < 2 and tela.codigo.get().isnumeric():
      return
   
@@ -442,7 +443,7 @@ def incluirtipo_click(janela1):
 def cosultatipo_click(janela1):
     # global opcao
      global tela
-     global manutencao
+     #global manutencao
      opcao=variaveis.setopcao(2)
      opcao1=variaveis.setopcao1(3)
      manutencao=variaveis.setmanutencao(Toplevel())  
@@ -568,7 +569,7 @@ def exclusaotipo():
 def excluirtipo_click(janela1): 
     # global opcao 
      global tela
-     global manutencao
+     #global manutencao
      opcao=variaveis.setopcao(4)
      opcao1=variaveis.setopcao1(3)
      manutencao=variaveis.setmanutencao(Toplevel()) # janela de nível superior  

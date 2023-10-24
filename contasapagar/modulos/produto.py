@@ -6,6 +6,7 @@ import sqlite3
 from sqlite3 import Error
 from time import sleep
 from classes import montatela,centralizacao
+from classes import *
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -23,15 +24,16 @@ posx=0
 posy=0
 X=0
 ler=""
-opcao=0
-
+#opcao=0
+variaveis=variaveis(0,0,0,"")
+variaveis1 = variaveis1(0,0)
 
 
 def vercodigo(event):
   if len(tela.codigo.get()) < 5:
      return
   
- 
+  manutencao=variaveis.getmanutencao() 
   
   if len(tela.codigo.get()) > 5:
       messagebox1("é necessário preencher codigo  tamanho  5 ",manutencao)
@@ -42,7 +44,7 @@ def vercodigo(event):
   prodmem=tela.codigo.get()
   mensagem= "Produto"  
    
-            
+  opcao=variaveis.getopcao()           
   sql=  f"SELECT nome FROM produto WHERE codigo = '{prodmem}'"  
   sqlres=lertabela(sql,prodmem,manutencao,mensagem,opcao)
   if len(sqlres)==0: 
@@ -150,8 +152,10 @@ def pdfgerado1(sqlres,arquivo):
    return
 
 def gerapf1(event):
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   escolhido1=variaveis1.getescolhido1()
+   #escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -190,7 +194,8 @@ def gerapf1(event):
         return
 
 def gerapf(event):
-   escolhido=escolha.get()   
+   #escolhido=escolha.get() 
+   escolhido=variaveis1.getescolhido()  
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -243,7 +248,7 @@ def copiapdf(arquivo):
 
 def rel_nome1(janela3):
    global janela4 
-   global escolhido
+   #global escolhido
    global escolha
    escolha=StringVar(value="D")
    janela4 = Toplevel()
@@ -263,7 +268,8 @@ def rel_nome1(janela3):
    optado1.place(relx=0.5,rely=0.4)
    #label1=Label(janela4,text="Copiar Arquivo Pdf gerado para para pastausuario tecle - F6" )
    #label1.place(relx=0.2,rely=0.6)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    #keyboard.on_press_key("f3", lambda _: gerapdf())
    
    janela4.bind("<F3>", gerapf)
@@ -277,8 +283,8 @@ def rel_nome1(janela3):
    
 def rel_codigo1(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+   #global escolhido
+   #global escolhido1
    global escolha
    global escolha1
    escolha=StringVar(value="D")
@@ -298,13 +304,14 @@ def rel_codigo1(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()
+   escolhido1=variaveis1.setescolhido1(escolha1.get())  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
-   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    #keyboard.on_press_key("f3", lambda _: gerapdf1())
    janela4.bind("<F3>", gerapf1)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -348,8 +355,7 @@ def limpacamposprod():
 
 
 def incluirprod():
-      
-    
+   manutencao=variaveis.getmanutencao() 
    if len(tela.codigo.get()) !=5:
       messagebox1("Codigo tem que ter tamanho  5",manutencao)
       tela.codigo.delete(0,END)
@@ -400,12 +406,16 @@ def incluirprod():
        return
    
 def incluirprod_click(janela1):
-    global opcao
+    #global opcao
     global tela
-    global manutencao
-    opcao=1
-    opcao1=4  
-    manutencao = Toplevel() # janela de nível superior
+    #global manutencao
+    opcao=variaveis.setopcao(1) 
+    #opcao=1
+    #opcao1=4  
+    opcao1=variaveis.setopcao1(4)
+    #manutencao = Toplevel() # janela de nível superior
+    manutencao=variaveis.setmanutencao(Toplevel())
+    manutencao=variaveis.getmanutencao()
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirprod)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
@@ -420,18 +430,23 @@ def incluirprod_click(janela1):
            
      
 def cosultaprod_click(janela1):
-     global opcao
+     #global opcao
      global tela
-     global manutencao
-     opcao=2
-     opcao1=4
-     manutencao = Toplevel() # janela de nível superior
+     #global manutencao
+     opcao=variaveis.setopcao(2) 
+     #opcao=2
+     #opcao1=4
+     opcao1=variaveis.setopcao1(4) 
+     #manutencao = Toplevel() # janela de nível superior
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaoprod():
+    manutencao=variaveis.getmanutencao()
     if len(tela.codigo.get()) !=5 :
       messagebox1("Produto tem que ter tamanho  5",manutencao)
       tela.codigo.delete(0,END)
@@ -482,11 +497,13 @@ def alteracaoprod():
     
 def alteracaoprod_click(janela1):
      
-     global opcao
+    # global opcao
      global tela
-     global manutencao
-     opcao=3
-     opcao1=4
+    # global manutencao
+     opcao=variaveis.setopcao(3) 
+     #opcao=3
+     #opcao1=4
+     opcao1=variaveis.setopcao1(4) 
      manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Alterar',command=alteracaoprod)
@@ -502,6 +519,7 @@ def alteracaoprod_click(janela1):
       
      
 def exclusaoprod():
+    manutencao=variaveis.getmanutencao()
     if len(tela.codigo.get()) !=5:
       messagebox1("Código tem que ter tamanho  5",manutencao)
       tela.codigo.delete(0,END)
@@ -536,12 +554,16 @@ def exclusaoprod():
     return 
 
 def excluirprod_click(janela1): 
-     global opcao 
+     #global opcao 
      global tela
-     global manutencao
-     opcao=4
-     opcao1=4
-     manutencao = Toplevel() # janela de nível superior
+     #global manutencao
+     #opcao=4
+     #opcao1=4
+     opcao=variaveis.setopcao(4) 
+     opcao1=variaveis.setopcao1(4) 
+     #manutencao = Toplevel() # janela de nível superior
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaoprod)
      botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
@@ -612,7 +634,8 @@ def consulta_nome1(janela3):
 
 def consultacodigoopcao1(event):
    tv.delete(*tv.get_children())
-   escolhido=escolha.get()   
+   #escolhido=escolha.get()   
+   escolhido=variaveis1.getescolhido()
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -639,14 +662,14 @@ def consultacodigoopcao1(event):
            cursor.close()
            
    except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 680 "+str(ex),manutencao)
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 680 "+str(ex),janela4)
         cursor.close() 
         
 
 def consulta_codigo1(janela3):
    global janela4 
    global tv 
-   global escolhido
+  # global escolhido
    global escolha
    janela4 = Toplevel()
    janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
@@ -680,7 +703,8 @@ def consulta_codigo1(janela3):
    optado.grid(row=1, column=3)
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultacodigoopcao1)
    
