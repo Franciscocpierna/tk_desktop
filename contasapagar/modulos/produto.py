@@ -5,7 +5,7 @@ from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
-from classes import montatela,centralizacao
+#from classes import montatela,centralizacao
 from classes import *
 import keyboard
 from reportlab.pdfgen import canvas
@@ -57,6 +57,7 @@ def vercodigo(event):
        return
   else:
       if opcao==1:
+        messagebox1("Registro já existe ",manutencao)
         limpacamposprod()
         tela.codigo.focus
         return
@@ -413,6 +414,8 @@ def incluirprod_click(janela1):
     #opcao=1
     #opcao1=4  
     opcao1=variaveis.setopcao1(4)
+    opcao=variaveis.getopcao()
+    opcao1=variaveis.getopcao1()
     #manutencao = Toplevel() # janela de nível superior
     manutencao=variaveis.setmanutencao(Toplevel())
     manutencao=variaveis.getmanutencao()
@@ -436,7 +439,9 @@ def cosultaprod_click(janela1):
      opcao=variaveis.setopcao(2) 
      #opcao=2
      #opcao1=4
-     opcao1=variaveis.setopcao1(4) 
+     opcao1=variaveis.setopcao1(4)
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1() 
      #manutencao = Toplevel() # janela de nível superior
      manutencao=variaveis.setmanutencao(Toplevel())
      manutencao=variaveis.getmanutencao()
@@ -503,8 +508,12 @@ def alteracaoprod_click(janela1):
      opcao=variaveis.setopcao(3) 
      #opcao=3
      #opcao1=4
-     opcao1=variaveis.setopcao1(4) 
-     manutencao = Toplevel() # janela de nível superior
+     opcao1=variaveis.setopcao1(4)
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1() 
+     #manutencao = Toplevel() # janela de nível superior
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao() 
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Alterar',command=alteracaoprod)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
@@ -561,6 +570,8 @@ def excluirprod_click(janela1):
      #opcao1=4
      opcao=variaveis.setopcao(4) 
      opcao1=variaveis.setopcao1(4) 
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1()
      #manutencao = Toplevel() # janela de nível superior
      manutencao=variaveis.setmanutencao(Toplevel())
      manutencao=variaveis.getmanutencao()
@@ -635,6 +646,7 @@ def consulta_nome1(janela3):
 def consultacodigoopcao1(event):
    tv.delete(*tv.get_children())
    #escolhido=escolha.get()   
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -704,7 +716,7 @@ def consulta_codigo1(janela3):
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
    #escolhido=escolha.get()
-   escolhido=variaveis1.setescolhido(escolha.get())
+  # escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultacodigoopcao1)
    
