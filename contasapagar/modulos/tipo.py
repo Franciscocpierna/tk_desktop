@@ -5,7 +5,8 @@ from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
-from classes import montatela,centralizacao,variaveis,variaveis1
+#from classes import montatela,centralizacao,variaveis,variaveis1
+from classes import *
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4

@@ -5,7 +5,8 @@ from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
-from classes import montatela,centralizacao,variaveis
+#from classes import montatela,centralizacao,variaveis
+from classes import *
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -23,8 +24,9 @@ posx=0
 posy=0
 X=0
 ler=""
-opcao=0
-
+#opcao=0
+variaveis=variaveis(0,0,0,"")
+variaveis1 = variaveis1(0,0)
      
      
 
@@ -875,6 +877,7 @@ def tab_order2():
 def vertipo(event):
    if len(tela.tipo.get())==0 or len(tela.tipo.get())<2:
       return    
+   manutencao=variaveis.getmanutencao()
    if len(tela.pagamento.get())!=0:
         if len(tela.pagamento.get())!=10: 
           messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
@@ -924,6 +927,7 @@ def verfornec(event):
       return
 
    sqleres=""
+   manutencao=variaveis.getmanutencao()
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
       
@@ -966,6 +970,7 @@ def verproduto(event):
       return
 
    sqleres=""
+   manutencao=variaveis.getmanutencao()
    if len(tela.produto.get())!=5:
         messagebox1("produto tem que ter tamanho 5",manutencao)
       
@@ -1009,7 +1014,7 @@ def verchave(event):
       return
   if len(tela.tparcela.get()) < 3 and tela.tparcela.get().isnumeric():
      return
-  
+  manutencao=variaveis.getmanutencao()
   if not tela.tparcela.get().isnumeric():
      messagebox1("é necessário preencher nr parcela com numeros e tamanho  3 ",manutencao)
      tela.tparcela.delete(0,END)
@@ -1109,7 +1114,7 @@ def dataa(datav):
 
 
 def incluircontas():
-      
+   manutencao=variaveis.getmanutencao()   
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         limpacamposcontas()
@@ -1245,6 +1250,7 @@ def verificadatac(memdata1):
                 valida = True
 
     if(valida) == False:
+        manutencao=variaveis.getmanutencao()
         messagebox1("Data Inválida digite novamente",manutencao)
         return valida 
     return valida
@@ -1255,7 +1261,7 @@ def dadosdatac(event):
  if indice==0:
    return
  indice=indice-1
-
+ manutencao=variaveis.getmanutencao()
  print(indice)
  memdata=tela.compra.get()
  print(memdata[indice])
@@ -1353,7 +1359,7 @@ def dadosdatav(event):
  if indice==0:
    return
  indice=indice-1
-
+ manutencao=variaveis.getmanutencao() 
  print(indice)
  memdata=tela.vencimento.get()
  print(memdata[indice])
@@ -1454,6 +1460,7 @@ def dadosdatap(event):
  indice=indice-1
 
  print(indice)
+ manutencao=variaveis.getmanutencao()
  memdata=tela.pagamento.get()
  print(memdata[indice])
  if str(indice) in ("0","1","3","4","6","7","8","9"):
@@ -1553,6 +1560,7 @@ def dadosvalor(event):
 
    if len(tela.valpagar.get())==0:
       return
+   manutencao=variaveis.getmanutencao()
    valpag=tela.valpagar.get()
    if "," in valpag:
      if len(valpag[valpag.find(','):])==1:
@@ -1638,6 +1646,7 @@ def valorout(valpag):
 def dadosdesconto(event):
    if len(tela.desconto.get())==0:
       return
+   manutencao=variaveis.getmanutencao()
    valpag=tela.desconto.get()
    if "," in valpag:
        if len(valpag[valpag.find(','):])==1:
@@ -1669,6 +1678,7 @@ def dadosjuros(event):
    if len(tela.juros.get())==0:
       return
    valpag=tela.juros.get()
+   manutencao=variaveis.getmanutencao()
    if "," in valpag:
        if len(valpag[valpag.find(','):])==1:
         return
@@ -1697,6 +1707,7 @@ def dadosjuros(event):
     
 
 def vercampos(event):
+   manutencao=variaveis.getmanutencao()
    if len(tela.codigo.get())!=5:
         messagebox1("campo chave incompleto digite",manutencao)
         limpacamposcontas()
@@ -1735,7 +1746,7 @@ def vercampos(event):
   
 def incluircontas_click(janela1):
     global tela
-    global manutencao
+    #global manutencao
     global codigomem
     global documentomem
     global tparcelamem
@@ -1745,7 +1756,9 @@ def incluircontas_click(janela1):
     codigomem=""
     documentomem=""
     tparcelamem =""
-    manutencao = Toplevel() # janela de nível superior
+    #manutencao = Toplevel() # janela de nível superior
+    manutencao=variaveis.setmanutencao(Toplevel())
+    manutencao=variaveis.getmanutencao()
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluircontas)
     botao.grid(row=14, column=0,padx=0,pady=50,sticky=W)
@@ -1782,7 +1795,7 @@ def incluircontas_click(janela1):
 def cosultacontas_click(janela1):
      global opcao
      global tela
-     global manutencao
+     #global manutencao
      global codigomem
      global documentomem
      global tparcelamem 
@@ -1791,7 +1804,9 @@ def cosultacontas_click(janela1):
      codigomem=""
      documentomem=""
      tparcelamem =""
-     manutencao = Toplevel() # janela de nível superior
+     #manutencao = Toplevel() # janela de nível superior
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
@@ -1809,6 +1824,7 @@ def cosultacontas_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontas():
+    manutencao=variaveis.getmanutencao()
     if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         limpacamposcontas()
@@ -1933,7 +1949,7 @@ def alteracaocontas():
 def alteracaocontas_click(janela1):
      global opcao
      global tela
-     global manutencao
+     #global manutencao
      global codigomem
      global documentomem
      global tparcelamem 
@@ -1943,7 +1959,9 @@ def alteracaocontas_click(janela1):
      documentomem=""
      tparcelamem =""
 
-     manutencao = Toplevel() # janela de nível superior
+     #manutencao = Toplevel() # janela de nível superior
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      #botao=Button(manutencao, text='Consutar',command=consultacontas)
      #botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
@@ -1983,6 +2001,7 @@ def exclusaocontas():
    codigomem=tela.codigo.get()
    documentomem=tela.documento.get()
    tparcelamem = tela.tparcela.get()
+   manutencao=variaveis.getmanutencao()
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         limpacamposcontas()
@@ -2029,13 +2048,15 @@ def excluircontas_click(janela1):
      global documentomem
      global tparcelamem
      global tela
-     global manutencao
+     #global manutencao
      opcao=4
      opcao1=2
      codigomem=""
      documentomem=""
      tparcelamem =""
-     manutencao = Toplevel() # janela de nível superior
+     #manutencao = Toplevel() # janela de nível superior
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao() 
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontas)
      botao1.grid(row=14, column=0,padx=0,pady=50,sticky=W)
@@ -2561,6 +2582,7 @@ def dadosdatafim(event):
            return
 
 def vercampos1(event):
+  manutencao=variaveis.getmanutencao()
   if len(dataini.get())>10:
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        dataini.delete(0,END)
