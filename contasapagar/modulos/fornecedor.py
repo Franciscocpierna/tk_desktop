@@ -5,7 +5,8 @@ from rotinas import *
 import sqlite3
 from sqlite3 import Error
 from time import sleep
-from classes import montatela,centralizacao
+#from classes import montatela,centralizacao
+from classes import *
 import keyboard
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -24,6 +25,8 @@ posy=0
 X=0
 ler=""
 opcao=0
+variaveis=variaveis(0,0,0,"")
+variaveis1 = variaveis1(0,0)
 
 def verfornec1(event):
    if len(tela.codigo.get())!=5:
@@ -37,6 +40,7 @@ def verfornec1(event):
    tela.cep.delete(0,END)
    tela.e_mail.delete(0,END)
    sqleres=""
+   manutencao=variaveis.getmanutencao()
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
       
@@ -196,8 +200,10 @@ def pdfgerado(sqlres,arquivo):
    cnv.save()
    return
 def gerapdf3(event):
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   escolhido=variaveis1.getescolhido()
+   #escolhido=escolha.get()
+   escolhido1=variaveis1.getescolhido1()
+   #escolhido1=escolha1.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -268,8 +274,10 @@ def gerapdf2(event):
         cursor.close()
 
 def gerapdf1(event):
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   #escolhido1=escolha1.get()
+   escolhido=variaveis1.getescolhido()
+   escolhido1=variaveis1.getescolhido1()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -307,7 +315,8 @@ def gerapdf1(event):
         cursor.close()
         return
 def gerapdf(event):
-   escolhido=escolha.get()   
+   escolhido=variaveis1.getescolhido()
+   #escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -360,7 +369,7 @@ def moverpdf(arquivo):
 
 def rel_nome(janela3):
    global janela4 
-   global escolhido
+   #global escolhido
    global escolha
    escolha=StringVar(value="D")
    janela4 = Toplevel()
@@ -380,7 +389,8 @@ def rel_nome(janela3):
    optado1.place(relx=0.5,rely=0.4)
    #label1=Label(janela4,text="Copiar Arquivo Pdf gerado para para pastausuario tecle - F6" )
    #label1.place(relx=0.2,rely=0.6)
-   escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+   #escolhido=escolha.get()
    #keyboard.on_press_key("f3", lambda _: gerapdf())
    
    janela4.bind("<F3>", gerapdf)
@@ -391,10 +401,10 @@ def rel_nome(janela3):
 
 def rel_cpfcnpj(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
-   global escolha
-   global escolha1
+   #global escolhido
+   #global escolhido1
+   #global escolha
+   #global escolha1
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
   
@@ -418,7 +428,8 @@ def rel_cpfcnpj(janela3):
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+   #escolhido=escolha.get()
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    janela4.bind("<F3>", gerapdf3)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -426,8 +437,8 @@ def rel_cpfcnpj(janela3):
 
 def rel_nomep(janela3):
    global janela4 
-   global escolhido
-   global escolha
+   #global escolhido
+   #global escolha
    global nomemem
 
    escolha=StringVar(value="D")
@@ -459,10 +470,10 @@ def rel_nomep(janela3):
    
 def rel_codigo(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
-   global escolha
-   global escolha1
+   #global escolhido
+   #global escolhido1
+   #global escolha
+   #global escolha1
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
    janela4 = Toplevel()
@@ -516,6 +527,7 @@ def criartabela(janela3):
 
 
 def verificacodigo():
+   manutencao=variaveis.getmanutencao()
    
    codigomem=tela.codigo.get().upper
    try:
@@ -556,6 +568,7 @@ def consultafor():
    tela.cnpj.delete(0,END)
    tela.cep.delete(0,END)
    tela.e_mail.delete(0,END)
+   manutencao=variaveis.getmanutencao()
    if len(tela.codigo.get())!=5:
         messagebox1("Tamanho do codigo sao 5 caracteres",manutencao)
         tela.codigo.delete(0,END)
@@ -630,7 +643,7 @@ def incluirfor():
       
    sqlres="" 
    
-         
+   manutencao=variaveis.getmanutencao()      
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         tela.codigo.focus()
@@ -730,13 +743,16 @@ def incluirfor():
        return
    
 def incluirfor_click(janela1):
-    global opcao
-    opcao=1
-    opcao1=1
-    
+    #global opcao
     global tela
-    global manutencao  
-    manutencao = Toplevel() # janela de nível superior
+    #global manutencao
+    #opcao=1
+    #opcao1=1
+    opcao=variaveis.setopcao(1)
+    opcao1=variaveis.setopcao1(1)
+    manutencao=variaveis.setmanutencao(Toplevel())
+    manutencao=variaveis.getmanutencao()   
+    # manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluirfor)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
@@ -751,19 +767,24 @@ def incluirfor_click(janela1):
            
      
 def cosultafor_click(janela1):
-     global opcao
-     opcao=2
-     opcao1=1
+     #global opcao
+     #opcao=2
+     #opcao1=1
      global tela
-     global manutencao
-     manutencao = Toplevel() # janela de nível superior
+     #global manutencao
+     opcao=variaveis.setopcao(2)
+     opcao1=variaveis.setopcao1(1)
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao()   
+
+     #manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", verfornec1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaofor():
-    
+    manutencao=variaveis.getmanutencao()
     if len(tela.codigo.get())!=5:
         messagebox1("codigo tamanho 5",manutencao)
         tela.codigo.focus()
@@ -923,12 +944,17 @@ def alteracaofor():
            return
     
 def alteracaofor_click(janela1):
-     global opcao
-     opcao=3
-     opcao1=1
+     #global opcao
+     #opcao=3
+     #opcao1=1
      global tela
-     global manutencao
-     manutencao = Toplevel() # janela de nível superior
+     #global manutencao
+     opcao=variaveis.setopcao(3)
+     opcao1=variaveis.setopcao1(1)
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao()   
+
+     #manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Alterar',command=alteracaofor)
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
@@ -949,7 +975,7 @@ def exclusaofor():
       limpacamposfor()
       tela.codigo.focus()
       return
-    
+    manutencao=variaveis.getmanutencao()
     res = messagebox.askquestion('Confirma Exclusão', 'yes para sim - no para não')
     if res == 'yes':
        try:
@@ -975,12 +1001,17 @@ def exclusaofor():
            messagebox1("Registro não foi Excluido",manutencao)      
     return 
 def excluirfor_click(janela1): 
-     global opcao
-     opcao=4
-     opcao1=1
+    # global opcao
+    # opcao=4
+    # opcao1=1
      global tela
-     global manutencao
-     manutencao = Toplevel() # janela de nível superior
+    # global manutencao
+     opcao=variaveis.setopcao(4)
+     opcao1=variaveis.setopcao1(1)
+     manutencao=variaveis.setmanutencao(Toplevel())
+     manutencao=variaveis.getmanutencao()   
+
+     #manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaofor)
      botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)

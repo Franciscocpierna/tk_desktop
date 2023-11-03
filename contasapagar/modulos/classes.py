@@ -30,7 +30,7 @@ class variaveis():
      def setvalor(self,indice2):
           self.indice=indice2+1
 
-class variaveis1():
+class variaveis1(variaveis):
      def __init__(self,escolhido,escolhido1):
          self.escolhido=escolhido
          self.escolhido1=escolhido1

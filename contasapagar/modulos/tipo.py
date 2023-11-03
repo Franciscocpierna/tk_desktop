@@ -366,7 +366,7 @@ def limpacampostipo():
 
 def incluirtipo():
       
-    
+   manutencao=variaveis.getmanutencao() 
    if not tela.codigo.get().isnumeric() and len(tela.codigo.get()) !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
@@ -419,7 +419,7 @@ def incluirtipo():
 def incluirtipo_click(janela1):
     #global opcao
     global tela
-    global manutencao
+    #global manutencao
     opcao=variaveis.setopcao(1)
     opcao1=variaveis.setopcao1(3)
     manutencao=variaveis.setmanutencao(Toplevel())  
@@ -443,7 +443,7 @@ def incluirtipo_click(janela1):
 def cosultatipo_click(janela1):
     # global opcao
      global tela
-     #global manutencao
+    # global manutencao
      opcao=variaveis.setopcao(2)
      opcao1=variaveis.setopcao1(3)
      manutencao=variaveis.setmanutencao(Toplevel())  
@@ -457,6 +457,7 @@ def cosultatipo_click(janela1):
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaotipo():
+    manutencao=variaveis.getmanutencao() 
     if not tela.codigo.get().isnumeric() and len(tela.codigo.get()) !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
@@ -509,7 +510,7 @@ def alteracaotipo_click(janela1):
      
      #global opcao
      global tela
-     global manutencao
+     #global manutencao
      
      #manutencao = Toplevel() # janela de nível superior
      opcao=variaveis.setopcao(3)
@@ -533,6 +534,7 @@ def alteracaotipo_click(janela1):
       
      
 def exclusaotipo():
+    manutencao=variaveis.getmanutencao()
     if not tela.codigo.get().isnumeric()  and tela.codigo.get() !=2 :
       messagebox1("Tipo tem que ser diferente de 0 tem que ter tamanho  2",manutencao)
       tela.codigo.delete(0,END)
@@ -651,6 +653,7 @@ def consultacodigoopcao1(event):
    tv.delete(*tv.get_children())
    escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
+   manutencao=variaveis.getmanutencao()
    #escolhido=escolha.get()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
