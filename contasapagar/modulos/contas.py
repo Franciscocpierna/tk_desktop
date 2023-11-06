@@ -172,8 +172,10 @@ def pdfgerado2(sqlres,arquivo):
    return
 
 def gerapdv(event):
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   #escolhido1=escolha1.get()
+   escolhido1=variaveis1.getescolhido1()
    if dataini.get() !="":
        if datafim.get()=="":
          messagebox1("Data final precisa ser digitada",janela4)
@@ -248,8 +250,10 @@ def gerapdp(event):
    dia = data.day
  
 
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   #escolhido1=escolha1.get()
+   escolhido1=variaveis1.getescolhido1()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -314,8 +318,10 @@ def gerapdat(event):
    memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
    memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
 
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   #escolhido1=escolha1.get()   
+   escolhido1=variaveis1.getescolhido1()
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -369,7 +375,8 @@ def gerapdat(event):
         return
 
 def gerapdf2(event):
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
    nomemem1= nomemem.get()
    
    #escolhido1=escolha1.get()   
@@ -418,8 +425,10 @@ def gerapd1(event):
    dia = data.day
    
 
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   #escolhido1=escolha1.get()  
+   escolhido=variaveis1.getescolhido() 
+   escolhido1=variaveis1.getescolhido1()
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -461,8 +470,10 @@ def gerapd1(event):
         cursor.close()
         return
 def geracompras(event):
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   #escolhido1=escolha1.get()   
+   escolhido1=variaveis1.getescolhido1()
    data = date.today()
    print(data)  
    ano = data.year
@@ -514,8 +525,10 @@ def geracompras(event):
         return
 
 def gerapdf(event):
-   escolhido=escolha.get()
-   escolhido1=escolha1.get()   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   #escolhido1=escolha1.get()   
+   escolhido1=variaveis1.getescolhido1()
    data = date.today() 
    ano = data.year
    mes = data.month
@@ -581,8 +594,8 @@ def moverpdf2(arquivo):
 
 def rel_nome2(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+   #global escolhido
+   #global escolhido1
    global escolha
    global escolha1
    escolha=StringVar(value="D")
@@ -603,12 +616,14 @@ def rel_nome2(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Decrescente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()
+   escolhido1=variaveis1.setescolhido1(escolha1.get())  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    #keyboard.on_press_key("f3", lambda _: gerapdf())
    
@@ -619,8 +634,8 @@ def rel_nome2(janela3):
 
 def rel_vencimento(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+   #global escolhido
+   #global escolhido1
    global escolha
    global escolha1
    global dataini 
@@ -644,7 +659,8 @@ def rel_vencimento(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Decrescente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()
+   escolhido1=variaveis1.setescolhido1(escolha1.get())  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
@@ -660,7 +676,8 @@ def rel_vencimento(janela3):
    dataini.bind("<FocusIn>",vercampos1)
    datafim.bind("<FocusIn>",vercampos1)
 
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    janela4.bind("<F3>", gerapdv)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -670,8 +687,8 @@ def rel_vencimento(janela3):
 
 def rel_atraso(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+   #global escolhido
+   #global escolhido1
    global escolha
    global escolha1
    global dataini 
@@ -695,7 +712,8 @@ def rel_atraso(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()  
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
@@ -711,7 +729,8 @@ def rel_atraso(janela3):
    dataini.bind("<FocusIn>",vercampos1)
    datafim.bind("<FocusIn>",vercampos1)
 
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    janela4.bind("<F3>", gerapdat)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -719,8 +738,8 @@ def rel_atraso(janela3):
 
 def rel_compras(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+   #global escolhido
+   #global escolhido1
    global escolha
    global escolha1
    escolha=StringVar(value="D")
@@ -741,12 +760,14 @@ def rel_compras(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()  
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    janela4.bind("<F3>", geracompras)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -754,8 +775,8 @@ def rel_compras(janela3):
 
 def rel_pagamento(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+   #global escolhido
+   #global escolhido1
    global escolha
    global escolha1
    escolha=StringVar(value="D")
@@ -776,12 +797,14 @@ def rel_pagamento(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Desacendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()  
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
    janela4.bind("<F3>", gerapdp)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
@@ -789,10 +812,10 @@ def rel_pagamento(janela3):
 
 def rel_nomep2(janela3):
    global janela4 
-   global escolhido
+   #global escolhido
    global nomemem
    global escolha1
-   global escolhido1
+   #global escolhido1
 
    escolha=StringVar(value="D")
    janela4 = Toplevel()
@@ -815,7 +838,8 @@ def rel_nomep2(janela3):
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   
 
   # keyboard.on_press_key("f3", lambda _: gerapdf2())
@@ -825,8 +849,8 @@ def rel_nomep2(janela3):
    
 def rel_codigo2(janela3):
    global janela4 
-   global escolhido
-   global escolhido1
+   #global escolhido
+   #global escolhido1
    global escolha
    global escolha1
    escolha=StringVar(value="D")
@@ -846,12 +870,14 @@ def rel_codigo2(janela3):
    optado2.place(relx=0.2,rely=0.3)
    optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
-   escolhido1=escolha1.get()  
+   #escolhido1=escolha1.get()  
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    
    #keyboard.on_press_key("f3", lambda _: gerapdf1())
    janela4.bind("<F3>", gerapd1)
@@ -928,6 +954,7 @@ def verfornec(event):
 
    sqleres=""
    manutencao=variaveis.getmanutencao()
+   opcao=variaveis.getopcao() 
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)
       
@@ -971,6 +998,7 @@ def verproduto(event):
 
    sqleres=""
    manutencao=variaveis.getmanutencao()
+   opcao=variaveis.getopcao() 
    if len(tela.produto.get())!=5:
         messagebox1("produto tem que ter tamanho 5",manutencao)
       
@@ -1010,11 +1038,13 @@ def verproduto(event):
 
 def verchave(event):
   sqlres=""
+
   if len(tela.tparcela.get()) == 0:
       return
   if len(tela.tparcela.get()) < 3 and tela.tparcela.get().isnumeric():
      return
   manutencao=variaveis.getmanutencao()
+  opcao=variaveis.getopcao() 
   if not tela.tparcela.get().isnumeric():
      messagebox1("é necessário preencher nr parcela com numeros e tamanho  3 ",manutencao)
      tela.tparcela.delete(0,END)
@@ -1750,9 +1780,13 @@ def incluircontas_click(janela1):
     global codigomem
     global documentomem
     global tparcelamem
-    global opcao
-    opcao=1
-    opcao1=2 
+    #global opcao
+    opcao=variaveis.setopcao(1) 
+    opcao1=variaveis.setopcao1(2) 
+    opcao=variaveis.getopcao() 
+    opcao=variaveis.getopcao1() 
+    #opcao=1
+    #opcao1=2 
     codigomem=""
     documentomem=""
     tparcelamem =""
@@ -1793,14 +1827,18 @@ def incluircontas_click(janela1):
            
      
 def cosultacontas_click(janela1):
-     global opcao
+     #global opcao
      global tela
      #global manutencao
      global codigomem
      global documentomem
      global tparcelamem 
-     opcao=2
-     opcao1=2
+     opcao=variaveis.setopcao(2) 
+     opcao1=variaveis.setopcao1(2) 
+     opcao=variaveis.getopcao() 
+     opcao=variaveis.getopcao1() 
+     #opcao=2
+     #opcao1=2
      codigomem=""
      documentomem=""
      tparcelamem =""
@@ -1947,14 +1985,18 @@ def alteracaocontas():
            return
     
 def alteracaocontas_click(janela1):
-     global opcao
+     #global opcao
      global tela
      #global manutencao
      global codigomem
      global documentomem
      global tparcelamem 
-     opcao=3
-     opcao1=2
+     opcao=variaveis.setopcao(3) 
+     opcao1=variaveis.setopcao1(2) 
+     opcao=variaveis.getopcao() 
+     opcao=variaveis.getopcao1() 
+     #opcao=3
+     #opcao1=2
      codigomem=""
      documentomem=""
      tparcelamem =""
@@ -2043,14 +2085,18 @@ def exclusaocontas():
            messagebox1("Registro não foi Excluido",manutencao)      
    return 
 def excluircontas_click(janela1): 
-     global opcao
+     #global opcao
      global codigomem
      global documentomem
      global tparcelamem
      global tela
      #global manutencao
-     opcao=4
-     opcao1=2
+     opcao=variaveis.setopcao(4) 
+     opcao1=variaveis.setopcao1(2) 
+     opcao=variaveis.getopcao() 
+     opcao=variaveis.getopcao1() 
+     #opcao=4
+     #opcao1=2
      codigomem=""
      documentomem=""
      tparcelamem =""
@@ -2084,7 +2130,8 @@ def consultacompraopcao(event):
    mes = data.month
    dia = data.day
    
-   escolhido=escolha.get()   
+   #escolhido=escolha.get() 
+   escolhido=variaveis1.getescolhido() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -2127,7 +2174,7 @@ def consultacompraopcao(event):
 def consulta_compra(janela3):
    global janela4 
    global tv 
-   global escolhido
+   #global escolhido
    global escolha
    janela4 = Toplevel()
    janela4.title("Consultas por Compras ESC para SAIR -  F3 - PARA COSULTAR")
@@ -2189,7 +2236,8 @@ def consulta_compra(janela3):
    optado.grid(row=1, column=3)
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    janela4.bind("<F3>", consultacompraopcao)
         
 def consultapagopcao2(event):
@@ -2199,7 +2247,8 @@ def consultapagopcao2(event):
    mes = data.month
    dia = data.day
    
-   escolhido=escolha.get()   
+   #escolhido=escolha.get()  
+   escolhido=variaveis1.getescolhido() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -2242,7 +2291,7 @@ def consultapagopcao2(event):
 def consulta_pagamento(janela3):
    global janela4 
    global tv 
-   global escolhido
+   #global escolhido
    global escolha
    janela4 = Toplevel()
    janela4.title("Consultas por Pagamento ESC para SAIR -  F3 - PARA COSULTAR")
@@ -2304,7 +2353,8 @@ def consulta_pagamento(janela3):
    optado.grid(row=1, column=3)
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultapagopcao2)
 
@@ -2334,7 +2384,8 @@ def consultavencopcao2(event):
    #   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
    #memini=datetime.strptime(memini,"%Y-%m-%d").date()
    #memfim=datetime.strptime(memfim,"%Y-%m-%d").date()
-   escolhido=escolha.get()   
+   #escolhido=escolha.get()  
+   escolhido=variaveis1.getescolhido() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -2598,7 +2649,7 @@ def vercampos1(event):
 def consulta_vencimento(janela3):
    global janela4 
    global tv 
-   global escolhido
+   #global escolhido
    global escolha
    global dataini 
    global datafim
@@ -2669,7 +2720,8 @@ def consulta_vencimento(janela3):
    optado.grid(row=1, column=3)
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    dataini.bind("<KeyRelease>", dadosdataini)
    datafim.bind("<KeyRelease>", dadosdatafim)
@@ -2679,7 +2731,8 @@ def consulta_vencimento(janela3):
 
 def consultacodigoopcao2(event):
    tv.delete(*tv.get_children())
-   escolhido=escolha.get()   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -2723,7 +2776,7 @@ def consultacodigoopcao2(event):
 def consulta_codigo2(janela3):
    global janela4 
    global tv 
-   global escolhido
+   #global escolhido
    global escolha
    janela4 = Toplevel()
    janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
@@ -2786,7 +2839,8 @@ def consulta_codigo2(janela3):
    optado.grid(row=1, column=3)
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultacodigoopcao2)
    
@@ -2930,7 +2984,8 @@ def consultaatrasoopcao2(event):
    memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
    memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
       
-   escolhido=escolha.get()   
+   #escolhido=escolha.get()   
+   escolhido=variaveis1.getescolhido()
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -2983,7 +3038,7 @@ def consultaatrasoopcao2(event):
 def consulta_ematraso(janela3):
    global janela4 
    global tv 
-   global escolhido
+   #global escolhido
    global escolha
    global dataini 
    global datafim
@@ -3056,7 +3111,8 @@ def consulta_ematraso(janela3):
    optado.grid(row=1, column=3)
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
-   escolhido=escolha.get()
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultaatrasoopcao2)
    dataini.bind("<KeyRelease>", dadosdataini)

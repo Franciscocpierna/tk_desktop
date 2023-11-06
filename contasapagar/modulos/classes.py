@@ -25,10 +25,10 @@ class variaveis():
          self.opcao1=optar
          return 
 
-     def getvalor(self):
-          return self.indice
-     def setvalor(self,indice2):
-          self.indice=indice2+1
+    # def getvalor(self):
+    #      return self.indice
+    #def setvalor(self,indice2):
+    #self.indice=indice2+1
 
 class variaveis1(variaveis):
      def __init__(self,escolhido,escolhido1):
