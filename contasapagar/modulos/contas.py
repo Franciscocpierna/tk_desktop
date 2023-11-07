@@ -245,7 +245,7 @@ def gerapdv(event):
 
 def gerapdp(event):
    data = date.today() 
-   ano = data.ve4
+   ano = data.year
    mes = data.month
    dia = data.day
  
@@ -2176,6 +2176,7 @@ def consulta_compra(janela3):
    global tv 
    #global escolhido
    global escolha
+   
    janela4 = Toplevel()
    janela4.title("Consultas por Compras ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -2293,6 +2294,8 @@ def consulta_pagamento(janela3):
    global tv 
    #global escolhido
    global escolha
+   
+   
    janela4 = Toplevel()
    janela4.title("Consultas por Pagamento ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             

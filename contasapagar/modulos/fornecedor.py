@@ -277,8 +277,10 @@ def gerapdf2(event):
 def gerapdf1(event):
    #escolhido=escolha.get()
    #escolhido1=escolha1.get()
-   escolhido=variaveis1.getescolhido()
-   escolhido1=variaveis1.getescolhido1()   
+   escolhido1 = variaveis1.setescolhido1(escolha1.get())
+   escolhido1=variaveis1.getescolhido1()
+   escolhido=variaveis1.setescolhido(escolha.get())  
+   escolhido=variaveis1.getescolhido() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
@@ -475,8 +477,8 @@ def rel_codigo(janela3):
    global janela4 
    #global escolhido
    #global escolhido1
-   #global escolha
-   #global escolha1
+   global escolha
+   global escolha1
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
    janela4 = Toplevel()
@@ -495,13 +497,13 @@ def rel_codigo(janela3):
    optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
    #escolhido1=escolha1.get()
-   escolhido1=variaveis1.setescolhido1(escolha1.get())  
+   #escolhido1=variaveis1.setescolhido1(escolha1.get())  
    optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
    optado.place(relx=0.2,rely=0.4)
    optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
    optado1.place(relx=0.5,rely=0.4)
    #escolhido=escolha.get()
-   escolhido=variaveis1.setescolhido(escolha.get())
+   #escolhido=variaveis1.setescolhido(escolha.get())
    
    #keyboard.on_press_key("f3", lambda _: gerapdf1())
    janela4.bind("<F3>", gerapdf1)
@@ -755,6 +757,8 @@ def incluirfor_click(janela1):
     #opcao1=1
     opcao=variaveis.setopcao(1)
     opcao1=variaveis.setopcao1(1)
+    opcao=variaveis.getopcao()
+    opcao1=variaveis.getopcao1()
     manutencao=variaveis.setmanutencao(Toplevel())
     manutencao=variaveis.getmanutencao()   
     # manutencao = Toplevel() # janela de nível superior
@@ -779,6 +783,8 @@ def cosultafor_click(janela1):
      #global manutencao
      opcao=variaveis.setopcao(2)
      opcao1=variaveis.setopcao1(1)
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1()
      manutencao=variaveis.setmanutencao(Toplevel())
      manutencao=variaveis.getmanutencao()   
 
@@ -956,6 +962,8 @@ def alteracaofor_click(janela1):
      #global manutencao
      opcao=variaveis.setopcao(3)
      opcao1=variaveis.setopcao1(1)
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1()
      manutencao=variaveis.setmanutencao(Toplevel())
      manutencao=variaveis.getmanutencao()   
 
@@ -1013,6 +1021,8 @@ def excluirfor_click(janela1):
     # global manutencao
      opcao=variaveis.setopcao(4)
      opcao1=variaveis.setopcao1(1)
+     opcao=variaveis.getopcao()
+     opcao1=variaveis.getopcao1()
      manutencao=variaveis.setmanutencao(Toplevel())
      manutencao=variaveis.getmanutencao()   
 
@@ -1237,6 +1247,7 @@ def cosulta_cnpj(janela3):
 def consultacodigoopcao(event):
    tv.delete(*tv.get_children())
    #escolhido=escolha.get()   
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -1266,13 +1277,14 @@ def consultacodigoopcao(event):
    except Error as ex:
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 1154 "+str(ex),janela4)
         cursor.close() 
-        
+       
 
 def consulta_codigo(janela3):
    global janela4 
    global tv 
    #global escolhido
    global escolha
+
    janela4 = Toplevel()
    janela4.title("Consultas por Codigo ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
@@ -1320,7 +1332,7 @@ def consulta_codigo(janela3):
    optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
    optado1.grid(row=1, column=4)
    #escolhido=escolha.get()
-   escolhido=variaveis1.setescolhido(escolha.get())
+   #escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consultacodigoopcao)
    

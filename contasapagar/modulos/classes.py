@@ -39,7 +39,7 @@ class variaveis1(variaveis):
      def setescolhido(self,escolha):
          self.escolhido = escolha
      def getescolhido1(self):
-         return self.escolhido       
+         return self.escolhido1       
      def setescolhido1(self,escolha):
          self.escolhido1 = escolha           
 
