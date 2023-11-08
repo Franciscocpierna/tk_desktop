@@ -24,7 +24,6 @@ posx=0
 posy=0
 X=0
 ler=""
-opcao=0
 variaveis=variaveis(0,0,0,"")
 variaveis1 = variaveis1(0,0)
 
@@ -40,6 +39,7 @@ def verfornec1(event):
    tela.cep.delete(0,END)
    tela.e_mail.delete(0,END)
    sqleres=""
+   opcao = variaveis.getopcao()
    manutencao=variaveis.getmanutencao()
    if len(tela.codigo.get())!=5:
         messagebox1("codigo tem que ter tamanho 5",manutencao)

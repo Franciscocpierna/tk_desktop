@@ -24,7 +24,7 @@ posx=0
 posy=0
 X=0
 ler=""
-opcao=0
+#opcao=0
 variaveis=variaveis(0,0,0,"")
 variaveis1 = variaveis1(0,0)
 
