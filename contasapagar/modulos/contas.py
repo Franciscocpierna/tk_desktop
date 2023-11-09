@@ -173,8 +173,10 @@ def pdfgerado2(sqlres,arquivo):
 
 def gerapdv(event):
    #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    #escolhido1=escolha1.get()
+   escolhido1 = variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1()
    if dataini.get() !="":
        if datafim.get()=="":
@@ -251,8 +253,10 @@ def gerapdp(event):
  
 
    #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    #escolhido1=escolha1.get()
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -320,7 +324,9 @@ def gerapdat(event):
 
    #escolhido=escolha.get()
    escolhido=variaveis1.getescolhido()
+   escolhido=variaveis1.setescolhido(escolha.get())
    #escolhido1=escolha1.get()   
+   escolhido=variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1()
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -376,6 +382,7 @@ def gerapdat(event):
 
 def gerapdf2(event):
    #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    nomemem1= nomemem.get()
    
@@ -427,6 +434,8 @@ def gerapd1(event):
 
    #escolhido=escolha.get()
    #escolhido1=escolha1.get()  
+   escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    escolhido=variaveis1.getescolhido() 
    escolhido1=variaveis1.getescolhido1()
    try: 
@@ -471,8 +480,10 @@ def gerapd1(event):
         return
 def geracompras(event):
    #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    #escolhido1=escolha1.get()   
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1()
    data = date.today()
    print(data)  
@@ -526,8 +537,10 @@ def geracompras(event):
 
 def gerapdf(event):
    #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
-   #escolhido1=escolha1.get()   
+   #escolhido1=escolha1.get()
+   escolhido1=variaveis1.setescolhido1(escolha1.get())   
    escolhido1=variaveis1.getescolhido1()
    data = date.today() 
    ano = data.year
@@ -2130,7 +2143,8 @@ def consultacompraopcao(event):
    mes = data.month
    dia = data.day
    
-   #escolhido=escolha.get() 
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get()) 
    escolhido=variaveis1.getescolhido() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2249,6 +2263,7 @@ def consultapagopcao2(event):
    dia = data.day
    
    #escolhido=escolha.get()  
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2388,6 +2403,7 @@ def consultavencopcao2(event):
    #memini=datetime.strptime(memini,"%Y-%m-%d").date()
    #memfim=datetime.strptime(memfim,"%Y-%m-%d").date()
    #escolhido=escolha.get()  
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2735,6 +2751,7 @@ def consulta_vencimento(janela3):
 def consultacodigoopcao2(event):
    tv.delete(*tv.get_children())
    #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -2987,7 +3004,8 @@ def consultaatrasoopcao2(event):
    memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
    memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
       
-   #escolhido=escolha.get()   
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())   
    escolhido=variaveis1.getescolhido()
    try: 
       banco = sqlite3.connect('contaspagar.db')

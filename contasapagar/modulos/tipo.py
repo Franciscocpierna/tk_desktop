@@ -159,9 +159,9 @@ def pdfgerado1(sqlres,arquivo):
 def gerapf1(event):
    #escolhido=escolha.get()
    #escolhido1=escolha1.get()  
-   #escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
-   #escolhido1=variaveis1.setescolhido1(escolha1.get())
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1() 
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -203,6 +203,7 @@ def gerapf1(event):
 def gerapf(event):
    #escolhido=escolha.get()
    #escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()   
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -257,7 +258,7 @@ def copiapdf(arquivo):
 def rel_nome1(janela3):
    global janela4 
    #global escolhido
-   global escolha
+   #global escolha
    escolha=StringVar(value="D")
    janela4 = Toplevel()
    janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
@@ -277,6 +278,7 @@ def rel_nome1(janela3):
    #label1=Label(janela4,text="Copiar Arquivo Pdf gerado para para pastausuario tecle - F6" )
    #label1.place(relx=0.2,rely=0.6)
    #escolhido=escolha.get()
+   
    escolhido=variaveis1.setescolhido(escolha.get())
    #escolhido=variaveis1.getescolhido()
    #keyboard.on_press_key("f3", lambda _: gerapdf())

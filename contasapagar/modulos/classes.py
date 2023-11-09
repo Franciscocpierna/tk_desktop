@@ -43,6 +43,19 @@ class variaveis1(variaveis):
      def setescolhido1(self,escolha):
          self.escolhido1 = escolha           
 
+class variaveis2(variaveis1):
+     def __init__(self,escolha,escolha1):
+         self.escolha=escolha
+         self.escolha1=escolha1 
+     def setescolha(self,escolha):
+         self.escolha = escolha       
+     def getescolha(self):
+         return self.escolha
+     def setescolha1(self,escolha1):
+         self.escolha1 = escolha1       
+     def getescolha1(self):
+         return self.escolha1
+      
 
 class montatela():
       def __init__(self, manutencao1,janela1, opcao,posx,posy,largura, altura,opcao1):

@@ -200,8 +200,10 @@ def pdfgerado(sqlres,arquivo):
    cnv.save()
    return
 def gerapdf3(event):
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    #escolhido=escolha.get()
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1()
    #escolhido1=escolha1.get()   
    try: 
@@ -242,6 +244,7 @@ def gerapdf3(event):
 
 def gerapdf2(event):
    #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    nomemem1= nomemem.get()
      
@@ -318,6 +321,7 @@ def gerapdf1(event):
         cursor.close()
         return
 def gerapdf(event):
+   escolhido=variaveis1.setescolhido(escolha.get())
    escolhido=variaveis1.getescolhido()
    #escolhido=escolha.get()   
    try: 
@@ -373,7 +377,7 @@ def moverpdf(arquivo):
 def rel_nome(janela3):
    global janela4 
    #global escolhido
-   global escolha
+   #global escolha
    escolha=StringVar(value="D")
    janela4 = Toplevel()
    janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
