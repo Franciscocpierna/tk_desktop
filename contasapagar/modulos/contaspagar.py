@@ -6,7 +6,8 @@ from contas import contas_menu
 from produto import prod_menu
 from classes import *
 import keyboard
-
+from cliente import cliente_menu
+from contasrec import contasrec_menu 
 #from contas import *
 #from tipo import *
 
@@ -50,11 +51,20 @@ janela1.grab_set()    # impede que click na janela principal sem fechar janela a
 menujan = Menu(janela1)
 filemenu= Menu(menujan, tearoff=0,)
 filemenu.add_command(label = " Fornecedor",command= lambda: fornecedor_menu(janela1))
-filemenu.add_command(label = " Contas",command= lambda: contas_menu(janela1))
+filemenu.add_command(label = " Contas Pagar",command= lambda: contas_menu(janela1))
 filemenu.add_command(label = " Tipo",command=lambda: tipo_menu(janela1))
 filemenu.add_command(label = " Produto",command=lambda: prod_menu(janela1))
 
-menujan.add_cascade(label='Manutenção Geral',menu = filemenu)
+menujan.add_cascade(label='Manutenção Contas Pagar',menu = filemenu)
+#
+menujan = Menu(janela1)
+recebermenu= Menu(menujan, tearoff=0,)
+recebermenu.add_command(label = " Cliente",command= lambda: cliente_menu(janela1))
+recebermenu.add_command(label = " Contas Receber",command= lambda: contasrec_menu(janela1))
+recebermenu.add_command(label = " Produto",command=lambda: prod_menu(janela1))
+
+menujan.add_cascade(label='Manutenção Contas Receber',menu = recebermenu)
+
 #prod_menu
 menusair = Menu(menujan, tearoff=0)
 menusair.add_command(label= "Sair click aqui", command=quit) 

@@ -36,8 +36,6 @@ def limpacamposcontas():
   tela.compra.delete(0,END) 
   tela.vencimento.delete(0,END) 
   tela.descricao.delete(0,END)
-  tela.tipo.delete(0,END) 
-  tela.desctipo.delete(0,END)
   tela.pagamento.delete(0,END)
   tela.valpagar.delete(0,END)
   tela.desconto.delete(0,END)
@@ -200,22 +198,22 @@ def gerapdv(event):
       try:
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.vencimento ASC''')
+                                    a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, fornecedor b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.vencimento DESC''')
+                                    a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, fornecedor b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento DESC''')
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, fornecedor b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, fornecedor b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
         
@@ -3145,7 +3143,7 @@ def consulta_ematraso(janela3):
   
 
 
-def contas_menu(janela1):
+def contasrec_menu(janela1):
  janela3 = Toplevel() # janela de nível superior
  janela3.title("Menu Manutenção - Consultas Relatorios  F1 - PARA SAIR")
 #janela1.configure(height= 400)
@@ -3168,7 +3166,7 @@ def contas_menu(janela1):
  filemenu.add_command(label = " Consulta",command= lambda: cosultacontas_click(janela3))
  filemenu.add_command(label = " Alteração",command=lambda: alteracaocontas_click(janela3))
  filemenu.add_command(label = " Excluir", command=lambda:  excluircontas_click(janela3))
- menujan2.add_cascade(label = "Manutenção", menu = filemenu)
+ menujan2.add_cascade(label = "Manutenção Contas Receber", menu = filemenu)
 
 
  consultamenu= Menu(menujan2, tearoff=0,)
@@ -3200,22 +3198,17 @@ def contas_menu(janela1):
  largura= 550
  altura = 450
  centro=centralizacao(janela3,largura, altura, posx, posy)
- sql='''CREATE TABLE IF NOT EXISTS contas (codigo varchar(5)  NOT NULL, 
+ sql='''CREATE TABLE IF NOT EXISTS contasrec (codigo varchar(5)  NOT NULL,
+                                               documento varchar(20),
+                                               tparcela varchar(3), 
                                                compra TEXT NOT NULL, 
                                                vencimento TEXT NOT NULL,
                                                descricao varchar(50),
                                                pagamento TEXT,
-                                               tipo varchar(2),
                                                valpagar REAL(14,2) NOT NULL,
-                                               desconto REAL(14,2),
-                                               juros    REAL(14,2),   
-                                               documento varchar(20),
-                                               tparcela varchar(3),
-                                               cs varchar(1),
                                                produto varchar(5),               
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),
-                                               FOREIGN KEY(tipo) REFERENCES  tipo(codigo),
                                                FOREIGN KEY(produto) REFERENCES  produto(codigo))'''
 
  criartabela2(janela3,sql) 
