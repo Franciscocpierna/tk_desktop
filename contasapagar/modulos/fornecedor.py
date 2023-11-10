@@ -410,8 +410,8 @@ def rel_cpfcnpj(janela3):
    global janela4 
    #global escolhido
    #global escolhido1
-   #global escolha
-   #global escolha1
+   global escolha
+   global escolha1
    escolha=StringVar(value="D")
    escolha1=StringVar(value="A")
   
