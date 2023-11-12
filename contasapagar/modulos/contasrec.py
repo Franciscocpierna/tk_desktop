@@ -41,8 +41,7 @@ def limpacamposcontas():
   tela.desconto.delete(0,END)
   tela.juros.delete(0,END)
   tela.documento.delete(0, END) 
-  tela.tparcela.delete(0,END)
-  tela.cs.delete(0, END)  
+  tela.tparcela.delete(0,END) 
   tela.produto.delete(0,END)    
   tela.descproduto.delete(0,END)
   return
@@ -199,21 +198,21 @@ def gerapdv(event):
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contas a, fornecedor b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, cliente b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento DESC''')
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
         
@@ -262,12 +261,12 @@ def gerapdp(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.pagamento ASC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.pagamento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.pagamento DESC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.pagamento DESC''')
 
       
         
@@ -332,23 +331,23 @@ def gerapdat(event):
       try:
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
+                                    FROM  contas a, cliente b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
           
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.tipo =  a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
         
@@ -395,7 +394,7 @@ def gerapdf2(event):
          nomemem1="%"+nomemem1+"%"
          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
             
      
 
@@ -442,12 +441,12 @@ def gerapd1(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.codigo ASC''')
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.codigo ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.codigo DESC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.codigo DESC''')
 
       
         
@@ -498,12 +497,12 @@ def geracompras(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.compra ASC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.compra ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.compra DESC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela, a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.compra DESC''')
 
       
         
@@ -552,12 +551,12 @@ def gerapdf(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY b.nome ASC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela, a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo  AND a.produto = d.codigo  ORDER BY b.nome ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY b.nome DESC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela, a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY b.nome DESC''')
 
       
         
@@ -907,7 +906,7 @@ def rel_codigo2(janela3):
 
 def tab_order2():
   tela.codigo.focus
-  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desconto,tela.juros,tela.valpagar,tela.cs]
+  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.desconto,tela.juros,tela.valpagar]
   for w in widgets:
      w.lift()
 
@@ -984,18 +983,17 @@ def verfornec(event):
    tela.juros.delete(0,END)
    tela.documento.delete(0, END) 
    tela.tparcela.delete(0,END)
-   tela.cs.delete(0, END)
    tela.produto.delete(0,END)
    tela.descproduto.delete(0,END)
    #
    codigomem=tela.codigo.get()         
-   sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
-   mensagem="fornecedor"       
+   sql=  f"SELECT nome FROM cliente WHERE codigo = '{codigomem}'"  
+   mensagem="cliente"       
    
    
    sqlres=lertabela(sql,codigomem,manutencao,mensagem,opcao)
    if len(sqlres)==0:
-         messagebox1("codigo não existe em fornecedor",manutencao)
+         messagebox1("codigo não existe em cliente",manutencao)
          limpacamposcontas()
          tela.codigo.focus()
          return
@@ -1028,7 +1026,6 @@ def verproduto(event):
    tela.juros.delete(0,END)
    tela.documento.delete(0, END) 
    tela.tparcela.delete(0,END)
-   tela.cs.delete(0, END)
    tela.produto.delete(0,END)
    tela.descproduto.delete(0,END)
    #
@@ -1069,7 +1066,7 @@ def verchave(event):
       return
   
   if len(tela.codigo.get()) !=5:
-    messagebox1("tamanho do campo codigo fornecedor  é 5 ",manutencao)
+    messagebox1("tamanho do campo codigo cliente  é 5 ",manutencao)
     tela.tparcela.delete(0,END)
     tela.codigo.delete(0,END)
     tela.documento.delete(0,END)
@@ -1098,7 +1095,6 @@ def verchave(event):
   tela.valpagar.delete(0,END)
   tela.desconto.delete(0,END)
   tela.juros.delete(0,END)
-  tela.cs.delete(0, END)      
   tela.produto.delete(0,END)
   tela.descproduto.delete(0,END)
 
@@ -1107,8 +1103,8 @@ def verchave(event):
   tparcelamem=tela.tparcela.get()
 
   sql=f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         
   mensagem="Contas"        
   sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao)
@@ -1128,9 +1124,8 @@ def verchave(event):
      tela.valpagar.insert(0, recuperaval(sqlres[0][7]))
      tela.desconto.insert(0, recuperaval(sqlres[0][8]))
      tela.juros.insert(0, recuperaval(sqlres[0][9]))
-     tela.cs.insert(0, sqlres[0][10])
-     tela.produto.insert(0, sqlres[0][11])
-     tela.descproduto.insert(0, sqlres[0][12])
+     tela.produto.insert(0, sqlres[0][10])
+     tela.descproduto.insert(0, sqlres[0][11])
   else:
     if opcao==1: 
        tela.compra.focus()
@@ -1199,12 +1194,7 @@ def incluircontas():
         messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
         tela.tparcela.delete(0,END)
         tela.tparcela.focus()    
-   elif "S" not in tela.cs.get().upper(): 
-         if "C" not in tela.cs.get().upper():
-           messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
-           tela.cs.delete(0, END)
-           tela.cs.focus()
-           return            
+               
    elif len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
          messagebox1("Falta decrição da compra",manutencao)
          tela.descricao.focus()
@@ -1223,12 +1213,10 @@ def incluircontas():
         if tela.pagamento.get()!="":
           pagamentomem=dataa(tela.pagamento.get()) 
         else:    
-          pagamentomem=tela.pagamento.get()
-        tipomem=tela.tipo.get()
+         pagamentomem=tela.pagamento.get()
         valpagarmem= valores(tela.valpagar.get())
         descontomem = valores(tela.desconto.get())
         jurosmem = valores(tela.juros.get())
-        csmem=tela.cs.get().upper()
         produtomem=tela.produto.get()
         
 
@@ -1239,10 +1227,10 @@ def incluircontas():
             banco = sqlite3.connect('contaspagar.db')
             cursor = banco.cursor()
             cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{compramem}','{vencimentomem}',
-                                                            '{descricaomem}','{pagamentomem}','{tipomem}',
+                                                            '{descricaomem}','{pagamentomem}',
                                                                  '{valpagarmem}','{descontomem}','{jurosmem}',
-                                                                 '{documentomem}','{tparcelamem}','{csmem}
-                                                                 ','{produtomem}')''')
+                                                                 '{documentomem}','{tparcelamem}',
+                                                                 '{produtomem}')''')
                
                      
             banco.commit()
@@ -1828,7 +1816,6 @@ def incluircontas_click(janela1):
     tela.desctipo.bind("<FocusIn>",vercampos)
     tela.desconto.bind("<FocusIn>",vercampos)
     tela.juros.bind("<FocusIn>",vercampos)
-    tela.cs.bind("<FocusIn>",vercampos)
     tela.produto.bind("<FocusIn>",vercampos)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
@@ -1865,11 +1852,8 @@ def cosultacontas_click(janela1):
      tela.valpagar.bind("<FocusIn>",vercampos)
      tela.descricao.bind("<FocusIn>",vercampos)
      tela.pagamento.bind("<FocusIn>",vercampos)
-     tela.tipo.bind("<FocusIn>",vercampos)
-     tela.desctipo.bind("<FocusIn>",vercampos)
      tela.desconto.bind("<FocusIn>",vercampos)
      tela.juros.bind("<FocusIn>",vercampos)
-     tela.cs.bind("<FocusIn>",vercampos) 
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontas():
@@ -1919,12 +1903,7 @@ def alteracaocontas():
          messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
          tela.valpagar.focus()
          return
-    elif "S" not in tela.cs.get().upper(): 
-         if "C" not in tela.cs.get().upper():
-           messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
-           tela.cs.delete(0, END)
-           tela.cs.focus()
-           return
+    
     elif len(tela.pagamento.get())!=0:
         if len(tela.tipo.get()) !=2:
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
@@ -1941,11 +1920,9 @@ def alteracaocontas():
           pagamentomem=dataa(tela.pagamento.get()) 
     else:    
           pagamentomem=tela.pagamento.get()
-    tipomem=tela.tipo.get()
     valpagarmem=valores(tela.valpagar.get())
     descontomem = valores(tela.desconto.get())
     jurosmem = valores(tela.juros.get())
-    csmem=tela.cs.get().upper()
     produtomem=tela.produto.get()
      
     
@@ -1971,13 +1948,11 @@ def alteracaocontas():
                                                     vencimento ='{vencimentomem}',
                                                     descricao ='{descricaomem}',
                                                     pagamento = '{pagamentomem}',
-                                                    tipo = '{tipomem}',
                                                     valpagar = '{valpagarmem}',
                                                     desconto = '{descontomem}',
                                                     juros ='{jurosmem}',
                                                     documento='{documentomem}',
                                                     tparcela='{tparcelamem}',
-                                                    cs='{csmem}',
                                                     produto='{produtomem}' WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
                
 
@@ -2041,7 +2016,6 @@ def alteracaocontas_click(janela1):
      tela.desctipo.bind("<FocusIn>",vercampos)
      tela.desconto.bind("<FocusIn>",vercampos)
      tela.juros.bind("<FocusIn>",vercampos)
-     tela.cs.bind("<FocusIn>",vercampos)
      tela.produto.bind("<FocusIn>",vercampos)    
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
@@ -2125,11 +2099,8 @@ def excluircontas_click(janela1):
      tela.valpagar.bind("<FocusIn>",vercampos)
      tela.descricao.bind("<FocusIn>",vercampos)
      tela.pagamento.bind("<FocusIn>",vercampos)
-     tela.tipo.bind("<FocusIn>",vercampos)
-     tela.desctipo.bind("<FocusIn>",vercampos)
      tela.desconto.bind("<FocusIn>",vercampos)
      tela.juros.bind("<FocusIn>",vercampos)
-     tela.cs.bind("<FocusIn>",vercampos)
      tela.produto.bind("<FocusIn>",vercampos)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
@@ -2150,13 +2121,13 @@ def consultacompraopcao(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.compra ASC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela, a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.compra ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.compra DESC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela, a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.compra DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2269,13 +2240,13 @@ def consultapagopcao2(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.pagamento ASC''')
+                                    c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
+                                    FROM  contas a, cliente b, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo  ORDER BY a.pagamento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.pagamento DESC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo  ORDER BY a.pagamento DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2410,21 +2381,21 @@ def consultavencopcao2(event):
         if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo  ORDER BY a.vencimento ASC''')
    
         elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo  ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo  ORDER BY a.vencimento DESC''')
         elif escolhido == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
              
         
         sqlres=cursor.fetchall()
@@ -2758,12 +2729,12 @@ def consultacodigoopcao2(event):
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo ORDER BY a.codigo ASC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo ORDER BY a.codigo ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo ORDER BY a.codigo DESC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo ORDER BY a.codigo DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2877,7 +2848,7 @@ def consutaporcao2(event):
             nomemem1="%"+nomemem1+"%"
             cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
       
          
        
@@ -3012,22 +2983,22 @@ def consultaatrasoopcao2(event):
         if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.nome AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.nome AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
         elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
           
         elif escolhido == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
-                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    FROM  contas a, cliente b, tipo c, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
   
         sqlres=cursor.fetchall()
          
@@ -3208,7 +3179,7 @@ def contasrec_menu(janela1):
                                                valpagar REAL(14,2) NOT NULL,
                                                produto varchar(5),               
                                                PRIMARY KEY (codigo,documento,tparcela),   
-                                               FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),
+                                               FOREIGN KEY(codigo) REFERENCES  cliente(codigo),
                                                FOREIGN KEY(produto) REFERENCES  produto(codigo))'''
 
  criartabela2(janela3,sql) 
