@@ -83,8 +83,9 @@ class montatela():
          elif self.opcao==1 and self.opcao1 == 4: 
              manutencao1.title("Inclusão-Produto- Esc para sair")
              Label(manutencao1, text= 'Produto - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)    
-        
-
+         elif self.opcao==1 and self.opcao1 == 5:
+              manutencao1.title("Inclusão-Cliente")
+              Label(manutencao1, text= 'Cliente - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)
            #fim manutenção inclusão
            # 
            # 
@@ -101,7 +102,9 @@ class montatela():
          elif self.opcao==2 and self.opcao1 == 4: 
              manutencao1.title("Consulta-Produto")
              Label(manutencao1, text= 'Produto - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)     
-
+         elif self.opcao==2 and self.opcao1 == 5: 
+             manutencao1.title("Consulta-Cliente")
+             Label(manutencao1, text= 'Cliente - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30) 
           # fim manutençao consulta
 
           # manutenção Alteração
@@ -118,7 +121,10 @@ class montatela():
          elif self.opcao==3 and self.opcao1 == 4: 
              manutencao1.title("Alteração-Produto")
              Label(manutencao1, text= 'Produto - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)             
-           
+         elif self.opcao==3 and self.opcao1 == 5: 
+             manutencao1.title("Alteração-Cliente")
+             Label(manutencao1, text= 'Cliente - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)             
+            
            #fim manutenção Alteração
            
            #manutenção Exclusão
@@ -134,7 +140,10 @@ class montatela():
               Label(manutencao1, text= 'Tipo - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)     
          elif self.opcao==4 and self.opcao1 == 4: 
              manutencao1.title("Exclusão-Produto")
-             Label(manutencao1, text= 'Produto - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)  
+             Label(manutencao1, text= 'Produto - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)
+         elif self.opcao==4 and self.opcao1 == 5: 
+             manutencao1.title("Exclusão-Cliente")
+             Label(manutencao1, text= 'Cliente - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)      
 
 
              #fim manutenção exclusão

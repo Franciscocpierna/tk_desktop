@@ -119,7 +119,7 @@ def pdfgerado2(sqlres,arquivo):
    z=1
    x=0
 
-   for (c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp) in sqlres:
+   for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
         co=recupdata(co)
         ve=recupdata(ve)
         pg=recupdata(pg)
@@ -132,7 +132,7 @@ def pdfgerado2(sqlres,arquivo):
         y -= 20
         cnv.drawString(10,y, "Compra: "+co+" Vencimento: " + ve+" Descrição:"+de) 
         y -= 20               
-        cnv.drawString(10,y,  " Pagamento: "+pg+" Tipo: "+tp+ " Descrição Tipo:"+str(dt)+ " Valor a Pagar:"+str(vp))        
+        cnv.drawString(10,y,  " Pagamento: "+pg+ " Valor a Pagar:"+str(vp))        
         y -= 20
         cnv.drawString(10,y, " Documento:"+doc+" Parcelas:"+par)
         if z == 8: 
@@ -261,7 +261,7 @@ def gerapdp(event):
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.pagamento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela,a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.pagamento DESC''')
 
       
@@ -327,22 +327,22 @@ def gerapdat(event):
       try:
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela,a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
                                     FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela, a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
           
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela, a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela, a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
@@ -441,7 +441,7 @@ def gerapd1(event):
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.codigo ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela,a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.codigo DESC''')
 
       
@@ -493,7 +493,7 @@ def geracompras(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela,a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
                                     FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.compra ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
@@ -801,7 +801,7 @@ def rel_pagamento(janela3):
    label.place(relx=0.25, rely=0.2)
    optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
-   optado3= Radiobutton(janela4, text= "Desacendente", value="D", variable=escolha1)
+   optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
    optado3.place(relx=0.5,rely=0.3)
    #escolhido1=escolha1.get()  
    escolhido1=variaveis1.setescolhido1(escolha1.get())
@@ -909,7 +909,7 @@ def tab_order2():
   return
 
 
-def verfornec(event):
+def vercliente(event):
    if len(tela.codigo.get())!=5:
       return
 
@@ -1662,7 +1662,7 @@ def incluircontasrec_click(janela1):
     botao.grid(row=14, column=0,padx=0,pady=50,sticky=W)
     tab_order2()
     tela.codigo.focus()
-    tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+    tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
     tela.tparcela.bind("<KeyRelease>", verchave)
     tela.tparcela.bind("<KeyRelease>", verproduto)
     tela.compra.bind("<KeyRelease>", dadosdatac)
@@ -1703,7 +1703,7 @@ def cosultacontasrec_click(janela1):
      manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
-     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
      tela.tparcela.bind("<KeyRelease>", verchave)
      tela.compra.bind("<FocusIn>",vercampos)
      tela.vencimento.bind("<FocusIn>",vercampos)
@@ -1840,7 +1840,7 @@ def alteracaocontasrec_click(janela1):
      botao1.grid(row=14, column=1,padx=0,pady=50,sticky=W)
      tab_order2()
      tela.codigo.focus()
-     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
      tela.tparcela.bind("<KeyRelease>", verchave)
      tela.produto.bind("<KeyRelease>",verproduto)
      tela.compra.bind("<KeyRelease>", dadosdatac)
@@ -1927,7 +1927,7 @@ def excluircontasrec_click(janela1):
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaocontasrec)
      botao1.grid(row=14, column=0,padx=0,pady=50,sticky=W)
-     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
+     tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
      tela.tparcela.bind("<KeyRelease>", verchave)
      #tela.produto.bind("<KeyRelease>",verproduto)
      tela.compra.bind("<FocusIn>",vercampos)
@@ -1970,12 +1970,12 @@ def consultacompraopcao(event):
             messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
         else:
-            for (c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1505 "+str(ex),janela4)
@@ -2077,12 +2077,12 @@ def consultapagopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1613 "+str(ex),janela4)
@@ -2218,12 +2218,12 @@ def consultavencopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1723 "+str(ex),janela4)
@@ -2530,7 +2530,7 @@ def consultacodigoopcao2(event):
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    c.nome,a.valpagar,a.documento,a.tparcela,a.produto,d.nome
+                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
                                     FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo ORDER BY a.codigo DESC''')
         sqlres=cursor.fetchall()
      
@@ -2541,12 +2541,12 @@ def consultacodigoopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1947 "+str(ex),janela4)
@@ -2647,12 +2647,12 @@ def consutaporcao2(event):
                     cursor.close()
                     return
             else:
-                    for (c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp) in sqlres:
+                    for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
                       co=recupdata(co)
                       ve=recupdata(ve)
                       pg=recupdata(pg)
                       vp=recuperaval(vp)
-                      tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp)) 
+                      tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
  
                     
                     cursor.close()
@@ -2780,12 +2780,12 @@ def consultaatrasoopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,tp,dt,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)

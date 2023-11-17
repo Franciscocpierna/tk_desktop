@@ -47,8 +47,8 @@ def verfornec1(event):
         tela.codigo.focus()
         return
    codigomem=tela.codigo.get()         
-   sql=  f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'"  
-   mensagem="fornecedor"       
+   sql=  f"SELECT * FROM cliente WHERE codigo = '{codigomem}'"  
+   mensagem="cliente"       
    
    
    sqlres=lertabela2(sql,codigomem,manutencao,mensagem,opcao)
@@ -211,9 +211,9 @@ def gerapdf3(event):
       cursor = banco.cursor()
       try:
         if escolhido1 == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cpf ASC")
+          cursor.execute(f"SELECT *  FROM  cliente ORDER BY cpf ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj ASC")
+          cursor.execute(f"SELECT *  FROM  cliente ORDER BY cnpj ASC")
 
       
         
@@ -253,7 +253,7 @@ def gerapdf2(event):
       cursor = banco.cursor()
       nomemem1= "%"+nomemem1+"%"
       try:
-        cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+        cursor.execute(f"SELECT *  FROM cliente  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
      
         sqlres=cursor.fetchall()
         if len(sqlres) == 0:
@@ -289,9 +289,9 @@ def gerapdf1(event):
       cursor = banco.cursor()
       try:
         if escolhido1 == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+          cursor.execute(f"SELECT *  FROM  cliente ORDER BY codigo ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+          cursor.execute(f"SELECT *  FROM  cliente ORDER BY codigo DESC")
 
       
         
@@ -329,7 +329,7 @@ def gerapdf(event):
       cursor = banco.cursor()
       try:
         
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome ASC")
+        cursor.execute(f"SELECT *  FROM  cliente ORDER BY nome ASC")
 
         sqlres=cursor.fetchall()
      
@@ -551,7 +551,7 @@ def verificacodigo():
        return 
    
    try:
-       cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+       cursor.execute(f"SELECT * FROM cliente WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0:  
@@ -590,7 +590,7 @@ def consultafor():
       cursor = banco.cursor()
       try:
        codigomem=tela.codigo.get()
-       cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+       cursor.execute(f"SELECT * FROM cliente WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
        
        
@@ -730,7 +730,7 @@ def incluirfor():
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
           try:
-           cursor.execute(f'''INSERT INTO fornecedor VALUES('{codigomem}','{nomemem}','{enderecomem}',
+           cursor.execute(f'''INSERT INTO cliente VALUES('{codigomem}','{nomemem}','{enderecomem}',
                                                             '{telefonemem}','{tipomem}','{cpfmem}',
                                                                  '{cnpjmem}','{cepmem}','{e_mailmem}')''')
                
@@ -932,7 +932,7 @@ def alteracaofor():
           
 
       try:
-           cursor.execute(f'''UPDATE fornecedor SET codigo = '{codigomem}',
+           cursor.execute(f'''UPDATE cliente SET codigo = '{codigomem}',
                                                     nome ='{nomemem}',
                                                     endereco ='{enderecomem}',
                                                     telefone ='{telefonemem}',
@@ -1000,7 +1000,7 @@ def exclusaofor():
         cursor = banco.cursor()
         
         try:
-           cursor.execute(f"DELETE  FROM fornecedor WHERE codigo = '{codigomem}'")
+           cursor.execute(f"DELETE  FROM cliente WHERE codigo = '{codigomem}'")
            banco.commit()
            cursor.close()     
            messagebox1("Registro Excluido com sucesso",manutencao)
@@ -1086,7 +1086,7 @@ def consulta_nome(janela3):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY nome")
+        cursor.execute(f"SELECT *  FROM  cliente ORDER BY nome")
         sqlres=cursor.fetchall()
      
     
@@ -1156,7 +1156,7 @@ def cosulta_cpf(janela3):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cpf")
+        cursor.execute(f"SELECT *  FROM  cliente ORDER BY cpf")
         sqlres=cursor.fetchall()
      
     
@@ -1226,7 +1226,7 @@ def cosulta_cnpj(janela3):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-        cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY cnpj")
+        cursor.execute(f"SELECT *  FROM  cliente ORDER BY cnpj")
         sqlres=cursor.fetchall()
      
     
@@ -1258,9 +1258,9 @@ def consultacodigoopcao(event):
       cursor = banco.cursor()
       try:
         if escolhido == "A":
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo ASC")
+          cursor.execute(f"SELECT *  FROM  cliente ORDER BY codigo ASC")
         else:
-          cursor.execute(f"SELECT *  FROM  fornecedor ORDER BY codigo DESC")
+          cursor.execute(f"SELECT *  FROM  cliente ORDER BY codigo DESC")
 
         sqlres=cursor.fetchall()
      
@@ -1347,11 +1347,11 @@ def tecla_obtida(event):
          banco = sqlite3.connect('contaspagar.db')
          cursor = banco.cursor()
          
-         #cursor.execute(f"SELECT * FROM fornecedor WHERE codigo = '{codigomem}'")
+         #cursor.execute(f"SELECT * FROM cliente WHERE codigo = '{codigomem}'")
          #sqlres=cursor.fetchall()
          nomemem1="%"+nomemem1+"%"
          try:
-               cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+               cursor.execute(f"SELECT *  FROM cliente  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
                sqlres=cursor.fetchall()
                
           
