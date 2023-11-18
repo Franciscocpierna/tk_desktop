@@ -1646,7 +1646,7 @@ def incluircontasrec_click(janela1):
     global tparcelamem
     #global opcao
     opcao=variaveis.setopcao(1) 
-    opcao1=variaveis.setopcao1(2) 
+    opcao1=variaveis.setopcao1(6) 
     opcao=variaveis.getopcao() 
     opcao1=variaveis.getopcao1() 
     #opcao=1
@@ -1690,7 +1690,7 @@ def cosultacontasrec_click(janela1):
      global documentomem
      global tparcelamem 
      opcao=variaveis.setopcao(2) 
-     opcao1=variaveis.setopcao1(2) 
+     opcao1=variaveis.setopcao1(6) 
      opcao=variaveis.getopcao() 
      opcao1=variaveis.getopcao1() 
      #opcao=2
@@ -1821,7 +1821,7 @@ def alteracaocontasrec_click(janela1):
      global documentomem
      global tparcelamem 
      opcao=variaveis.setopcao(3) 
-     opcao1=variaveis.setopcao1(2) 
+     opcao1=variaveis.setopcao1(6) 
      opcao=variaveis.getopcao() 
      opcao1=variaveis.getopcao1() 
      #opcao=3
@@ -1913,7 +1913,7 @@ def excluircontasrec_click(janela1):
      global tela
      #global manutencao
      opcao=variaveis.setopcao(4) 
-     opcao1=variaveis.setopcao1(2) 
+     opcao1=variaveis.setopcao1(6) 
      opcao=variaveis.getopcao() 
      opcao1=variaveis.getopcao1() 
      #opcao=4
@@ -2875,7 +2875,7 @@ def consulta_ematraso(janela3):
   
 
 
-def contasrecrec_menu(janela1):
+def contasrec_menu(janela1):
  janela3 = Toplevel() # janela de nível superior
  janela3.title("Menu Manutenção - Consultas Relatorios  F1 - PARA SAIR")
 #janela1.configure(height= 400)

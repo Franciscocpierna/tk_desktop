@@ -760,7 +760,7 @@ def incluirfor_click(janela1):
     #opcao=1
     #opcao1=1
     opcao=variaveis.setopcao(1)
-    opcao1=variaveis.setopcao1(1)
+    opcao1=variaveis.setopcao1(5)
     opcao=variaveis.getopcao()
     opcao1=variaveis.getopcao1()
     manutencao=variaveis.setmanutencao(Toplevel())
@@ -786,7 +786,7 @@ def cosultafor_click(janela1):
      global tela
      #global manutencao
      opcao=variaveis.setopcao(2)
-     opcao1=variaveis.setopcao1(1)
+     opcao1=variaveis.setopcao1(5)
      opcao=variaveis.getopcao()
      opcao1=variaveis.getopcao1()
      manutencao=variaveis.setmanutencao(Toplevel())
@@ -965,7 +965,7 @@ def alteracaofor_click(janela1):
      global tela
      #global manutencao
      opcao=variaveis.setopcao(3)
-     opcao1=variaveis.setopcao1(1)
+     opcao1=variaveis.setopcao1(5)
      opcao=variaveis.getopcao()
      opcao1=variaveis.getopcao1()
      manutencao=variaveis.setmanutencao(Toplevel())
@@ -1024,7 +1024,7 @@ def excluirfor_click(janela1):
      global tela
     # global manutencao
      opcao=variaveis.setopcao(4)
-     opcao1=variaveis.setopcao1(1)
+     opcao1=variaveis.setopcao1(5)
      opcao=variaveis.getopcao()
      opcao1=variaveis.getopcao1()
      manutencao=variaveis.setmanutencao(Toplevel())
