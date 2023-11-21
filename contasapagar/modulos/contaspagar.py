@@ -22,7 +22,7 @@ ler=""
 opcao=0
 
 janela= Tk()
-janela.title("Sistema de Contas a Pagar")
+janela.title("Sistema de Contas a Pagar e Receber")
 janela.configure(background='Gray')
 janela.geometry('1500x1500')
 
@@ -55,15 +55,15 @@ filemenu.add_command(label = " Contas Pagar",command= lambda: contas_menu(janela
 filemenu.add_command(label = " Tipo",command=lambda: tipo_menu(janela1))
 filemenu.add_command(label = " Produto",command=lambda: prod_menu(janela1))
 
-menujan.add_cascade(label='Manutenção Contas Pagar',menu = filemenu)
+menujan.add_cascade(label=' Contas Pagar',menu = filemenu)
 #
-menujan = Menu(janela1)
+
 recebermenu= Menu(menujan, tearoff=0,)
 recebermenu.add_command(label = " Cliente",command= lambda: cliente_menu(janela1))
 recebermenu.add_command(label = " Contas Receber",command= lambda: contasrec_menu(janela1))
 recebermenu.add_command(label = " Produto",command=lambda: prod_menu(janela1))
 
-menujan.add_cascade(label='Manutenção Contas Receber',menu = recebermenu)
+menujan.add_cascade(label=' Contas Receber',menu = recebermenu)
 
 #prod_menu
 menusair = Menu(menujan, tearoff=0)

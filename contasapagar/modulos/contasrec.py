@@ -2877,7 +2877,7 @@ def consulta_ematraso(janela3):
 
 def contasrec_menu(janela1):
  janela3 = Toplevel() # janela de nível superior
- janela3.title("Menu Manutenção - Consultas Relatorios  F1 - PARA SAIR")
+ janela3.title("Menu Manutenção -Cliente  Consultas Relatorios  F1 - PARA SAIR")
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            

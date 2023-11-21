@@ -563,7 +563,7 @@ def verificacodigo():
         tela.codigo.focus()
         return sqlres 
    except Error as ex:
-       messagebox1("Erro na leitura da tabela Fornecedor linha 469 "+str(ex),manutencao)
+       messagebox1("Erro na leitura da tabela Cliente linha 469 "+str(ex),manutencao)
        limpacamposfor()
        
        return 
@@ -742,7 +742,7 @@ def incluirfor():
            limpacamposfor()   
            tela.codigo.focus()
           except Error as ex:
-            messagebox1("erro ao gravar tabela Fornecedor linha 647 "+ str(ex),manutencao)       
+            messagebox1("erro ao gravar tabela Cliente linha 647 "+ str(ex),manutencao)       
             limpacamposfor()
         else:
            messagebox1("Registro não foi gravado",manutencao)
@@ -951,7 +951,7 @@ def alteracaofor():
            limpacamposfor()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela Fornecedor linha 842"+ str(ex),manutencao)       
+            messagebox("erro ao regravar tabela Cliente linha 842"+ str(ex),manutencao)       
             limpacamposfor() 
             return
     else:
@@ -1007,7 +1007,7 @@ def exclusaofor():
            limpacamposfor()   
            tela.codigo.focus()
         except Error as ex:
-            messagebox1("erro ao Excluir tabela Fornecedor linha 891"+ str(ex),manutencao)       
+            messagebox1("erro ao Excluir tabela Cliente linha 891"+ str(ex),manutencao)       
             limpacamposfor() 
        except Error as ex:
            messagebox1("erro ao conectar com banco de dados linha 894 "+ str(ex),manutencao)
@@ -1436,7 +1436,7 @@ def consulta_porcao(janela3):
 
 def cliente_menu(janela1):
  janela3 = Toplevel() # janela de nível superior
- janela3.title("Menu Manutenção - Consultas Relatorios  F1 - PARA SAIR")
+ janela3.title("Menu Manutenção - Cliente Consultas Relatorios  F1 - PARA SAIR")
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            

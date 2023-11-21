@@ -86,6 +86,9 @@ class montatela():
          elif self.opcao==1 and self.opcao1 == 5:
               manutencao1.title("Inclusão-Cliente")
               Label(manutencao1, text= 'Cliente - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)
+         elif self.opcao==1 and self.opcao1 == 6:
+              manutencao1.title("Inclusão - Receber")
+              Label(manutencao1, text= 'Receber - Inclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 15, pady=15)     
            #fim manutenção inclusão
            # 
            # 
@@ -105,6 +108,9 @@ class montatela():
          elif self.opcao==2 and self.opcao1 == 5: 
              manutencao1.title("Consulta-Cliente")
              Label(manutencao1, text= 'Cliente - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30) 
+         elif self.opcao==2 and self.opcao1 == 6:
+              manutencao1.title("Consulta - Receber")
+              Label(manutencao1, text= 'Receber - Consulta',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 15, pady=15)    
           # fim manutençao consulta
 
           # manutenção Alteração
@@ -124,7 +130,9 @@ class montatela():
          elif self.opcao==3 and self.opcao1 == 5: 
              manutencao1.title("Alteração-Cliente")
              Label(manutencao1, text= 'Cliente - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)             
-            
+         elif self.opcao==3 and self.opcao1 == 6:
+              manutencao1.title("Alteração - Receber")
+              Label(manutencao1, text= 'Receber - Alteração',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 15, pady=15)   
            #fim manutenção Alteração
            
            #manutenção Exclusão
@@ -145,7 +153,9 @@ class montatela():
              manutencao1.title("Exclusão-Cliente")
              Label(manutencao1, text= 'Cliente - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 90, pady=30)      
 
-
+         elif self.opcao==4 and self.opcao1 == 6:
+              manutencao1.title("Exclusão - Receber")
+              Label(manutencao1, text= 'Receber - Exclusão',font=('Arial', 20) ,fg="black",).grid(column=2,row=0,padx= 15, pady=15)
              #fim manutenção exclusão
              # 
              #  
@@ -300,9 +310,9 @@ class montatela():
                Label(manutencao1, text="Cod Produto:",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
                self.produto = Entry(manutencao1,width=7)
                self.produto.grid(row=9, column=1,sticky=W)
-               Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.25,rely=0.64)#grid(row=1, column=2,sticky=W)
+               Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.25,rely=0.46)#grid(row=1, column=2,sticky=W)
                self.descproduto = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
-               self.descproduto.place(relx=0.365,rely=0.65)#grid(row=1, column=3,sticky=E)
+               self.descproduto.place(relx=0.365,rely=0.47)#grid(row=1, column=3,sticky=E)
           
          
          manutencao1.geometry("%dx%d+%d+%d" % (self.largura, self.altura, centralizatela.posx,centralizatela.posy-20))
