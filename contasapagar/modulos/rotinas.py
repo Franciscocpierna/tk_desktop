@@ -41,7 +41,7 @@ def criartabela2(janela3,sql):
      cursor.close() 
      #cs compra ou serviço
    except Error as ex:
-     messagebox1(str(ex)+ " linha 439",janela3)
+     messagebox1(str(ex)+ " linha 44 em rotinas",janela3)
      return 
    return 
 

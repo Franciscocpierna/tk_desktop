@@ -37,7 +37,7 @@ janela1.title("Menu Manutenção PARA SAIR PELO TECLADO F2")
 janela1.resizable(False, False) # tamanho fixo             
 janela1.transient(janela) # de onde vem a janela
 janela1.focus_force() #forçar foco
-janela1.grab_set()    # impede que click na janela principal sem fechar janela atiual
+janela1.grab_set()    # impede que click na janela principal sem fechar janela atual
 #janela1.configure(background='red')
 #janela1.overrideredirect(True)  
 
@@ -61,7 +61,6 @@ menujan.add_cascade(label=' Contas Pagar',menu = filemenu)
 recebermenu= Menu(menujan, tearoff=0,)
 recebermenu.add_command(label = " Cliente",command= lambda: cliente_menu(janela1))
 recebermenu.add_command(label = " Contas Receber",command= lambda: contasrec_menu(janela1))
-recebermenu.add_command(label = " Produto",command=lambda: prod_menu(janela1))
 
 menujan.add_cascade(label=' Contas Receber',menu = recebermenu)
 

@@ -2866,8 +2866,8 @@ def contasrec_menu(janela1):
                                                pagamento TEXT,
                                                valpagar REAL(14,2) NOT NULL,
                                                PRIMARY KEY (codigo,documento,tparcela),   
-                                               FOREIGN KEY(codigo) REFERENCES  cliente(codigo),
-                                               ))'''
+                                               FOREIGN KEY(codigo) REFERENCES  cliente(codigo)
+                                               )'''
 
  criartabela2(janela3,sql) 
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
