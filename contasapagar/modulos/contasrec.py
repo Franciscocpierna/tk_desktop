@@ -40,8 +40,6 @@ def limpacamposcontasrec():
   tela.valpagar.delete(0,END)
   tela.documento.delete(0, END) 
   tela.tparcela.delete(0,END) 
-  tela.produto.delete(0,END)    
-  tela.descproduto.delete(0,END)
   return
 
 
@@ -193,22 +191,22 @@ def gerapdv(event):
       try:
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b, WHERE a.codigo = b.codigo  ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b  WHERE a.codigo = b.codigo   ORDER BY a.vencimento DESC''')
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
         
@@ -257,12 +255,12 @@ def gerapdp(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.pagamento ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.pagamento ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.pagamento DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.pagamento DESC''')
 
       
         
@@ -327,23 +325,23 @@ def gerapdat(event):
       try:
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
           
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
         
@@ -389,8 +387,8 @@ def gerapdf2(event):
          nomemem1= nomemem.get()
          nomemem1="%"+nomemem1+"%"
          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
             
      
 
@@ -437,12 +435,12 @@ def gerapd1(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.codigo ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.codigo ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.codigo DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b, "" WHERE a.codigo = b.codigo   ORDER BY a.codigo DESC''')
 
       
         
@@ -493,12 +491,12 @@ def geracompras(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.compra ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.compra ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.compra DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b, "" WHERE a.codigo = b.codigo AND  ORDER BY a.compra DESC''')
 
       
         
@@ -547,12 +545,12 @@ def gerapdf(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo  AND a.produto = d.codigo  ORDER BY b.nome ASC''')
+                                    a.valpagar,a.documento,a.tparcela 
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY b.nome ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY b.nome DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY b.nome DESC''')
 
       
         
@@ -930,8 +928,7 @@ def vercliente(event):
    tela.valpagar.delete(0,END)
    tela.documento.delete(0, END) 
    tela.tparcela.delete(0,END)
-   tela.produto.delete(0,END)
-   tela.descproduto.delete(0,END)
+   
    #
    codigomem=tela.codigo.get()         
    sql=  f"SELECT nome FROM cliente WHERE codigo = '{codigomem}'"  
@@ -948,44 +945,6 @@ def vercliente(event):
    tela.documento.focus()
    return
 
-def verproduto(event):
-   if len(tela.produto.get())!=5:
-      return
-
-   sqleres=""
-   manutencao=variaveis.getmanutencao()
-   opcao=variaveis.getopcao() 
-   if len(tela.produto.get())!=5:
-        messagebox1("produto tem que ter tamanho 5",manutencao)
-      
-        tela.produto.focus()
-        return
-   #
-   tela.nome.delete(0,END)
-   tela.compra.delete(0,END) 
-   tela.vencimento.delete(0,END) 
-   tela.descricao.delete(0,END)
-   tela.pagamento.delete(0,END)
-   tela.valpagar.delete(0,END)
-   tela.documento.delete(0, END) 
-   tela.tparcela.delete(0,END)
-   tela.produto.delete(0,END)
-   tela.descproduto.delete(0,END)
-   #
-   produtomem=tela.produto.get()         
-   sql=  f"SELECT nome FROM produto WHERE codigo = '{produtomem}'"  
-   mensagem="Produto"       
-   
-   
-   sqlres=lertabela(sql,produtomem,manutencao,mensagem,opcao)
-   if len(sqlres)==0:
-         messagebox1("produto não existe em Produto",manutencao)
-         limpacamposcontasrec()
-         tela.produto.focus()
-         return
-   tela.descproduto.insert(0, sqlres[0][0])
-   tela.codigo.focus()
-   return
 
 def verchave(event):
   sqlres=""
@@ -1033,16 +992,15 @@ def verchave(event):
   tela.descricao.delete(0,END)
   tela.pagamento.delete(0,END)
   tela.valpagar.delete(0,END)
-  tela.produto.delete(0,END)
-  tela.descproduto.delete(0,END)
+
 
   codigomem=tela.codigo.get().upper()
   documentomem=tela.documento.get()
   tparcelamem=tela.tparcela.get()
 
   sql=f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         
   mensagem="Contas"        
   sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao)
@@ -1058,8 +1016,6 @@ def verchave(event):
      tela.descricao.insert(0, sqlres[0][3]) 
      tela.pagamento.insert(0, recupdata(sqlres[0][4])) 
      tela.valpagar.insert(0, recuperaval(sqlres[0][5]))
-     tela.produto.insert(0, sqlres[0][6])
-     tela.descproduto.insert(0, sqlres[0][7])
   else:
     if opcao==1: 
        tela.compra.focus()
@@ -1145,8 +1101,7 @@ def incluircontasrec():
         else:    
          pagamentomem=tela.pagamento.get()
         valpagarmem= valores(tela.valpagar.get())
-        produtomem=tela.produto.get()
-        
+                
 
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
@@ -1157,8 +1112,8 @@ def incluircontasrec():
             cursor.execute(f'''INSERT INTO contasrec VALUES('{codigomem}','{compramem}','{vencimentomem}',
                                                             '{descricaomem}','{pagamentomem}',
                                                                  '{valpagarmem}','
-                                                                 '{documentomem}','{tparcelamem}',
-                                                                 '{produtomem}')''')
+                                                                 '{documentomem}','{tparcelamem}'
+                                                                 )''')
                
                      
             banco.commit()
@@ -1633,10 +1588,7 @@ def vercampos(event):
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        tela.pagamento.delete(0,END)
        tela.pagamento.focus()
-   if len(tela.produto.get())> 5:
-       messagebox1("campo produto tamanho 5 digite novamente",manutencao)
-       tela.produto.delete(0,END)
-       tela.produto.focus() 
+   
   
 def incluircontasrec_click(janela1):
     global tela
@@ -1664,7 +1616,6 @@ def incluircontasrec_click(janela1):
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
     tela.tparcela.bind("<KeyRelease>", verchave)
-    tela.tparcela.bind("<KeyRelease>", verproduto)
     tela.compra.bind("<KeyRelease>", dadosdatac)
     tela.vencimento.bind("<KeyRelease>", dadosdatav)
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
@@ -1674,7 +1625,6 @@ def incluircontasrec_click(janela1):
     tela.valpagar.bind("<FocusIn>",vercampos)
     tela.descricao.bind("<FocusIn>",vercampos)
     tela.pagamento.bind("<FocusIn>",vercampos)
-    tela.produto.bind("<FocusIn>",vercampos)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -1768,7 +1718,7 @@ def alteracaocontasrec():
     else:    
           pagamentomem=tela.pagamento.get()
     valpagarmem=valores(tela.valpagar.get())
-    produtomem=tela.produto.get()
+    
      
     
     res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
@@ -1795,8 +1745,8 @@ def alteracaocontasrec():
                                                     pagamento = '{pagamentomem}',
                                                     valpagar = '{valpagarmem}',
                                                     documento='{documentomem}',
-                                                    tparcela='{tparcelamem}',
-                                                    produto='{produtomem}' WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
+                                                    tparcela='{tparcelamem}'
+                                                     WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
                
 
                                       
@@ -1842,7 +1792,6 @@ def alteracaocontasrec_click(janela1):
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
      tela.tparcela.bind("<KeyRelease>", verchave)
-     tela.produto.bind("<KeyRelease>",verproduto)
      tela.compra.bind("<KeyRelease>", dadosdatac)
      tela.vencimento.bind("<KeyRelease>", dadosdatav)
      tela.pagamento.bind("<KeyRelease>", dadosdatap)
@@ -1852,7 +1801,6 @@ def alteracaocontasrec_click(janela1):
      tela.valpagar.bind("<FocusIn>",vercampos)
      tela.descricao.bind("<FocusIn>",vercampos)
      tela.pagamento.bind("<FocusIn>",vercampos)
-     tela.produto.bind("<FocusIn>",vercampos)    
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -1929,13 +1877,11 @@ def excluircontasrec_click(janela1):
      botao1.grid(row=14, column=0,padx=0,pady=50,sticky=W)
      tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
      tela.tparcela.bind("<KeyRelease>", verchave)
-     #tela.produto.bind("<KeyRelease>",verproduto)
      tela.compra.bind("<FocusIn>",vercampos)
      tela.vencimento.bind("<FocusIn>",vercampos)
      tela.valpagar.bind("<FocusIn>",vercampos)
      tela.descricao.bind("<FocusIn>",vercampos)
      tela.pagamento.bind("<FocusIn>",vercampos)
-     tela.produto.bind("<FocusIn>",vercampos)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -1955,13 +1901,13 @@ def consultacompraopcao(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.compra ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.compra ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo  ORDER BY a.compra DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b, "" WHERE a.codigo = b.codigo  ORDER BY a.compra DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2002,7 +1948,7 @@ def consulta_compra(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','produto','descproduto' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2013,8 +1959,7 @@ def consulta_compra(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-   tv.column('produto', minwidth=5, width=50)
-   tv.column('descproduto',minwidth=0, width=250)
+   
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2024,8 +1969,7 @@ def consulta_compra(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   tv.heading('produto', text='PRODUTO' )
-   tv.heading('descproduto', text="DESCRIÇÃO DO PRODUTO")
+   
 
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
@@ -2061,13 +2005,13 @@ def consultapagopcao2(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.pagamento ASC''')
+                                    a.valpagar, a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.pagamento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.pagamento DESC''')
+                                    a.valpagar, a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.pagamento DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2109,7 +2053,7 @@ def consulta_pagamento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','produto','descproduto' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2120,9 +2064,7 @@ def consulta_pagamento(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-   tv.column('produto', minwidth=5, width=50)
-   tv.column('descproduto',minwidth=0, width=250)
-   
+      
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2132,8 +2074,7 @@ def consulta_pagamento(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   tv.heading('produto', text='PRODUTO' )
-   tv.heading('descproduto', text="DESCRIÇÃO DO PRODUTO")
+   
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
@@ -2189,22 +2130,22 @@ def consultavencopcao2(event):
       try:
         if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo  ORDER BY a.vencimento ASC''')
+                                    a.valpagar, a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.vencimento ASC''')
    
         elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo  ORDER BY a.vencimento DESC''')
+                                    a.valpagar, a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.vencimento DESC''')
         elif escolhido == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    a.valpagar, a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
              
         
         sqlres=cursor.fetchall()
@@ -2458,7 +2399,7 @@ def consulta_vencimento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','produto','descproduto' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela'), show= 'headings')
    
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2469,9 +2410,7 @@ def consulta_vencimento(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-   tv.column('produto', minwidth=5, width=50)
-   tv.column('descproduto',minwidth=0, width=250)
-   
+      
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2481,8 +2420,7 @@ def consulta_vencimento(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   tv.heading('produto', text='PRODUTO' )
-   tv.heading('descproduto', text="DESCRIÇÃO DO PRODUTO")
+   
 
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
    dataini = Entry(janela4,width=15)
@@ -2525,13 +2463,13 @@ def consultacodigoopcao2(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo ORDER BY a.codigo ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.codigo ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo ORDER BY a.codigo DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.codigo DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2572,7 +2510,7 @@ def consulta_codigo2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','produto','descproduto' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2583,9 +2521,7 @@ def consulta_codigo2(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-   tv.column('produto', minwidth=5, width=50)
-   tv.column('descproduto',minwidth=0, width=250)
-   
+      
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2595,8 +2531,7 @@ def consulta_codigo2(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   tv.heading('produto', text='PRODUTO' )
-   tv.heading('descproduto', text="DESCRIÇÃO DO PRODUTO")
+   
   
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
@@ -2632,8 +2567,8 @@ def consutaporcao2(event):
             nomemem1= nomemem.get()
             nomemem1="%"+nomemem1+"%"
             cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
       
          
        
@@ -2681,7 +2616,7 @@ def consulta_porcao2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento','valpagar', 'documento','tparcela','produto','descproduto' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento','valpagar', 'documento','tparcela'), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2692,9 +2627,7 @@ def consulta_porcao2(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-   tv.column('produto', minwidth=5, width=50)
-   tv.column('descproduto',minwidth=0, width=250)
-   
+      
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2704,9 +2637,7 @@ def consulta_porcao2(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   tv.heading('produto', text='PRODUTO' )
-   tv.heading('descproduto', text="DESCRIÇÃO DO PRODUTO")
-
+   
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
 
@@ -2755,23 +2686,23 @@ def consultaatrasoopcao2(event):
       try:
         if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela, a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND     a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
         elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
           
         elif escolhido == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b,  produto d WHERE a.codigo = b.codigo AND a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela,a.produto,d.nome
-                                    FROM  contasrec a, cliente b, produto d WHERE a.codigo = b.codigo AND  a.produto = d.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
   
         sqlres=cursor.fetchall()
          
@@ -2816,7 +2747,7 @@ def consulta_ematraso(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela','produto','descproduto' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela'), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2827,9 +2758,7 @@ def consulta_ematraso(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-   tv.column('produto', minwidth=5, width=50)
-   tv.column('descproduto',minwidth=0, width=250)
-   
+      
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2839,9 +2768,7 @@ def consulta_ematraso(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   tv.heading('produto', text='PRODUTO' )
-   tv.heading('descproduto', text="DESCRIÇÃO DO PRODUTO")
- 
+    
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
    dataini = Entry(janela4,width=15)
    dataini.place(relx=0.06,rely=0.05)
@@ -2938,10 +2865,9 @@ def contasrec_menu(janela1):
                                                descricao varchar(50),
                                                pagamento TEXT,
                                                valpagar REAL(14,2) NOT NULL,
-                                               produto varchar(5),               
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  cliente(codigo),
-                                               FOREIGN KEY(produto) REFERENCES  produto(codigo))'''
+                                               ))'''
 
  criartabela2(janela3,sql) 
  janela3.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))

@@ -307,12 +307,12 @@ class montatela():
                #Label(manutencao1, text="(C)ompra ou (S)erviço:",font=('Arial', 15)).grid#(row=9, column=0,sticky=W)
                #self.cs = Entry(manutencao1,width=2)
                #self.cs.grid(row=9, column=1,sticky=W)
-               Label(manutencao1, text="Cod Produto:",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
-               self.produto = Entry(manutencao1,width=7)
-               self.produto.grid(row=9, column=1,sticky=W)
-               Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.25,rely=0.46)#grid(row=1, column=2,sticky=W)
-               self.descproduto = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
-               self.descproduto.place(relx=0.365,rely=0.47)#grid(row=1, column=3,sticky=E)
+               #Label(manutencao1, text="Cod Produto:",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
+               #self.produto = Entry(manutencao1,width=7)
+               #self.produto.grid(row=9, column=1,sticky=W)
+               #Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.25,rely=0.46)#grid(row=1, column=2,sticky=W)
+               #self.descproduto = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
+               #self.descproduto.place(relx=0.365,rely=0.47)#grid(row=1, column=3,sticky=E)
           
          
          manutencao1.geometry("%dx%d+%d+%d" % (self.largura, self.altura, centralizatela.posx,centralizatela.posy-20))
