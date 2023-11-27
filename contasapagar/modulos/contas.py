@@ -323,10 +323,10 @@ def gerapdat(event):
    memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
 
    #escolhido=escolha.get()
-   escolhido=variaveis1.getescolhido()
    escolhido=variaveis1.setescolhido(escolha.get())
+   escolhido=variaveis1.getescolhido()
    #escolhido1=escolha1.get()   
-   escolhido=variaveis1.setescolhido1(escolha1.get())
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1()
    try: 
       banco = sqlite3.connect('contaspagar.db')
@@ -827,7 +827,7 @@ def rel_nomep2(janela3):
    global janela4 
    #global escolhido
    global nomemem
-   global escolha1
+   global escolha
    #global escolhido1
 
    escolha=StringVar(value="D")

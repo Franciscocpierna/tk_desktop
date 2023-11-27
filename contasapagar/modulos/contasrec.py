@@ -288,6 +288,74 @@ def gerapdp(event):
    except Error as ex:
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contas pagar linha 244 "+str(ex),janela4)
         cursor.close()
+def geracaixa(event):
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+#   data1="21/09/2023"
+#   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
+
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   escolhido=variaveis1.setescolhido(escolha.get())
+   #escolhido1=escolha1.get()   
+   escolhido=variaveis1.setescolhido1(escolha1.get())
+   escolhido1=variaveis1.getescolhido1()
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+       if escolhido == "A" and dataini.get()!="":
+           cursor.execute(f'''a.pagamento,c.pagamento,c.valpagar,a.valpagar
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
+        
+       else:
+           cursor.execute(f'''SELECT a.pagamento,c.pagamento,c.valpagar,a.valpagar
+                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
+  
+       sqlres=cursor.fetchall()
+     
+    
+         
+       if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta", janela4)
+            cursor.close()
+            return             
+       else:
+           pdfgerado2(sqlres,"rel_atraso.pdf") #gerar PDF
+           if escolhido == "A":
+              imprimepdf2("rel_atraso.pdf")
+              cursor.close()              
+           else:        
+              abrirpdf2("rel_atraso.pdf")
+              cursor.close
+           return
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 283 "+str(ex),janela4)
+           cursor.close()
+           return
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contas pagar linha 287 "+str(ex),janela4)
+        cursor.close()
+        return
 
 def gerapdat(event):
    data = date.today() 
@@ -687,6 +755,56 @@ def rel_vencimento(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
+def rel_caixa(janela3):
+   global janela4 
+   #global escolhido
+   #global escolhido1
+   global escolha
+   global escolha1
+   global dataini 
+   global datafim
+
+   escolha=StringVar(value="D")
+   escolha1=StringVar(value="A")
+  
+   janela4 = Toplevel()
+   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório por Atraso de Pagamento geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)
+   optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2.place(relx=0.2,rely=0.3)
+   optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
+   optado3.place(relx=0.5,rely=0.3)
+   #escolhido1=escolha1.get()  
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.2,rely=0.5)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.32,rely=0.5)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.51,rely=0.5)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.62,rely=0.5)
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
+
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+  # keyboard.on_press_key("f3", lambda _: gerapdf3())
+   janela4.bind("<F3>", gerapdat)
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
 
 def rel_atraso(janela3):
@@ -2654,6 +2772,69 @@ def consulta_porcao2(janela3):
    # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consutaporcao2)
 
+def consultacaixaopcao2(event):
+   tv.delete(*tv.get_children())
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
+      
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())   
+   escolhido=variaveis1.getescolhido()
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+                  
+        if escolhido == "A" and dataini.get()!="":
+           cursor.execute(f'''a.pagamento,c.pagamento,c.valpagar,a.valpagar
+                                    a.valpagar,a.documento,a.tparcela
+                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
+        
+        else:
+           cursor.execute(f'''SELECT a.pagamento,c.pagamento,c.valpagar,a.valpagar
+                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
+  
+        sqlres=cursor.fetchall()
+         
+        if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
+            cursor.close()
+            
+        else:
+            for (c,n,co,ve,de,pr,pg,vp,doc,par,pr,dp) in sqlres:
+               co=recupdata(co)
+               ve=recupdata(ve)
+               pg=recupdata(pg)
+               vp=recuperaval(vp)
+               caixa=recuperaval(vr-vp)
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp,caixa)) 
+               
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 2203 "+str(ex),janela4)
+        cursor.close() 
+
 def consultaatrasoopcao2(event):
    tv.delete(*tv.get_children())
    data = date.today() 
@@ -2726,6 +2907,76 @@ def consultaatrasoopcao2(event):
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 2203 "+str(ex),janela4)
         cursor.close() 
 
+def consulta_caixa(janela3):
+   global janela4 
+   global tv 
+   #global escolhido
+   global escolha
+   global dataini 
+   global datafim
+
+   janela4 = Toplevel()
+   janela4.title("Consulta Caixa no Período ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   
+
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela'), show= 'headings')
+    
+   tv.column('codigo', minwidth=5, width=50)
+   tv.column('nome', minwidth=0, width=250)
+   tv.column('compra', minwidth=0, width=250)
+   tv.column('vencimento', minwidth=9, width=100)
+   tv.column('descricao', minwidth=1, width=250)
+   tv.column('pagamento', minwidth=0, width=100)
+   tv.column('valpagar', minwidth=0, width=100)
+   tv.column('documento', minwidth=0, width=200)
+   tv.column('tparcela', minwidth=0, width=200)
+      
+   tv.heading('codigo', text='CÓDIGO' )
+   tv.heading('nome', text='NOME')
+   tv.heading('compra', text='COMPRA')
+   tv.heading('vencimento', text='VENCIMENTO')
+   tv.heading('descricao', text='DESCRIÇÃO')
+   tv.heading('pagamento', text='PAGAMENTO')
+   tv.heading('valpagar', text='VALOR A PAGAR')
+   tv.heading('documento', text='DOCUMENTO')
+   tv.heading('tparcela', text='PARCELADO')
+    
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.06,rely=0.05)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.17,rely=0.05)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.22,rely=0.05)
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   escolha=StringVar(value="A")
+   optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
+   optado.grid(row=1, column=3)
+   optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
+   optado1.grid(row=1, column=4)
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+  # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   janela4.bind("<F3>", consultacaixaopcao2)
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
 
 def consulta_ematraso(janela3):
    global janela4 
@@ -2835,6 +3086,7 @@ def contasrec_menu(janela1):
  consultamenu.add_command(label = " Consulta por vencimento",command= lambda: consulta_vencimento(janela3))
  consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo2(janela3))
  consultamenu.add_command(label = " consulta por pedaço do nome: ", command=lambda:  consulta_porcao2(janela3))
+ consultamenu.add_command(label = " consulta Fluxo caixa: ", command=lambda:  consulta_caixa(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
 
 
@@ -2846,7 +3098,8 @@ def contasrec_menu(janela1):
  editmenu2.add_command(label = "Vencimento", command= lambda: rel_vencimento(janela3))
  editmenu2.add_command(label = "Em atraso", command= lambda: rel_atraso(janela3))
  editmenu2.add_command(label = "Pedaço do nome",command=lambda: rel_nomep2(janela3))
- editmenu2.add_command(label = "Codigo Fornecedor", command= lambda: rel_codigo2(janela3))
+ editmenu2.add_command(label = "Codigo Cliente", command= lambda: rel_codigo2(janela3))
+ editmenu2.add_command(label = "Fluxo de Caixa", command= lambda: rel_caixa(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
  menusair = Menu(menujan2, tearoff=0)
