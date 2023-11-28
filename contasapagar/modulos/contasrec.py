@@ -47,6 +47,7 @@ def limpacamposcontasrec():
 
 # Relatórios
 
+   
 def abrirpdf2(arquivo1):
  try:
   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
@@ -62,6 +63,82 @@ def abrirpdf2(arquivo1):
   return
 
  return
+
+
+def imprimepdfcx(arquivo1):
+  try: 
+   lista_impressoras = win32print.EnumPrinters(2)
+   impressora = lista_impressoras[2]
+   win32print.SetDefaultPrinter(impressora[2])
+   # mandar imprimir todos os arquivos de uma pasta
+   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
+   #lista_arquivos = os.listdir(caminho)
+   # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
+   #if arquivo in lista_arquivos:
+   win32api.ShellExecute(0, "print", arquivo1, None, caminho, 0)       
+   return
+  except  Error as ex:
+    messagebox1("Erro ao tentar imprimir linha 81 "+str(ex),janela4)
+    return
+
+def pdfgeracaixa(sqlres,arquivo):
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+  
+  
+   try: 
+    cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
+   except Error as ex:
+    messagebox1(str(ex)+ " linha 94",janela4)
+    return
+   cnv.setFont('Helvetica', 9)  
+   #cnv.drawString(10,830, "teste") # canto superior A4
+   cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
+   
+
+   cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
+   eixo = 20
+   y= 810
+   z=1
+   x=0
+
+#a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela FROM contasrec a, cliente b, contas c, fornecedor d
+   for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+        co=recupdata(co)
+        ve=recupdata(ve)
+        pg=recupdata(pg)
+        vp=recuperaval(vp)
+        x+=1
+        y -= 20
+        cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        
+        y-= 20
+        cnv.drawString(10,y, "Fornecedor: "+ c+ " Nome Fornecedor: "+ n)
+        y -= 20
+        cnv.drawString(10,y, "Compra: "+co+" Vencimento: " + ve+" Descrição:"+de) 
+        y -= 20               
+        cnv.drawString(10,y,  " Pagamento: "+pg+ " Valor a Pagar:"+str(vp))        
+        y -= 20
+        cnv.drawString(10,y, " Documento:"+doc+" Parcelas:"+par)
+        if z == 8: 
+         if x  < len(sqlres): 
+          z = 0 
+          y=810
+          cnv.showPage()
+          cnv.setFont('Helvetica', 9)
+          #
+          cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
+         
+          #    
+          cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
+        z+=1  
+            
+   cnv.save()
+   return
+ 
+
 
 
 
@@ -81,6 +158,87 @@ def imprimepdf2(arquivo1):
     messagebox1("Erro ao tentar imprimir linha 81 "+str(ex),janela4)
     return
 
+def pdfgeracaixa(sqlres,arquivo):
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+  
+  
+   try: 
+    cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
+   except Error as ex:
+    messagebox1(str(ex)+ " linha 94",janela4)
+    return
+   cnv.setFont('Helvetica', 9)  
+   #cnv.drawString(10,830, "teste") # canto superior A4
+   if arquivo=="rel_nome.pdf":
+    cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
+   elif  arquivo=="rel_codigo.pdf":
+    cnv.drawString(250,830, "Relatório por Código")   
+   elif  arquivo=="rel_nomep.pdf":
+     cnv.drawString(250,830, "Relatório por parte do Nome ou Código")   
+   elif  arquivo=="rel_vencimento.pdf":        
+    cnv.drawString(250,830, "Relatório por Vencimento")   
+   elif arquivo == "rel_compras.pdf":
+    cnv.drawString(250,830, "Relatório por Compras")  
+   elif arquivo == "rel_pagamento.pdf":
+    cnv.drawString(250,830, "Relatório por Pagamento")           
+   elif arquivo == "rel_atraso.pdf":
+    cnv.drawString(250,830, "Relatório por Atraso")
+
+   cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
+   eixo = 20
+   y= 810
+   z=1
+   x=0
+
+#a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, contas b
+   for (c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar) in sqlres:
+        co=recupdata(co)
+        ve=recupdata(ve)
+        pg=recupdata(pg)
+        vp=recuperaval(vp)
+        x+=1
+        y -= 20
+        cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        
+        y-= 20
+        cnv.drawString(10,y, "codigo: "+ c+ " Nome: "+ n)
+        y -= 20
+        cnv.drawString(10,y, "Compra: "+co+" Vencimento: " + ve+" Descrição:"+de) 
+        y -= 20               
+        cnv.drawString(10,y,  " Pagamento: "+pg+ " Valor a Pagar:"+str(vp))        
+        y -= 20
+        cnv.drawString(10,y, " Documento:"+doc+" Parcelas:"+par)
+        if z == 8: 
+         if x  < len(sqlres): 
+          z = 0 
+          y=810
+          cnv.showPage()
+          cnv.setFont('Helvetica', 9)
+          #
+          if arquivo=="rel_nome.pdf":
+            cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
+          elif  arquivo=="rel_codigo.pdf":
+            cnv.drawString(250,830, "Relatório por Código")   
+          elif  arquivo=="rel_nomep.pdf":
+            cnv.drawString(250,830, "Relatório por parte do Nome ou Código")   
+          elif  arquivo=="rel_verncimento.pdf":        
+            cnv.drawString(250,830, "Relatório por Vencimento")   
+          elif arquivo == "rel_compras.pdf":
+            cnv.drawString(250,830, "Relatório por Compras")  
+          elif arquivo == "rel_pagamento.pdf":
+            cnv.drawString(250,830, "Relatório por Pagamento")           
+          elif arquivo == "rel_atraso.pdf":
+            cnv.drawString(250,830, "Relatório por Atraso")
+
+          #    
+          cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
+        z+=1  
+            
+   cnv.save()
+   return
 
 def pdfgerado2(sqlres,arquivo):
    data = date.today() 
@@ -117,7 +275,7 @@ def pdfgerado2(sqlres,arquivo):
    z=1
    x=0
 
-   for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
+   for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
         co=recupdata(co)
         ve=recupdata(ve)
         pg=recupdata(pg)
@@ -288,6 +446,7 @@ def gerapdp(event):
    except Error as ex:
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contas pagar linha 244 "+str(ex),janela4)
         cursor.close()
+
 def geracaixa(event):
    data = date.today() 
    ano = data.year
@@ -323,13 +482,11 @@ def geracaixa(event):
       cursor = banco.cursor()
       try:
        if escolhido == "A" and dataini.get()!="":
-           cursor.execute(f'''a.pagamento,c.pagamento,c.valpagar,a.valpagar
-                                    a.valpagar,a.documento,a.tparcela
+           cursor.execute(f'''SELECT a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela
                                     FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
         
        else:
-           cursor.execute(f'''SELECT a.pagamento,c.pagamento,c.valpagar,a.valpagar
-                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
+           cursor.execute(f'''SELECT a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
   
        sqlres=cursor.fetchall()
      
@@ -340,12 +497,12 @@ def geracaixa(event):
             cursor.close()
             return             
        else:
-           pdfgerado2(sqlres,"rel_atraso.pdf") #gerar PDF
+           pdfgeracaixa(sqlres,"rel_atraso.pdf") #gerar PDF
            if escolhido == "A":
-              imprimepdf2("rel_atraso.pdf")
+              imprimepdf2("rel_caixa.pdf")
               cursor.close()              
            else:        
-              abrirpdf2("rel_atraso.pdf")
+              abrirpdf2("rel_caixa.pdf")
               cursor.close
            return
       except Error as ex: 
@@ -802,7 +959,7 @@ def rel_caixa(janela3):
    #escolhido=escolha.get()
    escolhido=variaveis1.setescolhido(escolha.get())
   # keyboard.on_press_key("f3", lambda _: gerapdf3())
-   janela4.bind("<F3>", gerapdat)
+   janela4.bind("<F3>", geracaixa)
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
@@ -2803,14 +2960,11 @@ def consultacaixaopcao2(event):
       cursor = banco.cursor()
       try:
                   
-        if escolhido == "A" and dataini.get()!="":
-           cursor.execute(f'''a.pagamento,c.pagamento,c.valpagar,a.valpagar
-                                    a.valpagar,a.documento,a.tparcela
-                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
+        if escolhido == "A"
+           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela  FROM  contasrec a, contas b  WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
         
         else:
-           cursor.execute(f'''SELECT a.pagamento,c.pagamento,c.valpagar,a.valpagar
-                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
+           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela  FROM  contasrec a,  contas b WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
   
         sqlres=cursor.fetchall()
          
@@ -2819,14 +2973,15 @@ def consultacaixaopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pr,pg,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,cn,apg,cpg,cval,aval,doca,tpa,docb,tpb) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
                caixa=recuperaval(vr-vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp,caixa)) 
-               
+               total = total + caixa 
+               tv.insert("","end",value=(c,n,co,cn,apg,cpg,cval,aval,doca,tpa,docb,tpb,caixa,total)) 
+       # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, cliente b, contas c      
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
            cursor.close()
@@ -2926,7 +3081,7 @@ def consulta_caixa(janela3):
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
-
+# a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, cliente b, contas c
    tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela'), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
