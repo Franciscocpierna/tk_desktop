@@ -101,44 +101,71 @@ def pdfgeracaixa(sqlres,arquivo):
     return
    cnv.setFont('Helvetica', 9)  
    #cnv.drawString(10,830, "teste") # canto superior A4
-   cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
+   cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
    
    cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
    eixo = 20
    y= 810
    z=1
    x=0
-
+   total=0
 #a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, contas b
    for (c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar) in sqlres:
         if c!="":
-          sql=sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
+          sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
           mensagem="cliente"       
-          c=lertabela(sql,c,janela4,mensagem,opcao=0)
+          nomec=lertabela(sql,c,janela4,mensagem,opcao=0)
         else:
-           c = "-----"
+           c='-----'
+           nomec = "--------------------------------------------------"
         if co!="":
-          sql=sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
+          sql=sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{co}'"  
           mensagem="fornecedor"       
-          co=lertabela(sql,co,janela4,mensagem,opcao=0)
+          nomef=lertabela(sql,co,janela4,mensagem,opcao=0)
         else:
           co = "-----"    
-
-        ve=recupdata(ve)
-        pg=recupdata(pg)
-        vp=recuperaval(vp)
+          nomef = "--------------------------------------------------"
+        if dpgc !='':
+         dpgc= recupdata(dpgc)
+        else:
+         dpgc="----------"   
+        if dpgf !='':
+         dpgc= recupdata(dpgf)
+        else:
+         dpgf="----------" 
+        if vpc!='' 
+           vpc=recuperaval(vpc)
+        else:
+           vpc="------------"
+        if vpco!='' 
+           vpco=recuperaval(vpco)
+        else:
+           vpco="------------"      
+        if cdoc='': 
+           cdoc="--------------------"
+        if cpar="":
+           cpar="---"
+        if codoc='': 
+           codoc="--------------------"
+        if copar="":
+           copar="---"
+        if vpc="------------"
+          total=total-vpco
+        else:
+          total=total+vpc 
+        total=recuperaval(total)                      
         x+=1
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-        
+        #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
         y-= 20
-        cnv.drawString(10,y, "codigo: "+ c+ " Nome: "+ n)
+        cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
         y -= 20
-        cnv.drawString(10,y, "Compra: "+co+" Vencimento: " + ve+" Descrição:"+de) 
+        cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
         y -= 20               
-        cnv.drawString(10,y,  " Pagamento: "+pg+ " Valor a Pagar:"+str(vp))        
+        cnv.drawString(10,y,  " Cliente Pag: "+dpgc+ " Fornecedor Pag: "+dpgf)        
         y -= 20
-        cnv.drawString(10,y, " Documento:"+doc+" Parcelas:"+par)
+        cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
         if z == 8: 
          if x  < len(sqlres): 
           z = 0 
