@@ -65,78 +65,7 @@ def abrirpdf2(arquivo1):
  return
 
 
-def imprimepdfcx(arquivo1):
-  try: 
-   lista_impressoras = win32print.EnumPrinters(2)
-   impressora = lista_impressoras[2]
-   win32print.SetDefaultPrinter(impressora[2])
-   # mandar imprimir todos os arquivos de uma pasta
-   caminho = r"C:\python_projetos\3.11.2\tk_desktop\arquivo"
-   #lista_arquivos = os.listdir(caminho)
-   # https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea
-   #if arquivo in lista_arquivos:
-   win32api.ShellExecute(0, "print", arquivo1, None, caminho, 0)       
-   return
-  except  Error as ex:
-    messagebox1("Erro ao tentar imprimir linha 81 "+str(ex),janela4)
-    return
 
-def pdfgeracaixa(sqlres,arquivo):
-   data = date.today() 
-   ano = data.year
-   mes = data.month
-   dia = data.day
-  
-  
-   try: 
-    cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
-   except Error as ex:
-    messagebox1(str(ex)+ " linha 94",janela4)
-    return
-   cnv.setFont('Helvetica', 9)  
-   #cnv.drawString(10,830, "teste") # canto superior A4
-   cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
-   
-
-   cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
-   eixo = 20
-   y= 810
-   z=1
-   x=0
-
-#a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela FROM contasrec a, cliente b, contas c, fornecedor d
-   for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
-        co=recupdata(co)
-        ve=recupdata(ve)
-        pg=recupdata(pg)
-        vp=recuperaval(vp)
-        x+=1
-        y -= 20
-        cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-        
-        y-= 20
-        cnv.drawString(10,y, "Fornecedor: "+ c+ " Nome Fornecedor: "+ n)
-        y -= 20
-        cnv.drawString(10,y, "Compra: "+co+" Vencimento: " + ve+" Descrição:"+de) 
-        y -= 20               
-        cnv.drawString(10,y,  " Pagamento: "+pg+ " Valor a Pagar:"+str(vp))        
-        y -= 20
-        cnv.drawString(10,y, " Documento:"+doc+" Parcelas:"+par)
-        if z == 8: 
-         if x  < len(sqlres): 
-          z = 0 
-          y=810
-          cnv.showPage()
-          cnv.setFont('Helvetica', 9)
-          #
-          cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
-         
-          #    
-          cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
-        z+=1  
-            
-   cnv.save()
-   return
  
 
 
@@ -172,21 +101,8 @@ def pdfgeracaixa(sqlres,arquivo):
     return
    cnv.setFont('Helvetica', 9)  
    #cnv.drawString(10,830, "teste") # canto superior A4
-   if arquivo=="rel_nome.pdf":
-    cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
-   elif  arquivo=="rel_codigo.pdf":
-    cnv.drawString(250,830, "Relatório por Código")   
-   elif  arquivo=="rel_nomep.pdf":
-     cnv.drawString(250,830, "Relatório por parte do Nome ou Código")   
-   elif  arquivo=="rel_vencimento.pdf":        
-    cnv.drawString(250,830, "Relatório por Vencimento")   
-   elif arquivo == "rel_compras.pdf":
-    cnv.drawString(250,830, "Relatório por Compras")  
-   elif arquivo == "rel_pagamento.pdf":
-    cnv.drawString(250,830, "Relatório por Pagamento")           
-   elif arquivo == "rel_atraso.pdf":
-    cnv.drawString(250,830, "Relatório por Atraso")
-
+   cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
+   
    cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))
    eixo = 20
    y= 810
@@ -195,7 +111,19 @@ def pdfgeracaixa(sqlres,arquivo):
 
 #a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, contas b
    for (c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar) in sqlres:
-        co=recupdata(co)
+        if c!="":
+          sql=sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
+          mensagem="cliente"       
+          c=lertabela(sql,c,janela4,mensagem,opcao=0)
+        else:
+           c = "-----"
+        if co!="":
+          sql=sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
+          mensagem="fornecedor"       
+          co=lertabela(sql,co,janela4,mensagem,opcao=0)
+        else:
+          co = "-----"    
+
         ve=recupdata(ve)
         pg=recupdata(pg)
         vp=recuperaval(vp)
