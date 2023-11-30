@@ -153,7 +153,8 @@ def pdfgeracaixa(sqlres,arquivo):
           total=total-vpco
         else:
           total=total+vpc 
-        total=recuperaval(total)                      
+        if total!=0:   
+         total=recuperaval(total)                      
         x+=1
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -163,7 +164,7 @@ def pdfgeracaixa(sqlres,arquivo):
         y -= 20
         cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
         y -= 20               
-        cnv.drawString(10,y,  " Cliente Pag: "+dpgc+ " Fornecedor Pag: "+dpgf)        
+        cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
         y -= 20
         cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
         if z == 8: 
@@ -2928,14 +2929,52 @@ def consultacaixaopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,cn,apg,cpg,cval,aval,doca,tpa,docb,tpb) in sqlres:
-               co=recupdata(co)
-               ve=recupdata(ve)
-               pg=recupdata(pg)
-               vp=recuperaval(vp)
-               caixa=recuperaval(vr-vp)
-               total = total + caixa 
-               tv.insert("","end",value=(c,n,co,cn,apg,cpg,cval,aval,doca,tpa,docb,tpb,caixa,total)) 
+            for (c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar) in sqlres:
+               if c!="":
+                sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
+                mensagem="cliente"       
+                nomec=lertabela(sql,c,janela4,mensagem,opcao=0)
+               else:
+                c='-----'
+                nomec = "--------------------------------------------------"
+               if co!="":
+                 sql=sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{co}'"  
+                 mensagem="fornecedor"       
+                 nomef=lertabela(sql,co,janela4,mensagem,opcao=0)
+               else:
+                 co = "-----"    
+                 nomef = "--------------------------------------------------"
+               if dpgc !='':
+                 dpgc= recupdata(dpgc)
+               else:
+                 dpgc="----------"   
+               if dpgf !='':
+                 dpgc= recupdata(dpgf)
+               else:
+                dpgf="----------" 
+               if vpc!='' 
+                vpc=recuperaval(vpc)
+               else:
+                vpc="------------"
+               if vpco!='' 
+                vpco=recuperaval(vpco)
+               else:
+                vpco="------------"      
+               if cdoc='': 
+                cdoc="--------------------"
+               if cpar="":
+                cpar="---"
+               if codoc='': 
+                codoc="--------------------"
+               if copar="":
+                copar="---"
+               if vpc="------------"
+                total=total-vpco
+               else:
+                total=total+vpc 
+               if total!=0:   
+                 total=recuperaval(total)
+               tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
        # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, cliente b, contas c      
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
@@ -3037,28 +3076,37 @@ def consulta_caixa(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, cliente b, contas c
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela'), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
     
-   tv.column('codigo', minwidth=5, width=50)
-   tv.column('nome', minwidth=0, width=250)
-   tv.column('compra', minwidth=0, width=250)
-   tv.column('vencimento', minwidth=9, width=100)
-   tv.column('descricao', minwidth=1, width=250)
-   tv.column('pagamento', minwidth=0, width=100)
-   tv.column('valpagar', minwidth=0, width=100)
-   tv.column('documento', minwidth=0, width=200)
-   tv.column('tparcela', minwidth=0, width=200)
+   tv.column('codigoc', minwidth=5, width=50)
+   tv.column('nomec', minwidth=0, width=250)
+   tv.column('codigof', minwidth=5, width=50)
+   tv.column('nomef', minwidth=0, width=250)
+   tv.column('pagcli', minwidth=0, width=250)
+   tv.column('pagf', minwidth=9, width=100)
+   tv.column('valcli', minwidth=0, width=100)
+   tv.column('valf', minwidth=0, width=100)
+   tv.column('caixa', minwidth=0, width=100)
+   tv.column('docli', minwidth=0, width=200)
+   tv.column('tparcli', minwidth=0, width=200)
+   tv.column('dof', minwidth=0, width=200)
+   tv.column('tparfor', minwidth=0, width=200)
+   
       
-   tv.heading('codigo', text='CÓDIGO' )
-   tv.heading('nome', text='NOME')
-   tv.heading('compra', text='COMPRA')
-   tv.heading('vencimento', text='VENCIMENTO')
-   tv.heading('descricao', text='DESCRIÇÃO')
-   tv.heading('pagamento', text='PAGAMENTO')
-   tv.heading('valpagar', text='VALOR A PAGAR')
-   tv.heading('documento', text='DOCUMENTO')
-   tv.heading('tparcela', text='PARCELADO')
-    
+   tv.heading('codigoc', text='CÓDIGO CLI' )
+   tv.heading('nomec', text='NOME CLIENTE')
+   tv.heading('codigof', text='CÓDIGO FOR')
+   tv.heading('nomef', text='NOME FORNECEDOR')
+   tv.heading('pagcli', text='DATA PAG CLI')
+   tv.heading('pagf', text='DATA PAG FOR')
+   tv.heading('valcli', text='VALOR CLI PAGAR')
+   tv.heading('valf', text='VALOR FOR PAGAR')
+   tv.heading('caixa', text='CAIXA')
+   tv.heading('docli', text='DOC.CLIENTE')
+   tv.heading('tparcli', text='PARC.CLIENTE')
+   tv.heading('dof', text='DOC.FORNEC')
+   tv.heading('tparfor', text='PAR.FORNEC')
+
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
    dataini = Entry(janela4,width=15)
    dataini.place(relx=0.06,rely=0.05)
