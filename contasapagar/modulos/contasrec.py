@@ -133,23 +133,23 @@ def pdfgeracaixa(sqlres,arquivo):
          dpgc= recupdata(dpgf)
         else:
          dpgf="----------" 
-        if vpc!='' 
+        if vpc!='': 
            vpc=recuperaval(vpc)
         else:
            vpc="------------"
-        if vpco!='' 
+        if vpco!='': 
            vpco=recuperaval(vpco)
         else:
            vpco="------------"      
-        if cdoc='': 
+        if cdoc=='': 
            cdoc="--------------------"
-        if cpar="":
+        if cpar=="":
            cpar="---"
-        if codoc='': 
+        if codoc=='': 
            codoc="--------------------"
-        if copar="":
+        if copar=="":
            copar="---"
-        if vpc="------------"
+        if vpc=="------------":
           total=total-vpco
         else:
           total=total+vpc 
@@ -2916,7 +2916,7 @@ def consultacaixaopcao2(event):
       cursor = banco.cursor()
       try:
                   
-        if escolhido == "A"
+        if escolhido == "A":
            cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela  FROM  contasrec a, contas b  WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
         
         else:
@@ -2952,23 +2952,23 @@ def consultacaixaopcao2(event):
                  dpgc= recupdata(dpgf)
                else:
                 dpgf="----------" 
-               if vpc!='' 
+               if vpc!='': 
                 vpc=recuperaval(vpc)
                else:
                 vpc="------------"
-               if vpco!='' 
+               if vpco!='': 
                 vpco=recuperaval(vpco)
                else:
                 vpco="------------"      
-               if cdoc='': 
+               if cdoc=='': 
                 cdoc="--------------------"
-               if cpar="":
+               if cpar=="":
                 cpar="---"
-               if codoc='': 
+               if codoc=='': 
                 codoc="--------------------"
-               if copar="":
+               if copar=="":
                 copar="---"
-               if vpc="------------"
+               if vpc=="------------":
                 total=total-vpco
                else:
                 total=total+vpc 
