@@ -28,6 +28,9 @@ variaveis=variaveis(0,0,0,"")
 variaveis1 = variaveis1(0,0)
 
 def verfornec1(event):
+   if len(tela.codigo.get())==1:
+       tela.codigo.insert(1, "F")
+          
    if len(tela.codigo.get())!=5:
       return
    tela.nome.delete(0,END) 

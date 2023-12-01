@@ -27,7 +27,9 @@ ler=""
 variaveis=variaveis(0,0,0,"")
 variaveis1 = variaveis1(0,0)
 
-def verfornec1(event):
+def vercli1(event):
+   if len(tela.codigo.get())==1:
+       tela.codigo.insert(1, "C")
    if len(tela.codigo.get())!=5:
       return
    tela.nome.delete(0,END) 
@@ -753,7 +755,7 @@ def incluirfor():
        tela.codigo.focus()
        return
    
-def incluirfor_click(janela1):
+def incluircli_click(janela1):
     #global opcao
     global tela
     #global manutencao
@@ -771,7 +773,7 @@ def incluirfor_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
-    tela.codigo.bind("<KeyRelease>", verfornec1)
+    tela.codigo.bind("<KeyRelease>", vercli1)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -779,7 +781,7 @@ def incluirfor_click(janela1):
     
            
      
-def cosultafor_click(janela1):
+def cosultacli_click(janela1):
      #global opcao
      #opcao=2
      #opcao1=1
@@ -795,7 +797,7 @@ def cosultafor_click(janela1):
      #manutencao = Toplevel() # janela de nível superior
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
-     tela.codigo.bind("<KeyRelease>", verfornec1)
+     tela.codigo.bind("<KeyRelease>", vercli1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaofor():
@@ -958,7 +960,7 @@ def alteracaofor():
            messagebox1("Registro não foi Alterado",manutencao)
            return
     
-def alteracaofor_click(janela1):
+def alteracaocli_click(janela1):
      #global opcao
      #opcao=3
      #opcao1=1
@@ -977,7 +979,7 @@ def alteracaofor_click(janela1):
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order()
      tela.codigo.focus()
-     tela.codigo.bind("<KeyRelease>", verfornec1)
+     tela.codigo.bind("<KeyRelease>", vercli1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -1017,7 +1019,7 @@ def exclusaofor():
     else:
            messagebox1("Registro não foi Excluido",manutencao)      
     return 
-def excluirfor_click(janela1): 
+def excluircli_click(janela1): 
     # global opcao
     # opcao=4
     # opcao1=1
@@ -1034,7 +1036,7 @@ def excluirfor_click(janela1):
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaofor)
      botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
-     tela.codigo.bind("<KeyRelease>", verfornec1)
+     tela.codigo.bind("<KeyRelease>", vercli1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas
 
@@ -1453,10 +1455,10 @@ def cliente_menu(janela1):
  filemenu= Menu(menujan2, tearoff=0,)
 
 
- filemenu.add_command(label = " Inclusão",command= lambda: incluirfor_click(janela3))
- filemenu.add_command(label = " Consulta",command= lambda: cosultafor_click(janela3))
- filemenu.add_command(label = " Alteração",command=lambda: alteracaofor_click(janela3))
- filemenu.add_command(label = " Excluir", command=lambda:  excluirfor_click(janela3))
+ filemenu.add_command(label = " Inclusão",command= lambda: incluircli_click(janela3))
+ filemenu.add_command(label = " Consulta",command= lambda: cosultacli_click(janela3))
+ filemenu.add_command(label = " Alteração",command=lambda: alteracaocli_click(janela3))
+ filemenu.add_command(label = " Excluir", command=lambda:  excluircli_click(janela3))
  menujan2.add_cascade(label = "Manutenção", menu = filemenu)
 
 
