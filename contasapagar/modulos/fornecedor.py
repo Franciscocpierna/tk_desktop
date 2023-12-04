@@ -380,7 +380,7 @@ def moverpdf(arquivo):
 def rel_nome(janela3):
    global janela4 
    #global escolhido
-   #global escolha
+   global escolha
    escolha=StringVar(value="D")
    janela4 = Toplevel()
    janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
@@ -449,7 +449,7 @@ def rel_cpfcnpj(janela3):
 def rel_nomep(janela3):
    global janela4 
    #global escolhido
-   #global escolha
+   global escolha
    global nomemem
 
    escolha=StringVar(value="D")
