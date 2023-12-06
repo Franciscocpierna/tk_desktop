@@ -62,15 +62,25 @@ def vercli1(event):
        if opcao ==1:
          limpacamposfor()
          return
-       else:  
-         tela.nome.insert(0, sqlres[0][1])
-         tela.endereco.insert(0,sqlres[0][2])
-         tela.telefone.insert(0, sqlres[0][3])
-         tela.tipo.insert(0, sqlres[0][4]) 
-         tela.cpf.insert(0, sqlres[0][5])
-         tela.cnpj.insert(0, sqlres[0][6])
-         tela.cep.insert(0, sqlres[0][7])
-         tela.e_mail.insert(0, sqlres[0][8])
+       else:
+         for (cod,nom,ende,tel,tip,cpf,cnp,cep,ema) in sqlres: 
+          tela.nome.insert(0, nom)
+          tela.endereco.insert(0,ende)
+          tela.telefone.insert(0, tel)
+          tela.tipo.insert(0, tip) 
+          tela.cpf.insert(0, cpf)
+          tela.cnpj.insert(0, cnp)
+          tela.cep.insert(0, cep)
+          tela.e_mail.insert(0, ema)
+         #   
+         #tela.nome.insert(0, sqlres[0][1])
+         #tela.endereco.insert(0,sqlres[0][2])
+         #tela.telefone.insert(0, sqlres[0][3])
+         #tela.tipo.insert(0, sqlres[0][4]) 
+         #tela.cpf.insert(0, sqlres[0][5])
+         #tela.cnpj.insert(0, sqlres[0][6])
+         #tela.cep.insert(0, sqlres[0][7])
+         #tela.e_mail.insert(0, sqlres[0][8])
    return
 
 

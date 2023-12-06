@@ -30,6 +30,9 @@ variaveis1 = variaveis1(0,0)
 
 
 def vercodigo(event):
+  if len(tela.codigo.get())==0:
+       tela.codigo.insert(0, "P")
+
   if len(tela.codigo.get()) < 5:
      return
   
@@ -424,6 +427,7 @@ def incluirprod_click(janela1):
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
+    tela.codigo.insert(0, "P")
     tela.codigo.bind("<KeyRelease>", vercodigo)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
@@ -447,6 +451,7 @@ def cosultaprod_click(janela1):
      manutencao=variaveis.getmanutencao()
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      tela.codigo.focus()
+     tela.codigo.insert(0, "P")
      tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
@@ -519,6 +524,7 @@ def alteracaoprod_click(janela1):
      botao1.grid(row=10, column=1,padx=0,pady=50,sticky=W)
      tab_order()
      tela.codigo.focus()
+     tela.codigo.insert(0, "P")
      tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
@@ -578,6 +584,7 @@ def excluirprod_click(janela1):
      tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
      botao1=Button(manutencao, text='Excluir',command=exclusaoprod)
      botao1.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+     tela.codigo.insert(0, "P")
      tela.codigo.bind("<KeyRelease>", vercodigo)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
 # consultas

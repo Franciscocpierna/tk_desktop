@@ -1139,6 +1139,8 @@ def tab_order2():
 
 
 def vercliente(event):
+   if len(tela.codigo.get())==1:
+       tela.codigo.insert(1, "C")
    if len(tela.codigo.get())!=5:
       return
 
@@ -1229,8 +1231,8 @@ def verchave(event):
   documentomem=tela.documento.get()
   tparcelamem=tela.tparcela.get()
 
-  sql=f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+  sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.valpagar
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         
   mensagem="Contas"        
@@ -1242,11 +1244,18 @@ def verchave(event):
      tela.codigo.focus()
      return
    else:
-     tela.compra.insert(0, recupdata(sqlres[0][1]))
-     tela.vencimento.insert(0,recupdata(sqlres[0][2]))
-     tela.descricao.insert(0, sqlres[0][3]) 
-     tela.pagamento.insert(0, recupdata(sqlres[0][4])) 
-     tela.valpagar.insert(0, recuperaval(sqlres[0][5]))
+     for (c,n,doc,par,com,ven,desc,dpg,val) in sqlres:
+       tela.compra.insert(0, recupdata(com))
+       tela.vencimento.insert(0,recupdata(ven))
+       tela.descricao.insert(0, desc) 
+       tela.pagamento.insert(0, recupdata(dpg)) 
+       tela.valpagar.insert(0, recuperaval(val))
+  
+       #tela.compra.insert(0, recupdata(sqlres[0][1]))
+       #tela.vencimento.insert(0,recupdata(sqlres[0][2]))
+       #tela.descricao.insert(0, sqlres[0][3]) 
+       #tela.pagamento.insert(0, recupdata(sqlres[0][4])) 
+       #tela.valpagar.insert(0, recuperaval(sqlres[0][5]))
   else:
     if opcao==1: 
        tela.compra.focus()

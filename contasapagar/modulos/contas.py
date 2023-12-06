@@ -702,7 +702,7 @@ def rel_atraso(janela3):
    global janela4 
    #global escolhido
    #global escolhido1
-   global escolha
+   
    global escolha1
    global dataini 
    global datafim
@@ -909,7 +909,7 @@ def rel_codigo2(janela3):
 
 def tab_order2():
   tela.codigo.focus
-  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desconto,tela.juros,tela.valpagar,tela.cs]
+  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desconto,tela.juros,tela.valpagar,tela.cs,tela.produto]
   for w in widgets:
      w.lift()
 
@@ -962,6 +962,9 @@ def vertipo(event):
 
 
 def verfornec(event):
+   if len(tela.codigo.get())==1:
+       tela.codigo.insert(1, "F")
+
    if len(tela.codigo.get())!=5:
       return
 
@@ -1031,7 +1034,7 @@ def verproduto(event):
    tela.documento.delete(0, END) 
    tela.tparcela.delete(0,END)
    tela.cs.delete(0, END)
-   tela.produto.delete(0,END)
+   #tela.produto.delete(0,END)
    tela.descproduto.delete(0,END)
    #
    produtomem=tela.produto.get()         
@@ -1108,8 +1111,8 @@ def verchave(event):
   documentomem=tela.documento.get()
   tparcelamem=tela.tparcela.get()
 
-  sql=f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.documento,a.tparcela,a.cs,a.produto,d.nome
+  sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs,a.produto,d.nome
                                     FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         
   mensagem="Contas"        
@@ -1121,18 +1124,18 @@ def verchave(event):
      tela.codigo.focus()
      return
    else:
-     tela.compra.insert(0, recupdata(sqlres[0][1]))
-     tela.vencimento.insert(0,recupdata(sqlres[0][2]))
-     tela.descricao.insert(0, sqlres[0][3]) 
-     tela.pagamento.insert(0, recupdata(sqlres[0][4])) 
-     tela.tipo.insert(0, sqlres[0][5])
-     tela.desctipo.insert(0, sqlres[0][6])
-     tela.valpagar.insert(0, recuperaval(sqlres[0][7]))
-     tela.desconto.insert(0, recuperaval(sqlres[0][8]))
-     tela.juros.insert(0, recuperaval(sqlres[0][9]))
-     tela.cs.insert(0, sqlres[0][10])
-     tela.produto.insert(0, sqlres[0][11])
-     tela.descproduto.insert(0, sqlres[0][12])
+     tela.compra.insert(0, recupdata(sqlres[0][4]))
+     tela.vencimento.insert(0,recupdata(sqlres[0][5]))
+     tela.descricao.insert(0, sqlres[0][6]) 
+     tela.pagamento.insert(0, recupdata(sqlres[0][7])) 
+     tela.tipo.insert(0, sqlres[0][8])
+     tela.desctipo.insert(0, sqlres[0][9])
+     tela.valpagar.insert(0, recuperaval(sqlres[0][10]))
+     tela.desconto.insert(0, recuperaval(sqlres[0][11]))
+     tela.juros.insert(0, recuperaval(sqlres[0][12]))
+     tela.cs.insert(0, sqlres[0][13])
+     tela.produto.insert(0, sqlres[0][14])
+     tela.descproduto.insert(0, sqlres[0][15])
   else:
     if opcao==1: 
        tela.compra.focus()
