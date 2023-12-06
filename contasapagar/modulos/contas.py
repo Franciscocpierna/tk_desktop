@@ -940,7 +940,7 @@ def vertipo(event):
   
    if len(tela.tipo.get()) > 2:
       messagebox1("é necessário preencher numeros e  tamanho  2 ",manutencao)
-      tela.ipo.delete(0,END)
+      tela.tipo.delete(0,END)
       tela.tipo.focus()
       return
 
@@ -952,8 +952,9 @@ def vertipo(event):
    sql=  f"SELECT nome FROM tipo WHERE codigo = '{tipomem}'"  
    sqlres=lertabela(sql,tipomem,manutencao,mensagem)
    if len(sqlres)==0:
+       messagebox.showinfo("","tipo não existe")
        tela.tipo.delete(0,END)
-       tela.codigo.focus()
+       tela.tipo.focus()
        return
    else:
       tela.desctipo.delete(0,END)
@@ -1009,6 +1010,10 @@ def verfornec(event):
    return
 
 def verproduto(event):
+
+   if len(tela.produto.get())==0:
+      tela.produto.insert(0, "P")
+
    if len(tela.produto.get())!=5:
       return
 
@@ -1021,22 +1026,8 @@ def verproduto(event):
         tela.produto.focus()
         return
    #
-   tela.nome.delete(0,END)
-   tela.compra.delete(0,END) 
-   tela.vencimento.delete(0,END) 
-   tela.descricao.delete(0,END)
-   tela.tipo.delete(0,END) 
-   tela.desctipo.delete(0,END)
-   tela.pagamento.delete(0,END)
-   tela.valpagar.delete(0,END)
-   tela.desconto.delete(0,END)
-   tela.juros.delete(0,END)
-   tela.documento.delete(0, END) 
-   tela.tparcela.delete(0,END)
-   tela.cs.delete(0, END)
-   #tela.produto.delete(0,END)
-   tela.descproduto.delete(0,END)
-   #
+   
+      #
    produtomem=tela.produto.get()         
    sql=  f"SELECT nome FROM produto WHERE codigo = '{produtomem}'"  
    mensagem="Produto"       
@@ -1044,8 +1035,10 @@ def verproduto(event):
    
    sqlres=lertabela(sql,produtomem,manutencao,mensagem,opcao)
    if len(sqlres)==0:
-         messagebox1("produto não existe em Produto",manutencao)
-         limpacamposcontas()
+         messagebox.showinfo("","produto não existe em Produto")
+         #limpacamposcontas()
+         tela.produto.delete(0,END)
+         tela.descproduto.delete(0,END)
          tela.produto.focus()
          return
    tela.descproduto.insert(0, sqlres[0][0])
@@ -1790,6 +1783,7 @@ def vercampos(event):
        tela.produto.delete(0,END)
        tela.produto.focus() 
   
+
 def incluircontas_click(janela1):
     global tela
     #global manutencao
@@ -1816,7 +1810,7 @@ def incluircontas_click(janela1):
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
     tela.tparcela.bind("<KeyRelease>", verchave)
-    tela.tparcela.bind("<KeyRelease>", verproduto)
+    #tela.tparcela.bind("<KeyRelease>", verproduto)
     tela.compra.bind("<KeyRelease>", dadosdatac)
     tela.vencimento.bind("<KeyRelease>", dadosdatav)
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
@@ -1834,6 +1828,7 @@ def incluircontas_click(janela1):
     tela.desconto.bind("<FocusIn>",vercampos)
     tela.juros.bind("<FocusIn>",vercampos)
     tela.cs.bind("<FocusIn>",vercampos)
+    tela.produto.bind("<KeyRelease>", verproduto)
     tela.produto.bind("<FocusIn>",vercampos)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              

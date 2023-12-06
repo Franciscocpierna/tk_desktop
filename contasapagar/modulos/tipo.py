@@ -502,7 +502,7 @@ def alteracaotipo():
            limpacampostipo()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela tipo linha 514"+ str(ex),manutencao)       
+            messagebox1("erro ao regravar tabela tipo linha 514"+ str(ex),manutencao)       
             limpacampostipo() 
             return
     else:

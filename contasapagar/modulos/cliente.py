@@ -963,7 +963,7 @@ def alteracaofor():
            limpacamposfor()   
            tela.codigo.focus()
       except Error as ex:
-            messagebox("erro ao regravar tabela Cliente linha 842"+ str(ex),manutencao)       
+            messagebox1("erro ao regravar tabela Cliente linha 842"+ str(ex),manutencao)       
             limpacamposfor() 
             return
     else:
