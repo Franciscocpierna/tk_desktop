@@ -702,7 +702,7 @@ def rel_atraso(janela3):
    global janela4 
    #global escolhido
    #global escolhido1
-   
+   global escolha
    global escolha1
    global dataini 
    global datafim
@@ -1040,6 +1040,7 @@ def verproduto(event):
          tela.produto.delete(0,END)
          tela.descproduto.delete(0,END)
          tela.produto.focus()
+         tela.produto.insert(0, "P")
          return
    tela.descproduto.insert(0, sqlres[0][0])
    tela.codigo.focus()
@@ -1047,7 +1048,9 @@ def verproduto(event):
 
 def verchave(event):
   sqlres=""
-
+  
+     
+     
   if len(tela.tparcela.get()) == 0:
       return
   if len(tela.tparcela.get()) < 3 and tela.tparcela.get().isnumeric():
@@ -1117,6 +1120,7 @@ def verchave(event):
      tela.codigo.focus()
      return
    else:
+     
      tela.compra.insert(0, recupdata(sqlres[0][4]))
      tela.vencimento.insert(0,recupdata(sqlres[0][5]))
      tela.descricao.insert(0, sqlres[0][6]) 
@@ -1129,9 +1133,25 @@ def verchave(event):
      tela.cs.insert(0, sqlres[0][13])
      tela.produto.insert(0, sqlres[0][14])
      tela.descproduto.insert(0, sqlres[0][15])
+     return
   else:
-    if opcao==1: 
-       tela.compra.focus()
+    if opcao==1:
+       if tela.tparcela.get()> "001":
+        tparcelamem1="001"
+        sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem1,manutencao,mensagem,opcao)
+        if len(sqlres)!=0:
+         tela.compra.insert(0, recupdata(sqlres[0][4]))
+         tela.descricao.insert(0, sqlres[0][6])
+         tela.cs.insert(0, sqlres[0][13])
+         tela.produto.insert(0, sqlres[0][14])
+         tela.descproduto.insert(0, sqlres[0][15])
+         tela.vencimento.focus()                     
+        else:
+          messagebox1("não existe a parcela 001 trocando parcela",manutencao)
+          tela.tparcela.insert(0, "001")
+          tela.compra.focus()   
+       else:  
+        tela.compra.focus()
        return 
     else:
        limpacamposcontas()
@@ -1173,11 +1193,11 @@ def incluircontas():
       messagebox1("Informação: digite a compra  esta vazio ",manutencao)
       tela.compra.focus()
       return
-   elif len(tela.vencimento.get())!=10: 
+   if len(tela.vencimento.get())!=10: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
-   elif len(tela.pagamento.get())!=0:
+   if len(tela.pagamento.get())!=0:
         if len(tela.pagamento.get())!=10: 
           messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
           tela.pagamento.focus()
@@ -1189,25 +1209,27 @@ def incluircontas():
            return 
 
 
-   elif len(tela.documento.get())==0 or len(tela.documento.get())>20:
+   if len(tela.documento.get())==0 or len(tela.documento.get())>20:
         messagebox1("Informação: digite o DOCUMENTO esta vazio ou é maior que 20",manutencao)
         tela.documento.focus()
         return
-   elif  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
+   if  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
         messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
         tela.tparcela.delete(0,END)
         tela.tparcela.focus()    
-   elif "S" not in tela.cs.get().upper(): 
+   if "S" not in tela.cs.get().upper(): 
          if "C" not in tela.cs.get().upper():
            messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
            tela.cs.delete(0, END)
            tela.cs.focus()
            return            
-   elif len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
-         messagebox1("Falta decrição da compra",manutencao)
+   if len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
+         messagebox1("Falta decrição da compra ou maior 50",manutencao)
          tela.descricao.focus()
-       
-         
+   if len(tela.produto.get())==0 or len(tela.produto.get())>5: 
+         messagebox1("Falta código do produto",manutencao)
+         tela.produto.focus()    
+          
       
    try:
         banco = sqlite3.connect('contaspagar.db')
@@ -1790,6 +1812,8 @@ def incluircontas_click(janela1):
     global codigomem
     global documentomem
     global tparcelamem
+    global flag 
+    
     #global opcao
     opcao=variaveis.setopcao(1) 
     opcao1=variaveis.setopcao1(2) 
@@ -1895,11 +1919,11 @@ def alteracaocontas():
       messagebox1("Informação: digite a compra  esta vazio ",manutencao)
       tela.compra.focus()
       return
-    elif len(tela.vencimento.get())!=10: 
+    if len(tela.vencimento.get())!=10: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
-    elif len(tela.pagamento.get())!=0:
+    if len(tela.pagamento.get())!=0:
         if len(tela.pagamento.get())!=10: 
           messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
           tela.pagamento.focus()
@@ -1911,26 +1935,30 @@ def alteracaocontas():
            return 
     
     
-    elif len(tela.descricao.get()) ==0 or len(tela.descricao.get())> 50:
+    if len(tela.descricao.get()) ==0 or len(tela.descricao.get())> 50:
         messagebox1("Informação: descrição tamanho até 50",manutencao)
         tela.descricao.focus()
         return
-    elif  len(tela.valpagar.get()) == 0  or len(tela.valpagar.get()) > 12:
+    if  len(tela.valpagar.get()) == 0  or len(tela.valpagar.get()) > 12:
          messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
          tela.valpagar.focus()
          return
-    elif "S" not in tela.cs.get().upper(): 
+    if "S" not in tela.cs.get().upper(): 
          if "C" not in tela.cs.get().upper():
            messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
            tela.cs.delete(0, END)
            tela.cs.focus()
            return
-    elif len(tela.pagamento.get())!=0:
+    if len(tela.pagamento.get())!=0:
         if len(tela.tipo.get()) !=2:
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
            tela.tipo.focus()
            return      
      
+    if len(tela.produto.get())!=5:
+         messagebox1("Produto tamanho 5 ",manutencao)
+         tela.produto.focus()
+         return 
     codigomem=tela.codigo.get()
     documentomem=tela.documento.get()
     tparcelamem = tela.tparcela.get()

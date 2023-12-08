@@ -662,7 +662,7 @@ def limpacamposfor():
 
 
 
-def incluirfor():
+def incluircli():
       
    sqlres="" 
    
@@ -682,24 +682,24 @@ def incluirfor():
         messagebox1("Informação: digite o Nome esta vazio ou é maior que 50",manutencao)
         tela.nome.focus()
         return
-   elif len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
+   if len(tela.endereco.get())==0 or len(tela.endereco.get())>50: 
         messagebox1("Informação: Endereço esta vazio ou é maior que 50",manutencao)
         tela.endereco.focus()
         return
-   elif len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
+   if len(tela.telefone.get())==0 or len(tela.telefone.get())>11:
         messagebox1("Informação: digite o Nome esta vazio ou é maior que 11",manutencao)
         tela.telefone.focus()
         return    
-   elif len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J", "f", "j"):
+   if len(tela.tipo.get())!=1 or tela.tipo.get() not in ("F","J", "f", "j"):
         messagebox1("Informação: tipo  tamanho 1 e pessoa (F)isica ou (J)urica",manutencao)
         tela.tipo.focus()
         return
-   elif len(tela.cep.get()) != 8:
+   if len(tela.cep.get()) != 8:
         messagebox1("Informação: digite o Cep tamanho 8",manutencao)
         tela.cep.focus()
         return
           
-   elif  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) !=11:
+   if  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) !=11:
          messagebox1("Cpf tem que ser tamanho 11 ",manutencao)
          tela.cpf.focus()
          
@@ -710,7 +710,7 @@ def incluirfor():
          else:
               return
 
-   elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) !=14:
+   if tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) !=14:
                messagebox1("Cnpj tem que ser tamanho 14 ",manutencao)
                tela.cnpj.focus()
          
@@ -720,10 +720,10 @@ def incluirfor():
                  return
                else:
                  return      
-   elif  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) == 11:
+   if  tela.tipo.get() in ("F","f") and len(tela.cpf.get()) == 11:
            if  len(tela.cnpj.get()) !=0:
                tela.cnpj.delete(0,END) 
-   elif tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) == 14:
+   if tela.tipo.get() in ("J","j") and len(tela.cnpj.get()) == 14:
            if  len(tela.cpf.get()) !=0:
                tela.cpf.delete(0,END)         
    
@@ -779,7 +779,7 @@ def incluircli_click(janela1):
     manutencao=variaveis.getmanutencao()   
     # manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-    botao=Button(manutencao, text='Salvar',command=incluirfor)
+    botao=Button(manutencao, text='Salvar',command=incluircli)
     botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()

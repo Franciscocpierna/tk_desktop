@@ -1300,11 +1300,11 @@ def incluircontasrec():
       messagebox1("Informação: digite a compra  esta vazio ",manutencao)
       tela.compra.focus()
       return
-   elif len(tela.vencimento.get())!=10: 
+   if len(tela.vencimento.get())!=10: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
-   elif len(tela.pagamento.get())!=0:
+   if len(tela.pagamento.get())!=0:
         if len(tela.pagamento.get())!=10: 
           messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
           tela.pagamento.focus()
@@ -1312,17 +1312,17 @@ def incluircontasrec():
         
 
 
-   elif len(tela.documento.get())==0 or len(tela.documento.get())>20:
+   if len(tela.documento.get())==0 or len(tela.documento.get())>20:
         messagebox1("Informação: digite o DOCUMENTO esta vazio ou é maior que 20",manutencao)
         tela.documento.focus()
         return
-   elif  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
+   if  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
         messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
         tela.tparcela.delete(0,END)
         tela.tparcela.focus()    
                
-   elif len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
-         messagebox1("Falta decrição da compra",manutencao)
+   if len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
+         messagebox1("Falta decrição da compra ou tamanho maior 50",manutencao)
          tela.descricao.focus()
        
          
@@ -1925,22 +1925,22 @@ def alteracaocontasrec():
       messagebox1("Informação: digite a compra  esta vazio ",manutencao)
       tela.compra.focus()
       return
-    elif len(tela.vencimento.get())!=10: 
+    if len(tela.vencimento.get())!=10: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
-    elif len(tela.pagamento.get())!=0:
+    if len(tela.pagamento.get())!=0:
         if len(tela.pagamento.get())!=10: 
           messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
           tela.pagamento.focus()
           return        
             
     
-    elif len(tela.descricao.get()) ==0 or len(tela.descricao.get())> 50:
+    if len(tela.descricao.get()) ==0 or len(tela.descricao.get())> 50:
         messagebox1("Informação: descrição tamanho até 50",manutencao)
         tela.descricao.focus()
         return
-    elif  len(tela.valpagar.get()) == 0  or len(tela.valpagar.get()) > 12:
+    if  len(tela.valpagar.get()) == 0  or len(tela.valpagar.get()) > 12:
          messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
          tela.valpagar.focus()
          return
