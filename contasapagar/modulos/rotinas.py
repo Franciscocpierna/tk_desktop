@@ -156,7 +156,8 @@ def lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao=
           return  sqlres
        else:
           if opcao ==1:
-            messagebox1("esse "+mensagem+" já  existe não pode incluir ",manutencao)                  
+              pass
+           # messagebox1("esse "+mensagem+" já  existe não pode incluir ",manutencao)                  
        return sqlres 
    except Error as ex:
        messagebox1("Erro na leitura da tabela"+mensagem+"  linha 159 em rotinas "+str(ex),manutencao)

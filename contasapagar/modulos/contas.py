@@ -1106,6 +1106,7 @@ def verchave(event):
   codigomem=tela.codigo.get().upper()
   documentomem=tela.documento.get()
   tparcelamem=tela.tparcela.get()
+  
 
   sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs,a.produto,d.nome
@@ -1137,19 +1138,24 @@ def verchave(event):
   else:
     if opcao==1:
        if tela.tparcela.get()> "001":
-        tparcelamem1="001"
-        sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem1,manutencao,mensagem,opcao)
+        tparcelamem="001"
+        sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs,a.produto,d.nome
+                                    FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
+        sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao)
         if len(sqlres)!=0:
          tela.compra.insert(0, recupdata(sqlres[0][4]))
          tela.descricao.insert(0, sqlres[0][6])
          tela.cs.insert(0, sqlres[0][13])
          tela.produto.insert(0, sqlres[0][14])
          tela.descproduto.insert(0, sqlres[0][15])
-         tela.vencimento.focus()                     
+         tela.vencimento.focus()  
+         return                   
         else:
           messagebox1("não existe a parcela 001 trocando parcela",manutencao)
           tela.tparcela.insert(0, "001")
-          tela.compra.focus()   
+          tela.compra.focus()
+          return   
        else:  
         tela.compra.focus()
        return 

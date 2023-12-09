@@ -1257,9 +1257,28 @@ def verchave(event):
        #tela.pagamento.insert(0, recupdata(sqlres[0][4])) 
        #tela.valpagar.insert(0, recuperaval(sqlres[0][5]))
   else:
-    if opcao==1: 
-       tela.compra.focus()
-       return 
+    if opcao==1:
+       if tela.tparcela.get()> "001":
+        tparcelamem1="001"
+        sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                    a.valpagar
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
+       
+        sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem1,manutencao,mensagem,opcao)
+        if len(sqlres)!=0:
+         for (c,n,doc,par,com,ven,desc,dpg,val) in sqlres:
+          tela.compra.insert(0, recupdata(com))   
+          tela.descricao.insert(0, sqlres[0][6])
+         tela.vencimento.focus()
+         return                     
+        else:
+          messagebox1("não existe a parcela 001 trocando parcela",manutencao)
+          tela.tparcela.insert(0, "001")
+          tela.compra.focus()
+          return   
+       else:  
+        tela.compra.focus()
+        return 
     else:
        limpacamposcontasrec()
        tela.codigo.focus()
