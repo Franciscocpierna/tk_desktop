@@ -1250,12 +1250,6 @@ def verchave(event):
        tela.descricao.insert(0, desc) 
        tela.pagamento.insert(0, recupdata(dpg)) 
        tela.valpagar.insert(0, recuperaval(val))
-  
-       #tela.compra.insert(0, recupdata(sqlres[0][1]))
-       #tela.vencimento.insert(0,recupdata(sqlres[0][2]))
-       #tela.descricao.insert(0, sqlres[0][3]) 
-       #tela.pagamento.insert(0, recupdata(sqlres[0][4])) 
-       #tela.valpagar.insert(0, recuperaval(sqlres[0][5]))
   else:
     if opcao==1:
        if tela.tparcela.get()> "001":
