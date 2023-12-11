@@ -1332,12 +1332,13 @@ def incluircontasrec():
    if  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
         messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
         tela.tparcela.delete(0,END)
-        tela.tparcela.focus()    
+        tela.tparcela.focus()  
+        return  
                
    if len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
          messagebox1("Falta decrição da compra ou tamanho maior 50",manutencao)
          tela.descricao.focus()
-       
+         return
          
       
    try:

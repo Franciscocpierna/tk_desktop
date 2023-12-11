@@ -1042,7 +1042,10 @@ def verproduto(event):
          tela.produto.focus()
          tela.produto.insert(0, "P")
          return
-   tela.descproduto.insert(0, sqlres[0][0])
+   if tela.descproduto.get()=="": 
+      tela.descproduto.insert(0, sqlres[0][0])
+   if tela.descricao.get()=="":
+     tela.descricao.insert(0, sqlres[0][0])
    tela.codigo.focus()
    return
 
@@ -1213,7 +1216,10 @@ def incluircontas():
            messagebox1("Tipo é a Forma de Pagamento e tem tamanho 2 ",manutencao)
            tela.tipo.focus()
            return 
-
+   if tela.tipo.get()=="":
+       tela.tipo.insert(0, "00")
+       tela.desctipo.insert(0, "NÃO PREVISTO")  
+       
 
    if len(tela.documento.get())==0 or len(tela.documento.get())>20:
         messagebox1("Informação: digite o DOCUMENTO esta vazio ou é maior que 20",manutencao)
@@ -1222,7 +1228,8 @@ def incluircontas():
    if  not tela.tparcela.get().isnumeric() and tela.tparcela.get()!=3:          
         messagebox1("preencher nr parcela com numeros e tamanho  3 ",manutencao)
         tela.tparcela.delete(0,END)
-        tela.tparcela.focus()    
+        tela.tparcela.focus()
+        return    
    if "S" not in tela.cs.get().upper(): 
          if "C" not in tela.cs.get().upper():
            messagebox1(" (C) compra e (S) serviço tamanho 1 ",manutencao)
@@ -1232,10 +1239,11 @@ def incluircontas():
    if len(tela.descricao.get())==0 or len(tela.descricao.get())>50: 
          messagebox1("Falta decrição da compra ou maior 50",manutencao)
          tela.descricao.focus()
+         return
    if len(tela.produto.get())==0 or len(tela.produto.get())>5: 
          messagebox1("Falta código do produto",manutencao)
          tela.produto.focus()    
-          
+         return 
       
    try:
         banco = sqlite3.connect('contaspagar.db')
