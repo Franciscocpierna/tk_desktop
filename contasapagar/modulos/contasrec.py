@@ -1363,11 +1363,23 @@ def incluircontasrec():
        
             banco = sqlite3.connect('contaspagar.db')
             cursor = banco.cursor()
-            cursor.execute(f'''INSERT INTO contasrec VALUES('{codigomem}','{compramem}','{vencimentomem}',
+            '''
+(codigo varchar(5)  NOT NULL,
+                                               documento varchar(20),
+                                               tparcela varchar(3), 
+                                               compra TEXT NOT NULL, 
+                                               vencimento TEXT NOT NULL,
+                                               descricao varchar(50),
+                                               pagamento TEXT,
+                                               valpagar REAL(14,2) NOT NULL,
+                                               PRIMARY KEY (codigo,documento,tparcela),   
+                                               FOREIGN KEY(codigo) REFERENCES  cliente(codigo)
+'''
+
+            cursor.execute(f'''INSERT INTO contasrec VALUES('{codigomem}','{documentomem}','{tparcelamem}','{compramem}','{vencimentomem}',
                                                             '{descricaomem}','{pagamentomem}',
-                                                                 '{valpagarmem}','
-                                                                 '{documentomem}','{tparcelamem}'
-                                                                 )''')
+                                                                 '{valpagarmem}'
+                                                                   )''')
                
                      
             banco.commit()
@@ -1993,14 +2005,14 @@ def alteracaocontasrec():
           
 
            cursor.execute(f'''UPDATE contasrec SET codigo = '{codigomem}',
+                                                    documento='{documentomem}',
+                                                    tparcela='{tparcelamem}'
                                                     compra ='{compramem}',
                                                     vencimento ='{vencimentomem}',
                                                     descricao ='{descricaomem}',
                                                     pagamento = '{pagamentomem}',
-                                                    valpagar = '{valpagarmem}',
-                                                    documento='{documentomem}',
-                                                    tparcela='{tparcelamem}'
-                                                     WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
+                                                    valpagar = '{valpagarmem}'
+                                                    WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
                
 
                                       
@@ -2161,7 +2173,7 @@ def consultacompraopcao(event):
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
-                                    FROM  contasrec a, cliente b, "" WHERE a.codigo = b.codigo  ORDER BY a.compra DESC''')
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.compra DESC''')
         sqlres=cursor.fetchall()
      
     
@@ -2170,12 +2182,12 @@ def consultacompraopcao(event):
             messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1505 "+str(ex),janela4)
@@ -2275,7 +2287,7 @@ def consultapagopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
@@ -2413,7 +2425,7 @@ def consultavencopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
@@ -2733,7 +2745,7 @@ def consultacodigoopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
@@ -2836,7 +2848,7 @@ def consutaporcao2(event):
                     cursor.close()
                     return
             else:
-                    for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
+                    for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
                       co=recupdata(co)
                       ve=recupdata(ve)
                       pg=recupdata(pg)
@@ -3064,7 +3076,7 @@ def consultaatrasoopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par,pr,dp) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
