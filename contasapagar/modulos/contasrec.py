@@ -1256,7 +1256,7 @@ def verchave(event):
         tparcelamem1="001"
         sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar
-                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem1}' '''
        
         sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem1,manutencao,mensagem,opcao)
         if len(sqlres)!=0:
@@ -2006,7 +2006,7 @@ def alteracaocontasrec():
 
            cursor.execute(f'''UPDATE contasrec SET codigo = '{codigomem}',
                                                     documento='{documentomem}',
-                                                    tparcela='{tparcelamem}'
+                                                    tparcela='{tparcelamem}',
                                                     compra ='{compramem}',
                                                     vencimento ='{vencimentomem}',
                                                     descricao ='{descricaomem}',
@@ -2292,7 +2292,7 @@ def consultapagopcao2(event):
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1613 "+str(ex),janela4)
@@ -2430,7 +2430,7 @@ def consultavencopcao2(event):
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1723 "+str(ex),janela4)
@@ -2750,7 +2750,7 @@ def consultacodigoopcao2(event):
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1947 "+str(ex),janela4)
@@ -2853,7 +2853,7 @@ def consutaporcao2(event):
                       ve=recupdata(ve)
                       pg=recupdata(pg)
                       vp=recuperaval(vp)
-                      tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
+                      tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
  
                     
                     cursor.close()
@@ -3081,7 +3081,7 @@ def consultaatrasoopcao2(event):
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,pr,dp)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
