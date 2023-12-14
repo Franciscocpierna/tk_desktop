@@ -1066,7 +1066,7 @@ def verchave(event):
      tela.tparcela.focus()
      return
   
-  if len(tela.tparcela.get()) > 3:
+  if len(tela.tparcela.get()) != 3:
       messagebox1("é necessário preencher nr parcela  tamanho  3 ",manutencao)
       tela.tparcela.delete(0,END)
       tela.tparcela.focus()
@@ -1156,6 +1156,7 @@ def verchave(event):
          return                   
         else:
           messagebox1("não existe a parcela 001 trocando parcela",manutencao)
+          tela.tparcela.delete(0,END)
           tela.tparcela.insert(0, "001")
           tela.compra.focus()
           return   
@@ -1193,7 +1194,7 @@ def incluircontas():
         limpacamposcontas()
         tela.documento.focus()
         return
-   if len(tela.tparcela.get()) < 3:
+   if len(tela.tparcela.get()) != 3:
         messagebox1("parcela tamanho 3 digite ",manutencao)
         limpacamposcontas() 
         tela.tparcela.focus()

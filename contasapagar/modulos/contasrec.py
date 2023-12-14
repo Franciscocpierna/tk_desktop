@@ -109,7 +109,8 @@ def pdfgeracaixa(sqlres,arquivo):
    z=1
    x=0
    total=0
-#a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, contas b
+#a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, contas b
+#SELECT a.codigo,c.codigo,a.pagamento,c.pagamento,a.valpagar,c.valpagar,a.documento,a.tparcela,c.documento,c.tparcela
    for (c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar) in sqlres:
         if c!="":
           sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
@@ -174,21 +175,7 @@ def pdfgeracaixa(sqlres,arquivo):
           cnv.showPage()
           cnv.setFont('Helvetica', 9)
           #
-          if arquivo=="rel_nome.pdf":
-            cnv.drawString(250,830, "Relatório por Nomes") # centro do pdf linha superior
-          elif  arquivo=="rel_codigo.pdf":
-            cnv.drawString(250,830, "Relatório por Código")   
-          elif  arquivo=="rel_nomep.pdf":
-            cnv.drawString(250,830, "Relatório por parte do Nome ou Código")   
-          elif  arquivo=="rel_verncimento.pdf":        
-            cnv.drawString(250,830, "Relatório por Vencimento")   
-          elif arquivo == "rel_compras.pdf":
-            cnv.drawString(250,830, "Relatório por Compras")  
-          elif arquivo == "rel_pagamento.pdf":
-            cnv.drawString(250,830, "Relatório por Pagamento")           
-          elif arquivo == "rel_atraso.pdf":
-            cnv.drawString(250,830, "Relatório por Atraso")
-
+          cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
           #    
           cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
         z+=1  
@@ -438,11 +425,12 @@ def geracaixa(event):
       cursor = banco.cursor()
       try:
        if escolhido == "A" and dataini.get()!="":
-           cursor.execute(f'''SELECT a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela
-                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
+           cursor.execute(f'''SELECT a.codigo,c.codigo,a.pagamento,c.pagamento,a.valpagar,c.valpagar,a.documento,a.tparcela,c.documento,c.tparcela
+                                    FROM  contasrec a, contas c  WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
         
        else:
-           cursor.execute(f'''SELECT a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela                                    FROM  contasrec a, cliente b, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
+           cursor.execute(f'''SELECT a.codigo,c.codigo,a.pagamento,c.pagamento,a.valpagar,c.valpagar,a.documento,a.tparcela,c.documento,c.tparcela
+                                    FROM  contasrec a, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini} AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
   
        sqlres=cursor.fetchall()
      
@@ -453,7 +441,7 @@ def geracaixa(event):
             cursor.close()
             return             
        else:
-           pdfgeracaixa(sqlres,"rel_atraso.pdf") #gerar PDF
+           pdfgeracaixa(sqlres,"rel_caxa.pdf") #gerar PDF
            if escolhido == "A":
               imprimepdf2("rel_caixa.pdf")
               cursor.close()              
@@ -1267,6 +1255,7 @@ def verchave(event):
          return                     
         else:
           messagebox1("não existe a parcela 001 trocando parcela",manutencao)
+          tela.tparcela.delete(0,END)
           tela.tparcela.insert(0, "001")
           tela.compra.focus()
           return   
@@ -1304,7 +1293,7 @@ def incluircontasrec():
         limpacamposcontasrec()
         tela.documento.focus()
         return
-   if len(tela.tparcela.get()) < 3:
+   if len(tela.tparcela.get()) != 3:
         messagebox1("parcela tamanho 3 digite ",manutencao)
         limpacamposcontasrec() 
         tela.tparcela.focus()
@@ -2926,6 +2915,7 @@ def consultacaixaopcao2(event):
    ano = data.year
    mes = data.month
    dia = data.day
+   total=0
    if dataini.get() !="":
        if datafim.get()=="":
          messagebox1("Data final precisa ser digitada",janela4)
@@ -2952,10 +2942,10 @@ def consultacaixaopcao2(event):
       try:
                   
         if escolhido == "A":
-           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela  FROM  contasrec a, contas b  WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
+           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela  FROM  contasrec a, contas b  WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
         
         else:
-           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela  FROM  contasrec a,  contas b WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
+           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela  FROM  contasrec a,  contas b WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
   
         sqlres=cursor.fetchall()
          
@@ -3010,7 +3000,7 @@ def consultacaixaopcao2(event):
                if total!=0:   
                  total=recuperaval(total)
                tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
-       # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, cliente b, contas c      
+       # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c      
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
            cursor.close()
@@ -3110,7 +3100,7 @@ def consulta_caixa(janela3):
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
-# a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.doumento,b.tparcela from contasrec a, cliente b, contas c
+# a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c
    tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
     
    tv.column('codigoc', minwidth=5, width=50)
