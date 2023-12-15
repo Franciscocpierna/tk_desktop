@@ -87,13 +87,13 @@ def imprimepdf2(arquivo1):
     messagebox1("Erro ao tentar imprimir linha 81 "+str(ex),janela4)
     return
 
-def pdfgeracaixa(sqlres,arquivo):
+def pdfgeracaixa(sqlres,sqlres1,arquivo):
    data = date.today() 
    ano = data.year
    mes = data.month
    dia = data.day
-  
-  
+   i1=len(sqlres1)-1
+   i=0 
    try: 
     cnv = canvas.Canvas(rf"C:\python_projetos\3.11.2\tk_desktop\arquivo\{arquivo}", pagesize=A4)
    except Error as ex:
@@ -109,66 +109,30 @@ def pdfgeracaixa(sqlres,arquivo):
    z=1
    x=0
    total=0
-#a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, contas b
-#SELECT a.codigo,c.codigo,a.pagamento,c.pagamento,a.valpagar,c.valpagar,a.documento,a.tparcela,c.documento,c.tparcela
-   for (c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar) in sqlres:
-        if c!="":
-          sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
-          mensagem="cliente"       
-          nomec=lertabela(sql,c,janela4,mensagem,opcao=0)
-        else:
-           c='-----'
-           nomec = "--------------------------------------------------"
-        if co!="":
-          sql=sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{co}'"  
-          mensagem="fornecedor"       
-          nomef=lertabela(sql,co,janela4,mensagem,opcao=0)
-        else:
-          co = "-----"    
-          nomef = "--------------------------------------------------"
-        if dpgc !='':
-         dpgc= recupdata(dpgc)
-        else:
-         dpgc="----------"   
-        if dpgf !='':
-         dpgc= recupdata(dpgf)
-        else:
-         dpgf="----------" 
-        if vpc!='': 
-           vpc=recuperaval(vpc)
-        else:
-           vpc="------------"
-        if vpco!='': 
-           vpco=recuperaval(vpco)
-        else:
-           vpco="------------"      
-        if cdoc=='': 
-           cdoc="--------------------"
-        if cpar=="":
-           cpar="---"
-        if codoc=='': 
-           codoc="--------------------"
-        if copar=="":
-           copar="---"
-        if vpc=="------------":
-          total=total-vpco
-        else:
-          total=total+vpc 
-        if total!=0:   
-         total=recuperaval(total)                      
-        x+=1
-        y -= 20
-        cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+   for (c,nomec,dpgc,vpc,cdoc,cpar) in sqlres:
+       co = "-----"    
+       nomef = "--------------------------------------------------"
+       dpgc= recupdata(dpgc)
+       dpgf="----------" 
+       vpc1=vpc
+       vpc=recuperaval(vpc)
+       vpco="------------"      
+       codoc="--------------------"
+       copar="---"
+       total1=total1+vpc1 
+       total=total1
+       total=recuperaval(total)
+       cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
-        y-= 20
-        cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
-        y -= 20
-        cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
-        y -= 20               
-        cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
-        y -= 20
-        cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
-        if z == 8: 
+       y-= 20
+       cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
+       y -= 20
+       cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
+       y -= 20               
+       cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
+       y -= 20
+       cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "RECEBEU: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "PAGOU FORNEC:"+str(vpco)+ "Caixa: "+total
+       if z == 8: 
          if x  < len(sqlres): 
           z = 0 
           y=810
@@ -178,7 +142,68 @@ def pdfgeracaixa(sqlres,arquivo):
           cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
           #    
           cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
-        z+=1  
+       z+=1  
+      
+       # for (co,nomef,dpgf,vpco,codoc,copar) in sqlres1: 
+       if i <= i1:
+        c='-----'
+        nomec = "--------------------------------------------------"
+        vpc="------------"
+        dpgc="----------"
+        cdoc="--------------------"
+        cpar="---"
+        co= sqlres1[i][0]
+        nomef=sqlres1[i][1]
+        dpgf= recupdata(sqlres1[i][2])
+        vpco1=sqlres1[i][3] 
+        vpco=recuperaval(sqlres1[i][3])
+        total1=total1-vpco1
+        total=total1
+        total=recuperaval(total)
+        codoc=sqlres1[i][4]
+        copar=sqlres1[i][5]
+        i=i+1
+       x+=1
+       y -= 20
+       cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
+       y-= 20
+       cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
+       y -= 20
+       cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
+       y -= 20               
+       cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
+       y -= 20
+       cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
+       if z == 8: 
+         if x  < len(sqlres): 
+          z = 0 
+          y=810
+          cnv.showPage()
+          cnv.setFont('Helvetica', 9)
+          #
+          cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
+          #    
+          cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
+       z+=1  
+   while i <= i1:
+       c='-----'
+       nomec = "--------------------------------------------------"
+       vpc="------------"
+       dpgc="----------"
+       cdoc="--------------------"
+       cpar="---"
+       co= sqlres1[i][0]
+       nomef=sqlres1[i][1]
+       dpgf= recupdata(sqlres1[i][2])
+       vpco1=sqlres1[i][3] 
+       vpco=recuperaval(sqlres1[i][3])
+       total1=total1-vpco1
+       total=total1
+       total=recuperaval(total)
+       codoc=sqlres1[i][4]
+       copar=sqlres1[i][5]
+       i=i+1
             
    cnv.save()
    return
@@ -424,18 +449,18 @@ def geracaixa(event):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-       if escolhido == "A" and dataini.get()!="":
-           cursor.execute(f'''SELECT a.codigo,c.codigo,a.pagamento,c.pagamento,a.valpagar,c.valpagar,a.documento,a.tparcela,c.documento,c.tparcela
-                                    FROM  contasrec a, contas c  WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
-        
+       if escolhido == "A":
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento ASC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento ASC''')  
+           sqlres1=cursor.fetchall()
+           
        else:
-           cursor.execute(f'''SELECT a.codigo,c.codigo,a.pagamento,c.pagamento,a.valpagar,c.valpagar,a.documento,a.tparcela,c.documento,c.tparcela
-                                    FROM  contasrec a, contas c WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini} AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",c.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",c.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
-  
-       sqlres=cursor.fetchall()
-     
-    
-         
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento DESC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento DESC''')  
+           
+          
        if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta", janela4)
             cursor.close()
@@ -2915,7 +2940,10 @@ def consultacaixaopcao2(event):
    ano = data.year
    mes = data.month
    dia = data.day
-   total=0
+   total=""
+   total1=0
+   i=0
+   i1=0
    if dataini.get() !="":
        if datafim.get()=="":
          messagebox1("Data final precisa ser digitada",janela4)
@@ -2940,67 +2968,84 @@ def consultacaixaopcao2(event):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-                  
+                 
         if escolhido == "A":
-           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela  FROM  contasrec a, contas b  WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}') ORDER BY a.pagamento ASC''')  
-        
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento ASC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento ASC''')  
+           sqlres1=cursor.fetchall()
+           i1=len(sqlres1)-1
         else:
-           cursor.execute(f'''SELECT a.codigo,b.codigo,a.pagamento,b.pagamento,b.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela  FROM  contasrec a,  contas b WHERE (strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}') OR (strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}') ORDER BY a.pagamento DESC''')  
-  
-        sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento DESC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento DESC''')  
+
+           sqlres1=cursor.fetchall()  
+           i1=len(sqlres1)-1 
+        
          
-        if len(sqlres) == 0:
+        if len(sqlres) == 0 or len(sqlres1) == 0:
             messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
             
         else:
-            for (c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar) in sqlres:
-               if c!="":
-                sql=  f"SELECT nome FROM cliente WHERE codigo = '{c}'"  
-                mensagem="cliente"       
-                nomec=lertabela(sql,c,janela4,mensagem,opcao=0)
-               else:
-                c='-----'
-                nomec = "--------------------------------------------------"
-               if co!="":
-                 sql=sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{co}'"  
-                 mensagem="fornecedor"       
-                 nomef=lertabela(sql,co,janela4,mensagem,opcao=0)
-               else:
-                 co = "-----"    
-                 nomef = "--------------------------------------------------"
+            for (c,nomec,dpgc,vpc,cdoc,cpar) in sqlres:
+               co = "-----"    
+               nomef = "--------------------------------------------------"
                if dpgc !='':
                  dpgc= recupdata(dpgc)
                else:
                  dpgc="----------"   
-               if dpgf !='':
-                 dpgc= recupdata(dpgf)
-               else:
-                dpgf="----------" 
-               if vpc!='': 
-                vpc=recuperaval(vpc)
-               else:
+               dpgf="----------" 
+               vpc1=vpc
+               vpc=recuperaval(vpc)
+               vpco="------------"      
+               codoc="--------------------"
+               copar="---"
+               total1=total1+vpc1 
+               total=total1
+               total=recuperaval(total)
+               tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar))  
+              # for (co,nomef,dpgf,vpco,codoc,copar) in sqlres1: 
+               if i <= i1:
+                c='-----'
+                nomec = "--------------------------------------------------"
                 vpc="------------"
-               if vpco!='': 
-                vpco=recuperaval(vpco)
-               else:
-                vpco="------------"      
-               if cdoc=='': 
+                dpgc="----------"
                 cdoc="--------------------"
-               if cpar=="":
                 cpar="---"
-               if codoc=='': 
-                codoc="--------------------"
-               if copar=="":
-                copar="---"
-               if vpc=="------------":
-                total=total-vpco
-               else:
-                total=total+vpc 
-               if total!=0:   
-                 total=recuperaval(total)
-               tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
-       # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c      
+                co= sqlres1[i][0]
+                nomef=sqlres1[i][1]
+                dpgf= recupdata(sqlres1[i][2])
+                vpco1=sqlres1[i][3] 
+                vpco=recuperaval(sqlres1[i][3])
+                total1=total1-vpco1
+                total=total1
+                total=recuperaval(total)
+                codoc=sqlres1[i][4]
+                copar=sqlres1[i][5]
+                i=i+1
+                tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
+            while i <= i1:
+                c='-----'
+                nomec = "--------------------------------------------------"
+                vpc="------------"
+                dpgc="----------"
+                cdoc="--------------------"
+                cpar="---"
+                co= sqlres1[i][0]
+                nomef=sqlres1[i][1]
+                dpgf= recupdata(sqlres1[i][2])
+                vpco1=sqlres1[i][3] 
+                vpco=recuperaval(sqlres1[i][3])
+                total1=total1-vpco1
+                total=total1
+                total=recuperaval(total)
+                codoc=sqlres1[i][4]
+                copar=sqlres1[i][5]
+                i=i+1
+                tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
+            return
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
            cursor.close()
@@ -3124,8 +3169,8 @@ def consulta_caixa(janela3):
    tv.heading('nomef', text='NOME FORNECEDOR')
    tv.heading('pagcli', text='DATA PAG CLI')
    tv.heading('pagf', text='DATA PAG FOR')
-   tv.heading('valcli', text='VALOR CLI PAGAR')
-   tv.heading('valf', text='VALOR FOR PAGAR')
+   tv.heading('valcli', text='RECEBEU')
+   tv.heading('valf', text='PAGOU')
    tv.heading('caixa', text='CAIXA')
    tv.heading('docli', text='DOC.CLIENTE')
    tv.heading('tparcli', text='PARC.CLIENTE')
