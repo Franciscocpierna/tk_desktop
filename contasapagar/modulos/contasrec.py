@@ -87,6 +87,7 @@ def imprimepdf2(arquivo1):
     messagebox1("Erro ao tentar imprimir linha 81 "+str(ex),janela4)
     return
 
+
 def pdfgeracaixa(sqlres,sqlres1,arquivo):
    data = date.today() 
    ano = data.year
@@ -109,30 +110,30 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
    z=1
    x=0
    total=0
-   for (c,nomec,dpgc,vpc,cdoc,cpar) in sqlres:
-       co = "-----"    
-       nomef = "--------------------------------------------------"
+   total1=0
+   for (c,nomec,dpgc,vpc,cdoc,cpar,datacv) in sqlres:
        dpgc= recupdata(dpgc)
-       dpgf="----------" 
+       datacv= recupdata(datacv)
        vpc1=vpc
        vpc=recuperaval(vpc)
-       vpco="------------"      
-       codoc="--------------------"
-       copar="---"
        total1=total1+vpc1 
        total=total1
        total=recuperaval(total)
-       cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+       y-=20        
+       cnv.drawString(10,y,
+       "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        #c,nomec,dpgc,vpc,cdoc,cpar e co,nomef,dpgf,vpco,codoc,copar
         #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
        y-= 20
        cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
-       y -= 20
-       cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
        y -= 20               
-       cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
+       cnv.drawString(10,y,  " Cliente Pagou: "+dpgc+ " Vencimento:"+datacv)        
        y -= 20
-       cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "RECEBEU: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "PAGOU FORNEC:"+str(vpco)+ "Caixa: "+total)
-       if z == 8: 
+       cnv.drawString(10,y, " Doc. Cliente:"+cdoc+" Parc Cli: "+cpar+ " RECEBEU: "+str(vpc))
+       y -= 20
+       cnv.drawString(10,y, "Caixa: "+total)
+       #y-=20
+       if z == 7: 
          if x  < len(sqlres): 
           z = 0 
           y=810
@@ -146,12 +147,6 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
       
        # for (co,nomef,dpgf,vpco,codoc,copar) in sqlres1: 
        if i <= i1:
-        c='-----'
-        nomec = "--------------------------------------------------"
-        vpc="------------"
-        dpgc="----------"
-        cdoc="--------------------"
-        cpar="---"
         co= sqlres1[i][0]
         nomef=sqlres1[i][1]
         dpgf= recupdata(sqlres1[i][2])
@@ -162,20 +157,22 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
         total=recuperaval(total)
         codoc=sqlres1[i][4]
         copar=sqlres1[i][5]
+        datafv= recupdata(sqlres1[i][6])
         i=i+1
-        x+=1
+        
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
-        y-= 20
-        cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
         y -= 20
-        cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
+        cnv.drawString(10,y, " Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
         y -= 20               
-        cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
+        cnv.drawString(10,y,  " Fornec.Pagou: "+dpgf+ " Vencimento:"+datafv)        
         y -= 20
-        cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
-        if z == 8: 
+        cnv.drawString(10,y, " Doc Fornec: "+codoc+" Parc.Fornec:"+copar+ " PAGOU FORNEC:"+str(vpco))
+        y -= 20
+        cnv.drawString(10,y, "Caixa: "+total)
+        #y -= 20
+        if z == 7: 
          if x  < len(sqlres): 
           z = 0 
           y=810
@@ -185,14 +182,9 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
           cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
           #    
           cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
-        z+=1  
+       z+=1
+       x+=1  
    while i <= i1:
-        c='-----'
-        nomec = "--------------------------------------------------"
-        vpc="------------"
-        dpgc="----------"
-        cdoc="--------------------"
-        cpar="---"
         co= sqlres1[i][0]
         nomef=sqlres1[i][1]
         dpgf= recupdata(sqlres1[i][2])
@@ -203,21 +195,23 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
         total=recuperaval(total)
         codoc=sqlres1[i][4]
         copar=sqlres1[i][5]
+        datafv= recupdata(sqlres1[i][6])
+
         i=i+1
         x+=1
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
         y-= 20
-        cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
-        y -= 20
         cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
         y -= 20               
-        cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
+        cnv.drawString(10,y,  " Fornec.Pagou: "+dpgf+ " Vencimento:"+datafv)        
         y -= 20
-        cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
-        if z == 8: 
-         if x  < len(sqlres): 
+        cnv.drawString(10,y, " Doc Fornec: "+codoc+" Parc.Fornec:"+copar+ " PAGOU FORNEC:"+str(vpco))
+        y -= 20
+        cnv.drawString(10,y, "Caixa: "+total)
+        y -= 20
+        if z == 7: 
           z = 0 
           y=810
           cnv.showPage()
@@ -473,24 +467,24 @@ def geracaixa(event):
       banco = sqlite3.connect('contaspagar.db')
       cursor = banco.cursor()
       try:
-       if escolhido == "A":
-           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento ASC''')  
+       if escolhido1 == "A":
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento ASC''')  
            sqlres=cursor.fetchall()
-           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento ASC''')  
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento ASC''')  
            sqlres1=cursor.fetchall()
            
        else:
-           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento DESC''')  
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento DESC''')  
            sqlres=cursor.fetchall()
-           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento DESC''')  
-           
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento DESC''')  
+           sqlres1=cursor.fetchall()
           
        if len(sqlres) == 0:
             messagebox1("Não tem dados a mostrar na consulta", janela4)
             cursor.close()
             return             
        else:
-           pdfgeracaixa(sqlres,"rel_caxa.pdf") #gerar PDF
+           pdfgeracaixa(sqlres,sqlres1,"rel_caixa.pdf") #gerar PDF
            if escolhido == "A":
               imprimepdf2("rel_caixa.pdf")
               cursor.close()              
@@ -506,6 +500,77 @@ def geracaixa(event):
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contas pagar linha 287 "+str(ex),janela4)
         cursor.close()
         return
+
+def geracaixap(event):
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+#   data1="21/09/2023"
+#   data5=  datetime.strptime(data1,"%d/%m/%Y").date()
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
+
+   #escolhido=escolha.get()
+   escolhido=variaveis1.getescolhido()
+   escolhido=variaveis1.setescolhido(escolha.get())
+   #escolhido1=escolha1.get()   
+   escolhido=variaveis1.setescolhido1(escolha1.get())
+   escolhido1=variaveis1.getescolhido1()
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+       if escolhido1 == "A":
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",b.vencimento) <='{memfim}' ORDER BY b.vencimento ASC''')  
+           sqlres1=cursor.fetchall()
+           
+       else:
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",b.vencimento) <='{memfim}' ORDER BY b.vencimento DESC''')  
+           sqlres1=cursor.fetchall()
+          
+       if len(sqlres) == 0:
+            messagebox1("Não tem dados a mostrar na consulta", janela4)
+            cursor.close()
+            return             
+       else:
+           pdfgeracaixa(sqlres,sqlres1,"rel_caixa.pdf") #gerar PDF
+           if escolhido == "A":
+              imprimepdf2("rel_caixa.pdf")
+              cursor.close()              
+           else:        
+              abrirpdf2("rel_caixa.pdf")
+              cursor.close
+           return
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 283 "+str(ex),janela4)
+           cursor.close()
+           return
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contas pagar linha 287 "+str(ex),janela4)
+        cursor.close()
+        return
+
+
+
 
 def gerapdat(event):
    data = date.today() 
@@ -926,7 +991,7 @@ def rel_caixa(janela3):
    #'1500x1500' 
    centro=centralizacao(janela4,600, 500, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
-   label = Label(janela4,text="Relatório por Atraso de Pagamento geração em PDF ",font = ("Arial Bold", 12))
+   label = Label(janela4,text="Relatório Caixa Real geração em PDF ",font = ("Arial Bold", 12))
    label.place(relx=0.25, rely=0.2)
    optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
    optado2.place(relx=0.2,rely=0.3)
@@ -956,6 +1021,56 @@ def rel_caixa(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
+def rel_caixap(janela3):
+   global janela4 
+   #global escolhido
+   #global escolhido1
+   global escolha
+   global escolha1
+   global dataini 
+   global datafim
+
+   escolha=StringVar(value="D")
+   escolha1=StringVar(value="A")
+  
+   janela4 = Toplevel()
+   janela4.title("Relatório por Pagamento ESC para SAIR  F3 - Gerar relatório")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,600, 500, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   label = Label(janela4,text="Relatório Caixa Previsto geração em PDF ",font = ("Arial Bold", 12))
+   label.place(relx=0.25, rely=0.2)
+   optado2= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha1,font = ("Arial Bold", 9))
+   optado2.place(relx=0.2,rely=0.3)
+   optado3= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha1)
+   optado3.place(relx=0.5,rely=0.3)
+   #escolhido1=escolha1.get()  
+   escolhido1=variaveis1.setescolhido1(escolha1.get())
+   optado= Radiobutton(janela4, text="Imprimir Gerar PDF", value="A", variable=escolha,font = ("Arial Bold", 9))
+   optado.place(relx=0.2,rely=0.4)
+   optado1= Radiobutton(janela4, text= "Não Imprimir e Gerar e Abrir PDF", value="D", variable=escolha)
+   optado1.place(relx=0.5,rely=0.4)
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.2,rely=0.5)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.32,rely=0.5)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.51,rely=0.5)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.62,rely=0.5)
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
+
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+  # keyboard.on_press_key("f3", lambda _: gerapdf3())
+   janela4.bind("<F3>", geracaixap)
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   #shutil.move("caminhoa/arquivo.txt", "caminhob/arquivo.txt")
 
 def rel_atraso(janela3):
    global janela4 
@@ -3351,7 +3466,8 @@ def contasrec_menu(janela1):
  editmenu2.add_command(label = "Em atraso", command= lambda: rel_atraso(janela3))
  editmenu2.add_command(label = "Pedaço do nome",command=lambda: rel_nomep2(janela3))
  editmenu2.add_command(label = "Codigo Cliente", command= lambda: rel_codigo2(janela3))
- editmenu2.add_command(label = "Fluxo de Caixa", command= lambda: rel_caixa(janela3))
+ editmenu2.add_command(label = "Fluxo de Caixa Real", command= lambda: rel_caixa(janela3))
+ editmenu2.add_command(label = "Fluxo de Caixa Previsto", command= lambda: rel_caixap(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
  menusair = Menu(menujan2, tearoff=0)

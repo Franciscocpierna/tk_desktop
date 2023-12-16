@@ -1207,6 +1207,11 @@ def incluircontas():
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
+       
+   if  len(tela.valpagar.get()) == 0  or len(tela.valpagar.get()) > 12:
+         messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
+         tela.valpagar.focus()
+         return
    if len(tela.pagamento.get())!=0:
         if len(tela.pagamento.get())!=10: 
           messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
@@ -1938,6 +1943,7 @@ def alteracaocontas():
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
         return
+    
     if len(tela.pagamento.get())!=0:
         if len(tela.pagamento.get())!=10: 
           messagebox1("Informação: Data de pagamento tamanho 10",manutencao)
