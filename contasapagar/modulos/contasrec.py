@@ -131,7 +131,7 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
        y -= 20               
        cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
        y -= 20
-       cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "RECEBEU: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "PAGOU FORNEC:"+str(vpco)+ "Caixa: "+total
+       cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "RECEBEU: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "PAGOU FORNEC:"+str(vpco)+ "Caixa: "+total)
        if z == 8: 
          if x  < len(sqlres): 
           z = 0 
@@ -163,19 +163,19 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
         codoc=sqlres1[i][4]
         copar=sqlres1[i][5]
         i=i+1
-       x+=1
-       y -= 20
-       cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        x+=1
+        y -= 20
+        cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
-       y-= 20
-       cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
-       y -= 20
-       cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
-       y -= 20               
-       cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
-       y -= 20
-       cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
-       if z == 8: 
+        y-= 20
+        cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
+        y -= 20
+        cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
+        y -= 20               
+        cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
+        y -= 20
+        cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
+        if z == 8: 
          if x  < len(sqlres): 
           z = 0 
           y=810
@@ -185,25 +185,49 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
           cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
           #    
           cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
-       z+=1  
+        z+=1  
    while i <= i1:
-       c='-----'
-       nomec = "--------------------------------------------------"
-       vpc="------------"
-       dpgc="----------"
-       cdoc="--------------------"
-       cpar="---"
-       co= sqlres1[i][0]
-       nomef=sqlres1[i][1]
-       dpgf= recupdata(sqlres1[i][2])
-       vpco1=sqlres1[i][3] 
-       vpco=recuperaval(sqlres1[i][3])
-       total1=total1-vpco1
-       total=total1
-       total=recuperaval(total)
-       codoc=sqlres1[i][4]
-       copar=sqlres1[i][5]
-       i=i+1
+        c='-----'
+        nomec = "--------------------------------------------------"
+        vpc="------------"
+        dpgc="----------"
+        cdoc="--------------------"
+        cpar="---"
+        co= sqlres1[i][0]
+        nomef=sqlres1[i][1]
+        dpgf= recupdata(sqlres1[i][2])
+        vpco1=sqlres1[i][3] 
+        vpco=recuperaval(sqlres1[i][3])
+        total1=total1-vpco1
+        total=total1
+        total=recuperaval(total)
+        codoc=sqlres1[i][4]
+        copar=sqlres1[i][5]
+        i=i+1
+        x+=1
+        y -= 20
+        cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        #(c,co,dpgc,dpgf,vpc,vpco,cdoc,cpar,codoc,copar)
+        y-= 20
+        cnv.drawString(10,y, "codigo Cliente: "+ c+ " Nome Cliente: "+ nomec)
+        y -= 20
+        cnv.drawString(10,y, "Fornecedor: "+co+" Nome Fornecedor: " + nomef) 
+        y -= 20               
+        cnv.drawString(10,y,  " Cliente data Pag: "+dpgc+ " Fornecedor data Pag: "+dpgf)        
+        y -= 20
+        cnv.drawString(10,y, " Documento Cliente:"+cdoc+" Parc Cliente: "+cpar+ "Cliente Pagou: "+str(vpc)+" Documento Fornecedor: "+codoc+" Parc.Fornec:"+copar+ "Valor Pago Fornec"+str(vpco)+ "Caixa: "+str(total))
+        if z == 8: 
+         if x  < len(sqlres): 
+          z = 0 
+          y=810
+          cnv.showPage()
+          cnv.setFont('Helvetica', 9)
+          #
+          cnv.drawString(250,830, "Relatório Caixa") # centro do pdf linha superior
+          #    
+          cnv.drawString(500,830, str(dia)+"/"+str(mes)+"/"+str(ano))  
+        z+=1  
+
             
    cnv.save()
    return
