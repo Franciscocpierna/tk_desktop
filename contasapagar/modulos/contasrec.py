@@ -113,6 +113,9 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
    total1=0
    for (c,nomec,dpgc,vpc,cdoc,cpar,datacv) in sqlres:
        dpgc= recupdata(dpgc)
+       if dpgc=='':
+          dpgc= "Não Pago"
+          
        datacv= recupdata(datacv)
        vpc1=vpc
        vpc=recuperaval(vpc)
@@ -150,6 +153,8 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
         co= sqlres1[i][0]
         nomef=sqlres1[i][1]
         dpgf= recupdata(sqlres1[i][2])
+        if dpgf=='':
+          dpgf= "Não Pago"
         vpco1=sqlres1[i][3] 
         vpco=recuperaval(sqlres1[i][3])
         total1=total1-vpco1
@@ -188,6 +193,8 @@ def pdfgeracaixa(sqlres,sqlres1,arquivo):
         co= sqlres1[i][0]
         nomef=sqlres1[i][1]
         dpgf= recupdata(sqlres1[i][2])
+        if dpgf=='':
+          dpgf= "Não Pago"
         vpco1=sqlres1[i][3] 
         vpco=recuperaval(sqlres1[i][3])
         total1=total1-vpco1
@@ -3073,6 +3080,136 @@ def consulta_porcao2(janela3):
    # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
    janela4.bind("<F3>", consutaporcao2)
 
+def consultacaixaprevisto(event):
+   tv.delete(*tv.get_children())
+   data = date.today() 
+   ano = data.year
+   mes = data.month
+   dia = data.day
+   total=""
+   total1=0
+   i=0
+   i1=0
+   if dataini.get() !="":
+       if datafim.get()=="":
+         messagebox1("Data final precisa ser digitada",janela4)
+         dataini.delete(0,END)
+         return
+   if datafim.get() !="":
+       if dataini.get()=="":
+         messagebox1("Data inicial precisa ser digitada",janela4)
+         datafim.delete(0,END)
+         return
+
+   memini=dataini.get()
+   memfim=datafim.get()
+      
+   memini = memini[6:]+"-"+memini[3:5]+"-"+memini[0:2]
+   memfim= memfim[6:]+"-"+memfim[3:5]+"-"+memfim[0:2]
+      
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())   
+   escolhido=variaveis1.getescolhido()
+   try: 
+      banco = sqlite3.connect('contaspagar.db')
+      cursor = banco.cursor()
+      try:
+                 
+        if escolhido == "A":
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",b.vencimento) <='{memfim}' ORDER BY b.vencimento ASC''')  
+           sqlres1=cursor.fetchall()
+           i1=len(sqlres1)-1
+        else:
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
+           sqlres=cursor.fetchall()
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",b.vencimento) <='{memfim}' ORDER BY b.vencimento DESC''')  
+
+           sqlres1=cursor.fetchall()  
+           i1=len(sqlres1)-1 
+        
+         
+        if len(sqlres) == 0 or len(sqlres1) == 0:
+            messagebox1("Não tem dados a mostrar na consulta",janela4)
+            cursor.close()
+            
+        else:
+            for (c,nomec,dpgc,vpc,cdoc,cpar,vencli) in sqlres:
+               co = "-----"    
+               nomef = "--------------------------------------------------"
+               dpgc= recupdata(dpgc)
+               if dpgc=='':
+                 dpgc= "Não Pago"
+               vencli= recupdata(vencli)
+               dpgf="----------"
+               venfor="----------" 
+               vpc1=vpc
+               vpc=recuperaval(vpc)
+               vpco="------------"      
+               codoc="--------------------"
+               copar="---"
+               total1=total1+vpc1 
+               total=total1
+               total=recuperaval(total)
+               tv.insert("","end",value=(c,nomec,co,nomef,vencli,venfor,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar))  
+              # for (co,nomef,dpgf,vpco,codoc,copar) in sqlres1: 
+               if i <= i1:
+                c='-----'
+                nomec = "--------------------------------------------------"
+                vpc="------------"
+                dpgc="----------"
+                vencli="----------"
+                cdoc="--------------------"
+                cpar="---"
+                co= sqlres1[i][0]
+                nomef=sqlres1[i][1]
+                dpgf= recupdata(sqlres1[i][2])
+                if dpgf=='':
+                  dpgf= "Não Pago"
+                vpco1=sqlres1[i][3] 
+                vpco=recuperaval(sqlres1[i][3])
+                total1=total1-vpco1
+                total=total1
+                total=recuperaval(total)
+                codoc=sqlres1[i][4]
+                copar=sqlres1[i][5]
+                venfor=recupdata(sqlres1[i][6])
+                i=i+1
+                tv.insert("","end",value=(c,nomec,co,nomef,vencli,venfor,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
+            while i <= i1:
+                c='-----'
+                nomec = "--------------------------------------------------"
+                vpc="------------"
+                dpgc="----------"
+                cdoc="--------------------"
+                cpar="---"
+                vencli="----------"
+                co= sqlres1[i][0]
+                nomef=sqlres1[i][1]
+                dpgf= recupdata(sqlres1[i][2])
+                if dpgf=='':
+                  dpgf= "Não Pago"
+                vpco1=sqlres1[i][3] 
+                vpco=recuperaval(sqlres1[i][3])
+                total1=total1-vpco1
+                total=total1
+                total=recuperaval(total)
+                codoc=sqlres1[i][4]
+                copar=sqlres1[i][5]
+                venfor= recupdata(sqlres1[i][6])
+                i=i+1
+                tv.insert("","end",value=(c,nomec,co,nomef,vencli,venfor,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
+            return
+      except Error as ex: 
+           messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
+           cursor.close()
+           
+   except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 2203 "+str(ex),janela4)
+        cursor.close() 
+
+
 def consultacaixaopcao2(event):
    tv.delete(*tv.get_children())
    data = date.today() 
@@ -3109,15 +3246,15 @@ def consultacaixaopcao2(event):
       try:
                  
         if escolhido == "A":
-           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento ASC''')  
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento ASC''')  
            sqlres=cursor.fetchall()
-           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento ASC''')  
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento ASC''')  
            sqlres1=cursor.fetchall()
            i1=len(sqlres1)-1
         else:
-           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento DESC''')  
+           cursor.execute(f'''SELECT a.codigo,c.nome,a.pagamento,a.valpagar,a.documento,a.tparcela,a.vencimento FROM  contasrec a, cliente c   WHERE a.codigo = c.codigo AND  strftime("%Y-%m-%d",a.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",a.pagamento) <='{memfim}' ORDER BY a.pagamento DESC''')  
            sqlres=cursor.fetchall()
-           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento DESC''')  
+           cursor.execute(f'''SELECT b.codigo,d.nome,b.pagamento,b.valpagar,b.documento,b.tparcela,b.vencimento FROM  contas b, fornecedor d  WHERE b.codigo = d.codigo AND strftime("%Y-%m-%d",b.pagamento) >= '{memini}' AND strftime("%Y-%m-%d",b.pagamento) <='{memfim}' ORDER BY b.pagamento DESC''')  
 
            sqlres1=cursor.fetchall()  
            i1=len(sqlres1)-1 
@@ -3128,14 +3265,13 @@ def consultacaixaopcao2(event):
             cursor.close()
             
         else:
-            for (c,nomec,dpgc,vpc,cdoc,cpar) in sqlres:
+            for (c,nomec,dpgc,vpc,cdoc,cpar,vencli) in sqlres:
                co = "-----"    
                nomef = "--------------------------------------------------"
-               if dpgc !='':
-                 dpgc= recupdata(dpgc)
-               else:
-                 dpgc="----------"   
-               dpgf="----------" 
+               dpgc= recupdata(dpgc)
+               vencli= recupdata(vencli)
+               dpgf="----------"
+               venfor="----------" 
                vpc1=vpc
                vpc=recuperaval(vpc)
                vpco="------------"      
@@ -3144,13 +3280,14 @@ def consultacaixaopcao2(event):
                total1=total1+vpc1 
                total=total1
                total=recuperaval(total)
-               tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar))  
+               tv.insert("","end",value=(c,nomec,co,nomef,vencli,venfor,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar))  
               # for (co,nomef,dpgf,vpco,codoc,copar) in sqlres1: 
                if i <= i1:
                 c='-----'
                 nomec = "--------------------------------------------------"
                 vpc="------------"
                 dpgc="----------"
+                vencli="----------"
                 cdoc="--------------------"
                 cpar="---"
                 co= sqlres1[i][0]
@@ -3163,8 +3300,9 @@ def consultacaixaopcao2(event):
                 total=recuperaval(total)
                 codoc=sqlres1[i][4]
                 copar=sqlres1[i][5]
+                venfor=recupdata(sqlres1[i][6])
                 i=i+1
-                tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
+                tv.insert("","end",value=(c,nomec,co,nomef,vencli,venfor,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
             while i <= i1:
                 c='-----'
                 nomec = "--------------------------------------------------"
@@ -3172,6 +3310,7 @@ def consultacaixaopcao2(event):
                 dpgc="----------"
                 cdoc="--------------------"
                 cpar="---"
+                vencli="----------"
                 co= sqlres1[i][0]
                 nomef=sqlres1[i][1]
                 dpgf= recupdata(sqlres1[i][2])
@@ -3182,8 +3321,9 @@ def consultacaixaopcao2(event):
                 total=recuperaval(total)
                 codoc=sqlres1[i][4]
                 copar=sqlres1[i][5]
+                venfor= recupdata(sqlres1[i][6])
                 i=i+1
-                tv.insert("","end",value=(c,nomec,co,nomef,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
+                tv.insert("","end",value=(c,nomec,co,nomef,vencli,venfor,dpgc,dpgf,vpc,vpco,total,cdoc,cpar,codoc,copar)) 
             return
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
@@ -3265,7 +3405,7 @@ def consultaatrasoopcao2(event):
         messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 2203 "+str(ex),janela4)
         cursor.close() 
 
-def consulta_caixa(janela3):
+def consulta_caixaprevisto(janela3):
    global janela4 
    global tv 
    #global escolhido
@@ -3274,7 +3414,7 @@ def consulta_caixa(janela3):
    global datafim
 
    janela4 = Toplevel()
-   janela4.title("Consulta Caixa no Período ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.title("Consulta Caixa Previso no Período ESC para SAIR -  F3 - PARA COSULTAR")
    janela4.resizable(False, False) # tamanho fixo             
    janela4.transient(janela3) # de onde vem a janela
    janela4.focus_force() #forçar foco
@@ -3285,29 +3425,117 @@ def consulta_caixa(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c
-   tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','vencli','venfor','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
     
    tv.column('codigoc', minwidth=5, width=50)
-   tv.column('nomec', minwidth=0, width=250)
+   tv.column('nomec', minwidth=0, width=120)
    tv.column('codigof', minwidth=5, width=50)
-   tv.column('nomef', minwidth=0, width=250)
-   tv.column('pagcli', minwidth=0, width=250)
-   tv.column('pagf', minwidth=9, width=100)
+   tv.column('nomef', minwidth=0, width=120)
+   tv.column('vencli', minwidth=0, width=80)
+   tv.column('venfor', minwidth=0, width=80)
+   tv.column('pagcli', minwidth=0, width=80)
+   tv.column('pagf', minwidth=9, width=80)
    tv.column('valcli', minwidth=0, width=100)
    tv.column('valf', minwidth=0, width=100)
    tv.column('caixa', minwidth=0, width=100)
-   tv.column('docli', minwidth=0, width=200)
-   tv.column('tparcli', minwidth=0, width=200)
-   tv.column('dof', minwidth=0, width=200)
-   tv.column('tparfor', minwidth=0, width=200)
+   tv.column('docli', minwidth=0, width=100)
+   tv.column('tparcli', minwidth=0, width=50)
+   tv.column('dof', minwidth=0, width=100)
+   tv.column('tparfor', minwidth=0, width=70)
    
       
    tv.heading('codigoc', text='CÓDIGO CLI' )
    tv.heading('nomec', text='NOME CLIENTE')
    tv.heading('codigof', text='CÓDIGO FOR')
    tv.heading('nomef', text='NOME FORNECEDOR')
-   tv.heading('pagcli', text='DATA PAG CLI')
-   tv.heading('pagf', text='DATA PAG FOR')
+   tv.heading('vencli', text='VENC.CLI')
+   tv.heading('venfor', text='VENC.FOR')
+   tv.heading('pagcli', text='PAG. CLI')
+   tv.heading('pagf', text= 'PAG FOR')
+   tv.heading('valcli', text='RECEBEU')
+   tv.heading('valf', text='PAGOU')
+   tv.heading('caixa', text='CAIXA')
+   tv.heading('docli', text='DOC.CLIENTE')
+   tv.heading('tparcli', text='PARC.CLIENTE')
+   tv.heading('dof', text='DOC.FORNEC')
+   tv.heading('tparfor', text='PAR.FORNEC')
+
+   Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
+   dataini = Entry(janela4,width=15)
+   dataini.place(relx=0.06,rely=0.05)
+   Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.17,rely=0.05)   
+   datafim = Entry(janela4,width=15)
+   datafim.place(relx=0.22,rely=0.05)
+   verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
+   verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
+
+   tv.configure(yscroll=verscrlbar)
+  # tv.configure(xscroll=verscrlbar1.set)
+   tv.configure(xscroll=verscrlbar1)
+   tv.place(relx=0.01,rely=0.1,relwidth=0.97,relheight=0.75)
+   verscrlbar.place(relx=0.96,rely=0.1,relwidth=0.04,relheight=0.75)
+   verscrlbar1.place(relx=0.01,rely=0.85,relwidth=0.95,relheight=0.05)
+   escolha=StringVar(value="A")
+   optado= Radiobutton(janela4, text="Ascendente", value="A", variable=escolha)
+   optado.grid(row=1, column=3)
+   optado1= Radiobutton(janela4, text= "Descendente", value="D", variable=escolha)
+   optado1.grid(row=1, column=4)
+   #escolhido=escolha.get()
+   escolhido=variaveis1.setescolhido(escolha.get())
+  # keyboard.on_press_key("f3", lambda _: consultacodigoopcao())
+   janela4.bind("<F3>", consultacaixaprevisto)
+   dataini.bind("<KeyRelease>", dadosdataini)
+   datafim.bind("<KeyRelease>", dadosdatafim)
+   dataini.bind("<FocusIn>",vercampos1)
+   datafim.bind("<FocusIn>",vercampos1)
+
+def consulta_caixa(janela3):
+   global janela4 
+   global tv 
+   #global escolhido
+   global escolha
+   global dataini 
+   global datafim
+
+   janela4 = Toplevel()
+   janela4.title("Consulta Caixa Real no Período ESC para SAIR -  F3 - PARA COSULTAR")
+   janela4.resizable(False, False) # tamanho fixo             
+   janela4.transient(janela3) # de onde vem a janela
+   janela4.focus_force() #forçar foco
+   janela4.grab_set()    # impede que click na janela principal sem
+   #'1500x1500' 
+   centro=centralizacao(janela4,1330, 650, posx, posy)
+   janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
+   keyboard.on_press_key("esc", lambda _: janela4.destroy())
+   
+# a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c
+   tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','vencli','venfor','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
+    
+   tv.column('codigoc', minwidth=5, width=50)
+   tv.column('nomec', minwidth=0, width=120)
+   tv.column('codigof', minwidth=5, width=50)
+   tv.column('nomef', minwidth=0, width=120)
+   tv.column('vencli', minwidth=0, width=80)
+   tv.column('venfor', minwidth=0, width=80)
+   tv.column('pagcli', minwidth=0, width=80)
+   tv.column('pagf', minwidth=9, width=80)
+   tv.column('valcli', minwidth=0, width=100)
+   tv.column('valf', minwidth=0, width=100)
+   tv.column('caixa', minwidth=0, width=100)
+   tv.column('docli', minwidth=0, width=100)
+   tv.column('tparcli', minwidth=0, width=50)
+   tv.column('dof', minwidth=0, width=100)
+   tv.column('tparfor', minwidth=0, width=70)
+   
+      
+   tv.heading('codigoc', text='CÓDIGO CLI' )
+   tv.heading('nomec', text='NOME CLIENTE')
+   tv.heading('codigof', text='CÓDIGO FOR')
+   tv.heading('nomef', text='NOME FORNECEDOR')
+   tv.heading('vencli', text='VENC.CLI')
+   tv.heading('venfor', text='VENC.FOR')
+   tv.heading('pagcli', text='PAG. CLI')
+   tv.heading('pagf', text= 'PAG FOR')
    tv.heading('valcli', text='RECEBEU')
    tv.heading('valf', text='PAGOU')
    tv.heading('caixa', text='CAIXA')
@@ -3453,7 +3681,8 @@ def contasrec_menu(janela1):
  consultamenu.add_command(label = " Consulta por vencimento",command= lambda: consulta_vencimento(janela3))
  consultamenu.add_command(label = " Consulta por Codigo",command=lambda: consulta_codigo2(janela3))
  consultamenu.add_command(label = " consulta por pedaço do nome: ", command=lambda:  consulta_porcao2(janela3))
- consultamenu.add_command(label = " consulta Fluxo caixa: ", command=lambda:  consulta_caixa(janela3))
+ consultamenu.add_command(label = " consulta Fluxo Caixa Real: ", command=lambda:  consulta_caixa(janela3))
+ consultamenu.add_command(label = " consulta Fluxo Caixa Previsto: ", command=lambda:  consulta_caixaprevisto(janela3))
  menujan2.add_cascade(label = "Consutas diversas", menu = consultamenu)
 
 
