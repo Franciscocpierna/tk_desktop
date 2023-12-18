@@ -1250,6 +1250,7 @@ def incluircontas():
          messagebox1("Falta código do produto",manutencao)
          tela.produto.focus()    
          return 
+          
       
    try:
         banco = sqlite3.connect('contaspagar.db')
@@ -1270,7 +1271,12 @@ def incluircontas():
         jurosmem = valores(tela.juros.get())
         csmem=tela.cs.get().upper()
         produtomem=tela.produto.get()
-        
+        if len(tela.pagamento.get())!=0:
+         if vencimentomem > pagamentomem:
+             tela.vencimento.delete(0, END)
+             tela.vencimento.insert(0, tela.pagamento.get())
+             vencimentomem=pagamentomem
+     
 
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
@@ -1980,6 +1986,8 @@ def alteracaocontas():
          messagebox1("Produto tamanho 5 ",manutencao)
          tela.produto.focus()
          return 
+    
+    
     codigomem=tela.codigo.get()
     documentomem=tela.documento.get()
     tparcelamem = tela.tparcela.get()
@@ -1996,7 +2004,12 @@ def alteracaocontas():
     jurosmem = valores(tela.juros.get())
     csmem=tela.cs.get().upper()
     produtomem=tela.produto.get()
-     
+    if len(tela.pagamento.get())!=0:
+         if vencimentomem > pagamentomem:
+             tela.vencimento.delete(0, END)
+             tela.vencimento.insert(0, tela.pagamento.get())
+             vencimentomem=pagamentomem
+ 
     
     res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
     if res == 'yes':

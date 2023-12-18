@@ -1499,7 +1499,7 @@ def incluircontasrec():
          messagebox1("Falta decrição da compra ou tamanho maior 50",manutencao)
          tela.descricao.focus()
          return
-         
+       
       
    try:
         banco = sqlite3.connect('contaspagar.db')
@@ -1515,7 +1515,12 @@ def incluircontasrec():
         else:    
          pagamentomem=tela.pagamento.get()
         valpagarmem= valores(tela.valpagar.get())
-                
+        if len(tela.pagamento.get())!=0:
+         if vencimentomem > pagamentomem:
+             tela.vencimento.delete(0, END)
+             tela.vencimento.insert(0, tela.pagamento.get())
+             vencimentomem=pagamentomem
+             
 
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
@@ -2130,8 +2135,7 @@ def alteracaocontasrec():
          messagebox1("Valor a pagar tem que ser tamanho até 12 ",manutencao)
          tela.valpagar.focus()
          return
-    
-          
+             
      
     codigomem=tela.codigo.get()
     documentomem=tela.documento.get()
@@ -2144,7 +2148,11 @@ def alteracaocontasrec():
     else:    
           pagamentomem=tela.pagamento.get()
     valpagarmem=valores(tela.valpagar.get())
-    
+    if len(tela.pagamento.get())!=0:
+         if vencimentomem > pagamentomem:
+             tela.vencimento.delete(0, END)
+             tela.vencimento.insert(0, tela.pagamento.get())
+             vencimentomem=pagamentomem
      
     
     res = messagebox.askquestion('Confirma Alteração', 'yes para sim - no para não')
