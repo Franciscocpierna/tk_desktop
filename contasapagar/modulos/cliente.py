@@ -1437,7 +1437,7 @@ def consulta_porcao(janela3):
    nomemem = Entry(janela4,width=50)
    nomemem.grid(row=1, column=4,sticky=W)
    nomemem.focus()
-   print(nomemem.get())
+   
    #keyboard.on_press_key("f3", lambda _: tecla_obtida())
    janela4.bind("<F3>", tecla_obtida)   
      

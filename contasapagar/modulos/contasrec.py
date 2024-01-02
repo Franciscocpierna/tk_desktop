@@ -767,7 +767,7 @@ def geracompras(event):
    escolhido1=variaveis1.setescolhido1(escolha1.get())
    escolhido1=variaveis1.getescolhido1()
    data = date.today()
-   print(data)  
+   
    ano = data.year
    mes = data.month
    dia = data.day
@@ -1605,9 +1605,9 @@ def dadosdatac(event):
    return
  indice=indice-1
  manutencao=variaveis.getmanutencao()
- print(indice)
+ 
  memdata=tela.compra.get()
- print(memdata[indice])
+ 
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
        if indice ==1 or indice ==4:
@@ -1703,9 +1703,9 @@ def dadosdatav(event):
    return
  indice=indice-1
  manutencao=variaveis.getmanutencao() 
- print(indice)
+ 
  memdata=tela.vencimento.get()
- print(memdata[indice])
+ 
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
        if indice ==1 or indice ==4:
@@ -1802,10 +1802,10 @@ def dadosdatap(event):
    return
  indice=indice-1
 
- print(indice)
+ 
  manutencao=variaveis.getmanutencao()
  memdata=tela.pagamento.get()
- print(memdata[indice])
+ 
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
        if indice ==1 or indice ==4:
@@ -2615,9 +2615,9 @@ def dadosdataini(event):
    return
  indice=indice-1
 
- print(indice)
+ 
  memdata=dataini.get()
- print(memdata[indice])
+ 
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
        if indice ==1 or indice ==4:
@@ -2712,9 +2712,9 @@ def dadosdatafim(event):
    return
  indice=indice-1
 
- print(indice)
+ 
  memdata=datafim.get()
- print(memdata[indice])
+ 
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
        if indice ==1 or indice ==4:
