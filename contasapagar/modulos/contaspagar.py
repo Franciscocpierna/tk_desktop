@@ -66,7 +66,8 @@ menujan.add_cascade(label=' Contas Receber',menu = recebermenu)
 
 #prod_menu
 menusair = Menu(menujan, tearoff=0)
-menusair.add_command(label= "Sair click aqui", command=quit) 
+#menusair.add_command(label= "Sair click aqui", command=quit) erro ao compilar
+menusair.add_command(label= "Sair click aqui", command=janela.destroy) 
 menujan.add_cascade(label='para Sair',menu = menusair)
 
 janela1.config(menu=menujan) #linha necessaria para aprecer o menu na janela de trabalho
