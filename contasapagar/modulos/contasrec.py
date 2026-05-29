@@ -341,21 +341,21 @@ def gerapdv(event):
       cursor = banco.cursor()
       try:
         if escolhido1 == "A" and dataini.get()=="":
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+          cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
-                                    FROM  contasrec a, cliente b, WHERE a.codigo = b.codigo  ORDER BY a.vencimento ASC''')
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
-          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+          cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
                                     FROM  contasrec a, cliente b  WHERE a.codigo = b.codigo   ORDER BY a.vencimento DESC''')
         elif escolhido1 == "A" and dataini.get()!="":
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+           cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+           cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
@@ -376,7 +376,7 @@ def gerapdv(event):
               cursor.close()              
            else:        
               abrirpdf2("rel_vencimento.pdf")
-              cursor.close
+              cursor.close()
 
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 196 "+str(ex),janela4)
@@ -405,11 +405,11 @@ def gerapdp(event):
       cursor = banco.cursor()
       try:
         if escolhido1 == "A":
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+           cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.pagamento ASC''')
         else:
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+           cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.pagamento DESC''')
 
@@ -430,7 +430,7 @@ def gerapdp(event):
               cursor.close()              
            else:        
               abrirpdf2("rel_pagamento.pdf")
-              cursor.close
+              cursor.close()
 
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 240 "+str(ex),janela4)
@@ -497,7 +497,7 @@ def geracaixa(event):
               cursor.close()              
            else:        
               abrirpdf2("rel_caixa.pdf")
-              cursor.close
+              cursor.close()
            return
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 283 "+str(ex),janela4)
@@ -565,7 +565,7 @@ def geracaixap(event):
               cursor.close()              
            else:        
               abrirpdf2("rel_caixa.pdf")
-              cursor.close
+              cursor.close()
            return
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 283 "+str(ex),janela4)
@@ -650,7 +650,7 @@ def gerapdat(event):
               cursor.close()              
            else:        
               abrirpdf2("rel_atraso.pdf")
-              cursor.close
+              cursor.close()
            return
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 283 "+str(ex),janela4)
@@ -696,7 +696,7 @@ def gerapdf2(event):
               cursor.close()              
            else:        
               abrirpdf2("rel_nomep.pdf")
-              cursor.close
+              cursor.close()
 
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 332 "+str(ex),janela4)
@@ -730,7 +730,7 @@ def gerapd1(event):
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
                                     a.valpagar,a.documento,a.tparcela
-                                    FROM  contasrec a, cliente b, "" WHERE a.codigo = b.codigo   ORDER BY a.codigo DESC''')
+                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.codigo DESC''')
 
       
         
@@ -760,62 +760,89 @@ def gerapd1(event):
         cursor.close()
         return
 def geracompras(event):
-   #escolhido=escolha.get()
-   escolhido=variaveis1.setescolhido(escolha.get())
-   escolhido=variaveis1.getescolhido()
-   #escolhido1=escolha1.get()   
-   escolhido1=variaveis1.setescolhido1(escolha1.get())
-   escolhido1=variaveis1.getescolhido1()
-   data = date.today()
-   
-   ano = data.year
-   mes = data.month
-   dia = data.day
-   
-
-   
-
-   try: 
-      banco = sqlite3.connect('contaspagar.db')
-      cursor = banco.cursor()
-      try:
-        if escolhido1 == "A":
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
-                                    FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.compra ASC''')
-        else:
-           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
-                                    FROM  contasrec a, cliente b, "" WHERE a.codigo = b.codigo AND  ORDER BY a.compra DESC''')
-
-      
-        
-        sqlres=cursor.fetchall()
-     
+    escolhido = variaveis1.setescolhido(escolha.get())
+    escolhido = variaveis1.getescolhido()
+    escolhido1 = variaveis1.setescolhido1(escolha1.get())
+    escolhido1 = variaveis1.getescolhido1()
     
+    try: 
+        banco = sqlite3.connect('contaspagar.db')
+        cursor = banco.cursor()
+        try:
+            if escolhido1 == "A":
+                cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                         a.valpagar,a.documento,a.tparcela
+                                  FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY a.compra ASC''')
+            else:
+                # CORRIGIDO: Removido o 'AND' que quebrava a sintaxe antes do ORDER BY
+                cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                         a.valpagar,a.documento,a.tparcela
+                                  FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY a.compra DESC''')
+
+            sqlres = cursor.fetchall()
          
-        if len(sqlres) == 0:
-            messagebox1("Não tem dados a mostrar na consulta", janela4)
+            if len(sqlres) == 0:
+                messagebox1("Não tem dados a mostrar na consulta", janela4)
+                cursor.close()
+                return              
+            else:
+                pdfgerado2(sqlres, "rel_compras.pdf") # gerar PDF
+                if escolhido == "A":
+                    imprimepdf2("rel_compras.pdf")
+                    cursor.close()              
+                else:         
+                    abrirpdf2("rel_compras.pdf")
+                    cursor.close()
+                return
+        except Error as ex: 
+            messagebox1("Erro ao tentar ler o registro linha 418 " + str(ex), janela4)
             cursor.close()
-            return             
-        else:
-           pdfgerado2(sqlres,"rel_compras.pdf") #gerar PDF
-           if escolhido == "A":
-              imprimepdf2("rel_compras.pdf")
-              cursor.close()              
-           else:        
-              abrirpdf2("rel_compras.pdf")
-              cursor.close
-           return
-      except Error as ex: 
-           messagebox1("Erro ao tentar ler o registro linha 418 "+str(ex),janela4)
-           cursor.close()
-           return
-   except Error as ex:
-        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 422 "+str(ex),janela4)
-        cursor.close()
+            return
+    except Error as ex:
+        messagebox1("Erro ao tentar ao conectar com Banco de Dados contaspagar linha 422 " + str(ex), janela4)
         return
 
+def gerapdf(event):
+    escolhido = variaveis1.setescolhido(escolha.get())
+    escolhido = variaveis1.getescolhido()
+    escolhido1 = variaveis1.setescolhido1(escolha1.get())   
+    escolhido1 = variaveis1.getescolhido1()
+
+    try: 
+        banco = sqlite3.connect('contaspagar.db')
+        cursor = banco.cursor()
+        try:
+            if escolhido1 == "A":
+                cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                         a.valpagar,a.documento,a.tparcela 
+                                  FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY b.nome ASC''')
+            else:
+                cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
+                                         a.valpagar,a.documento,a.tparcela 
+                                  FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY b.nome DESC''')
+            
+            # COMPLETADO: Adicionado o fluxo que estava cortado no seu código original
+            sqlres = cursor.fetchall()
+            
+            if len(sqlres) == 0:
+                messagebox1("Não tem dados a mostrar na consulta", janela4)
+                cursor.close()
+                return
+            else:
+                pdfgerado2(sqlres, "rel_nome.pdf")
+                if escolhido == "A":
+                    imprimepdf2("rel_nome.pdf")
+                    cursor.close()
+                else:
+                    abrirpdf2("rel_nome.pdf")
+                    cursor.close()
+                return
+                
+        except Error as ex:
+            messagebox1("Erro ao ler registros no gerapdf: " + str(ex), janela4)
+            cursor.close()
+    except Error as ex:
+        messagebox1("Erro de conexão no gerapdf: " + str(ex), janela4)
 def gerapdf(event):
    #escolhido=escolha.get()
    escolhido=variaveis1.setescolhido(escolha.get())
@@ -859,7 +886,7 @@ def gerapdf(event):
               cursor.close()              
            else:        
               abrirpdf2("rel_nome.pdf")
-              cursor.close
+              cursor.close()
            return
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 462 "+str(ex),janela4)
@@ -925,6 +952,7 @@ def rel_nome2(janela3):
 
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    #keyboard.on_press_key("f6", lambda _: moverpdf("rel_nome.pdf"))
+
 
 def rel_vencimento(janela3):
    global janela4 
