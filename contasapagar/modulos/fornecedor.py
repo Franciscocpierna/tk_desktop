@@ -1480,6 +1480,7 @@ def fornecedor_menu(janela1):
  editmenu2.add_command(label = "Codigo", command= lambda: rel_codigo(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
+ 
  menusair = Menu(menujan2, tearoff=0)
  menusair.add_command(label= "Sair click aqui", command=janela3.destroy) 
  menujan2.add_cascade(label='para Sair',menu = menusair)

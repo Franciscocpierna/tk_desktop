@@ -3207,7 +3207,7 @@ def consulta_ematraso(janela3):
 
 def contas_menu(janela1):
  janela3 = Toplevel() # janela de nível superior
- janela3.title("Menu Manutenção - Pagar Consultas Relatorios  F1 - PARA SAIR")
+ janela3.title("Menu Manutenção - Pagar Consultas Relatorios Gráficos F1 - PARA SAIR")
 #janela1.configure(height= 400)
 #janela1.configure(width= 400) 
            
@@ -3251,6 +3251,10 @@ def contas_menu(janela1):
  editmenu2.add_command(label = "Pedaço do nome",command=lambda: rel_nomep2(janela3))
  editmenu2.add_command(label = "Codigo Fornecedor", command= lambda: rel_codigo2(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
+
+ menugrafico = Menu(menujan2, tearoff=0)
+ menugrafico.add_command(label= "gráfico por data compra", command='') 
+ menujan2.add_cascade(label='Gráficos',menu = menugrafico)
 
  menusair = Menu(menujan2, tearoff=0)
  menusair.add_command(label= "Sair click aqui", command=janela3.destroy) 
