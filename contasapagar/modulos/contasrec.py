@@ -3735,6 +3735,11 @@ def contasrec_menu(janela1):
  editmenu2.add_command(label = "Fluxo de Caixa Previsto", command= lambda: rel_caixap(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
+ menugrafico = Menu(menujan2, tearoff=0)
+ menugrafico.add_command(label= "Gráfico Vencimento", command='') 
+ menujan2.add_cascade(label='Gráficos',menu = menugrafico)
+
+
  menusair = Menu(menujan2, tearoff=0)
  menusair.add_command(label= "Sair click aqui", command=janela3.destroy) 
  menujan2.add_cascade(label='para Sair',menu = menusair)

@@ -1,0 +1,9 @@
+
+data da compra
+data de vencimento
+data de pagamento
+data de emissão
+        
+20  por cento em atraso
+60  por cento a pagar em dia
+20  por cento pago     

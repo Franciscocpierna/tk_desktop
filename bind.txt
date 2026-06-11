@@ -1,0 +1,36 @@
+import tkinter as tk
+
+# Esta função recebe o "event", que traz as coordenadas (x, y) de onde o mouse interagiu
+def ao_clicar(event):
+    print(f'Clicado em x={event.x}, y={event.y}')
+
+def func(event):
+    print(f'Outro evento detectado! Tipo: {event.type} em x={event.x}, y={event.y}')
+
+# Criando a janela do programa
+janela = tk.Tk()
+janela.geometry("400x400")
+janela.title("Testando Eventos de Mouse")
+
+# === CORREÇÃO DOS EVENTOS DE MOUSE ===
+
+# 1. Clique com o botão ESQUERDO do mouse
+janela.bind('<Button-1>', ao_clicar) 
+
+# 2. Clique com o botão DIREITO do mouse
+janela.bind('<Button-3>', ao_clicar) 
+
+# 3. Duplo clique com o botão esquerdo
+janela.bind('<Double-Button-1>', func) 
+
+# 4. Movimento do mouse (arrastar ou mover enquanto pressionado)
+janela.bind('<B1-Motion>', func) 
+
+# 5. O ponteiro do mouse ENTROU na área da janela
+janela.bind('<Enter>', func) 
+
+# 6. O ponteiro do mouse SAIU da área da janela
+janela.bind('<Leave>', func) 
+
+# Inicia o programa
+janela.mainloop()
