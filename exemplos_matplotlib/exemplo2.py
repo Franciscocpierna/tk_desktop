@@ -21,9 +21,11 @@ import numpy as np  # Importa a biblioteca matemática/numérica como 'np'
 # 1) Preparar os dados
 # Cria 100 pontos no eixo X, espalhados uniformemente de 0 a 2*pi (aproximadamente 6.28)
 x = np.linspace(0, 2 * np.pi, 100)
+print(x) 
 y1 = np.sin(x)  # Calcula o seno para cada um dos 100 pontos de X
+print(y1)
 y2 = np.cos(x)  # Calcula o cosseno para cada um dos 100 pontos de X
-
+print(y2)
 # 2) Criar o gráfico
 # Plota a linha do seno, define o nome da legenda e deixa a linha mais grossa (linewidth=2)
 plt.plot(x, y1, label="seno", linewidth=2)
