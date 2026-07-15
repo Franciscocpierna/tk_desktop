@@ -93,7 +93,7 @@ plt.show()
 cursor.close()
 conn.close()
 
-
+   
 # Caminho 2: Trazer os dados brutos e usar Pandas (Mais flexível)Se você preferir trazer todos os dados 
 # para o Python e processar lá, a biblioteca Pandas é a ferramenta ideal. 
 # Você carrega os dados em um DataFrame e usa o agrupamento do Pandas.  
