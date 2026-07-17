@@ -153,3 +153,13 @@ df_mensal = df.groupby(df['data_inclusao'].dt.to_period('M')).size()
 # transforma para:| período || :--- || 2026-01 || 2026-01 || 2026-02 |groupby(...).size() 
 # agrupa e conta:| Índice | Valor (Contagem) || :--- | :--- || 2026-01 | 2 || 2026-02 | 1 |
 # É exatamente esse resultado final que você passa para o Matplotlib desenhar o seu gráfico.
+
+
+python com django
+
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+
+resultado = sua_tabela.objects.annotate(
+    mes=TruncMonth('data_inclusao')
+).values('mes').annotate(total=Count('id')).order_by('mes')
