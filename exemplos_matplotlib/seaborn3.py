@@ -36,6 +36,7 @@ Os exemplos desta apostila usam tips, penguins, iris e flights.
 # 7.1 boxplot e violinplot
 tips = sns.load_dataset("tips") # gorjetas em restaurante
 sns.boxplot(data=tips, x="day", y="total_bill", hue="smoker")
+plt.show()
 sns.violinplot(data=tips, x="day", y="total_bill",
 hue="sex", split=True, inner="quart")
 plt.show()
