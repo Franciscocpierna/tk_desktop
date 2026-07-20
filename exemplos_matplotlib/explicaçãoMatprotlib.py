@@ -11,12 +11,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # 1. Conectar ao seu banco de dados
-conn = sqlite3.connect('seu_banco.db')
+conn = sqlite3.connect('estoque.db')
 
 # 2. Executar a consulta e carregar diretamente em um DataFrame
 query = """
 SELECT strftime('%m-%Y', data_inclusao) AS mes_ano, COUNT(*) AS total
-FROM sua_tabela
+FROM produtos
 GROUP BY mes_ano
 ORDER BY mes_ano;
 """
@@ -69,7 +69,7 @@ cursor = conn.cursor()
 # 2. Executar a consulta
 query = """
 SELECT strftime('%m-%Y', data_inclusao) AS mes_ano, COUNT(*) AS total
-FROM sua_tabela
+FROM produtos
 GROUP BY mes_ano
 ORDER BY mes_ano;
 """
@@ -104,7 +104,7 @@ import matplotlib.pyplot as plt
 
 # 1. Conectar e carregar dados
 conn = sqlite3.connect('seu_banco.db')
-df = pd.read_sql_query("SELECT data_inclusao FROM sua_tabela", conn)
+df = pd.read_sql_query("SELECT data_inclusao FROM produtos", conn)
 
 # 2. Converter para datetime e agrupar
 df['data_inclusao'] = pd.to_datetime(df['data_inclusao'])
@@ -132,7 +132,7 @@ plt.show()
 #  gerar diferentes tipos de visualizações com o Matplotlib.
 
 
-df_mensal = df.groupby(df['data_inclusao'].dt.to_period('M')).size()
+#df_mensal = df.groupby(df['data_inclusao'].dt.to_period('M')).size()
 #Essa linha é o "coração" da transformação dos dados. Ela pega uma lista de datas individuais 
 # e as agrupa em baldes mensais para contar quantos registros existem em cada um.Vamos dividir 
 # o que acontece ali passo a passo:1. df['data_inclusao'].dtO sufixo .dt é um acessor. Ele permite 
@@ -155,11 +155,11 @@ df_mensal = df.groupby(df['data_inclusao'].dt.to_period('M')).size()
 # É exatamente esse resultado final que você passa para o Matplotlib desenhar o seu gráfico.
 
 
-python com django
+'''python com django
 
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
 
 resultado = sua_tabela.objects.annotate(
     mes=TruncMonth('data_inclusao')
-).values('mes').annotate(total=Count('id')).order_by('mes')
+).values('mes').annotate(total=Count('id')).order_by('mes') '''
