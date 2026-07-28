@@ -1,0 +1,308 @@
+"""
+Controle de Estoque com SQLite + Tkinter
+------------------------------------------
+- Chave primária: código de barras (codigo_barra)
+- Campo de data em formato TEXTO (dd/mm/aaaa), validado antes de gravar
+- Tela única com formulário de cadastro e tabela (Treeview) com os produtos
+"""
+
+import sqlite3
+import tkinter as tk
+from tkinter import ttk, messagebox
+from datetime import datetime
+
+NOME_BANCO = "estoque.db"
+
+
+# ---------------------------------------------------------
+# Banco de dados
+# ---------------------------------------------------------
+def conectar():
+    return sqlite3.connect(NOME_BANCO)
+
+
+def criar_tabela():
+    with conectar() as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS estoque (
+                codigo_barra TEXT PRIMARY KEY,
+                nome TEXT NOT NULL,
+                quantidade INTEGER NOT NULL,
+                validade TEXT NOT NULL
+            )
+        """)
+        conn.commit()
+
+
+# ---------------------------------------------------------
+# Validação de data (texto no formato dd/mm/aaaa)
+# ---------------------------------------------------------
+def validar_data(data_texto):
+    try:
+        datetime.strptime(data_texto, "%d/%m/%Y")
+        return True
+    except ValueError:
+        return False
+
+
+# ---------------------------------------------------------
+# Campo de data com validação em tempo real (a cada tecla)
+# ---------------------------------------------------------
+class CampoData(tk.Entry):
+    """
+    Entry especial para datas dd/mm/aaaa:
+    - Aceita apenas dígitos, insere as barras "/" automaticamente.
+    - A cada tecla digitada, formata o texto e, quando a data estiver
+      completa, pinta o campo de verde (válida) ou vermelho (inválida).
+    """
+
+    COR_NEUTRA = "white"
+    COR_VALIDA = "#d4f7d4"
+    COR_INVALIDA = "#f7d4d4"
+
+    def __init__(self, master, **kwargs):
+        self.var = tk.StringVar()
+        super().__init__(master, textvariable=self.var, **kwargs)
+        self.var.trace_add("write", self._on_change)
+
+    def _on_change(self, *_args):
+        texto_atual = self.var.get()
+
+        # mantém só os dígitos digitados (máx. 8: dd mm aaaa)
+        digitos = "".join(c for c in texto_atual if c.isdigit())[:8]
+
+        if len(digitos) > 4:
+            formatado = f"{digitos[:2]}/{digitos[2:4]}/{digitos[4:]}"
+        elif len(digitos) > 2:
+            formatado = f"{digitos[:2]}/{digitos[2:]}"
+        else:
+            formatado = digitos
+
+        if formatado != texto_atual:
+            self.var.set(formatado)      # dispara _on_change de novo com o texto já formatado
+            self.icursor(tk.END)
+            return
+
+        self._colorir(formatado)
+
+    def _colorir(self, texto):
+        if len(texto) < 10:
+            self.config(bg=self.COR_NEUTRA)
+        elif validar_data(texto):
+            self.config(bg=self.COR_VALIDA)
+        else:
+            self.config(bg=self.COR_INVALIDA)
+
+    def data_valida(self):
+        return validar_data(self.var.get())
+
+
+# ---------------------------------------------------------
+# Campo numérico que só aceita dígitos (validação a cada tecla)
+# ---------------------------------------------------------
+class CampoInteiro(tk.Entry):
+    """
+    Entry que bloqueia qualquer tecla que não seja dígito, usando o
+    mecanismo nativo de validação do Tkinter (validate="key").
+    """
+
+    def __init__(self, master, **kwargs):
+        vcmd = (master.register(self._validar_tecla), "%P")
+        super().__init__(master, validate="key", validatecommand=vcmd, **kwargs)
+
+    @staticmethod
+    def _validar_tecla(texto_apos_edicao):
+        # texto_apos_edicao é como o campo ficaria SE a tecla for aceita
+        return texto_apos_edicao == "" or texto_apos_edicao.isdigit()
+
+
+# ---------------------------------------------------------
+# Aplicação
+# ---------------------------------------------------------
+class AppEstoque(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Controle de Estoque")
+        self.geometry("720x480")
+        self.resizable(False, False)
+
+        criar_tabela()
+        self._montar_formulario()
+        self._montar_tabela()
+        self._montar_botoes()
+
+        self.atualizar_lista()
+
+    # ---------------- Formulário ----------------
+    def _montar_formulario(self):
+        frame = tk.LabelFrame(self, text="Produto", padx=10, pady=10)
+        frame.pack(fill="x", padx=10, pady=10)
+
+        tk.Label(frame, text="Código de barras:").grid(row=0, column=0, sticky="e", padx=5, pady=5)
+        self.entry_codigo = tk.Entry(frame, width=25)
+        self.entry_codigo.grid(row=0, column=1, padx=5, pady=5)
+        self.entry_codigo.focus()  # cursor pronto para o leitor de código de barras
+
+        tk.Label(frame, text="Nome do produto:").grid(row=0, column=2, sticky="e", padx=5, pady=5)
+        self.entry_nome = tk.Entry(frame, width=25)
+        self.entry_nome.grid(row=0, column=3, padx=5, pady=5)
+
+        tk.Label(frame, text="Quantidade:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
+        self.entry_quantidade = CampoInteiro(frame, width=25)
+        self.entry_quantidade.grid(row=1, column=1, padx=5, pady=5)
+
+        tk.Label(frame, text="Validade (dd/mm/aaaa):").grid(row=1, column=2, sticky="e", padx=5, pady=5)
+        self.entry_validade = CampoData(frame, width=25)
+        self.entry_validade.grid(row=1, column=3, padx=5, pady=5)
+
+        # Enter no campo código de barras já dispara "Adicionar" (fluxo de leitor de código de barras)
+        self.entry_codigo.bind("<Return>", lambda e: self.entry_nome.focus())
+
+    # ---------------- Tabela (Treeview) ----------------
+    def _montar_tabela(self):
+        frame = tk.Frame(self)
+        frame.pack(fill="both", expand=True, padx=10, pady=5)
+
+        colunas = ("codigo", "nome", "quantidade", "validade")
+        self.tree = ttk.Treeview(frame, columns=colunas, show="headings", height=14)
+
+        self.tree.heading("codigo", text="Código de Barras")
+        self.tree.heading("nome", text="Nome")
+        self.tree.heading("quantidade", text="Quantidade")
+        self.tree.heading("validade", text="Validade")
+
+        self.tree.column("codigo", width=150)
+        self.tree.column("nome", width=250)
+        self.tree.column("quantidade", width=100, anchor="center")
+        self.tree.column("validade", width=120, anchor="center")
+
+        scrollbar = ttk.Scrollbar(frame, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=scrollbar.set)
+
+        self.tree.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        self.tree.bind("<<TreeviewSelect>>", self.selecionar_item)
+
+    # ---------------- Botões ----------------
+    def _montar_botoes(self):
+        frame = tk.Frame(self)
+        frame.pack(fill="x", padx=10, pady=10)
+
+        tk.Button(frame, text="Adicionar", width=14, command=self.adicionar_produto).pack(side="left", padx=5)
+        tk.Button(frame, text="Atualizar Qtd", width=14, command=self.atualizar_quantidade).pack(side="left", padx=5)
+        tk.Button(frame, text="Remover", width=14, command=self.remover_produto).pack(side="left", padx=5)
+        tk.Button(frame, text="Limpar Campos", width=14, command=self.limpar_campos).pack(side="left", padx=5)
+
+    # ---------------- Ações ----------------
+    def adicionar_produto(self):
+        codigo = self.entry_codigo.get().strip()
+        nome = self.entry_nome.get().strip()
+        quantidade_texto = self.entry_quantidade.get().strip()
+        validade = self.entry_validade.get().strip()
+
+        if not codigo or not nome or not quantidade_texto or not validade:
+            messagebox.showwarning("Campos incompletos", "Preencha todos os campos.")
+            return
+
+        if not quantidade_texto.isdigit():
+            messagebox.showerror("Quantidade inválida", "A quantidade deve ser um número inteiro.")
+            return
+
+        if not validar_data(validade):
+            messagebox.showerror("Data inválida", "Use o formato dd/mm/aaaa e verifique se a data existe.")
+            return
+
+        try:
+            with conectar() as conn:
+                conn.execute(
+                    "INSERT INTO estoque (codigo_barra, nome, quantidade, validade) VALUES (?, ?, ?, ?)",
+                    (codigo, nome, int(quantidade_texto), validade)
+                )
+                conn.commit()
+        except sqlite3.IntegrityError:
+            messagebox.showerror("Código duplicado", "Já existe um produto com esse código de barras.")
+            return
+
+        messagebox.showinfo("Sucesso", f"Produto '{nome}' adicionado!")
+        self.limpar_campos()
+        self.atualizar_lista()
+
+    def atualizar_quantidade(self):
+        codigo = self.entry_codigo.get().strip()
+        quantidade_texto = self.entry_quantidade.get().strip()
+
+        if not codigo or not quantidade_texto:
+            messagebox.showwarning("Campos incompletos", "Informe o código de barras e a nova quantidade.")
+            return
+
+        if not quantidade_texto.isdigit():
+            messagebox.showerror("Quantidade inválida", "A quantidade deve ser um número inteiro.")
+            return
+
+        with conectar() as conn:
+            cursor = conn.execute("SELECT * FROM estoque WHERE codigo_barra = ?", (codigo,))
+            if not cursor.fetchone():
+                messagebox.showerror("Não encontrado", "Nenhum produto com esse código de barras.")
+                return
+
+            conn.execute(
+                "UPDATE estoque SET quantidade = ? WHERE codigo_barra = ?",
+                (int(quantidade_texto), codigo)
+            )
+            conn.commit()
+
+        messagebox.showinfo("Sucesso", "Quantidade atualizada!")
+        self.limpar_campos()
+        self.atualizar_lista()
+
+    def remover_produto(self):
+        codigo = self.entry_codigo.get().strip()
+
+        if not codigo:
+            messagebox.showwarning("Campo vazio", "Informe o código de barras do produto a remover.")
+            return
+
+        with conectar() as conn:
+            cursor = conn.execute("SELECT * FROM estoque WHERE codigo_barra = ?", (codigo,))
+            if not cursor.fetchone():
+                messagebox.showerror("Não encontrado", "Nenhum produto com esse código de barras.")
+                return
+
+            if messagebox.askyesno("Confirmar", "Deseja realmente remover este produto?"):
+                conn.execute("DELETE FROM estoque WHERE codigo_barra = ?", (codigo,))
+                conn.commit()
+                self.atualizar_lista()
+                self.limpar_campos()
+
+    def selecionar_item(self, event):
+        selecionado = self.tree.focus()
+        if not selecionado:
+            return
+        valores = self.tree.item(selecionado, "values")
+        self.limpar_campos()
+        self.entry_codigo.insert(0, valores[0])
+        self.entry_nome.insert(0, valores[1])
+        self.entry_quantidade.insert(0, valores[2])
+        self.entry_validade.insert(0, valores[3])
+
+    def limpar_campos(self):
+        self.entry_codigo.delete(0, tk.END)
+        self.entry_nome.delete(0, tk.END)
+        self.entry_quantidade.delete(0, tk.END)
+        self.entry_validade.delete(0, tk.END)
+        self.entry_codigo.focus()
+
+    def atualizar_lista(self):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        with conectar() as conn:
+            cursor = conn.execute("SELECT * FROM estoque ORDER BY nome")
+            for linha in cursor.fetchall():
+                self.tree.insert("", "end", values=linha)
+
+
+if __name__ == "__main__":
+    app = AppEstoque()
+    app.mainloop()
