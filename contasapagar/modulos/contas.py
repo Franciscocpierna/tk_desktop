@@ -3276,7 +3276,7 @@ def contas_menu(janela1):
                                                documento varchar(20),
                                                tparcela varchar(3),
                                                cs varchar(1),
-                                               produto varchar(5),               
+                                               produto varchar(5), 
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),
                                                FOREIGN KEY(tipo) REFERENCES  tipo(codigo),

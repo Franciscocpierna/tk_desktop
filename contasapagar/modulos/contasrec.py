@@ -1557,7 +1557,7 @@ def incluircontasrec():
             banco = sqlite3.connect('contaspagar.db')
             cursor = banco.cursor()
             '''
-(codigo varchar(5)  NOT NULL,
+                                             (codigo varchar(5)  NOT NULL,
                                                documento varchar(20),
                                                tparcela varchar(3), 
                                                compra TEXT NOT NULL, 
@@ -1567,7 +1567,7 @@ def incluircontasrec():
                                                valpagar REAL(14,2) NOT NULL,
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  cliente(codigo)
-'''
+           '''
 
             cursor.execute(f'''INSERT INTO contasrec VALUES('{codigomem}','{documentomem}','{tparcelamem}','{compramem}','{vencimentomem}',
                                                             '{descricaomem}','{pagamentomem}',
