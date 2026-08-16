@@ -2410,7 +2410,7 @@ def consulta_compra(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela', 'inclusao' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2421,7 +2421,8 @@ def consulta_compra(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-   
+   tv.column('inclusao', minwidth=0, width=100)
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2431,7 +2432,7 @@ def consulta_compra(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   
+   tv.heading('inclusao', text='INCLUSÂO')
 
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
@@ -2467,12 +2468,12 @@ def consultapagopcao2(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela
+                                    a.valpagar, a.documento,a.tparcela, a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.pagamento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela
+                                    a.valpagar, a.documento,a.tparcela, a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.pagamento DESC''')
         sqlres=cursor.fetchall()
      
@@ -2483,12 +2484,12 @@ def consultapagopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,inc) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,inc)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1613 "+str(ex),janela4)
@@ -2515,7 +2516,7 @@ def consulta_pagamento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2526,6 +2527,7 @@ def consulta_pagamento(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
+   tv.column('inclusao', minwidth=0, width=100)
       
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
@@ -2536,6 +2538,7 @@ def consulta_pagamento(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
+   tv.heading('inclusao', text='INCLUSÃO')
    
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
@@ -2861,7 +2864,7 @@ def consulta_vencimento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela'), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela', 'inclusao'), show= 'headings')
    
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2872,7 +2875,8 @@ def consulta_vencimento(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-      
+   tv.column('inclusao', minwidth=0, width=100)
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -2882,6 +2886,7 @@ def consulta_vencimento(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
+   tv.heading('inclusao', text='INCLUSÃO')
    
 
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
@@ -2925,12 +2930,12 @@ def consultacodigoopcao2(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.codigo ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.codigo DESC''')
         sqlres=cursor.fetchall()
      
@@ -2941,12 +2946,13 @@ def consultacodigoopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,inc) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
+               inc=recupdata(inc) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,inc)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1947 "+str(ex),janela4)
@@ -2972,7 +2978,7 @@ def consulta_codigo2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela' ), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2983,6 +2989,7 @@ def consulta_codigo2(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
+   tv.column('inclusao', minwidth=0, width=100)
       
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
@@ -2993,7 +3000,7 @@ def consulta_codigo2(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
-   
+   tv.heading('inclusao', text='INCLUSAO')
   
  
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
@@ -3078,7 +3085,7 @@ def consulta_porcao2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento','valpagar', 'documento','tparcela'), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento','valpagar', 'documento','tparcela', 'inclusao'), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -3089,7 +3096,8 @@ def consulta_porcao2(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
-      
+   tv.column('inclusao', minwidth=0, width=100) 
+
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
    tv.heading('compra', text='COMPRA')
@@ -3099,6 +3107,7 @@ def consulta_porcao2(janela3):
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
    tv.heading('tparcela', text='PARCELADO')
+   tv.heading('inclusao', text='INCLUSAO')
    
    verscrlbar = ttk.Scrollbar(janela4,orient ="vertical",command = tv.yview)
    verscrlbar1 = ttk.Scrollbar(janela4,orient ="horizontal",command = tv.xview)
@@ -3629,7 +3638,7 @@ def consulta_ematraso(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela'), show= 'headings')
+   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela', 'inclusao'), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -3640,6 +3649,7 @@ def consulta_ematraso(janela3):
    tv.column('valpagar', minwidth=0, width=100)
    tv.column('documento', minwidth=0, width=200)
    tv.column('tparcela', minwidth=0, width=200)
+   tv.column('inclusao', minwidth=0, width=100)
       
    tv.heading('codigo', text='CÓDIGO' )
    tv.heading('nome', text='NOME')
@@ -3649,7 +3659,7 @@ def consulta_ematraso(janela3):
    tv.heading('pagamento', text='PAGAMENTO')
    tv.heading('valpagar', text='VALOR A PAGAR')
    tv.heading('documento', text='DOCUMENTO')
-   tv.heading('tparcela', text='PARCELADO')
+   tv.heading('inclusao', text='INCLUSÂO')
     
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
    dataini = Entry(janela4,width=15)
