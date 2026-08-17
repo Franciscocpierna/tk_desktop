@@ -1540,7 +1540,7 @@ def incluircontasrec():
         tparcelamem = tela.tparcela.get()
         compramem=dataa(tela.compra.get())
         vencimentomem= dataa(tela.vencimento.get())
-        inclusaomem= dataa(tela.inclusao.get())
+        #inclusaomem= dataa(tela.inclusao.get())
         descricaomem=tela.descricao.get()
         if tela.pagamento.get()!="":
           pagamentomem=dataa(tela.pagamento.get()) 
@@ -1579,12 +1579,12 @@ def incluircontasrec():
             INSERT INTO contasrec (
                   codigo, documento, tparcela, compra, vencimento, 
                   descricao, pagamento, valpagar, inclusao
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, DATE('now'))
             '''
 
             dados = (
                   codigomem, documentomem, tparcelamem, compramem, vencimentomem,
-                  descricaomem, pagamentomem, valpagarmem, inclusaomem
+                  descricaomem, pagamentomem, valpagarmem 
                )
 
             cursor.execute(sql, dados)
@@ -1648,13 +1648,21 @@ def verificadatac(memdata1):
 
 
 def dadosdatac(event):
- indice=len(tela.compra.get())
+#############
+ # Pega dinamicamente o campo que disparou o evento (ent_inic ou ent_venc)
+ memdata = event.widget   
+ indice=len(memdata.get())
  if indice==0:
    return
  indice=indice-1
+##############
+#  indice=len(tela.compra.get())
+#  if indice==0:
+#    return
+#  indice=indice-1
  manutencao=variaveis.getmanutencao()
  
- memdata=tela.compra.get()
+ #memdata=tela.compra.get()
  
  if str(indice) in ("0","1","3","4","6","7","8","9"):
     if memdata[indice].isnumeric():
@@ -2059,6 +2067,12 @@ def vercampos(event):
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        tela.compra.delete(0,END)
        tela.compra.focus()
+
+   if len(tela.inclusao.get())>10:
+       messagebox1("campo data tamanho 10 digite novamente",manutencao)
+       tela.inclusao.delete(0,END)
+       tela.inclusao.focus()
+
    if len(tela.vencimento.get())>10:
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        tela.vencimento.delete(0,END)
@@ -2095,11 +2109,13 @@ def incluircontasrec_click(janela1):
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
     tela.tparcela.bind("<KeyRelease>", verchave)
-    tela.compra.bind("<KeyRelease>", dadosdatac)
+    tela.compra.bind("<KeyRelease>", dadosdatac) 
+    #tela.inclusao.bind("<KeyRelease>", dadosdatac) vai ser incluso data atual
     tela.vencimento.bind("<KeyRelease>", dadosdatav)
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
     tela.valpagar.bind("<KeyRelease>", dadosvalor)
     tela.compra.bind("<FocusIn>",vercampos)
+    #tela.inclusao.bind("<FocusIn>",vercampos)
     tela.vencimento.bind("<FocusIn>",vercampos)
     tela.valpagar.bind("<FocusIn>",vercampos)
     tela.descricao.bind("<FocusIn>",vercampos)
