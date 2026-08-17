@@ -41,6 +41,7 @@ def limpacamposcontasrec():
   tela.valpagar.delete(0,END)
   tela.documento.delete(0, END) 
   tela.tparcela.delete(0,END) 
+  tela.inclusao.delete(0,END)
   return
 
 
@@ -1539,11 +1540,14 @@ def incluircontasrec():
         tparcelamem = tela.tparcela.get()
         compramem=dataa(tela.compra.get())
         vencimentomem= dataa(tela.vencimento.get())
+        inclusaomem= dataa(tela.inclusao.get())
         descricaomem=tela.descricao.get()
         if tela.pagamento.get()!="":
           pagamentomem=dataa(tela.pagamento.get()) 
         else:    
          pagamentomem=tela.pagamento.get()
+
+        
         valpagarmem= valores(tela.valpagar.get())
         if len(tela.pagamento.get())!=0:
          if vencimentomem > pagamentomem:
@@ -1569,12 +1573,26 @@ def incluircontasrec():
                                                valpagar REAL(14,2) NOT NULL,
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  cliente(codigo)
-           '''
+            '''
+            # Mapeia as colunas explicitamente e passa os valores em uma tupla:
+            sql = '''
+            INSERT INTO contasrec (
+                  codigo, documento, tparcela, compra, vencimento, 
+                  descricao, pagamento, valpagar, inclusao
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            '''
 
-            cursor.execute(f'''INSERT INTO contasrec VALUES('{codigomem}','{documentomem}','{tparcelamem}','{compramem}','{vencimentomem}',
-                                                            '{descricaomem}','{pagamentomem}',
-                                                                 '{valpagarmem}'
-                                                                   )''')
+            dados = (
+                  codigomem, documentomem, tparcelamem, compramem, vencimentomem,
+                  descricaomem, pagamentomem, valpagarmem, inclusaomem
+               )
+
+            cursor.execute(sql, dados)
+
+            #cursor.execute(f'''INSERT INTO contasrec VALUES('{codigomem}','{documentomem}','{tparcelamem}','{compramem}','{vencimentomem}',
+            #                                                 '{descricaomem}','{pagamentomem}',
+            #                                                      '{valpagarmem}', '{inclusaomem}'
+            #                                                        )''')
                
                      
             banco.commit()
@@ -2172,11 +2190,14 @@ def alteracaocontasrec():
     tparcelamem = tela.tparcela.get()
     compramem=dataa(tela.compra.get()) 
     vencimentomem=dataa(tela.vencimento.get())
+    inclusaomem=dataa(tela.inclusao.get())
     descricaomem=tela.descricao.get()
     if tela.pagamento.get()!="":
           pagamentomem=dataa(tela.pagamento.get()) 
     else:    
           pagamentomem=tela.pagamento.get()
+
+    
     valpagarmem=valores(tela.valpagar.get())
     if len(tela.pagamento.get())!=0:
          if vencimentomem > pagamentomem:
@@ -2202,18 +2223,39 @@ def alteracaocontasrec():
       try:
           
 
-           cursor.execute(f'''UPDATE contasrec SET codigo = '{codigomem}',
-                                                    documento='{documentomem}',
-                                                    tparcela='{tparcelamem}',
-                                                    compra ='{compramem}',
-                                                    vencimento ='{vencimentomem}',
-                                                    descricao ='{descricaomem}',
-                                                    pagamento = '{pagamentomem}',
-                                                    valpagar = '{valpagarmem}'
-                                                    WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
+         #   cursor.execute(f'''UPDATE contasrec SET codigo = '{codigomem}',
+         #                                            documento='{documentomem}',
+         #                                            tparcela='{tparcelamem}',
+         #                                            compra ='{compramem}',
+         #                                            vencimento ='{vencimentomem}',
+         #                                            descricao ='{descricaomem}',
+         #                                            pagamento = '{pagamentomem}',
+         #                                            valpagar = '{valpagarmem}'
+         #                                            WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
                
 
-                                      
+           sql = '''
+               UPDATE contasrec 
+               SET codigo = ?,
+                  documento = ?,
+                  tparcela = ?,
+                  compra = ?,
+                  vencimento = ?,
+                  descricao = ?,
+                  pagamento = ?,
+                  valpagar = ?
+               WHERE codigo = ? AND documento = ? AND tparcela = ?
+            '''
+
+            # Atenção: a tupla precisa conter TODOS os valores na ordem exata dos '?' 
+            # (os 8 primeiros para o SET e os 3 últimos para o WHERE)
+           dados = (
+               codigomem, documentomem, tparcelamem, compramem, vencimentomem,
+               descricaomem, pagamentomem, valpagarmem,  # Valores do SET
+               codigomem, documentomem, tparcelamem       # Valores do WHERE
+           )
+
+           cursor.execute(sql, dados)                                      
            banco.commit()
            cursor.close()     
            messagebox1("registro Alterado com sucesso",manutencao)
@@ -2386,7 +2428,7 @@ def consultacompraopcao(event):
                pg=recupdata(pg)
                vp=recuperaval(vp)
                inc=recupdata(inc)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,inc)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1505 "+str(ex),janela4)
@@ -3081,7 +3123,7 @@ def consutaporcao2(event):
                     cursor.close()
                     return
             else:
-                    for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+                    for (c,n,co,ve,de,pg,vp,doc,par,inc) in sqlres:
                       co=recupdata(co)
                       ve=recupdata(ve)
                       pg=recupdata(pg)
@@ -3472,7 +3514,7 @@ def consultaatrasoopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,inc) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)

@@ -293,7 +293,10 @@ class montatela():
                Label(manutencao1, text="Valor a Pagar R$:",font=('Arial', 15)).grid(row=8, column=0,sticky=W)
                self.valpagar = Entry(manutencao1,width=14)
                self.valpagar.grid(row=8, column=1,sticky=W)
-                         
+
+               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
+               self.inclusao = Entry(manutencao1,width=10)
+               self.inclusao.grid(row=9, column=1,sticky=W)          
          
          manutencao1.geometry("%dx%d+%d+%d" % (self.largura, self.altura, centralizatela.posx,centralizatela.posy-20))
      
