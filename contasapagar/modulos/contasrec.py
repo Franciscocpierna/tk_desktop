@@ -15,6 +15,7 @@ import win32api
 import os
 from datetime import date,datetime
 import shutil
+from classes import AcceleratedTreeview
 
 
 largura=1200
@@ -268,11 +269,12 @@ def pdfgerado2(sqlres,arquivo):
    z=1
    x=0
 
-   for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+   for (c,n,co,ve,de,pg,vp,doc,par,inc) in sqlres:
         co=recupdata(co)
         ve=recupdata(ve)
         pg=recupdata(pg)
         vp=recuperaval(vp)
+        inc=recupdata(inc)
         x+=1
         y -= 20
         cnv.drawString(10,y,"------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -342,21 +344,21 @@ def gerapdv(event):
       try:
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b  WHERE a.codigo = b.codigo   ORDER BY a.vencimento DESC''')
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
@@ -406,11 +408,11 @@ def gerapdp(event):
       try:
         if escolhido1 == "A":
            cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.pagamento ASC''')
         else:
            cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.pagamento DESC''')
 
       
@@ -615,22 +617,22 @@ def gerapdat(event):
       try:
         if escolhido1 == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
         elif escolhido1=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
           
         elif escolhido1 == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
 
       
@@ -677,7 +679,7 @@ def gerapdf2(event):
          nomemem1= nomemem.get()
          nomemem1="%"+nomemem1+"%"
          cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
             
      
@@ -725,11 +727,11 @@ def gerapd1(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.codigo ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.codigo DESC''')
 
       
@@ -771,12 +773,12 @@ def geracompras(event):
         try:
             if escolhido1 == "A":
                 cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                         a.valpagar,a.documento,a.tparcela
+                                         a.valpagar,a.documento,a.tparcela,a.inclusao
                                   FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY a.compra ASC''')
             else:
                 # CORRIGIDO: Removido o 'AND' que quebrava a sintaxe antes do ORDER BY
                 cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                         a.valpagar,a.documento,a.tparcela
+                                         a.valpagar,a.documento,a.tparcela,a.inclusao
                                   FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY a.compra DESC''')
 
             sqlres = cursor.fetchall()
@@ -814,11 +816,11 @@ def gerapdf(event):
         try:
             if escolhido1 == "A":
                 cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                         a.valpagar,a.documento,a.tparcela 
+                                         a.valpagar,a.documento,a.tparcela,a.inclusao 
                                   FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY b.nome ASC''')
             else:
                 cursor.execute('''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                         a.valpagar,a.documento,a.tparcela 
+                                         a.valpagar,a.documento,a.tparcela,a.inclusao 
                                   FROM contasrec a, cliente b WHERE a.codigo = b.codigo ORDER BY b.nome DESC''')
             
             # COMPLETADO: Adicionado o fluxo que estava cortado no seu código original
@@ -862,11 +864,11 @@ def gerapdf(event):
       try:
         if escolhido1 == "A":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela 
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao 
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY b.nome ASC''')
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY b.nome DESC''')
 
       
@@ -2363,12 +2365,12 @@ def consultacompraopcao(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.compra ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.compra DESC''')
         sqlres=cursor.fetchall()
      
@@ -2378,11 +2380,12 @@ def consultacompraopcao(event):
             messagebox1("Não tem dados a mostrar na consulta",janela4)
             cursor.close()
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,inc) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
+               inc=recupdata(inc)
                tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
                
       except Error as ex: 
@@ -2410,8 +2413,16 @@ def consulta_compra(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela', 'inclusao' ), show= 'headings')
-    
+   
+   #a linha abaixo substituida por tv = AcceleratedTreeview(janela4, ....e o restante na classe definida
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela', 'inclusao' ), show= 'headings')
+   
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais.
+   tv = AcceleratedTreeview(janela4, columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
+   #tv = AcceleratedTreeview(janela, columns=('campoa','campob', etc ), show= 'headings')   
+   
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
@@ -2468,12 +2479,12 @@ def consultapagopcao2(event):
       try:
         if escolhido == "A":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela, a.inclusao
+                                    a.valpagar, a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.pagamento ASC''')
    
         else:
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela, a.inclusao
+                                    a.valpagar, a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.pagamento DESC''')
         sqlres=cursor.fetchall()
      
@@ -2489,6 +2500,7 @@ def consultapagopcao2(event):
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
+               inc=recupdata(inc)
                tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,inc)) 
                
       except Error as ex: 
@@ -2516,8 +2528,13 @@ def consulta_pagamento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
-    
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
+
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais.
+   tv = AcceleratedTreeview(janela4, columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings') 
+  
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
@@ -2595,21 +2612,21 @@ def consultavencopcao2(event):
       try:
         if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela
+                                    a.valpagar, a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo   ORDER BY a.vencimento ASC''')
    
         elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela
+                                    a.valpagar, a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  ORDER BY a.vencimento DESC''')
         elif escolhido == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar, a.documento,a.tparcela
+                                    a.valpagar, a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
              
         
@@ -2624,12 +2641,13 @@ def consultavencopcao2(event):
             cursor.close()
             
         else:
-            for (c,n,co,ve,de,pg,vp,doc,par) in sqlres:
+            for (c,n,co,ve,de,pg,vp,doc,par,inc) in sqlres:
                co=recupdata(co)
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
+               inc=recupdata(inc)
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,inc)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 1723 "+str(ex),janela4)
@@ -2864,7 +2882,13 @@ def consulta_vencimento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela', 'inclusao'), show= 'headings')
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela', 'inclusao'), show= 'headings')
+   
+   
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais.
+   tv = AcceleratedTreeview(janela4, columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
    
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -2978,8 +3002,14 @@ def consulta_codigo2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
-    
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
+   #substituida pela classe abaixo
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais.
+   
+   tv = AcceleratedTreeview(janela4, columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings') 
+   
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
@@ -3036,7 +3066,7 @@ def consutaporcao2(event):
             nomemem1= nomemem.get()
             nomemem1="%"+nomemem1+"%"
             cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND b.nome LIKE '{nomemem1}' ORDER BY b.nome ASC''')
       
          
@@ -3056,7 +3086,8 @@ def consutaporcao2(event):
                       ve=recupdata(ve)
                       pg=recupdata(pg)
                       vp=recuperaval(vp)
-                      tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
+                      inc=recupdata(inc)
+                      tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,inc)) 
  
                     
                     cursor.close()
@@ -3085,8 +3116,14 @@ def consulta_porcao2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento','valpagar', 'documento','tparcela', 'inclusao'), show= 'headings')
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento','valpagar', 'documento','tparcela', 'inclusao'), show= 'headings')
     
+
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais.
+   tv = AcceleratedTreeview(janela4, columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings')
+
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
@@ -3410,22 +3447,22 @@ def consultaatrasoopcao2(event):
       try:
         if escolhido == "A" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao 
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento ASC''')
    
         elif escolhido=="D" and dataini.get()=="":
           cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) < '{data}' ORDER BY a.vencimento DESC''')
           
         elif escolhido == "A" and dataini.get()!="":
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento ASC''')  
         
         else:
            cursor.execute(f'''SELECT a.codigo,b.nome,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar,a.documento,a.tparcela
+                                    a.valpagar,a.documento,a.tparcela,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.pagamento='' AND strftime("%Y-%m-%d",a.vencimento) >= '{memini}' AND strftime("%Y-%m-%d",a.vencimento) <='{memfim}' ORDER BY a.vencimento DESC''')  
   
         sqlres=cursor.fetchall()
@@ -3440,7 +3477,8 @@ def consultaatrasoopcao2(event):
                ve=recupdata(ve)
                pg=recupdata(pg)
                vp=recuperaval(vp)
-               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par)) 
+               inc=recupdata(inc)
+               tv.insert("","end",value=(c,n,co,ve,de,pg,vp,doc,par,inc)) 
                
       except Error as ex: 
            messagebox1("Erro ao tentar ler o registro linha 2199 "+str(ex),janela4)
@@ -3470,8 +3508,14 @@ def consulta_caixaprevisto(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c
-   tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','vencli','venfor','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
+   #tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','vencli','venfor','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
+   # linha abaixo substitue linha acima
     
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais. 
+   tv = AcceleratedTreeview(janela4, columns=('codigoc', 'nomec', 'codigof', 'nomef','vencli','venfor','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings') 
+   
    tv.column('codigoc', minwidth=5, width=50)
    tv.column('nomec', minwidth=0, width=120)
    tv.column('codigof', minwidth=5, width=50)
@@ -3553,9 +3597,13 @@ def consulta_caixa(janela3):
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
-# a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c
+   # a.codigo,a.nome,c.codigo,c.nome,a.pagamento,c.pagamento,c.valpagar,a.valpagar,a.documento,a.tparcela,b.documento,b.tparcela from contasrec a, cliente b, contas c
    tv=ttk.Treeview(janela4,columns=('codigoc', 'nomec', 'codigof', 'nomef','vencli','venfor','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')
     
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais. 
+   tv = AcceleratedTreeview(janela4, columns=('codigoc', 'nomec', 'codigof', 'nomef','vencli','venfor','pagcli', 'pagf','valcli','valf','caixa','docli','tparcli','dof','tparfor'), show= 'headings')  
    tv.column('codigoc', minwidth=5, width=50)
    tv.column('nomec', minwidth=0, width=120)
    tv.column('codigof', minwidth=5, width=50)
@@ -3638,8 +3686,13 @@ def consulta_ematraso(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela', 'inclusao'), show= 'headings')
-    
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar','documento','tparcela', 'inclusao'), show= 'headings')
+  
+   # 2. Agora sim, aqui você usa exatamente o tv = ttk.Treeview (mas herdando da classe acima)
+   # Instancia a tabela usando a nova classe personalizada 'AcceleratedTreeview', 
+   # passando a janela, as colunas e os parâmetros visuais normais.
+   tv = AcceleratedTreeview(janela4, columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'valpagar', 'documento','tparcela','inclusao' ), show= 'headings') 
+   
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)

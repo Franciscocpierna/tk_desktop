@@ -15,7 +15,7 @@ import win32api
 import os
 from datetime import date,datetime
 import shutil
-
+from classes import AcceleratedTreeview
 
 largura=1200
 altura=650

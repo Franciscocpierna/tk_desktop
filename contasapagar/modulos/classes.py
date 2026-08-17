@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 
 class variaveis():
      def __init__(self,indice,opcao,opcao1,manutencao):
@@ -312,6 +313,34 @@ class  centralizacao():
       self.posx=largura_screen/2 - self.largura1/2
       self.posy= altura_screen/2 - self.altura1/2 
       
+# 1. Defina essa classe antes de criar a sua treeview (pode colocar logo no início do arquivo) no caso importei
+# Cria uma classe nova que "herda" todas as funções da Treeview padrão do ttk.
+class AcceleratedTreeview(ttk.Treeview):
+    
+    # Sobrescreve o método de rolagem horizontal (xview) da tabela.
+    def xview(self, *args):
+        
+        # Verifica se o comando enviado é do tipo 'scroll' (gerado por setas ou pelas pontas da barra).
+        if args and args[0] == 'scroll':
+            try:
+                # Define o fator multiplicador para deixar o movimento mais rápido (30x).
+                multiplier = 30  
+                
+                # Modifica o argumento numérico da velocidade multiplicando ele por 30,
+                # mantendo a estrutura original que o Tkinter espera receber.
+                new_args = args[:1] + (str(multiplier * int(args[1])),) + args[2:]
+                
+                # Envia os argumentos modificados para a classe original fazer a rolagem rápida.
+                return super().xview(*new_args)
+                
+            # Caso ocorra algum erro na conversão dos argumentos, apenas ignora.
+            except (ValueError, IndexError):
+                pass
+                
+        # Se não for um comando de 'scroll' (por exemplo, arrastar a barra com o mouse),
+        # executa o comportamento padrão normal da tabela.
+        return super().xview(*args)
+
           
 
 
