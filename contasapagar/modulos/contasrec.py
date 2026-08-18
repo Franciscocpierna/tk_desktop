@@ -2924,8 +2924,8 @@ def dadosdatafim(event):
 
 def vercampos1(event):
   manutencao=variaveis.getmanutencao()
-   if tela.inclusao.get()=='':
-      tela.inclusao.insert(0, converter_para_tela(date.today().isoformat()))
+  if tela.inclusao.get()=='':
+       tela.inclusao.insert(0, converter_para_tela(date.today().isoformat()))
   if len(dataini.get())>10:
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        dataini.delete(0,END)
@@ -2934,7 +2934,7 @@ def vercampos1(event):
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        datafim.delete(0,END)
        datafim.focus()
-   if tela.inclusao.get()>10: 
+  if tela.inclusao.get()>10: 
       messagebox1("campo data tamanho 10 digite novamente",manutencao)
       tela.inclusao.delete(0,END)
       tela.inclusao.focus()

@@ -203,7 +203,7 @@ class montatela():
         #NW , N , NE , W , E , SW , S e SE       
          if self.opcao1 == 2:
                Label(manutencao1, text="Fornecedor:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
-               self.codigo = Entry(manutencao1,width=7)
+               self.codigo = Entry(manutencao1, width=7)
                self.codigo.grid(row=1, column=1, sticky=W)
                Label(manutencao1, text="Nome:",font=('Arial', 15)).place(relx=0.3,rely=0.1)#grid(row=1, column=2,sticky=W)
                self.nome = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
@@ -246,10 +246,14 @@ class montatela():
                self.cs.grid(row=12, column=1,sticky=W)
                Label(manutencao1, text="Cod Produto:",font=('Arial', 15)).grid(row=13, column=0,sticky=W)
                self.produto = Entry(manutencao1,width=7)
-               self.produto.grid(row=13, column=1,sticky=W)
+               self.produto.grid(row=13, column=1,sticky=W,padx=20)
                Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.25,rely=0.64)#grid(row=1, column=2,sticky=W)
                self.descproduto = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
                self.descproduto.place(relx=0.365,rely=0.65)#grid(row=1, column=3,sticky=E)
+               self.descproduto.place(relx=0.365,rely=0.65)#grid(row=1, column=3,sticky=E)
+               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=9, column=0,sticky=W,padx=20)
+               self.inclusao = Entry(manutencao1,width=10)
+               self.inclusao.grid(row=9, column=1,sticky=W)     
 
          if self.opcao1==3:
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
@@ -294,9 +298,9 @@ class montatela():
                self.valpagar = Entry(manutencao1,width=14)
                self.valpagar.grid(row=8, column=1,sticky=W)
 
-               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
+               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=30, column=0,sticky=W)
                self.inclusao = Entry(manutencao1,width=10)
-               self.inclusao.grid(row=9, column=1,sticky=W)          
+               self.inclusao.grid(row=30, column=1,sticky=W)          
          
          manutencao1.geometry("%dx%d+%d+%d" % (self.largura, self.altura, centralizatela.posx,centralizatela.posy-20))
      
