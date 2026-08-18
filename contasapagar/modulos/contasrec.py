@@ -1422,7 +1422,7 @@ def verchave(event):
   tparcelamem=tela.tparcela.get()
 
   sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.valpagar
+                                    a.valpagar,a.inclusao
                                     FROM  contasrec a, cliente b WHERE a.codigo = b.codigo  AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         
   mensagem="Contas"        
@@ -1434,11 +1434,12 @@ def verchave(event):
      tela.codigo.focus()
      return
    else:
-     for (c,n,doc,par,com,ven,desc,dpg,val) in sqlres:
+     for (c,n,doc,par,com,ven,desc,dpg,val,inc) in sqlres:
        tela.compra.insert(0, recupdata(com))
        tela.vencimento.insert(0,recupdata(ven))
        tela.descricao.insert(0, desc) 
-       tela.pagamento.insert(0, recupdata(dpg)) 
+       tela.pagamento.insert(0, recupdata(dpg))
+       tela.inclusao.insert(0, recupdata(inc)) 
        tela.valpagar.insert(0, recuperaval(val))
   else:
     if opcao==1:
@@ -1479,6 +1480,7 @@ def valores(valor):
    return valor
 
 def dataa(datav):
+   
    memdata = datav[6:]+"-"+datav[3:5]+"-"+datav[0:2]
    return memdata
 
@@ -2110,7 +2112,7 @@ def incluircontasrec_click(janela1):
     tela.codigo.bind("<KeyRelease>", vercliente)  # rastreia as entradas
     tela.tparcela.bind("<KeyRelease>", verchave)
     tela.compra.bind("<KeyRelease>", dadosdatac) 
-    #tela.inclusao.bind("<KeyRelease>", dadosdatac) vai ser incluso data atual
+    tela.inclusao.bind("<KeyRelease>", dadosdatac) #vai ser incluso data atual
     tela.vencimento.bind("<KeyRelease>", dadosdatav)
     tela.pagamento.bind("<KeyRelease>", dadosdatap)
     tela.valpagar.bind("<KeyRelease>", dadosvalor)
@@ -2120,6 +2122,7 @@ def incluircontasrec_click(janela1):
     tela.valpagar.bind("<FocusIn>",vercampos)
     tela.descricao.bind("<FocusIn>",vercampos)
     tela.pagamento.bind("<FocusIn>",vercampos)
+    tela.inclusao.bind("<FocusOut>",vercampos1)
     keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
              
     
@@ -2155,6 +2158,7 @@ def cosultacontasrec_click(janela1):
      tela.valpagar.bind("<FocusIn>",vercampos)
      tela.descricao.bind("<FocusIn>",vercampos)
      tela.pagamento.bind("<FocusIn>",vercampos)
+     tela.inclusao.bind("<FocusIn>",vercampos)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy()) 
       
 def alteracaocontasrec():
@@ -2180,6 +2184,11 @@ def alteracaocontasrec():
       messagebox1("Informação: digite a compra  esta vazio ",manutencao)
       tela.compra.focus()
       return
+    if len(tela.inclusao.get())!=10:
+      messagebox1("Informação: digite a data inclusao  esta vazio ",manutencao)
+      tela.inclusao.focus()
+      return 
+
     if len(tela.vencimento.get())!=10: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
@@ -2323,6 +2332,8 @@ def alteracaocontasrec_click(janela1):
      tela.valpagar.bind("<FocusIn>",vercampos)
      tela.descricao.bind("<FocusIn>",vercampos)
      tela.pagamento.bind("<FocusIn>",vercampos)
+     tela.inclusao.bind("<FocusIn>",vercampos)
+     tela.inclusao.bind("<FocusOut>",vercampos1)
      keyboard.on_press_key("esc", lambda _: manutencao.destroy())
      
       
@@ -2909,8 +2920,12 @@ def dadosdatafim(event):
            datafim.focus()   
            return
 
+
+
 def vercampos1(event):
   manutencao=variaveis.getmanutencao()
+   if tela.inclusao.get()=='':
+      tela.inclusao.insert(0, converter_para_tela(date.today().isoformat()))
   if len(dataini.get())>10:
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        dataini.delete(0,END)
@@ -2919,8 +2934,10 @@ def vercampos1(event):
        messagebox1("campo data tamanho 10 digite novamente",manutencao)
        datafim.delete(0,END)
        datafim.focus()
-
-
+   if tela.inclusao.get()>10: 
+      messagebox1("campo data tamanho 10 digite novamente",manutencao)
+      tela.inclusao.delete(0,END)
+      tela.inclusao.focus()
 
 
 def consulta_vencimento(janela3):
