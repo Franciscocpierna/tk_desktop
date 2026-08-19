@@ -1855,7 +1855,7 @@ def incluircontas_click(janela1):
     manutencao=variaveis.getmanutencao()
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
     botao=Button(manutencao, text='Salvar',command=incluircontas)
-    botao.grid(row=14, column=0,padx=0,pady=50,sticky=W)
+    botao.grid(row=15, column=0,padx=0,pady=50,sticky=W)
     tab_order2()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
@@ -2081,7 +2081,7 @@ def alteracaocontas_click(janela1):
      #botao=Button(manutencao, text='Consutar',command=consultacontas)
      #botao.grid(row=13, column=0,padx=0,pady=50,sticky=W)
      botao1=Button(manutencao, text='Alterar',command=alteracaocontas)
-     botao1.grid(row=14, column=1,padx=0,pady=50,sticky=W)
+     botao1.grid(row=15, column=1,padx=0,pady=50,sticky=W)
      tab_order2()
      tela.codigo.focus()
      tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas

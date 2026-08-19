@@ -204,10 +204,20 @@ class montatela():
          if self.opcao1 == 2:
                Label(manutencao1, text="Fornecedor:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
                self.codigo = Entry(manutencao1, width=7)
-               self.codigo.grid(row=1, column=1, sticky=W)
-               Label(manutencao1, text="Nome:",font=('Arial', 15)).place(relx=0.3,rely=0.1)#grid(row=1, column=2,sticky=W)
-               self.nome = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
-               self.nome.place(relx=0.35,rely=0.11)#grid(row=1, column=3,sticky=E)
+               self.codigo.grid(row=1, column=1, sticky=W,padx=(0,5))
+               ########### tinha place mudou para frame
+               # 2. Criamos um Frame para o grupo "Nome" e o colocamos na coluna 2 da tela principal
+               frame_nome = Frame(manutencao1)
+               frame_nome.grid(row=1, column=2, sticky=W)
+               # 3. Dentro desse Frame, usamos o .grid() para colocar o Label "Nome" e o self.nome bem pertinho
+               Label(frame_nome, text="Nome:", font=('Arial', 15)).grid(row=0, column=0, sticky=W, padx=(0, 5))
+               self.nome = Entry(frame_nome, width=50)
+               self.nome.grid(row=0, column=1, sticky=W) 
+    
+               ###########
+
+           
+               
                Label(manutencao1, text="Número do documento:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.documento = Entry(manutencao1,width=20)
                self.documento.grid(row=2, column=1,sticky=W)
@@ -229,9 +239,16 @@ class montatela():
                Label(manutencao1, text="Forma de Pagamento:",font=('Arial', 15)).grid(row=8, column=0,sticky=W)
                self.tipo= Entry(manutencao1,width=10)
                self.tipo.grid(row=8, column=1,sticky=W)
-               Label(manutencao1, text="Descrição:",font=('Arial', 15)).place(relx=0.3,rely=0.415)
-               self.desctipo = Entry(manutencao1,width=50)
-               self.desctipo.place(relx=0.38,rely=0.422)
+               ###########
+               # 2. Criamos um Frame para o grupo "frame_nomedesc" e o colocamos na coluna 2 da tela principal
+               frame_nomedesc = Frame(manutencao1)
+               frame_nomedesc.grid(row=8, column=2, sticky=W)
+               # 3. Dentro desse Frame, usamos o .grid() para colocar o Label "Nome" e o self.nome bem pertinho
+               Label(frame_nomedesc, text="Descrição:", font=('Arial', 15)).grid(row=0, column=0, sticky=W, padx=(0, 5))
+               self.desctipo = Entry(frame_nomedesc, width=50)
+               self.desctipo.grid(row=0, column=1, sticky=W) 
+               ############
+
                Label(manutencao1, text="Desconto R$:",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
                self.desconto= Entry(manutencao1,width=14)
                self.desconto.grid(row=9, column=1,sticky=W)
@@ -246,14 +263,19 @@ class montatela():
                self.cs.grid(row=12, column=1,sticky=W)
                Label(manutencao1, text="Cod Produto:",font=('Arial', 15)).grid(row=13, column=0,sticky=W)
                self.produto = Entry(manutencao1,width=7)
-               self.produto.grid(row=13, column=1,sticky=W,padx=20)
-               Label(manutencao1, text="Nome Produto:",font=('Arial', 15)).place(relx=0.25,rely=0.64)#grid(row=1, column=2,sticky=W)
-               self.descproduto = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
-               self.descproduto.place(relx=0.365,rely=0.65)#grid(row=1, column=3,sticky=E)
-               self.descproduto.place(relx=0.365,rely=0.65)#grid(row=1, column=3,sticky=E)
-               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=9, column=0,sticky=W,padx=20)
+               self.produto.grid(row=13, column=1,sticky=W)
+               ###########
+               # 2. Criamos um Frame para o grupo "nomeprod" e o colocamos na coluna 2 da tela principal
+               frame_nomeprod = Frame(manutencao1)
+               frame_nomeprod.grid(row=13, column=2, sticky=W)
+               # 3. Dentro desse Frame, usamos o .grid() para colocar o Label "Nome" e o self.nome bem pertinho
+               Label(frame_nomeprod, text="Nome Produto:", font=('Arial', 15)).grid(row=0, column=0, sticky=W, padx=(0, 5))
+               self.descproduto = Entry(frame_nomeprod, width=50)
+               self.descproduto.grid(row=0, column=1, sticky=W) 
+               ############
+               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=14, column=0,sticky=W)
                self.inclusao = Entry(manutencao1,width=10)
-               self.inclusao.grid(row=9, column=1,sticky=W)     
+               self.inclusao.grid(row=14, column=1,sticky=W)     
 
          if self.opcao1==3:
                Label(manutencao1, text="Codigo:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
@@ -273,9 +295,15 @@ class montatela():
                Label(manutencao1, text="Cliente:", font=('Arial', 15)).grid(row=1, column=0,sticky=W)
                self.codigo = Entry(manutencao1,width=7)
                self.codigo.grid(row=1, column=1, sticky=W)
-               Label(manutencao1, text="Nome:",font=('Arial', 15)).place(relx=0.3,rely=0.1)#grid(row=1, column=2,sticky=W)
-               self.nome = Entry(manutencao1,width=50) #place(relx=0.5,rely=0.4)
-               self.nome.place(relx=0.35,rely=0.11)#grid(row=1, column=3,sticky=E)
+
+                ########### tinha place mudou para frame
+               # 2. Criamos um Frame para o grupo "frame_Nome1" e o colocamos na coluna 2 da tela principal
+               frame_nome1 = Frame(manutencao1)
+               frame_nome1.grid(row=1, column=2, sticky=W)
+               # 3. Dentro desse Frame, usamos o .grid() para colocar o Label "Nome" e o self.nome bem pertinho
+               Label(frame_nome1, text="Nome:", font=('Arial', 15)).grid(row=0, column=0, sticky=W, padx=(0, 5))
+               self.nome = Entry(frame_nome1, width=50)
+               self.nome.grid(row=0, column=1, sticky=W) 
                Label(manutencao1, text="Número do documento:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.documento = Entry(manutencao1,width=20)
                self.documento.grid(row=2, column=1,sticky=W)
@@ -298,9 +326,9 @@ class montatela():
                self.valpagar = Entry(manutencao1,width=14)
                self.valpagar.grid(row=8, column=1,sticky=W)
 
-               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=30, column=0,sticky=W)
+               Label(manutencao1, text="Data Inclusão",font=('Arial', 15)).grid(row=9, column=0,sticky=W)
                self.inclusao = Entry(manutencao1,width=10)
-               self.inclusao.grid(row=30, column=1,sticky=W)          
+               self.inclusao.grid(row=9, column=1,sticky=W)          
          
          manutencao1.geometry("%dx%d+%d+%d" % (self.largura, self.altura, centralizatela.posx,centralizatela.posy-20))
      
