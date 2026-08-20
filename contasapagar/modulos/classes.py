@@ -376,7 +376,51 @@ class AcceleratedTreeview(ttk.Treeview):
         # executa o comportamento padrão normal da tabela.
         return super().xview(*args)
 
-          
+from datetime import datetime
+from tkinter import messagebox
 
 
-      
+class ValidaData:
+
+  def __init__(self, entry_widget):
+    """Recebe o widget Entry do Tkinter onde o usuário digita a data."""
+    self.entry_widget = entry_widget
+
+  def verificar_data_digitada(self):
+    """Verifica se o texto no Entry é uma data válida no formato DD/MM/AAAA."""
+    texto_data = self.entry_widget.get().strip()
+
+    try:
+      # Valida se é uma data real (ex: rejeita 31/02/2026)
+      data_obj = datetime.strptime(texto_data, "%d/%m/%Y")
+      messagebox.showinfo(
+          "Sucesso", f"Data válida: {data_obj.strftime('%d/%m/%Y')}"
+      )
+      return True
+    except ValueError:
+      messagebox.showerror(
+          "Erro", "A data digitada não é válida ou está incompleta!"
+      )
+      self.entry_widget.focus()
+      return False
+
+# como usar essa classe        
+
+# # Importa a classe do arquivo validadata.py
+#from classes import ValidaData  
+#         # 1. Instancia a classe passando o entry
+# validador = ValidaData(meu_entry)
+
+# # 2. Chama o método de verificação e guarda o resultado em uma variável
+# # (Lembre-se que ajustamos o método para retornar o objeto data_obj se for válido, ou None se falhar)
+# resultado_data = validador.verificar_data_digitada()
+
+# # 3. Agora sim, faça a verificação com if:
+# if resultado_data:
+#   print("A data é válida! Posso prosseguir com o salvamento.")
+#   # Exemplo: formatar para salvar no banco (AAAA-MM-DD)
+#   data_para_banco = resultado_data.strftime("%Y-%m-%d")
+# else:
+#   print("A data é inválida ou está vazia. O foco já voltou para o campo.")
+
+
