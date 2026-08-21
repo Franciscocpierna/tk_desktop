@@ -303,7 +303,8 @@ class montatela():
                # 3. Dentro desse Frame, usamos o .grid() para colocar o Label "Nome" e o self.nome bem pertinho
                Label(frame_nome1, text="Nome:", font=('Arial', 15)).grid(row=0, column=0, sticky=W, padx=(0, 5))
                self.nome = Entry(frame_nome1, width=50)
-               self.nome.grid(row=0, column=1, sticky=W) 
+               self.nome.grid(row=0, column=1, sticky=W)
+               ########### 
                Label(manutencao1, text="Número do documento:",font=('Arial', 15)).grid(row=2, column=0,sticky=W)
                self.documento = Entry(manutencao1,width=20)
                self.documento.grid(row=2, column=1,sticky=W)

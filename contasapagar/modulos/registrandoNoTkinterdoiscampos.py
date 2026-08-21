@@ -6,19 +6,55 @@ root.title("Validação de Campos Diferentes")
 root.geometry("350x250")
 
 # 2. Define a função para validar a Data (formato DD/MM/AAAA)
-def validar_data(P):
-    if P == "":
-        return True
-    if len(P) > 10:
-        return False
-    for i, c in enumerate(P):
-        if i == 2 or i == 5:
-            if c != '/':
-                return False
-        else:
-            if not c.isdigit():
-                return False
+# def validar_data(P):
+#     if P == "":
+#         return True
+#     if len(P) > 10:
+#         return False
+#     for i, c in enumerate(P):
+#         if i == 2 or i == 5:
+#             if c != '/':
+#                 return False
+#         else:
+#             if not c.isdigit():
+#                 return False
+#     return True
+
+
+def validar_data(P): #essa rotina pra incluir a / sem digitar
+  if P == "":
     return True
+  if len(P) > 10:
+    return False
+
+  # Extrai apenas os números digitados
+  numeros = "".join(c for c in P if c.isdigit())
+
+  # Reconstrói a string adicionando a barra após o índice 1 (2º número)
+  # e após o índice 3 (4º número)
+  novo_P = ""
+  for i, c in enumerate(numeros):
+    if i == 2 or i == 4:  # Equivalente a somar a barra após o índice 1 e após o 3
+      novo_P += "/"
+    novo_P += c
+
+  # Atualiza a StringVar e o cursor se o texto formatado for diferente
+  if len(novo_P) <= 10 and novo_P != P:
+    data_var.set(novo_P)
+    entry_data.icursor(len(novo_P))
+    return False
+
+  # Validação mantendo as posições das barras em 2 e 5 na string final
+  for i, c in enumerate(P):
+    if i == 2 or i == 5:
+      if c != "/":
+        return False
+    else:
+      if not c.isdigit():
+        return False
+
+  return True
+
 
 # 3. Define a função para validar apenas Números Inteiros (ex: quantidade, ID)
 def validar_apenas_numeros(P):

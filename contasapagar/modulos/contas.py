@@ -47,6 +47,7 @@ def limpacamposcontas():
   tela.cs.delete(0, END)  
   tela.produto.delete(0,END)    
   tela.descproduto.delete(0,END)
+  tela.inclusao(0,END)
   return
 
 
@@ -909,7 +910,7 @@ def rel_codigo2(janela3):
 
 def tab_order2():
   tela.codigo.focus
-  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desconto,tela.juros,tela.valpagar,tela.cs,tela.produto]
+  widgets = [tela.codigo,tela.documento,tela.tparcela,tela.compra,tela.vencimento,tela.descricao,tela.pagamento,tela.tipo,tela.desconto,tela.juros,tela.valpagar,tela.cs,tela.produto,tela.inclusao]
   for w in widgets:
      w.lift()
 
