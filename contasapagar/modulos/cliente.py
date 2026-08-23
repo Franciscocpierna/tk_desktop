@@ -742,12 +742,28 @@ def incluircli():
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
           try:
-           cursor.execute(f'''INSERT INTO cliente VALUES('{codigomem}','{nomemem}','{enderecomem}',
-                                                            '{telefonemem}','{tipomem}','{cpfmem}',
-                                                                 '{cnpjmem}','{cepmem}','{e_mailmem}')''')
-               
+           sql = """
+              INSERT INTO cliente (
+                  codigo, nome, endereco, telefone, tipo, cpf, cnpj, cep, e_mail
+              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+              """
 
-                                      
+           valores = (
+              codigomem, 
+              nomemem, 
+              enderecomem, 
+              telefonemem, 
+              tipomem, 
+              cpfmem, 
+              cnpjmem, 
+              cepmem, 
+              e_mailmem
+           )
+
+           cursor.execute(sql, valores) 
+            
+
+
            banco.commit()
            cursor.close()
            messagebox1("registro Incluido com sucesso",manutencao)     
@@ -944,19 +960,35 @@ def alteracaofor():
           
 
       try:
-           cursor.execute(f'''UPDATE cliente SET codigo = '{codigomem}',
-                                                    nome ='{nomemem}',
-                                                    endereco ='{enderecomem}',
-                                                    telefone ='{telefonemem}',
-                                                    tipo = '{tipomem}',
-                                                    cpf = '{cpfmem}',
-                                                    cnpj = '{cnpjmem}',
-                                                    cep = '{cepmem}',
-                                                    e_mail ='{e_mailmem}'
-                                                    WHERE codigo = '{codigomem}' ''')
-               
+                      
+           sql = """
+                UPDATE cliente 
+                SET codigo = ?,
+                    nome = ?,
+                    endereco = ?,
+                    telefone = ?,
+                    tipo = ?,
+                    cpf = ?,
+                    cnpj = ?,
+                    cep = ?,
+                    e_mail = ?
+                WHERE codigo = ?
+            """
 
-                                      
+           valores = (
+                codigomem, 
+                nomemem, 
+                enderecomem, 
+                telefonemem, 
+                tipomem, 
+                cpfmem, 
+                cnpjmem, 
+                cepmem, 
+                e_mailmem,
+                codigomem  # Este último corresponde ao WHERE codigo = ?
+           )
+
+           cursor.execute(sql, valores)                           
            banco.commit()
            cursor.close()     
            messagebox1("registro Alterado com sucesso",manutencao)
@@ -967,8 +999,8 @@ def alteracaofor():
             limpacamposfor() 
             return
     else:
-           messagebox1("Registro não foi Alterado",manutencao)
-           return
+            messagebox1("Registro não foi Alterado",manutencao)
+            return
     
 def alteracaocli_click(janela1):
      #global opcao

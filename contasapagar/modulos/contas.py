@@ -994,6 +994,7 @@ def verfornec(event):
    tela.cs.delete(0, END)
    tela.produto.delete(0,END)
    tela.descproduto.delete(0,END)
+   tela.inclusao.delete(0,END)
    #
    codigomem=tela.codigo.get()         
    sql=  f"SELECT nome FROM fornecedor WHERE codigo = '{codigomem}'"  
@@ -1106,6 +1107,7 @@ def verchave(event):
   tela.cs.delete(0, END)      
   tela.produto.delete(0,END)
   tela.descproduto.delete(0,END)
+  tela.inclusao.delete(0,END)
 
   codigomem=tela.codigo.get().upper()
   documentomem=tela.documento.get()
@@ -1113,7 +1115,7 @@ def verchave(event):
   
 
   sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs,a.produto,d.nome
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs,a.produto,d.nome,a.inclusao
                                     FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         
   mensagem="Contas"        
@@ -1138,17 +1140,19 @@ def verchave(event):
      tela.cs.insert(0, sqlres[0][13])
      tela.produto.insert(0, sqlres[0][14])
      tela.descproduto.insert(0, sqlres[0][15])
+     tela.inclusao.insert(0, recupdata(sqlres[0][16]))
      return
   else:
     if opcao==1:
        if tela.tparcela.get()> "001":
         tparcelamem="001"
         sql=f'''SELECT a.codigo,b.nome,a.documento,a.tparcela,a.compra,a.vencimento,a.descricao,a.pagamento,
-                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs,a.produto,d.nome
+                                    a.tipo,c.nome,a.valpagar,a.desconto,a.juros,a.cs,a.produto,d.nome,a.inclusao
                                     FROM  contas a, fornecedor b, tipo c, produto d WHERE a.codigo = b.codigo AND a.tipo = c.codigo AND a.produto = d.codigo AND a.codigo = '{codigomem}' AND a.documento = '{documentomem}' AND a.tparcela = '{tparcelamem}' '''
         sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao)
         if len(sqlres)!=0:
          tela.compra.insert(0, recupdata(sqlres[0][4]))
+         tela.inclusao.insert(0. recupdata(sqlres[0,16]))
          tela.descricao.insert(0, sqlres[0][6])
          tela.cs.insert(0, sqlres[0][13])
          tela.produto.insert(0, sqlres[0][14])
@@ -1204,6 +1208,11 @@ def incluircontas():
       messagebox1("Informação: digite a compra  esta vazio ",manutencao)
       tela.compra.focus()
       return
+   if len(tela.inclusao.get())!=10:
+      messagebox1("Informação: Data de Inclusao esta vazio",manutencao)
+      tela.inclusao.focus()
+      return
+   
    if len(tela.vencimento.get())!=10: 
         messagebox1("Informação: Data de Vencimento esta vazio",manutencao)
         tela.vencimento.focus()
@@ -1285,13 +1294,17 @@ def incluircontas():
        
             banco = sqlite3.connect('contaspagar.db')
             cursor = banco.cursor()
-            cursor.execute(f'''INSERT INTO contas VALUES('{codigomem}','{compramem}','{vencimentomem}',
-                                                            '{descricaomem}','{pagamentomem}','{tipomem}',
-                                                                 '{valpagarmem}','{descontomem}','{jurosmem}',
-                                                                 '{documentomem}','{tparcelamem}','{csmem}
-                                                                 ','{produtomem}')''')
-               
-                     
+            
+            sql = '''INSERT INTO contas (codigo,compra,vencimento,descricao, pagamento,tipo, 
+                                               valpagar,desconto,juros,documento,tparcela,cs,produto,inclusao)
+                                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, DATE('now'))'''
+
+            dados = (
+                  codigomem,compramem,vencimentomem,descricaomem, pagamentomem,tipomem, 
+                  valpagarmem,descontomem,jurosmem,documentomem,tparcelamem,csmem,produtomem
+               )
+
+            cursor.execute(sql, dados)            
             banco.commit()
             cursor.close()
             messagebox1("registro Incluido com sucesso",manutencao)     
@@ -1992,7 +2005,8 @@ def alteracaocontas():
     codigomem=tela.codigo.get()
     documentomem=tela.documento.get()
     tparcelamem = tela.tparcela.get()
-    compramem=dataa(tela.compra.get()) 
+    compramem=dataa(tela.compra.get())
+    inclusaomem=dataa(tela.inclusao.get()) 
     vencimentomem=dataa(tela.vencimento.get())
     descricaomem=tela.descricao.get()
     if tela.pagamento.get()!="":
@@ -2028,22 +2042,63 @@ def alteracaocontas():
 
       try:
           
-
-           cursor.execute(f'''UPDATE contas SET codigo = '{codigomem}',
-                                                    compra ='{compramem}',
-                                                    vencimento ='{vencimentomem}',
-                                                    descricao ='{descricaomem}',
-                                                    pagamento = '{pagamentomem}',
-                                                    tipo = '{tipomem}',
-                                                    valpagar = '{valpagarmem}',
-                                                    desconto = '{descontomem}',
-                                                    juros ='{jurosmem}',
-                                                    documento='{documentomem}',
-                                                    tparcela='{tparcelamem}',
-                                                    cs='{csmem}',
-                                                    produto='{produtomem}' WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
+       
+         #   cursor.execute(f'''UPDATE contas SET codigo = '{codigomem}',
+         #                                            compra ='{compramem}',
+         #                                            vencimento ='{vencimentomem}',
+         #                                            descricao ='{descricaomem}',
+         #                                            pagamento = '{pagamentomem}',
+         #                                            tipo = '{tipomem}',
+         #                                            valpagar = '{valpagarmem}',
+         #                                            desconto = '{descontomem}',
+         #                                            juros ='{jurosmem}',
+         #                                            documento='{documentomem}',
+         #                                            tparcela='{tparcelamem}',
+         #                                            cs='{csmem}',
+         #                                            produto='{produtomem}' WHERE codigo = '{codigomem}' AND documento= '{documentomem}' AND tparcela='{tparcelamem}' ''')
                
+           sql = """
+               UPDATE contas 
+               SET codigo = ?,
+                  compra = ?,
+                  vencimento = ?,
+                  descricao = ?,
+                  pagamento = ?,
+                  tipo = ?,
+                  valpagar = ?,
+                  desconto = ?,
+                  juros = ?,
+                  documento = ?,
+                  tparcela = ?,
+                  cs = ?,
+                  produto = ?
+                  inclusao = ? 
+               WHERE codigo = ? AND documento = ? AND tparcela = ?
+            """
 
+            # A ordem dos valores na tupla deve corresponder exatamente à ordem das interrogações (?) acima
+           # A ordem na tupla bate exatamente com a ordem das interrogações acima:
+           valores = (
+               codigomem,      # 1. SET codigo
+               compramem,      # 2. SET compra
+               vencimentomem,  # 3. SET vencimento
+               descricaomem,   # 4. SET descricao
+               pagamentomem,   # 5. SET pagamento
+               tipomem,        # 6. SET tipo
+               valpagarmem,    # 7. SET valpagar
+               descontomem,    # 8. SET desconto
+               jurosmem,       # 9. SET juros
+               documentomem,   # 10. SET documento
+               tparcelamem,    # 11. SET tparcela
+               csmem,          # 12. SET cs
+               produtomem,     # 13. SET produto
+               inclusaomem,    # 14. SET inclusao
+               codigomem,      # 15. WHERE codigo
+               documentomem,   # 16. WHERE documento
+               tparcelamem     # 17. WHERE tparcela
+            )
+
+           cursor.execute(sql, valores) 
                                       
            banco.commit()
            cursor.close()     

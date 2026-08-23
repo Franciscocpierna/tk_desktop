@@ -2269,6 +2269,7 @@ def alteracaocontasrec():
                   descricao = ?,
                   pagamento = ?,
                   valpagar = ?
+                  inclusao = ?
                WHERE codigo = ? AND documento = ? AND tparcela = ?
             '''
 
@@ -2276,7 +2277,7 @@ def alteracaocontasrec():
             # (os 8 primeiros para o SET e os 3 últimos para o WHERE)
            dados = (
                codigomem, documentomem, tparcelamem, compramem, vencimentomem,
-               descricaomem, pagamentomem, valpagarmem,  # Valores do SET
+               descricaomem, pagamentomem, valpagarmem, inclusaomem,  # Valores do SET
                codigomem, documentomem, tparcelamem       # Valores do WHERE
            )
 

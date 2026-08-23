@@ -733,11 +733,27 @@ def incluirfor():
         res = messagebox.askquestion('Confirma Inclusão', 'yes para sim - no para não')
         if res == 'yes':
           try:
-           cursor.execute(f'''INSERT INTO fornecedor VALUES('{codigomem}','{nomemem}','{enderecomem}',
-                                                            '{telefonemem}','{tipomem}','{cpfmem}',
-                                                                 '{cnpjmem}','{cepmem}','{e_mailmem}')''')
+           
                
+           sql = """
+                INSERT INTO fornecedor (
+                    codigo, nome, endereco, telefone, tipo, cpf, cnpj, cep, e_mail
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
 
+           valores = (
+                codigomem, 
+                nomemem, 
+                enderecomem, 
+                telefonemem, 
+                tipomem, 
+                cpfmem, 
+                cnpjmem, 
+                cepmem, 
+                e_mailmem
+           )
+
+           cursor.execute(sql, valores) 
                                       
            banco.commit()
            cursor.close()
@@ -935,19 +951,35 @@ def alteracaofor():
           
 
       try:
-           cursor.execute(f'''UPDATE fornecedor SET codigo = '{codigomem}',
-                                                    nome ='{nomemem}',
-                                                    endereco ='{enderecomem}',
-                                                    telefone ='{telefonemem}',
-                                                    tipo = '{tipomem}',
-                                                    cpf = '{cpfmem}',
-                                                    cnpj = '{cnpjmem}',
-                                                    cep = '{cepmem}',
-                                                    e_mail ='{e_mailmem}'
-                                                    WHERE codigo = '{codigomem}' ''')
-               
+           
+           sql = """
+                UPDATE fornecedor 
+                SET codigo = ?,
+                    nome = ?,
+                    endereco = ?,
+                    telefone = ?,
+                    tipo = ?,
+                    cpf = ?,
+                    cnpj = ?,
+                    cep = ?,
+                    e_mail = ?
+                WHERE codigo = ?
+           """
 
-                                      
+           valores = (
+                codigomem, 
+                nomemem, 
+                enderecomem, 
+                telefonemem, 
+                tipomem, 
+                cpfmem, 
+                cnpjmem, 
+                cepmem, 
+                e_mailmem,
+                codigomem  # Este último corresponde ao WHERE codigo = ?
+           )
+
+           cursor.execute(sql, valores)                                      
            banco.commit()
            cursor.close()     
            messagebox1("registro Alterado com sucesso",manutencao)
