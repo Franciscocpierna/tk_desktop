@@ -256,7 +256,10 @@ def gerapdf2(event):
       cursor = banco.cursor()
       nomemem1= "%"+nomemem1+"%"
       try:
-        cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+        #cursor.execute(f"SELECT *  FROM fornecedor  WHERE nome LIKE '{nomemem1}'  ORDER BY nome ASC")
+        # Exemplo para SQLite
+        nome_busca = f"%{nomemem1}%"  # Adicionamos os curingas % aqui no Python
+        cursor.execute("SELECT * FROM fornecedor WHERE nome LIKE ? ORDER BY nome ASC",(nome_busca,))
      
         sqlres=cursor.fetchall()
         if len(sqlres) == 0:

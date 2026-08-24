@@ -16,6 +16,7 @@ import os
 from datetime import date,datetime
 import shutil
 from classes import AcceleratedTreeview
+from grafico import *
 
 
 largura=1200
@@ -3874,11 +3875,12 @@ def contasrec_menu(janela1):
  editmenu2.add_command(label = "Fluxo de Caixa Previsto", command= lambda: rel_caixap(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
- menugrafico = Menu(menujan2, tearoff=0)
- menugrafico.add_command(label= "Gráfico Vencimento", command='') 
- menujan2.add_cascade(label='Gráficos',menu = menugrafico)
+ menu_grafico = Menu(menujan2, tearoff=0)
+ menu_grafico.add_command(label="Inclusão mes/ano Gráfico escolha", command=lambda: grafico_tela())
+ menu_grafico.add_command(label="Inclusão/vencimento no mês Gráfico escolha", command=lambda: grafico_tela_mes())
+ menujan2.add_cascade(label='Gráficos',menu = menu_grafico)
 
-
+ 
  menusair = Menu(menujan2, tearoff=0)
  menusair.add_command(label= "Sair click aqui", command=janela3.destroy) 
  menujan2.add_cascade(label='para Sair',menu = menusair)
@@ -3895,6 +3897,7 @@ def contasrec_menu(janela1):
                                                descricao varchar(50),
                                                pagamento TEXT,
                                                valpagar REAL(14,2) NOT NULL,
+                                               inclusao TEXT NOT NULL,
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  cliente(codigo)
                                                )'''

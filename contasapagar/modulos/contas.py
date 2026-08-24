@@ -1152,7 +1152,7 @@ def verchave(event):
         sqlres=lertabela1(sql,codigomem,documentomem,tparcelamem,manutencao,mensagem,opcao)
         if len(sqlres)!=0:
          tela.compra.insert(0, recupdata(sqlres[0][4]))
-         tela.inclusao.insert(0. recupdata(sqlres[0,16]))
+         tela.inclusao.insert(0, recupdata(sqlres[0][16]))
          tela.descricao.insert(0, sqlres[0][6])
          tela.cs.insert(0, sqlres[0][13])
          tela.produto.insert(0, sqlres[0][14])
