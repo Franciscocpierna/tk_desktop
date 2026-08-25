@@ -2,6 +2,9 @@ from tkinter import *
 import keyboard
 import sqlite3
 from sqlite3 import Error
+from tkinter import filedialog
+import shutil
+import os
 
 from time import sleep
 
@@ -28,6 +31,34 @@ def messagebox1(msg,manutencao):
 
 
 
+
+def salvar_bco():
+    # 1. Solicita ao usuário que escolha o arquivo de banco de dados original
+    arquivo_origem = filedialog.askopenfilename(
+        title="Selecione o arquivo de banco de dados para copiar",
+        filetypes=[("Banco de dados SQLite", "*.db")],
+        initialdir="." # Começa a busca no diretório atual
+    )
+
+    # Se o usuário cancelar a seleção, encerra a função
+    if not arquivo_origem:
+        return
+
+    # 2. Solicita ao usuário onde ele deseja salvar a cópia
+    caminho_destino = filedialog.asksaveasfilename(
+        defaultextension=".db",
+        filetypes=[("Banco de dados SQLite", "*.db")],
+        title="Salvar cópia do banco de dados",
+        initialfile=f"copia_{os.path.basename(arquivo_origem)}"
+    )
+
+    # 3. Executa a cópia se o caminho de destino for definido
+    if caminho_destino:
+        try:
+            shutil.copy2(arquivo_origem, caminho_destino)
+            messagebox.showinfo("Sucesso", f"Backup realizado com sucesso em:\n{caminho_destino}")
+        except Exception as e:
+            messagebox.showerror("Erro", f"Erro ao realizar backup: {e}")
 
 
 

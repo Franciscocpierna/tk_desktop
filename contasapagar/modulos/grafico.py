@@ -141,7 +141,7 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo, meu_check_var,conn,me
                  strftime('%d', data_vencimento) AS dia, 
                  COUNT(*) AS total
               FROM {nome_tabela_escolhida}
-              WHERE strftime('%Y-%m', data_vencimento) = ?
+              WHERE strftime('%Y-%m', vencimento) = ?
               GROUP BY dia
               ORDER BY dia;
              """

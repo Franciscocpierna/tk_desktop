@@ -16,6 +16,7 @@ import os
 from datetime import date,datetime
 import shutil
 from classes import AcceleratedTreeview
+from grafico import *
 
 largura=1200
 altura=650
@@ -3308,8 +3309,11 @@ def contas_menu(janela1):
  editmenu2.add_command(label = "Codigo Fornecedor", command= lambda: rel_codigo2(janela3))
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
+ nome_tabela_escolhida="contas"
  menugrafico = Menu(menujan2, tearoff=0)
- menugrafico.add_command(label= "gráfico por data compra", command='') 
+ menu_grafico.add_command(label="Inclusão mes/ano Gráfico escolha", command=lambda: grafico_tela(nome_tabela_escolhida))
+ menu_grafico.add_command(label="Inclusão/vencimento no mês Gráfico escolha", command=lambda: grafico_tela_mes(nome_tabela_escolhida))
+
  menujan2.add_cascade(label='Gráficos',menu = menugrafico)
 
  menusair = Menu(menujan2, tearoff=0)

@@ -8,6 +8,8 @@ from classes import *
 import keyboard
 from cliente import cliente_menu
 from contasrec import contasrec_menu 
+from rotinas import salvar_bco
+
 #from contas import *
 #from tipo import *
 
@@ -55,6 +57,7 @@ filemenu.add_command(label = " Contas Pagar",command= lambda: contas_menu(janela
 filemenu.add_command(label = " Tipo",command=lambda: tipo_menu(janela1))
 filemenu.add_command(label = " Produto",command=lambda: prod_menu(janela1))
 
+
 menujan.add_cascade(label=' Contas Pagar',menu = filemenu)
 #
 
@@ -63,6 +66,11 @@ recebermenu.add_command(label = " Cliente",command= lambda: cliente_menu(janela1
 recebermenu.add_command(label = " Contas Receber",command= lambda: contasrec_menu(janela1))
 
 menujan.add_cascade(label=' Contas Receber',menu = recebermenu)
+
+menu_copia = Menu(menujan, tearoff=0,)
+menu_copia.add_command(label="Copia de segurança", command=lambda: salvar_bco())
+
+menujan.add_cascade(label=' Copia Banco',menu = menu_copia)
 
 #prod_menu
 menusair = Menu(menujan, tearoff=0)
