@@ -3878,7 +3878,7 @@ def contasrec_menu(janela1):
  nome_tabela_escolhida="contasrec"
  
  menu_grafico = Menu(menujan2, tearoff=0)
- menu_grafico.add_command(label="Inclusão mes/ano Gráfico escolha", command=lambda: grafico_tela(nome_tabela_escolhida))
+ menu_grafico.add_command(label="Inclusão/vencimento mes/ano Gráfico escolha", command=lambda: grafico_tela(nome_tabela_escolhida))
  menu_grafico.add_command(label="Inclusão/vencimento no mês Gráfico escolha", command=lambda: grafico_tela_mes(nome_tabela_escolhida))
  menujan2.add_cascade(label='Gráficos',menu = menu_grafico)
 

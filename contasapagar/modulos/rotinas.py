@@ -1,11 +1,12 @@
 from tkinter import *
 import keyboard
+from tkinter import messagebox
 import sqlite3
 from sqlite3 import Error
 from tkinter import filedialog
 import shutil
 import os
-
+import datetime
 from time import sleep
 
 def messagebox1(msg,manutencao):
@@ -43,13 +44,14 @@ def salvar_bco():
     # Se o usuário cancelar a seleção, encerra a função
     if not arquivo_origem:
         return
-
+    # Pega a data atual no formato brasileiro (ex: 26-08-2026)
+    data_atual = datetime.date.today().strftime("%d-%m-%Y")
     # 2. Solicita ao usuário onde ele deseja salvar a cópia
     caminho_destino = filedialog.asksaveasfilename(
         defaultextension=".db",
         filetypes=[("Banco de dados SQLite", "*.db")],
         title="Salvar cópia do banco de dados",
-        initialfile=f"copia_{os.path.basename(arquivo_origem)}"
+        initialfile = f"copia_{data_atual}_{os.path.basename(arquivo_origem)}"
     )
 
     # 3. Executa a cópia se o caminho de destino for definido
