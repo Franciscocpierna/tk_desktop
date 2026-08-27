@@ -18,19 +18,24 @@ import matplotlib
 
 
 # def inserir_grafico_no_tkinter(frame_destino):
-def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_check_var,conn,nome_tabela_escolhida,coluna_data):    
+def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_check_var,conn,nome_tabela_escolhida):    
     # 1. Conectar ao banco e buscar os dados (sua query original)
   #  conn = sqlite3.connect('contaspagar.db')
+     # Associa o evento de mudança ao combobox
+    if combo_incvenc.get() == "Inclusao":
+        coluna_data = 'inclusao'
+    else:
+        coluna_data = "vencimento"   
     escolha1=combo_incvenc.get()
     if escolha1 == "Inclusao":  
-        query = """
+        query = f"""
         SELECT strftime('%m-%Y', {coluna_data}) AS mes_ano, COUNT(*) AS total
         FROM {nome_tabela_escolhida}
         GROUP BY mes_ano
         ORDER BY mes_ano;
         """
     else:
-        query = """
+        query = f"""
         SELECT strftime('%m-%Y', {coluna_data}) AS mes_ano, COUNT(*) AS total
         FROM {nome_tabela_escolhida}
         WHERE  {coluna_data} < DATE('now') 
@@ -42,7 +47,10 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
         widget.destroy()
     
     plt.close('all')
-    df = pd.read_sql_query(query, conn)
+    df = pd.read_sql_query(query, conn) 
+    print(df.columns)
+    print(df['mes_ano'])
+    print(coluna_data)
    # conn.close()
     escolha = combo_tipo.get()
     
@@ -121,10 +129,19 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
 
 
 # def inserir_grafico_no_tkinter(frame_destino):
-def inserir_grafico_no_tkinter1(frame_destino, combo_tipo, meu_check_var,conn,mes_escolhido,nome_tabela_escolhida,coluna_data):    
+def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_check_var,conn,mes_escolhido,nome_tabela_escolhida):    
     # 1. Conectar ao banco e buscar os dados (sua query original)
     # conn = sqlite3.connect('contaspagar.db')
-    escolha = combo_tipo.get()
+    if combo_incvenc.get() == "Inclusao":
+        coluna_data = 'inclusao'
+    else:
+        coluna_data = "vencimento"   
+    escolha1=combo_incvenc.get()
+    if escolha1 == "Inclusao":
+       coluna_data = 'inclusao'
+    else:   
+       coluna_data = 'vencimento'
+
     query = f"""
           SELECT 
           strftime('%d', {coluna_data}) AS dia, 
@@ -190,11 +207,7 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo, meu_check_var,conn,me
     # 4. Posicionar o gráfico na tela usando o pack() ou grid() do Tkinter
     canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-def pegar_selecao(event):
-    # event.widget é o Combobox, e o .get() extrai o texto selecionado dele
-    valor_escolhido = event.widget.get() 
-    
-    print(f"Você escolheu: {valor_escolhido}")
+
     
 def desativar_x():
     pass
@@ -253,25 +266,13 @@ def grafico_tela(nome_tabela_escolhida):
     combo_incvenc.current(0)
      
     
-    # 4. Função para pegar o valor que o usuário escolheu
-    #escolha = combo_tipo.get()
-    # Associa o evento de mudança ao combobox
-    combo_incvenc.bind("<<ComboboxSelected>>",pegar_selecao)
-
-    ####################
 
     btn_sair = ttk.Button(minhaescolha, text="Sair / Fechar", command= lambda: fechar_programa1(root1,conn))
     btn_sair.pack(side=tk.LEFT, padx=40) # padx adiciona um espaço horizontal entre eles 
     
     # 4. Função para pegar o valor que o usuário escolheu
     #escolha = combo_tipo.get()
-    # Associa o evento de mudança ao combobox
-    combo_incvenc.bind("<<ComboboxSelected>>",pegar_selecao)
-    if combo_incvenc.get() == "Inclusao":
-       coluna_data = "inclusao"
-    else:
-       coluna_data = "vencimento"   
-   
+    
 
     # Criando um Frame na tela para receber o gráfico
     meu_painel = tk.Frame(root1)
@@ -283,7 +284,7 @@ def grafico_tela(nome_tabela_escolhida):
     # Usamos lambda para passar o 'frame_destino' para a sua função,
     # já que o bind vai injetar o argumento 'event' automaticamente.
     # ---------------------------------------------------------
-    root1.bind("<F3>", lambda event: inserir_grafico_no_tkinter(meu_painel, combo_tipo,combo_incvenc, meu_check_var,conn,nome_tabela_escolhida,coluna_data))
+    root1.bind("<F3>", lambda event: inserir_grafico_no_tkinter(meu_painel, combo_tipo,combo_incvenc, meu_check_var,conn,nome_tabela_escolhida))
     # 3. Força o foco do sistema operacional para esta janela imediatamente
     root1.focus_force()
     
@@ -344,12 +345,22 @@ def grafico_tela_mes(nome_tabela_escolhida):
     mes_escolhido.insert(0, "AAAA-MM")
     # 3. Criar o Combobox
     # Definimos as opções disponíveis usando o parâmetro 'values'
-    
-    opcoes = ["Inclusao", "Vencimento"]
+        # 3. Criar o Combobox
+    # Definimos as opções disponíveis usando o parâmetro 'values'
+    opcoes = ["Barra", "Pizza", "Linha"]
     combo_tipo = ttk.Combobox(minhaescolha, values=opcoes, state="readonly") # "readonly" impede que o usuário digite texto livre
-    combo_tipo.pack(side=tk.LEFT,pady=40)
+    combo_tipo.pack(side=tk.LEFT,padx=40)
     # Opcional: Selecionar um item padrão inicial (ex: o primeiro da lista)
     combo_tipo.current(0)
+    #vencimento/inclusao
+    #####################
+
+    opcoes1 = ["Inclusao", "Vencidos"]
+    combo_incvenc = ttk.Combobox(minhaescolha, values=opcoes1, state="readonly") # "readonly" impede que o usuário digite texto livre
+    combo_incvenc.pack(side=tk.LEFT,padx=40)
+    # Opcional: Selecionar um item padrão inicial (ex: o primeiro da lista)
+    combo_incvenc.current(0)
+    
     btn_sair = ttk.Button(minhaescolha, text="Sair / Fechar", command= lambda: fechar_programa1(root1,conn))
     btn_sair.pack(side=tk.LEFT, padx=40) # padx adiciona um espaço horizontal entre eles 
     
@@ -372,7 +383,7 @@ def grafico_tela_mes(nome_tabela_escolhida):
     # já que o bind vai injetar o argumento 'event' automaticamente.
     # ---------------------------------------------------------
     #tirei m_escolhido.get()
-    root1.bind("<F3>", lambda event: inserir_grafico_no_tkinter1(meu_painel, combo_tipo, meu_check_var,conn,mes_escolhido.get(),nome_tabela_escolhida,coluna_data))
+    root1.bind("<F3>", lambda event: inserir_grafico_no_tkinter1(meu_painel, combo_tipo,combo_incvenc, meu_check_var,conn,mes_escolhido.get(),nome_tabela_escolhida))
     # 3. Força o foco do sistema operacional para esta janela imediatamente
     root1.focus_force()
     

@@ -3310,11 +3310,11 @@ def contas_menu(janela1):
  menujan2.add_cascade(label = "Relatórios", menu = editmenu2)
 
  nome_tabela_escolhida="contas"
- menugrafico = Menu(menujan2, tearoff=0)
+ menu_grafico = Menu(menujan2, tearoff=0)
  menu_grafico.add_command(label="Inclusão mes/ano Gráfico escolha", command=lambda: grafico_tela(nome_tabela_escolhida))
  menu_grafico.add_command(label="Inclusão/vencimento no mês Gráfico escolha", command=lambda: grafico_tela_mes(nome_tabela_escolhida))
 
- menujan2.add_cascade(label='Gráficos',menu = menugrafico)
+ menujan2.add_cascade(label='Gráficos',menu = menu_grafico)
 
  menusair = Menu(menujan2, tearoff=0)
  menusair.add_command(label= "Sair click aqui", command=janela3.destroy) 
@@ -3337,6 +3337,7 @@ def contas_menu(janela1):
                                                tparcela varchar(3),
                                                cs varchar(1),
                                                produto varchar(5), 
+                                               inclusao TEXT NOT NULL,
                                                PRIMARY KEY (codigo,documento,tparcela),   
                                                FOREIGN KEY(codigo) REFERENCES  fornecedor(codigo),
                                                FOREIGN KEY(tipo) REFERENCES  tipo(codigo),
