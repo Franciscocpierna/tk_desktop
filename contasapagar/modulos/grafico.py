@@ -136,11 +136,7 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_che
         coluna_data = 'inclusao'
     else:
         coluna_data = "vencimento"   
-    escolha1=combo_incvenc.get()
-    if escolha1 == "Inclusao":
-       coluna_data = 'inclusao'
-    else:   
-       coluna_data = 'vencimento'
+    
 
     query = f"""
           SELECT 
@@ -155,6 +151,32 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_che
     cursor = conn.cursor()     
     cursor.execute(query, (mes_escolhido,))
     dados = cursor.fetchall()
+    '''
+     para substituir o cursor.execute e o cursor.fetchall 
+
+     pelo pandas 
+
+     if combo_incvenc.get() == "Inclusao":
+        coluna_data = 'inclusao'
+    else:
+        coluna_data = "vencimento"   
+
+    query = f"""
+          SELECT 
+          strftime('%d', {coluna_data}) AS dia, 
+          COUNT(*) AS total
+          FROM {nome_tabela_escolhida}
+          WHERE strftime('%Y-%m', {coluna_data}) = ?
+          GROUP BY dia
+          ORDER BY dia;
+          """
+          
+    # Executa a query e já retorna os dados convertidos diretamente para um DataFrame do Pandas
+    df = pd.read_sql_query(query, conn, params=(mes_escolhido,))
+
+     através do argumento params da função do Pandas, mantendo a segurança contra SQL Injection.
+    '''
+
     # Separando os dados para o gráfico
     dias = [row[0] for row in dados]
     totais = [row[1] for row in dados]
@@ -236,7 +258,9 @@ def grafico_tela(nome_tabela_escolhida):
     
     minhaescolha = tk.Frame(root1)
     minhaescolha.pack(padx=20, pady=20)
-    
+    #minhaescolha.pack(side=tk.TOP, anchor=tk.W, padx=40)
+    #minhaescolha.grid(row=2, column=0, sticky="w")
+ 
       
 
     # Variável de controle
@@ -245,6 +269,7 @@ def grafico_tela(nome_tabela_escolhida):
     # Criando o Checkbutton e ligando à variável
     chk = ttk.Checkbutton(minhaescolha, text="Grava em Pdf", variable=meu_check_var)
     chk.pack(side=tk.LEFT,padx=40)
+    
     
    
     # 3. Criar o Combobox
@@ -367,11 +392,7 @@ def grafico_tela_mes(nome_tabela_escolhida):
     # 4. Função para pegar o valor que o usuário escolheu
     #escolha = combo_tipo.get()
     # Associa o evento de mudança ao combobox
-    combo_tipo.bind("<<ComboboxSelected>>",pegar_selecao)
-    if combo_tipo.get()=="Inclusao":
-       coluna_data = "inclusao"
-    else:
-       coluna_data="vencimento"    
+    
     # Criando um Frame na tela para receber o gráfico
     meu_painel = tk.Frame(root1)
     meu_painel.pack(fill=tk.BOTH, expand=True)

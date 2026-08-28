@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "python.terminal.executeInFileDir": true  
+            "name": "Python: Arquivo Atual",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${fileDirname}"
+        }
+    ]
+}
+O que cada parte faz:
+
+
+O que cada parte faz:
+
+"program": "${file}": Diz ao VS Code para executar o arquivo .py que está aberto e focado na sua tela no momento.
+
+"cwd": "${fileDirname}": Altera o diretório de trabalho atual (Current Working Directory) para a pasta exata onde aquele arquivo específico está salvo. Isso faz com que leituras 
+ou criações de arquivos relativos (como open('dados.txt')) funcionem perfeitamente no mesmo diretório do script.
+
+Dica extra para execução normal (sem depuração):
+Se você também quiser que o comando padrão de rodar código execute na pasta do arquivo, abra as Configurações do VS Code (Ctrl+,), 
+pesquise por executeInFileDir e marque a opção Python > Terminal: Execute In File Dir (python.terminal.executeInFileDir), 
+ou adicione manualmente no seu settings.json:
+
+"python.terminal.executeInFileDir": true
+
+Vá até o menu lateral esquerdo e clique no ícone de Executar e Depurar (ou pressione Ctrl+Shift+D). 
+Clique no link criar um arquivo launch.json (se ainda não existir).  Selecione o ambiente Python e, 
+em seguida, escolha a opção Python File (Arquivo Python). O VS Code criará automaticamente uma pasta 
+.vscode com o arquivo launch.json dentro.  Configurar o launch.json
+Abra o arquivo gerado e certifique-se de que a propriedade "cwd" está definida como "${fileDirname}". 
+O código deve ficar semelhante a isto:  
