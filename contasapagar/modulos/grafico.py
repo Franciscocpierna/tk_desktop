@@ -234,6 +234,8 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_che
 def desativar_x():
     pass
 
+
+
 def fechar_programa1(janela,conn):
     conn.close()      # Fecha a conexão com o banco
     janela.destroy()   # Destrói a janela de vez e limpa da memória
@@ -292,7 +294,7 @@ def grafico_tela(nome_tabela_escolhida):
      
     
 
-    btn_sair = ttk.Button(minhaescolha, text="Sair / Fechar", command= lambda: fechar_programa1(root1,conn))
+    btn_sair = ttk.Button(minhaescolha, text="Sair / Fechar ou CRTL F", command= lambda: fechar_programa1(root1,conn))
     btn_sair.pack(side=tk.LEFT, padx=40) # padx adiciona um espaço horizontal entre eles 
     
     # 4. Função para pegar o valor que o usuário escolheu
@@ -309,6 +311,10 @@ def grafico_tela(nome_tabela_escolhida):
     # Usamos lambda para passar o 'frame_destino' para a sua função,
     # já que o bind vai injetar o argumento 'event' automaticamente.
     # ---------------------------------------------------------
+    # Vincula o evento Ctrl + F à janela principal
+   # Vincula o Ctrl + F para chamar a sua rotina passando a janela e a conexão atual
+    root1.bind("<Control-f>", lambda event: fechar_programa1(root1, conn))
+    root1.bind("<Control-F>", lambda event: fechar_programa1(root1, conn))
     root1.bind("<F3>", lambda event: inserir_grafico_no_tkinter(meu_painel, combo_tipo,combo_incvenc, meu_check_var,conn,nome_tabela_escolhida))
     # 3. Força o foco do sistema operacional para esta janela imediatamente
     root1.focus_force()
@@ -386,9 +392,10 @@ def grafico_tela_mes(nome_tabela_escolhida):
     # Opcional: Selecionar um item padrão inicial (ex: o primeiro da lista)
     combo_incvenc.current(0)
     
-    btn_sair = ttk.Button(minhaescolha, text="Sair / Fechar", command= lambda: fechar_programa1(root1,conn))
+    btn_sair = ttk.Button(minhaescolha, text="Sair / Fechar ou CRtl F", command= lambda: fechar_programa1(root1,conn))
     btn_sair.pack(side=tk.LEFT, padx=40) # padx adiciona um espaço horizontal entre eles 
-    
+    root1.bind("<Control-f>", lambda event: fechar_programa1(root1, conn))   
+    root1.bind("<Control-F>", lambda event: fechar_programa1(root1, conn)) 
     # 4. Função para pegar o valor que o usuário escolheu
     #escolha = combo_tipo.get()
     # Associa o evento de mudança ao combobox
@@ -396,7 +403,7 @@ def grafico_tela_mes(nome_tabela_escolhida):
     # Criando um Frame na tela para receber o gráfico
     meu_painel = tk.Frame(root1)
     meu_painel.pack(fill=tk.BOTH, expand=True)
-
+    
     # Chamando a função passando o painel onde o gráfico vai aparecer
 
     # COMO ASSOCIAR A TECLA F3:
