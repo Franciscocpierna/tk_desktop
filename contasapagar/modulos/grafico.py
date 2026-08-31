@@ -50,6 +50,7 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
     df = pd.read_sql_query(query, conn) 
     print(df.columns)
     print(df['mes_ano'])
+    print(df)
     print(coluna_data)
    # conn.close()
     escolha = combo_tipo.get()

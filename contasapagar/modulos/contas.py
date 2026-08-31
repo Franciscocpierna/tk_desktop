@@ -48,7 +48,7 @@ def limpacamposcontas():
   tela.cs.delete(0, END)  
   tela.produto.delete(0,END)    
   tela.descproduto.delete(0,END)
-  tela.inclusao(0,END)
+  tela.inclusao.delete(0,END)
   return
 
 
@@ -2318,8 +2318,11 @@ def consulta_compra(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
+  # tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
+   tv=AcceleratedTreeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
     
+
+
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
@@ -2438,8 +2441,8 @@ def consulta_pagamento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
-    
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
+   tv = AcceleratedTreeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings') 
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
@@ -2799,8 +2802,8 @@ def consulta_vencimento(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
-    
+   #tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
+   tv=AcceleratedTreeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings') 
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
    tv.column('compra', minwidth=0, width=250)
@@ -2925,7 +2928,7 @@ def consulta_codigo2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
+   tv=AcceleratedTreeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -3046,7 +3049,7 @@ def consulta_porcao2(janela3):
    centro=centralizacao(janela4,1330, 650, posx, posy)
    janela4.geometry("%dx%d+%d+%d" % (centro.largura1, centro.altura1, centro.posx, centro.posy))
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
+   tv=AcceleratedTreeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
@@ -3193,7 +3196,7 @@ def consulta_ematraso(janela3):
    keyboard.on_press_key("esc", lambda _: janela4.destroy())
    
 
-   tv=ttk.Treeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
+   tv=AcceleratedTreeview(janela4,columns=('codigo', 'nome', 'compra', 'vencimento','descricao', 'pagamento', 'tipo', 'desctipo', 'valpagar', 'desconto','juros','documento','tparcela','cs','produto','descproduto' ), show= 'headings')
     
    tv.column('codigo', minwidth=5, width=50)
    tv.column('nome', minwidth=0, width=250)
