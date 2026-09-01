@@ -28,8 +28,10 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
         coluna_data = "vencimento"   
     escolha1=combo_incvenc.get()
     if escolha1 == "Inclusao":  
+        #COUNT (*) vai considererar até as datas nulas pra aceitar só datas validas agrupadas COUNT ({coluna_data})
+        # COUNT (*) outra forma de ignorar os nulos WHERE {coluna_data} IS NOT NULL logo depois do FROM
         query = f"""
-        SELECT strftime('%m-%Y', {coluna_data}) AS mes_ano, COUNT(*) AS total
+        SELECT strftime('%m-%Y', {coluna_data}) AS mes_ano, COUNT(*) AS total 
         FROM {nome_tabela_escolhida}
         GROUP BY mes_ano
         ORDER BY mes_ano;
@@ -417,3 +419,26 @@ def grafico_tela_mes(nome_tabela_escolhida):
     root1.focus_force()
     
     root1.title("Atalho F3 para Gráfico")
+
+
+
+    # vamos supor que vai ser mes_ano e um valor baseado nessa coluna
+    # fica assim a SQL
+
+    # query = f"""
+    # SELECT strftime('%m-%Y', {coluna_data}) AS mes_ano, SUM({coluna_valor}) AS total_valor
+    # FROM {nome_tabela_escolhida}
+    # GROUP BY mes_ano
+    # ORDER BY mes_ano;
+    # """
+    #O que muda nessa estrutura?
+    # SUM({coluna_valor}) AS total_valor: Em vez de contar linhas, o SUM pega todos os números presentes na coluna de valor de cada grupo e os soma, apelidando o resultado de total_valor.
+
+    # Mesmo vínculo (GROUP BY mes_ano): O agrupamento continua funcionando da mesma forma. 
+    # O SQLite converte a data de cada linha no formato mes_ano, junta todas as linhas que pertencem 
+    # ao mesmo mês e ano, e o SUM soma os valores apenas das linhas que caíram dentro daquele grupo específico.
+
+    # Comportamento com valores nulos (NULL):
+    # Assim como o COUNT({coluna_data}), a função SUM() ignora automaticamente os valores NULL 
+    # na coluna que está sendo somada. Se uma linha tiver um valor NULL, ela simplesmente não 
+    # altera o resultado da soma.
