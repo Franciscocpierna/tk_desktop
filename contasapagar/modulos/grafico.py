@@ -24,8 +24,10 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
      # Associa o evento de mudança ao combobox
     if combo_incvenc.get() == "Inclusao":
         coluna_data = 'inclusao'
-    else:
-        coluna_data = "vencimento"   
+    elif combo_incvenc.get() == "Compras":
+        coluna_data = "compra"   
+    else: 
+        coluna_data = "vencimento"       
     escolha1=combo_incvenc.get()
     if escolha1 == "Inclusao":  
         #COUNT (*) vai considererar até as datas nulas pra aceitar só datas validas agrupadas COUNT ({coluna_data})
@@ -36,14 +38,23 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
         GROUP BY mes_ano
         ORDER BY mes_ano;
         """
-    else:
+    elif escolha1=="Vencidos":
         query = f"""
         SELECT strftime('%m-%Y', {coluna_data}) AS mes_ano, COUNT(*) AS total
         FROM {nome_tabela_escolhida}
         WHERE  {coluna_data} < DATE('now') 
         GROUP BY mes_ano
         ORDER BY mes_ano;
-        """    
+        """ 
+    elif escolha1 == "Atrasado":
+        query = f"""
+        SELECT strftime('%Y-%m', vencimento) AS mes_ano, COUNT(*) AS total
+        FROM {nome_tabela_escolhida}
+        WHERE vencimento < DATE('now')
+        AND (pagamento IS NULL OR pagamento = '')
+        GROUP BY mes_ano
+        ORDER BY mes_ano;
+        """        
     # # 1. Limpa qualquer widget anterior (o gráfico velho) de dentro do painel
     for widget in frame_destino.winfo_children():
         widget.destroy()
@@ -292,7 +303,7 @@ def grafico_tela(nome_tabela_escolhida):
     #vencimento/inclusao
     #####################
 
-    opcoes1 = ["Inclusao", "Vencidos"]
+    opcoes1 = ["Inclusao", "Vencidos","Compras","Atrasado"]
     combo_incvenc = ttk.Combobox(minhaescolha, values=opcoes1, state="readonly") # "readonly" impede que o usuário digite texto livre
     combo_incvenc.pack(side=tk.LEFT,padx=40)
     # Opcional: Selecionar um item padrão inicial (ex: o primeiro da lista)
