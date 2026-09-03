@@ -7,7 +7,7 @@ import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib
 
-
+F
 #matplotlib.use('Agg')
 
 
@@ -137,9 +137,12 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_che
     # conn = sqlite3.connect('contaspagar.db')
     if combo_incvenc.get() == "Inclusao":
         coluna_data = 'inclusao'
-    else:
-        coluna_data = "vencimento"   
-    
+    elif combo_incvenc  == "Vencimento":
+        coluna_data="vencimento"   
+    elif combo_incvenc  == "Compra":
+         coluna_data="compra"   
+    elif combo_incvenc  == "Pagamento":
+        coluna_data = "pagamento"     
 
     query = f"""
           SELECT 
@@ -389,7 +392,7 @@ def grafico_tela_mes(nome_tabela_escolhida):
     #vencimento/inclusao
     #####################
 
-    opcoes1 = ["Inclusao", "Vencidos"]
+    opcoes1 = ["Inclusao", "Vencidos", "Compras", "Pagamento"]
     combo_incvenc = ttk.Combobox(minhaescolha, values=opcoes1, state="readonly") # "readonly" impede que o usuário digite texto livre
     combo_incvenc.pack(side=tk.LEFT,padx=40)
     # Opcional: Selecionar um item padrão inicial (ex: o primeiro da lista)
