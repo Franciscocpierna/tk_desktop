@@ -24,12 +24,15 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
      # Associa o evento de mudança ao combobox
     if combo_incvenc.get() == "Inclusao":
         coluna_data = 'inclusao'
+        titulo = "Registros Incluídos por Mês/Ano"
     elif combo_incvenc.get() == "Compras":
         coluna_data = "compra"   
+        titulo = "Registros Compras por Mês/Ano"
     else: 
         coluna_data = "vencimento"       
+        titulo = "Registros Vencidos por Mês/Ano"
     escolha1=combo_incvenc.get()
-    if escolha1 == "Inclusao":  
+    if escolha1 == "Inclusao"  or escolha1=="Compras":  
         #COUNT (*) vai considererar até as datas nulas pra aceitar só datas validas agrupadas COUNT ({coluna_data})
         # COUNT (*) outra forma de ignorar os nulos WHERE {coluna_data} IS NOT NULL logo depois do FROM
         query = f"""
@@ -73,10 +76,6 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
       # 2. Criar a figura do Matplotlib (Note que usamos 'fig, ax = plt.subplots' em vez de plt.figure)
       fig, ax = plt.subplots(figsize=(8, 5))
       ax.pie(df['total'], labels=df['mes_ano'], autopct='%1.1f%%', startangle=90)
-      if escolha1 == 'Inclusao':
-        titulo = "Registros Incluídos por Mês"
-      else:
-         titulo = "Registros Vencidos por Mês"
       ax.set_title(titulo)
       fig.tight_layout()
     elif escolha == "Barra":
@@ -85,11 +84,6 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
 
       # O eixo X (mes_ano) vem primeiro, depois o eixo Y (total)
       ax.bar(df['mes_ano'], df['total'])
-
-      if escolha1 == 'Inclusao':
-        titulo = "Registros Incluídos por Mês"
-      else:
-         titulo = "Registros Vencidos por Mês"
       ax.set_title(titulo)
       ax.set_xlabel('Mês/Ano')
       ax.set_ylabel('Total')
@@ -106,10 +100,6 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
       # Usando o ax em vez de plt
       # Usamos marker='o' para marcar cada ponto no mês, linestyle='-' para a linha e linewidth para grossura
       ax.plot(df['mes_ano'], df['total'], marker='o', linestyle='-', color='b', linewidth=2)
-      if escolha1 == 'Inclusao':
-        titulo = "Registros Incluídos por Mês"
-      else:
-        titulo = "Registros Vencidos por Mês"
       ax.set_title(titulo)
       ax.set_xlabel('Mês/Ano')
       ax.set_ylabel('Quantidade')
@@ -148,13 +138,17 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_che
     # conn = sqlite3.connect('contaspagar.db')
     if combo_incvenc.get() == "Inclusao":
         coluna_data = 'inclusao'
+        titulo = "Registros Incluídos por Mês"
     elif combo_incvenc  == "Vencimento":
-        coluna_data="vencimento"   
+        coluna_data="vencimento"
+        titulo = "Registros Vencidos por Mês"   
     elif combo_incvenc  == "Compra":
-         coluna_data="compra"   
+        coluna_data="compra"
+        titulo = "Registros Compra por Mês"   
+
     elif combo_incvenc  == "Pagamento":
         coluna_data = "pagamento"     
-
+        titulo = "Registros Pagamento por Mês"
     query = f"""
           SELECT 
           strftime('%d', {coluna_data}) AS dia, 
@@ -206,73 +200,32 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_che
     # df = pd.read_sql_query(query, conn)
     # conn.close()
     #####################################################################################
+    # 4. Cria a figura do Matplotlib
+    fig, ax = plt.subplots(figsize=(8, 5))
+    escolha_tipo = combo_tipo.get()
     escolha = combo_tipo.get()
     if escolha == "Pizza": 
-      # 2. Criar a figura do Matplotlib (Note que usamos 'fig, ax = plt.subplots' em vez de plt.figure)
-      fig, ax = plt.subplots(figsize=(8, 5))
-      ax.pie(df['total'], labels=df['mes_ano'], autopct='%1.1f%%', startangle=90)
-      if combo_incvenc.get() == 'Inclusao':
-        titulo = "Registros Incluídos por Mês"
-      elif combo_incvenc.get()=="Vencidos":
-         titulo = "Registros Vencidos por Mês"
-      elif combo_incvenc.get()=="Compra":
-         titulo = "Registros Vencidos por Mês"
-      elif combo_incvenc.get()=="Pagamento":
-         titulo = "Registros Pagamento no Mês"      
+      ax.pie(totais, labels=dias, autopct='%1.1f%%', startangle=90)
       ax.set_title(titulo)
-      fig.tight_layout()
-    elif escolha == "Barra": xxxxx
+    elif escolha == "Barra":
+      ax.bar(dias, totais, color='crimson')  
+      ax.set_xlabel('Dias do Mês')
+      ax.set_ylabel('Quantidade')
+      ax.set_title(titulo)
+      ax.tick_params(axis='x', rotation=45)
+    else:
+      ax.plot(dias, totais, marker='o', linestyle='-', color='b', linewidth=2)
+      ax.set_title(titulo)
+      ax.set_xlabel('Dias do Mês')
+      ax.set_ylabel('Quantidade')
+      ax.tick_params(axis='x', rotation=45)
+      ax.grid(True, linestyle='--', alpha=0.6)
+
+    fig.tight_layout()
+
       
-      fig, ax = plt.subplots(figsize=(8, 5))
-
-      # O eixo X (mes_ano) vem primeiro, depois o eixo Y (total)
-      ax.bar(df['mes_ano'], df['total'])
-
-      if escolha1 == 'Inclusao':
-        titulo = "Registros Incluídos por Mês"
-      else:
-         titulo = "Registros Vencidos por Mês"
     #####################################################################################
-    fig, ax = plt.subplots(figsize=(8, 5))      
-    plt.bar(dias, totais, color='crimson')
-    plt.xlabel('Dias do Mês')
-    # if combo_incvenc.get() == "Inclusao":
-    #     # é possível trocar ax por plt
-    #     # ax.set_ylabel('Quantidade de Produtos Inclusos')
-    #     # ax.set_title(f'Produtos Inclusos por Dia - Referência: {mes_escolhido}')
-    #     plt.ylabel("Quantidade de Produtos Inclusos")
-    #     plt.title(f"Produtos Inclusos por Dia - Referência: {mes_escolhido}")
-    # elif combo_incvenc  == "Vencimento":
-    #     # é possível trocar ax por plt
-    #     # ax.set_ylabel('Quantidade de Produtos Vencidos')
-    #     # ax.set_title(f'Produtos Vencidos por Dia - Referência: {mes_escolhido}')
-    #     plt.ylabel("Quantidade de Produtos Vencidos")
-    #     plt.title(f"Produtos Vencidos por Dia - Referência: {mes_escolhido}")   
-    # elif combo_incvenc  == "Compra":
-    #     coluna_data="compra"   
-    #     plt.ylabel("Quantidade de Produtos comprados")
-    #     plt.title(f"Produtos Comprados por Dia - Referência: {mes_escolhido}")
-    # elif combo_incvenc.get()  == "Pagamento":
-    #     coluna_data = "pagamento"     
-    #     plt.ylabel("Quantidade de Produtos pagos")
-    #     plt.title(f"Produtos Pagos por Dia - Referência: {mes_escolhido}")
-     
-    # else:
-    #     # é possível trocar ax por plt
-    #     # ax.set_ylabel('Quantidade de Produtos Vencidos')
-    #     # ax.set_title(f'Produtos Vencidos por Dia - Referência: {mes_escolhido}')
-    #     plt.ylabel("Quantidade de Produtos Vencidos")
-    #     plt.title(f"Produtos Vencidos por Dia - Referência: {mes_escolhido}")
-      
-      # O eixo X (mes_ano) vem primeiro, depois o eixo Y (total)
-      
-      # Rotaciona os rótulos do eixo X para não embolarem
-      #plt.xticks(rotation=45)
-      
-    plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
-
-    fig.tight_layout()  
-      
+          
     # 3. Salvar em PDF DEPOIS que o gráfico foi gerado
     if meu_check_var.get():
         fig.savefig('grafico_estoque.pdf', format='pdf', bbox_inches='tight')
