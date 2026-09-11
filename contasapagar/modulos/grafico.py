@@ -7,7 +7,7 @@ import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib
 
-F
+
 #matplotlib.use('Agg')
 
 
@@ -205,22 +205,64 @@ def inserir_grafico_no_tkinter1(frame_destino, combo_tipo,combo_incvenc, meu_che
     plt.close('all')
     # df = pd.read_sql_query(query, conn)
     # conn.close()
+    #####################################################################################
+    escolha = combo_tipo.get()
+    if escolha == "Pizza": 
+      # 2. Criar a figura do Matplotlib (Note que usamos 'fig, ax = plt.subplots' em vez de plt.figure)
+      fig, ax = plt.subplots(figsize=(8, 5))
+      ax.pie(df['total'], labels=df['mes_ano'], autopct='%1.1f%%', startangle=90)
+      if combo_incvenc.get() == 'Inclusao':
+        titulo = "Registros Incluídos por Mês"
+      elif combo_incvenc.get()=="Vencidos":
+         titulo = "Registros Vencidos por Mês"
+      elif combo_incvenc.get()=="Compra":
+         titulo = "Registros Vencidos por Mês"
+      elif combo_incvenc.get()=="Pagamento":
+         titulo = "Registros Pagamento no Mês"      
+      ax.set_title(titulo)
+      fig.tight_layout()
+    elif escolha == "Barra": xxxxx
+      
+      fig, ax = plt.subplots(figsize=(8, 5))
+
+      # O eixo X (mes_ano) vem primeiro, depois o eixo Y (total)
+      ax.bar(df['mes_ano'], df['total'])
+
+      if escolha1 == 'Inclusao':
+        titulo = "Registros Incluídos por Mês"
+      else:
+         titulo = "Registros Vencidos por Mês"
+    #####################################################################################
     fig, ax = plt.subplots(figsize=(8, 5))      
     plt.bar(dias, totais, color='crimson')
     plt.xlabel('Dias do Mês')
-    if escolha == "Inclusao":
-        # é possível trocar ax por plt
-        # ax.set_ylabel('Quantidade de Produtos Inclusos')
-        # ax.set_title(f'Produtos Inclusos por Dia - Referência: {mes_escolhido}')
-        plt.ylabel("Quantidade de Produtos Inclusos")
-        plt.title(f"Produtos Inclusos por Dia - Referência: {mes_escolhido}")
-         
-    else:
-        # é possível trocar ax por plt
-        # ax.set_ylabel('Quantidade de Produtos Vencidos')
-        # ax.set_title(f'Produtos Vencidos por Dia - Referência: {mes_escolhido}')
-        plt.ylabel("Quantidade de Produtos Vencidos")
-        plt.title(f"Produtos Vencidos por Dia - Referência: {mes_escolhido}")
+    # if combo_incvenc.get() == "Inclusao":
+    #     # é possível trocar ax por plt
+    #     # ax.set_ylabel('Quantidade de Produtos Inclusos')
+    #     # ax.set_title(f'Produtos Inclusos por Dia - Referência: {mes_escolhido}')
+    #     plt.ylabel("Quantidade de Produtos Inclusos")
+    #     plt.title(f"Produtos Inclusos por Dia - Referência: {mes_escolhido}")
+    # elif combo_incvenc  == "Vencimento":
+    #     # é possível trocar ax por plt
+    #     # ax.set_ylabel('Quantidade de Produtos Vencidos')
+    #     # ax.set_title(f'Produtos Vencidos por Dia - Referência: {mes_escolhido}')
+    #     plt.ylabel("Quantidade de Produtos Vencidos")
+    #     plt.title(f"Produtos Vencidos por Dia - Referência: {mes_escolhido}")   
+    # elif combo_incvenc  == "Compra":
+    #     coluna_data="compra"   
+    #     plt.ylabel("Quantidade de Produtos comprados")
+    #     plt.title(f"Produtos Comprados por Dia - Referência: {mes_escolhido}")
+    # elif combo_incvenc.get()  == "Pagamento":
+    #     coluna_data = "pagamento"     
+    #     plt.ylabel("Quantidade de Produtos pagos")
+    #     plt.title(f"Produtos Pagos por Dia - Referência: {mes_escolhido}")
+     
+    # else:
+    #     # é possível trocar ax por plt
+    #     # ax.set_ylabel('Quantidade de Produtos Vencidos')
+    #     # ax.set_title(f'Produtos Vencidos por Dia - Referência: {mes_escolhido}')
+    #     plt.ylabel("Quantidade de Produtos Vencidos")
+    #     plt.title(f"Produtos Vencidos por Dia - Referência: {mes_escolhido}")
       
       # O eixo X (mes_ano) vem primeiro, depois o eixo Y (total)
       
@@ -446,7 +488,8 @@ def grafico_tela_mes(nome_tabela_escolhida):
     # ORDER BY mes_ano;
     # """
     #O que muda nessa estrutura?
-    # SUM({coluna_valor}) AS total_valor: Em vez de contar linhas, o SUM pega todos os números presentes na coluna de valor de cada grupo e os soma, apelidando o resultado de total_valor.
+    # SUM({coluna_valor}) AS total_valor: Em vez de contar linhas, o SUM pega todos os números presentes na coluna de valor 
+    # de cada grupo e os soma, apelidando o resultado de total_valor.
 
     # Mesmo vínculo (GROUP BY mes_ano): O agrupamento continua funcionando da mesma forma. 
     # O SQLite converte a data de cada linha no formato mes_ano, junta todas as linhas que pertencem 
