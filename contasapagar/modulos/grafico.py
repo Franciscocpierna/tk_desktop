@@ -9,8 +9,19 @@ import matplotlib
 
 
 #matplotlib.use('Agg')
+#O papel do Agg: O backend Agg foi feito exclusivamente para "rodar por trás dos panos" em servidores 
+# ou scripts de terminal, gerando arquivos de imagem (como PNG ou PDF) sem abrir nenhuma janela na tela. 
+# Ele desliga totalmente a parte interativa do Matplotlib.
+#Se o seu app é completamente visual (Tkinter): Não use matplotlib.use('Agg'). 
+# Deixe o Matplotlib usar o backend padrão automático do sistema/Tkinter.
+#Mesmo sem o Agg, você ainda consegue salvar em PDF perfeitamente usando self.fig.savefig('arquivo.pdf')
+#  a qualquer momento por meio de um botão!
 
-
+#O papel do FigureCanvasTkAgg: Ele faz justamente o oposto. Ele precisa de um backend 
+# interativo/nativo do Tkinter para desenhar o gráfico dentro de um widget (Frame, Canvas, etc.) 
+# e permitir que o usuário veja a interface rodando. Se você definir o backend como Agg antes, 
+# o Tkinter vai dar erro ou não vai conseguir renderizar a janela de forma correta, pois o Agg 
+# não sabe lidar com janelas gráficas de usuário.
 
 
 
@@ -53,11 +64,14 @@ def inserir_grafico_no_tkinter(frame_destino, combo_tipo, combo_incvenc, meu_che
         query = f"""
         SELECT strftime('%Y-%m', vencimento) AS mes_ano, COUNT(*) AS total
         FROM {nome_tabela_escolhida}
-        WHERE vencimento < DATE('now')
+        WHERE vencimento IS NOT NULL
+        AND LENGTH(vencimento) >= 10
+        AND vencimento < DATE('now')
         AND (pagamento IS NULL OR pagamento = '')
         GROUP BY mes_ano
         ORDER BY mes_ano;
-        """        
+        """
+
     # # 1. Limpa qualquer widget anterior (o gráfico velho) de dentro do painel
     for widget in frame_destino.winfo_children():
         widget.destroy()

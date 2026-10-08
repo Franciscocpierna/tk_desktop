@@ -250,7 +250,8 @@ def validar_data(P): #essa rotina pra incluir a / sem digitar usando # 4. Regist
   #
 
 
-#   Essa rotina é o "truque" necessário para fazer a barra aparecer automaticamente enquanto você digita no Entry do Tkinter. Sem essa parte, a função apenas validaria o que você digitou, mas não teria "poder" para alterar o texto que está dentro da caixinha.
+#   Essa rotina é o "truque" necessário para fazer a barra aparecer automaticamente enquanto você digita no Entry do Tkinter. 
+#   Sem essa parte, a função apenas validaria o que você digitou, mas não teria "poder" para alterar o texto que está dentro da caixinha.
 
 #   Aqui está o passo a passo do que acontece:
 
@@ -262,13 +263,16 @@ def validar_data(P): #essa rotina pra incluir a / sem digitar usando # 4. Regist
 # 2. O que a rotina faz?
 # Quando você digita um número, o validatecommand dispara a função validar_data(P):
 
-# novo_P = ...: A função pega o que você digitou, remove tudo que não é número e monta uma "versão corrigida" (ex: você digitou "12", a função monta "12/").
+# novo_P = ...: A função pega o que você digitou, remove tudo que não é número e monta uma "versão corrigida" 
+# (ex: você digitou "12", a função monta "12/").
 
-# if novo_P != P:: Ela compara o que você digitou (P) com a versão correta que ela montou (novo_P). Se forem diferentes (ex: você digitou "12" e o formato correto é "12/"), ela entra no if.
+# if novo_P != P:: Ela compara o que você digitou (P) com a versão correta que ela montou (novo_P). Se forem diferentes 
+# (ex: você digitou "12" e o formato correto é "12/"), ela entra no if.
 
 # data_var.set(novo_P): Aqui está a mágica! Ela força o campo a exibir a barra que ela criou. O campo de texto, que antes tinha apenas "12", agora passa a ter "12/".
 
-# entry_data.icursor(len(novo_P)): Quando você altera o texto via código, o cursor do teclado às vezes pula para o início. Esse comando diz: "coloque o cursor no final do texto" para que você possa continuar digitando o próximo número normalmente.
+# entry_data.icursor(len(novo_P)): Quando você altera o texto via código, o cursor do teclado às vezes pula para o início. 
+# Esse comando diz: "coloque o cursor no final do texto" para que você possa continuar digitando o próximo número normalmente.
 
 # return False: Este é o ponto mais importante. Ao retornar False, você diz ao Tkinter: "Não aceite o caractere que o usuário acabou de digitar (aquela tecla que ele apertou), pois eu já corrigi o texto manualmente via data_var".
 
@@ -280,4 +284,6 @@ def validar_data(P): #essa rotina pra incluir a / sem digitar usando # 4. Regist
 # Em vez de apenas te bloquear (retornar False), ele mesmo pega uma caneta, coloca a barra para você (data_var.set), coloca o cursor no lugar certo (icursor) e depois te bloqueia (return False) apenas para evitar que o número que você digitou apareça duplicado ou fora de lugar.
 
 # Por que isso é necessário?
-# O validatecommand só consegue dizer "aceito" ou "rejeito" o que o usuário digitou. Ele não consegue mudar o texto por conta própria durante a validação. Por isso, usamos o data_var.set() para mudar o texto e return False para cancelar a digitação original, deixando apenas a nossa versão corrigida.
+# O validatecommand só consegue dizer "aceito" ou "rejeito" o que o usuário digitou. Ele não consegue mudar o texto por conta 
+# própria durante a validação. Por isso, usamos o data_var.set() para mudar o texto e return False para cancelar a digitação original, 
+# deixando apenas a nossa versão corrigida.
