@@ -3242,10 +3242,7 @@ def consulta_ematraso(janela3):
    Label(janela4, text="Data Inicial:", font=('Arial', 9)).place(relx=0.005,rely=0.05)   
    dataini = Entry(janela4,width=15)
    dataini.place(relx=0.06,rely=0.05) #####
-   # dataini =  DateEntry(root, width=12, background='darkblue',
-   #              foreground='white', borderwidth=2, 
-   #              locale='pt_BR', date_pattern='yyyy-mm-dd')
-   # dataini.place(relx=0.06,rely=0.05)             
+   
    Label(janela4, text="Data Final:", font=('Arial', 9)).place(relx=0.17,rely=0.05)   
    datafim = Entry(janela4,width=15)
    datafim.place(relx=0.22,rely=0.05)
