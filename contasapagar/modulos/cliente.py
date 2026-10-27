@@ -563,7 +563,8 @@ def verificacodigo():
        return 
    
    try:
-       cursor.execute(f"SELECT * FROM cliente WHERE codigo = '{codigomem}'")
+       cursor.execute("SELECT * FROM cliente WHERE codigo = ?", (codigomem,))
+       #cursor.execute(f"SELECT * FROM cliente WHERE codigo = '{codigomem}'")
        sqlres=cursor.fetchall()
        cursor.close() 
        if len(sqlres) == 0:  
@@ -602,7 +603,8 @@ def consultafor():
       cursor = banco.cursor()
       try:
        codigomem=tela.codigo.get()
-       cursor.execute(f"SELECT * FROM cliente WHERE codigo = '{codigomem}'")
+       #cursor.execute(f"SELECT * FROM cliente WHERE codigo = '{codigomem}'")
+       cursor.execute("SELECT * FROM cliente WHERE codigo = ?", (codigomem,))
        sqlres=cursor.fetchall()
        
        
