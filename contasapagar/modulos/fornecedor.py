@@ -774,7 +774,12 @@ def incluirfor():
        limpacamposfor()   
        tela.codigo.focus()
        return
-   
+
+
+
+def verifacacod():
+    pass
+
 def incluirfor_click(janela1):
     #global opcao
     global tela
@@ -789,8 +794,16 @@ def incluirfor_click(janela1):
     manutencao=variaveis.getmanutencao()   
     # manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-    botao=Button(manutencao, text='Salvar',command=incluirfor)
-    botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+
+    # 2. Criamos um Frame para o grupo "frame_botao" e o colocamos na coluna 0 da tela 
+    frame_botao = Frame(manutencao)
+    frame_botao.grid(row=10, column=0,pady=50, sticky=W)
+
+    botao=Button(frame_botao, text='Salvar',command=incluirfor)
+    botao.grid(row=0, column=0,padx=20,sticky=W)
+    
+    botao1=Button(frame_botao, text='Último Código Cadastrado',command=verifacacod)
+    botao1.grid(row=0, column=3,sticky=W)
     tab_order()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec1)
