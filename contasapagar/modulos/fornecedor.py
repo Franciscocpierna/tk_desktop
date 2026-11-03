@@ -777,8 +777,40 @@ def incluirfor():
 
 
 
-def verifacacod():
-    pass
+def verifacacod(manutencao):
+
+    try:
+        banco = sqlite3.connect('contaspagar.db')
+        cursor = banco.cursor()
+        
+        # Busca ordenando do maior para o menor código
+        cursor.execute("SELECT * FROM fornecedor ORDER BY codigo DESC")
+        sqlres = cursor.fetchall()
+        
+        # PROTEÇÃO: Se a lista estiver vazia, avisa em vez de dar erro de sistema
+        if not sqlres:
+            messagebox1("Aviso: Não há nenhum fornecedor cadastrado no banco.", manutencao)
+            return
+            
+        # Pega o primeiro registro da lista (o último cadastrado)
+        codigo_ult = sqlres[0][0]
+        nome_ult = sqlres[0][1]
+        
+        # Exibe a mensagem formatada
+        messagebox1(f"Fornecedor cadastrado por último:\nCódigo: {codigo_ult}\nNome: {nome_ult}", manutencao)
+        #return
+    except Exception as ex:
+        messagebox1("Erro ao tentar buscar o último código: " + str(ex), manutencao)
+        #return
+        
+    finally:
+        # Garante que o cursor e a conexão fechem sempre
+        cursor.close()
+        banco.close()
+
+
+
+  
 
 def incluirfor_click(janela1):
     #global opcao
@@ -801,8 +833,9 @@ def incluirfor_click(janela1):
 
     botao=Button(frame_botao, text='Salvar',command=incluirfor)
     botao.grid(row=0, column=0,padx=20,sticky=W)
-    
-    botao1=Button(frame_botao, text='Último Código Cadastrado',command=verifacacod)
+    ###parei aqui
+    botao1=Button(frame_botao, text='Último Código Cadastrado',command= lambda: verifacacod(manutencao))
+
     botao1.grid(row=0, column=3,sticky=W)
     tab_order()
     tela.codigo.focus()
