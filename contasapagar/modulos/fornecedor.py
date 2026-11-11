@@ -777,14 +777,14 @@ def incluirfor():
 
 
 
-def verifacacod(manutencao):
+def verifacacod(manutencao,nome_tabela):
 
     try:
         banco = sqlite3.connect('contaspagar.db')
         cursor = banco.cursor()
         
         # Busca ordenando do maior para o menor código
-        cursor.execute("SELECT * FROM fornecedor ORDER BY codigo DESC")
+        cursor.execute(f"SELECT * FROM {nome_tabela} ORDER BY codigo DESC")
         sqlres = cursor.fetchall()
         
         # PROTEÇÃO: Se a lista estiver vazia, avisa em vez de dar erro de sistema
@@ -797,7 +797,7 @@ def verifacacod(manutencao):
         nome_ult = sqlres[0][1]
         
         # Exibe a mensagem formatada
-        messagebox1(f"Fornecedor cadastrado por último:\nCódigo: {codigo_ult}\nNome: {nome_ult}", manutencao)
+        messagebox1(f"{nome_tabela} cadastrado por último:\nCódigo: {codigo_ult}\nNome: {nome_ult}", manutencao)
         #return
     except Exception as ex:
         messagebox1("Erro ao tentar buscar o último código: " + str(ex), manutencao)
@@ -834,7 +834,7 @@ def incluirfor_click(janela1):
     botao=Button(frame_botao, text='Salvar',command=incluirfor)
     botao.grid(row=0, column=0,padx=20,sticky=W)
     ###parei aqui
-    botao1=Button(frame_botao, text='Último Código Cadastrado',command= lambda: verifacacod(manutencao))
+    botao1=Button(frame_botao, text='Último Código Cadastrado',command= lambda: verifacacod(manutencao,'fornecedor'))
 
     botao1.grid(row=0, column=3,sticky=W)
     tab_order()

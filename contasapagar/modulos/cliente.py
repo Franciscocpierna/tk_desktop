@@ -15,6 +15,7 @@ import win32api
 import os
 import datetime 
 import shutil
+from fornecedor import verifacacod
 
 
 largura=1200
@@ -797,8 +798,23 @@ def incluircli_click(janela1):
     manutencao=variaveis.getmanutencao()   
     # manutencao = Toplevel() # janela de nível superior
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-    botao=Button(manutencao, text='Salvar',command=incluircli)
-    botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+    #################################
+    #2. Criamos um Frame para o grupo "frame_botao" e o colocamos na coluna 0 da tela 
+    frame_botao = Frame(manutencao)
+    frame_botao.grid(row=10, column=0,pady=50, sticky=W)
+
+    botao=Button(frame_botao, text='Salvar',command=incluircli)
+    botao.grid(row=0, column=0,padx=20,sticky=W)
+    ###parei aqui
+    botao1=Button(frame_botao, text='Último Código Cadastrado',command= lambda: verifacacod(manutencao,'cliente'))
+
+    botao1.grid(row=0, column=3,sticky=W)
+
+
+    #################################
+
+    #botao=Button(manutencao, text='Salvar',command=incluircli)
+    #botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
     tab_order()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", vercli1)
