@@ -789,7 +789,7 @@ def verifacacod(manutencao,nome_tabela):
         
         # PROTEÇÃO: Se a lista estiver vazia, avisa em vez de dar erro de sistema
         if not sqlres:
-            messagebox1("Aviso: Não há nenhum fornecedor cadastrado no banco.", manutencao)
+            messagebox1(f"Aviso: Não há nenhum {nome_tabela} cadastrado no banco.", manutencao)
             return
             
         # Pega o primeiro registro da lista (o último cadastrado)
