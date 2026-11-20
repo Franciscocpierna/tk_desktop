@@ -15,7 +15,7 @@ import win32api
 import os
 import datetime 
 import shutil
-
+from fornecedor import verifacacod
 
 largura=1200
 altura=650
@@ -258,7 +258,7 @@ def copiapdf(arquivo):
 def rel_nome1(janela3):
    global janela4 
    #global escolhido
-   #global escolha
+   global escolha
    escolha=StringVar(value="D")
    janela4 = Toplevel()
    janela4.title("Relatório por Nomes ESC para SAIR  F3 - Gerar relatório")
@@ -431,8 +431,22 @@ def incluirtipo_click(janela1):
     opcao1=variaveis.getopcao1()
     manutencao=variaveis.getmanutencao()
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-    botao=Button(manutencao, text='Salvar',command=incluirtipo)
-    botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+    #botao=Button(manutencao, text='Salvar',command=incluirtipo)
+    #botao.grid(row=10, column=0,padx=0,pady=50,sticky=W)
+    #################################
+    #2. Criamos um Frame para o grupo "frame_botao" e o colocamos na coluna 0 da tela 
+    frame_botao = Frame(manutencao)
+    frame_botao.grid(row=10, column=0,pady=50, sticky=W)
+
+    botao=Button(frame_botao, text='Salvar',command=incluirtipo)
+    botao.grid(row=0, column=0,padx=20,sticky=W)
+    ###parei aqui
+    botao1=Button(frame_botao, text='Último Código Cadastrado',command= lambda: verifacacod(manutencao,'tipo'))
+
+    botao1.grid(row=0, column=3,sticky=W)
+
+
+    #################################
     tab_order()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", vercodigo)
