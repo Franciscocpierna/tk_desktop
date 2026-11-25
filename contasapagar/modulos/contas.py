@@ -30,7 +30,44 @@ ler=""
 variaveis=variaveis(0,0,0,"")
 variaveis1 = variaveis1(0,0)
      
-     
+def verificaconta(manutencao,nome_tabela):
+
+    try:
+        banco = sqlite3.connect('contaspagar.db')
+        cursor = banco.cursor()
+        
+        # Busca ordenando do maior para o menor código
+        
+        cursor.execute(f"SELECT rowid, codigo, documento, tparcela FROM {nome_tabela} ORDER BY rowid DESC LIMIT 1")
+        
+        sqlres = cursor.fetchall()
+        
+        # PROTEÇÃO: Se a lista estiver vazia, avisa em vez de dar erro de sistema
+        if not sqlres:
+            messagebox1(f"Aviso: Não há nenhum {nome_tabela} cadastrado no banco.", manutencao)
+            return
+
+                
+        # Pega o primeiro registro da lista (o último cadastrado)
+        r_id, codigo_ult, doc_ult, parc_ul = sqlres[0]
+       
+ 
+        codigo_fornecedor=codigo_ult
+        cursor.execute("SELECT nome FROM fornecedor WHERE codigo = ?", (codigo_fornecedor,))
+        ###parei aqui
+        if sqlres1:
+           nome_for = sqlres1[0][0]
+        # Exibe a mensagem formatada
+        messagebox1(f"{nome_tabela} cadastrado por último:\nCódigo: {codigo_ult}\nNome: {nome_ult}", manutencao)
+        #return
+    except Exception as ex:
+        messagebox1("Erro ao tentar buscar o último código: " + str(ex), manutencao)
+        #return
+        
+    finally:
+        # Garante que o cursor e a conexão fechem sempre
+        cursor.close()
+        banco.close()     
 
 def limpacamposcontas():
   tela.codigo.delete(0,END)
@@ -1870,8 +1907,22 @@ def incluircontas_click(janela1):
     manutencao=variaveis.setmanutencao(Toplevel())
     manutencao=variaveis.getmanutencao()
     tela = montatela(manutencao,janela1,opcao,posx,posy,largura, altura,opcao1)
-    botao=Button(manutencao, text='Salvar',command=incluircontas)
-    botao.grid(row=15, column=0,padx=0,pady=50,sticky=W)
+
+    #botao=Button(manutencao, text='Salvar',command=incluircontas)
+    #botao.grid(row=15, column=0,padx=0,pady=50,sticky=W)
+    #################################################################
+  # 2. Criamos um Frame para o grupo "frame_botao" e o colocamos na coluna 0 da tela 
+    frame_botao = Frame(manutencao)
+    frame_botao.grid(row=15, column=0,padx=0,pady=50, sticky=W)
+
+    botao=Button(frame_botao, text='Salvar',command=incluircontas)
+    botao.grid(row=0, column=0,padx=20,sticky=W)
+    ###parei aqui
+    botao1=Button(frame_botao, text='Último Código Cadastrado',command= lambda: verificaconta(manutencao,'contas'))
+
+    botao1.grid(row=0, column=3,sticky=W)
+
+    #################################################################
     tab_order2()
     tela.codigo.focus()
     tela.codigo.bind("<KeyRelease>", verfornec)  # rastreia as entradas
