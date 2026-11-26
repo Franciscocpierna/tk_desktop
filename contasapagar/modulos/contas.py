@@ -38,7 +38,8 @@ def verificaconta(manutencao,nome_tabela):
         
         # Busca ordenando do maior para o menor código
         
-        cursor.execute(f"SELECT rowid, codigo, documento, tparcela FROM {nome_tabela} ORDER BY rowid DESC LIMIT 1")
+        cursor.execute(f"SELECT codigo, documento, tparcela, inclusao FROM {nome_tabela} ORDER BY inclusao DESC, rowid DESC LIMIT 1")
+        
         
         sqlres = cursor.fetchall()
         
@@ -49,16 +50,21 @@ def verificaconta(manutencao,nome_tabela):
 
                 
         # Pega o primeiro registro da lista (o último cadastrado)
-        r_id, codigo_ult, doc_ult, parc_ul = sqlres[0]
+        codigo_ult = sqlres[0][0]  # codigo fornecedor 
+        doc_ult = sqlres[0][1]     # documento
+        parc_ult = sqlres[0][2]    # parcela
+        data_ult = sqlres[0][3]    # inclusao     
+
        
  
         codigo_fornecedor=codigo_ult
         cursor.execute("SELECT nome FROM fornecedor WHERE codigo = ?", (codigo_fornecedor,))
-        ###parei aqui
-        if sqlres1:
-           nome_for = sqlres1[0][0]
+        sqlres = cursor.fetchall()
+        if sqlres:
+           nome_for = sqlres[0][0]
         # Exibe a mensagem formatada
-        messagebox1(f"{nome_tabela} cadastrado por último:\nCódigo: {codigo_ult}\nNome: {nome_ult}", manutencao)
+        messagebox1(f"{nome_tabela} cadastrado por nessa \ndata:{data_ult}\nCódigo: {codigo_ult}\nNome: {nome_for}\nDocumento:{doc_ult}\nParcela: {parc_ult} ", manutencao)
+         
         #return
     except Exception as ex:
         messagebox1("Erro ao tentar buscar o último código: " + str(ex), manutencao)
@@ -1918,7 +1924,7 @@ def incluircontas_click(janela1):
     botao=Button(frame_botao, text='Salvar',command=incluircontas)
     botao.grid(row=0, column=0,padx=20,sticky=W)
     ###parei aqui
-    botao1=Button(frame_botao, text='Último Código Cadastrado',command= lambda: verificaconta(manutencao,'contas'))
+    botao1=Button(frame_botao, text='Última Data Cadastrado',command= lambda: verificaconta(manutencao,'contas'))
 
     botao1.grid(row=0, column=3,sticky=W)
 
