@@ -53,7 +53,7 @@ def verificaconta(manutencao,nome_tabela):
         codigo_ult = sqlres[0][0]  # codigo fornecedor 
         doc_ult = sqlres[0][1]     # documento
         parc_ult = sqlres[0][2]    # parcela
-        data_ult = sqlres[0][3]    # inclusao     
+        data_ult = recupdata(sqlres[0][3])    # inclusao     
 
        
  
